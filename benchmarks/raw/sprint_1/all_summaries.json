@@ -1,0 +1,128 @@
+[
+  {
+    "task_id": "sprint1_q1",
+    "condition": "baseline",
+    "question": "List all the test files in this repo.",
+    "all_tool_calls": [
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob"
+    ],
+    "real_tool_calls": [
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob"
+    ],
+    "real_tool_call_count": 5,
+    "tokens_in": 6,
+    "tokens_out": 858,
+    "cache_creation_input_tokens": 10967,
+    "cache_read_input_tokens": 100619,
+    "cost_usd": 0.1094707,
+    "result_text": "Excluding `.venv` dependencies, the project's own test files (in `tests/`) are:\n\n- `tests/__init__.py`\n- `tests/conftest.py`\n- `tests/test_graph.py`\n- `tests/test_mcp_server.py`\n- `tests/test_scan.py`\n- `tests/test_scanner.py`\n\nNote: the IBWD MCP server referenced in CLAUDE.md isn't actually connected in this session (no `ibwd_*` tools available), so I used Glob as the documented fallback."
+  },
+  {
+    "task_id": "sprint1_q1",
+    "condition": "ibwd",
+    "question": "List all the test files in this repo.",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_find_files"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_find_files"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 184,
+    "cache_creation_input_tokens": 8566,
+    "cache_read_input_tokens": 66494,
+    "cost_usd": 0.0747112,
+    "result_text": "Test files in the repo:\n\n- `tests/__init__.py`\n- `tests/conftest.py`\n- `tests/test_graph.py`\n- `tests/test_mcp_server.py`\n- `tests/test_scan.py`\n- `tests/test_scanner.py`"
+  },
+  {
+    "task_id": "sprint1_q2",
+    "condition": "baseline",
+    "question": "Which files are configuration (not source code)?",
+    "all_tool_calls": [
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob",
+      "Read",
+      "Read"
+    ],
+    "real_tool_calls": [
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob",
+      "Read",
+      "Read"
+    ],
+    "real_tool_call_count": 6,
+    "tokens_in": 10,
+    "tokens_out": 2570,
+    "cache_creation_input_tokens": 17048,
+    "cache_read_input_tokens": 201431,
+    "cost_usd": 0.2018823,
+    "result_text": "Based on the repo's classification rules (`src/ibwd/scanner/filesystem.py:20-25`, matched against the file list in `.ibwd/manifest.json`), the config files are:\n\n- **`.gitignore`**\n- **`pyproject.toml`**\n- **`uv.lock`**\n\nEverything else is `doc` (`.md` files), `source` (`src/ibwd/**/*.py`), `test` (everything under `tests/`), or `other` (`src/ibwd/graph/schema.sql`, which doesn't match any classified extension).\n\nNote: the `ibwd_find_files` MCP tool named in CLAUDE.md isn't actually available in this session, so I derived this by reading the manifest and the classifier logic directly rather than calling the tool."
+  },
+  {
+    "task_id": "sprint1_q2",
+    "condition": "ibwd",
+    "question": "Which files are configuration (not source code)?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_find_files"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_find_files"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 128,
+    "cache_creation_input_tokens": 2966,
+    "cache_read_input_tokens": 72020,
+    "cost_usd": 0.041919,
+    "result_text": "Configuration files: `.gitignore`, `pyproject.toml`, and `uv.lock`."
+  },
+  {
+    "task_id": "sprint1_q3",
+    "condition": "baseline",
+    "question": "How many Python source files are under `src/`?",
+    "all_tool_calls": [
+      "Glob"
+    ],
+    "real_tool_calls": [
+      "Glob"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 571,
+    "cache_creation_input_tokens": 3181,
+    "cache_read_input_tokens": 69526,
+    "cost_usd": 0.0491238,
+    "result_text": "There are **11** Python source files under `src/`:\n\n- `src/ibwd/__init__.py`\n- `src/ibwd/cli.py`\n- `src/ibwd/scan.py`\n- `src/ibwd/graph/__init__.py`\n- `src/ibwd/graph/database.py`\n- `src/ibwd/graph/manifest.py`\n- `src/ibwd/graph/queries.py`\n- `src/ibwd/mcp/__init__.py`\n- `src/ibwd/mcp/server.py`\n- `src/ibwd/scanner/__init__.py`\n- `src/ibwd/scanner/filesystem.py`\n\nNote: the project's CLAUDE.md points to an `ibwd_find_files` MCP tool for this kind of query, but I don't see the IBWD MCP server connected in this session, so I used `Glob` instead."
+  },
+  {
+    "task_id": "sprint1_q3",
+    "condition": "ibwd",
+    "question": "How many Python source files are under `src/`?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_find_files"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_find_files"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 113,
+    "cache_creation_input_tokens": 3214,
+    "cache_read_input_tokens": 72020,
+    "cost_usd": 0.0432,
+    "result_text": "11 Python source files under `src/`."
+  }
+]

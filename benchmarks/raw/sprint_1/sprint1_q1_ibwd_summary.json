@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint1_q1",
+  "condition": "ibwd",
+  "question": "List all the test files in this repo.",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_find_files"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_find_files"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 184,
+  "cache_creation_input_tokens": 8566,
+  "cache_read_input_tokens": 66494,
+  "cost_usd": 0.0747112,
+  "result_text": "Test files in the repo:\n\n- `tests/__init__.py`\n- `tests/conftest.py`\n- `tests/test_graph.py`\n- `tests/test_mcp_server.py`\n- `tests/test_scan.py`\n- `tests/test_scanner.py`"
+}

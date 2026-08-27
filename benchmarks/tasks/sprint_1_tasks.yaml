@@ -1,0 +1,23 @@
+# Sprint 1 demo tasks (Appendix D protocol), with ground truth noted up front
+# since we know this repo's actual state.
+tasks:
+  - id: sprint1_q1
+    question: "List all the test files in this repo."
+    expected:
+      - tests/__init__.py
+      - tests/conftest.py
+      - tests/test_graph.py
+      - tests/test_mcp_server.py
+      - tests/test_scan.py
+      - tests/test_scanner.py
+
+  - id: sprint1_q2
+    question: "Which files are configuration (not source code)?"
+    expected:
+      - .gitignore
+      - pyproject.toml
+      - uv.lock
+
+  - id: sprint1_q3
+    question: "How many Python source files are under `src/`?"
+    expected: "11"

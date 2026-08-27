@@ -1,0 +1,7 @@
+task,condition,tokens_in,tokens_out,cache_creation_tokens,cache_read_tokens,tool_calls,cost_usd,correct
+sprint1_q1,baseline,6,858,10967,100619,5,0.1095,y
+sprint1_q1,ibwd,4,184,8566,66494,1,0.0747,y
+sprint1_q2,baseline,10,2570,17048,201431,6,0.2019,y
+sprint1_q2,ibwd,4,128,2966,72020,1,0.0419,y
+sprint1_q3,baseline,4,571,3181,69526,1,0.0491,y
+sprint1_q3,ibwd,4,113,3214,72020,1,0.0432,y

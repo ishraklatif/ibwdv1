@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint1_q3",
+  "condition": "baseline",
+  "question": "How many Python source files are under `src/`?",
+  "all_tool_calls": [
+    "Glob"
+  ],
+  "real_tool_calls": [
+    "Glob"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 571,
+  "cache_creation_input_tokens": 3181,
+  "cache_read_input_tokens": 69526,
+  "cost_usd": 0.0491238,
+  "result_text": "There are **11** Python source files under `src/`:\n\n- `src/ibwd/__init__.py`\n- `src/ibwd/cli.py`\n- `src/ibwd/scan.py`\n- `src/ibwd/graph/__init__.py`\n- `src/ibwd/graph/database.py`\n- `src/ibwd/graph/manifest.py`\n- `src/ibwd/graph/queries.py`\n- `src/ibwd/mcp/__init__.py`\n- `src/ibwd/mcp/server.py`\n- `src/ibwd/scanner/__init__.py`\n- `src/ibwd/scanner/filesystem.py`\n\nNote: the project's CLAUDE.md points to an `ibwd_find_files` MCP tool for this kind of query, but I don't see the IBWD MCP server connected in this session, so I used `Glob` instead."
+}

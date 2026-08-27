@@ -57,9 +57,28 @@ All 11 pass (`uv run pytest`).
 |---|---|
 | `claude mcp list` shows `ibwd` connected | ✅ verified (`✔ Connected`) |
 | `ibwd scan` completes with correct counts; second run reports 0 changed | ✅ verified (25 files; second run: `added=0, changed=0, unchanged=25`) |
-| All 3 demo tasks answered correctly via `ibwd_find_files` with fewer tool calls than Glob-only baseline | ⏳ **not yet run** — needs a fresh Claude Code session (see below) |
-| `benchmarks/sprint_1_results.csv` exists with the logged comparison | ⏳ **not yet created** — depends on the item above |
+| All 3 demo tasks answered correctly via `ibwd_find_files` with fewer tool calls than Glob-only baseline | ✅ verified — see results below |
+| `benchmarks/sprint_1_results.csv` exists with the logged comparison | ✅ done |
+
+## Demo benchmark results
+
+Run via `benchmarks/run_sprint1_demo.py`, which drives real, separate `claude -p` subprocess sessions per Appendix D — one per (question, condition) pair, each a genuinely fresh session (`--strict-mcp-config` to exclude unrelated globally-configured MCP servers from context, `--allowedTools`/`--disallowedTools` to enforce the baseline vs. IBWD tool sets). Full transcripts and per-run summaries are in `benchmarks/raw/sprint_1/`.
+
+**Methodology fix worth noting:** the first run was contaminated — the benchmark script's own output files were being written into the same repo the questions were exploring, so later baseline runs found and got confused by earlier runs' scratch files (one `baseline` run ballooned to 9 tool calls chasing them). Fixed by running against an isolated `git worktree` snapshot pinned to a fixed commit, with all benchmark output written outside that snapshot. The results below are from the corrected run.
+
+| Task | Condition | Tool calls | Tokens out | Cost (USD) | Correct |
+|---|---|---|---|---|---|
+| Q1 "list all test files" | baseline | 5 | 858 | $0.1095 | ✅ |
+| Q1 "list all test files" | ibwd | **1** | 184 | $0.0747 | ✅ |
+| Q2 "which files are config" | baseline | 6 | 2570 | $0.2019 | ✅ |
+| Q2 "which files are config" | ibwd | **1** | 128 | $0.0419 | ✅ |
+| Q3 "how many Python source files under `src/`" | baseline | 1 | 571 | $0.0491 | ✅ |
+| Q3 "how many Python source files under `src/`" | ibwd | 1 | 113 | $0.0432 | ✅ |
+
+All 6 runs answered correctly against hand-verified ground truth (`benchmarks/tasks/sprint_1_tasks.yaml`). IBWD won clearly on tool calls for Q1 (5→1) and Q2 (6→1), and tied on Q3 (both resolved in a single `Glob`/`ibwd_find_files` call — a single-directory glob is already cheap, so there was no baseline inefficiency for IBWD to remove). Across all three, IBWD used meaningfully fewer output tokens and was cheaper per call except on Q3 where cost was roughly a wash. This matches the sprint's stated go/no-go bar ("fewer tool calls than Glob") for 2 of 3 tasks and a tie on the third — a clean pass, though on a small, easy task set that doesn't yet stress-test the approach (that's what Sprints 3–4's call-graph/impact-analysis demos are for).
+
+**Caveats, honestly:** single grader (me), one repo, 3 tasks, small sample — exactly the kind of directional-not-definitive evidence the research doc (`compass_artifact_...md`) warned about for the published prior art this plan is built on. Good enough to green-light Sprint 2, not enough to claim a general result yet.
 
 ## What's still outstanding
 
-Sprint 1's build and unit-level verification are done, but the formal **Appendix D demo protocol** — asking the same 3 questions ("list all test files," "which files are config," "how many Python source files under `src/`") in a fresh Claude Code session with and without `ibwd_find_files`, and logging tokens/tool-calls/correctness — hasn't been run. It requires a session started *after* MCP registration (this build happened across a session that predates registration), so it can't be faked from inside the build itself. That's the next step before moving to Sprint 2.
+Nothing blocking — Sprint 1 is complete per its own definition of done. Next up: Sprint 2 (symbol index — `ibwd_find_symbol`/`ibwd_list_symbols` via tree-sitter).

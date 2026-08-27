@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint1_q2",
+  "condition": "ibwd",
+  "question": "Which files are configuration (not source code)?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_find_files"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_find_files"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 128,
+  "cache_creation_input_tokens": 2966,
+  "cache_read_input_tokens": 72020,
+  "cost_usd": 0.041919,
+  "result_text": "Configuration files: `.gitignore`, `pyproject.toml`, and `uv.lock`."
+}

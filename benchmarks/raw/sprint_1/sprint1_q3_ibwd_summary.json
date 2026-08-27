@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint1_q3",
+  "condition": "ibwd",
+  "question": "How many Python source files are under `src/`?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_find_files"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_find_files"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 113,
+  "cache_creation_input_tokens": 3214,
+  "cache_read_input_tokens": 72020,
+  "cost_usd": 0.0432,
+  "result_text": "11 Python source files under `src/`."
+}

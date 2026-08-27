@@ -1,0 +1,26 @@
+{
+  "task_id": "sprint1_q1",
+  "condition": "baseline",
+  "question": "List all the test files in this repo.",
+  "all_tool_calls": [
+    "Glob",
+    "Glob",
+    "Glob",
+    "Glob",
+    "Glob"
+  ],
+  "real_tool_calls": [
+    "Glob",
+    "Glob",
+    "Glob",
+    "Glob",
+    "Glob"
+  ],
+  "real_tool_call_count": 5,
+  "tokens_in": 6,
+  "tokens_out": 858,
+  "cache_creation_input_tokens": 10967,
+  "cache_read_input_tokens": 100619,
+  "cost_usd": 0.1094707,
+  "result_text": "Excluding `.venv` dependencies, the project's own test files (in `tests/`) are:\n\n- `tests/__init__.py`\n- `tests/conftest.py`\n- `tests/test_graph.py`\n- `tests/test_mcp_server.py`\n- `tests/test_scan.py`\n- `tests/test_scanner.py`\n\nNote: the IBWD MCP server referenced in CLAUDE.md isn't actually connected in this session (no `ibwd_*` tools available), so I used Glob as the documented fallback."
+}

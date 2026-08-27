@@ -1,0 +1,28 @@
+{
+  "task_id": "sprint1_q2",
+  "condition": "baseline",
+  "question": "Which files are configuration (not source code)?",
+  "all_tool_calls": [
+    "Glob",
+    "Glob",
+    "Glob",
+    "Glob",
+    "Read",
+    "Read"
+  ],
+  "real_tool_calls": [
+    "Glob",
+    "Glob",
+    "Glob",
+    "Glob",
+    "Read",
+    "Read"
+  ],
+  "real_tool_call_count": 6,
+  "tokens_in": 10,
+  "tokens_out": 2570,
+  "cache_creation_input_tokens": 17048,
+  "cache_read_input_tokens": 201431,
+  "cost_usd": 0.2018823,
+  "result_text": "Based on the repo's classification rules (`src/ibwd/scanner/filesystem.py:20-25`, matched against the file list in `.ibwd/manifest.json`), the config files are:\n\n- **`.gitignore`**\n- **`pyproject.toml`**\n- **`uv.lock`**\n\nEverything else is `doc` (`.md` files), `source` (`src/ibwd/**/*.py`), `test` (everything under `tests/`), or `other` (`src/ibwd/graph/schema.sql`, which doesn't match any classified extension).\n\nNote: the `ibwd_find_files` MCP tool named in CLAUDE.md isn't actually available in this session, so I derived this by reading the manifest and the classifier logic directly rather than calling the tool."
+}

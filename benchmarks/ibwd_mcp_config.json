@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "ibwd": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "python", "-m", "ibwd.mcp.server"]
+    }
+  }
+}
