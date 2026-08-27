@@ -1,0 +1,21 @@
+# Sprint 2 demo tasks (Appendix D protocol), with ground truth noted up front
+# since we know this repo's actual state as of the Sprint 2 commit.
+tasks:
+  - id: sprint2_q1
+    question: "Where is the `connect` function defined?"
+    expected:
+      - src/ibwd/graph/database.py:13
+
+  - id: sprint2_q2
+    question: "List every function defined in `src/ibwd/scanner/python.py`."
+    expected:
+      - _unwrap_decorated
+      - _name_of
+      - extract_python_symbols
+
+  - id: sprint2_q3
+    question: "Find a function named `main` — how many are there and where?"
+    expected:
+      - benchmarks/run_sprint1_demo.py
+      - src/ibwd/cli.py
+      - src/ibwd/mcp/server.py

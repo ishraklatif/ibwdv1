@@ -1,0 +1,20 @@
+{
+  "task_id": "sprint2_q1",
+  "condition": "baseline",
+  "question": "Where is the `connect` function defined?",
+  "all_tool_calls": [
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 6,
+  "tokens_out": 811,
+  "cache_creation_input_tokens": 37273,
+  "cache_read_input_tokens": 73354,
+  "cost_usd": 0.2584172,
+  "result_text": "`connect` is defined in `src/ibwd/graph/database.py:13`:\n\n```python\ndef connect(db_path: Path = DEFAULT_DB_PATH) -> sqlite3.Connection:\n```\n\nNote: the IBWD MCP tools (`ibwd_find_symbol`, etc.) that CLAUDE.md recommends for this aren't actually available in this session, so I fell back to Grep directly."
+}

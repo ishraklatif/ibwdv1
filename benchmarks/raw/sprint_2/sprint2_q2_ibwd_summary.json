@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint2_q2",
+  "condition": "ibwd",
+  "question": "List every function defined in `src/ibwd/scanner/python.py`.",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_list_symbols"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_list_symbols"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 169,
+  "cache_creation_input_tokens": 3222,
+  "cache_read_input_tokens": 73529,
+  "cost_usd": 0.044540699999999996,
+  "result_text": "Functions in `src/ibwd/scanner/python.py`:\n\n- `_unwrap_decorated` \u2014 line 13\n- `_name_of` \u2014 line 22\n- `extract_python_symbols` \u2014 line 27"
+}

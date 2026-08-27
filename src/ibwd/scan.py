@@ -5,10 +5,11 @@ from __future__ import annotations
 from dataclasses import asdict
 from pathlib import Path
 
-from ibwd.graph.database import connect
+from ibwd.graph.database import connect, get_node_by_path
 from ibwd.graph.manifest import DEFAULT_MANIFEST_PATH, load_manifest, save_manifest
-from ibwd.graph.queries import ScanSummary, sync_files
+from ibwd.graph.queries import ScanSummary, sync_files, sync_symbols
 from ibwd.scanner.filesystem import scan_files
+from ibwd.scanner.symbols import extract_symbols
 
 
 def run_scan(repo_root: Path | None = None) -> dict:
@@ -25,6 +26,20 @@ def run_scan(repo_root: Path | None = None) -> dict:
     conn = connect(repo_root / ".ibwd" / "graph.db")
     try:
         summary: ScanSummary = sync_files(conn, scanned, previous_manifest)
+
+        # Only reparse source files whose content actually changed since the
+        # last scan — symbol extraction is the relatively expensive step.
+        for scanned_file in scanned:
+            if scanned_file.kind != "source":
+                continue
+            if previous_manifest.get(scanned_file.path) == scanned_file.content_hash:
+                continue
+            file_row = get_node_by_path(conn, "File", scanned_file.path)
+            if file_row is None:
+                continue
+            symbols = extract_symbols(repo_root / scanned_file.path, scanned_file.path)
+            sync_symbols(conn, file_row["id"], scanned_file.path, symbols)
+        conn.commit()
     finally:
         conn.close()
 

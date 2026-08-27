@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint2_q1",
+  "condition": "ibwd",
+  "question": "Where is the `connect` function defined?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_find_symbol"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_find_symbol"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 117,
+  "cache_creation_input_tokens": 38377,
+  "cache_read_input_tokens": 38245,
+  "cost_usd": 0.2440925,
+  "result_text": "`connect` is defined at `src/ibwd/graph/database.py:13` (a Python function)."
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "task_id": "sprint2_q1",
+    "condition": "baseline",
+    "question": "Where is the `connect` function defined?",
+    "all_tool_calls": [
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 6,
+    "tokens_out": 811,
+    "cache_creation_input_tokens": 37273,
+    "cache_read_input_tokens": 73354,
+    "cost_usd": 0.2584172,
+    "result_text": "`connect` is defined in `src/ibwd/graph/database.py:13`:\n\n```python\ndef connect(db_path: Path = DEFAULT_DB_PATH) -> sqlite3.Connection:\n```\n\nNote: the IBWD MCP tools (`ibwd_find_symbol`, etc.) that CLAUDE.md recommends for this aren't actually available in this session, so I fell back to Grep directly."
+  },
+  {
+    "task_id": "sprint2_q1",
+    "condition": "ibwd",
+    "question": "Where is the `connect` function defined?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_find_symbol"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_find_symbol"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 117,
+    "cache_creation_input_tokens": 38377,
+    "cache_read_input_tokens": 38245,
+    "cost_usd": 0.2440925,
+    "result_text": "`connect` is defined at `src/ibwd/graph/database.py:13` (a Python function)."
+  },
+  {
+    "task_id": "sprint2_q2",
+    "condition": "baseline",
+    "question": "List every function defined in `src/ibwd/scanner/python.py`.",
+    "all_tool_calls": [
+      "Read"
+    ],
+    "real_tool_calls": [
+      "Read"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 605,
+    "cache_creation_input_tokens": 4424,
+    "cache_read_input_tokens": 69883,
+    "cost_usd": 0.0571989,
+    "result_text": "`src/ibwd/scanner/python.py` defines 4 functions:\n\n1. `_unwrap_decorated(node)` \u2014 line 13\n2. `_name_of(node)` \u2014 line 22\n3. `extract_python_symbols(source, file_path)` \u2014 line 27\n4. `visit(node, class_stack)` \u2014 line 32 (nested closure inside `extract_python_symbols`)\n\nNote: the IBWD `ibwd_list_symbols` tool mentioned in CLAUDE.md isn't exposed in this session, so I read the file directly instead."
+  },
+  {
+    "task_id": "sprint2_q2",
+    "condition": "ibwd",
+    "question": "List every function defined in `src/ibwd/scanner/python.py`.",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_list_symbols"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_list_symbols"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 169,
+    "cache_creation_input_tokens": 3222,
+    "cache_read_input_tokens": 73529,
+    "cost_usd": 0.044540699999999996,
+    "result_text": "Functions in `src/ibwd/scanner/python.py`:\n\n- `_unwrap_decorated` \u2014 line 13\n- `_name_of` \u2014 line 22\n- `extract_python_symbols` \u2014 line 27"
+  },
+  {
+    "task_id": "sprint2_q3",
+    "condition": "baseline",
+    "question": "Find a function named `main` -- how many are there and where?",
+    "all_tool_calls": [
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 879,
+    "cache_creation_input_tokens": 3553,
+    "cache_read_input_tokens": 69877,
+    "cost_usd": 0.0560741,
+    "result_text": "Found 5 functions/definitions named `main` (note: the IBWD `ibwd_find_symbol` tool isn't actually available in this session, so I used Grep as a fallback):\n\n1. `src/ibwd/mcp/server.py:96` \u2014 `def main() -> None:`\n2. `src/ibwd/cli.py:11` \u2014 `def main() -> None:`\n3. `benchmarks/run_sprint2_demo.py:118` \u2014 `def main() -> None:`\n4. `benchmarks/run_sprint1_demo.py:111` \u2014 `def main() -> None:`\n5. `tests/test_scanner_javascript.py:6` \u2014 `function main() {` (this one's a fixture string used to test the JS scanner, not a real entry point)\n\nSo effectively 4 real `main` entry points (CLI, MCP server, two benchmark scripts) plus 1 test fixture."
+  },
+  {
+    "task_id": "sprint2_q3",
+    "condition": "ibwd",
+    "question": "Find a function named `main` -- how many are there and where?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_find_symbol"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_find_symbol"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 179,
+    "cache_creation_input_tokens": 3218,
+    "cache_read_input_tokens": 73523,
+    "cost_usd": 0.044667899999999996,
+    "result_text": "There are 4 functions named `main`:\n\n- `benchmarks/run_sprint1_demo.py:111`\n- `benchmarks/run_sprint2_demo.py:118`\n- `src/ibwd/cli.py:10`\n- `src/ibwd/mcp/server.py:96`"
+  }
+]

@@ -7,6 +7,9 @@ block per sprint.
 
 **Use IBWD tools first for:**
 - File discovery/categorization -> `ibwd_find_files` (kind: source/test/doc/config, or a name_pattern substring), instead of repeated `Glob` calls (Sprint 1)
+- "Where is X defined?" -> `ibwd_find_symbol(name)` instead of `Grep`, especially for common names where grep returns noisy false positives from comments/strings/usages (Sprint 2)
+- "What symbols are defined in this file?" -> `ibwd_list_symbols(file)` instead of reading the whole file just to skim its structure (Sprint 2)
+- Symbol tools currently cover Python and JS/JSX/TS/TSX only; other languages fall through to Grep
 
 **Fall back to Glob/Grep/Read for:**
 - Reading full file contents or exact source needed to make an edit

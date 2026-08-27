@@ -6,10 +6,12 @@ import sqlite3
 from dataclasses import dataclass
 from pathlib import PurePosixPath
 
-from ibwd.graph.database import Node, upsert_edge, upsert_node
+from ibwd.graph.database import Node, upsert_edge, upsert_node, upsert_symbol_node
 from ibwd.scanner.filesystem import ScannedFile
+from ibwd.scanner.symbols import SymbolInfo
 
 ROOT_DIR_PATH = "."
+SYMBOL_NODE_TYPES = ("Class", "Function", "Method")
 
 
 @dataclass
@@ -79,10 +81,79 @@ def sync_files(
     removed_paths = set(previous_manifest) - seen_paths
     for removed_path in removed_paths:
         conn.execute("DELETE FROM nodes WHERE node_type = 'File' AND file_path = ?", (removed_path,))
+        delete_symbols_for_file(conn, removed_path)
     summary.removed = len(removed_paths)
 
     conn.commit()
     return summary
+
+
+def delete_symbols_for_file(conn: sqlite3.Connection, file_path: str) -> None:
+    """Delete all Class/Function/Method nodes for a file (their DEFINES edges
+    cascade-delete via the edges table's ON DELETE CASCADE foreign keys)."""
+    placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
+    conn.execute(
+        f"DELETE FROM nodes WHERE file_path = ? AND node_type IN ({placeholders})",
+        (file_path, *SYMBOL_NODE_TYPES),
+    )
+
+
+def sync_symbols(conn: sqlite3.Connection, file_id: int, file_path: str, symbols: list[SymbolInfo]) -> None:
+    """Replace all symbol nodes + DEFINES edges for one file with a fresh set."""
+    delete_symbols_for_file(conn, file_path)
+    for symbol in symbols:
+        symbol_id = upsert_symbol_node(
+            conn,
+            Node(
+                node_type=symbol.kind,
+                name=symbol.name,
+                qualified_name=symbol.qualified_name,
+                file_path=symbol.file_path,
+                start_line=symbol.start_line,
+                end_line=symbol.end_line,
+            ),
+        )
+        upsert_edge(conn, file_id, symbol_id, "DEFINES")
+
+
+def find_symbol(conn: sqlite3.Connection, name: str) -> list[sqlite3.Row]:
+    """Exact match (case-sensitive) first; if none, case-insensitive substring match."""
+    placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
+    exact = conn.execute(
+        f"""
+        SELECT name, node_type AS kind, file_path, start_line, end_line
+        FROM nodes WHERE node_type IN ({placeholders}) AND name = ?
+        ORDER BY file_path, start_line
+        """,
+        (*SYMBOL_NODE_TYPES, name),
+    ).fetchall()
+    if exact:
+        return exact
+
+    return conn.execute(
+        f"""
+        SELECT name, node_type AS kind, file_path, start_line, end_line
+        FROM nodes WHERE node_type IN ({placeholders}) AND name LIKE ? ESCAPE '\\'
+        ORDER BY file_path, start_line
+        """,
+        (*SYMBOL_NODE_TYPES, f"%{_escape_like(name)}%"),
+    ).fetchall()
+
+
+def list_symbols(conn: sqlite3.Connection, file_path: str) -> list[sqlite3.Row]:
+    placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
+    return conn.execute(
+        f"""
+        SELECT name, node_type AS kind, file_path, start_line, end_line
+        FROM nodes WHERE node_type IN ({placeholders}) AND file_path = ?
+        ORDER BY start_line
+        """,
+        (*SYMBOL_NODE_TYPES, file_path),
+    ).fetchall()
+
+
+def _escape_like(value: str) -> str:
+    return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
 
 
 def find_files(

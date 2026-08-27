@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint2_q2",
+  "condition": "baseline",
+  "question": "List every function defined in `src/ibwd/scanner/python.py`.",
+  "all_tool_calls": [
+    "Read"
+  ],
+  "real_tool_calls": [
+    "Read"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 605,
+  "cache_creation_input_tokens": 4424,
+  "cache_read_input_tokens": 69883,
+  "cost_usd": 0.0571989,
+  "result_text": "`src/ibwd/scanner/python.py` defines 4 functions:\n\n1. `_unwrap_decorated(node)` \u2014 line 13\n2. `_name_of(node)` \u2014 line 22\n3. `extract_python_symbols(source, file_path)` \u2014 line 27\n4. `visit(node, class_stack)` \u2014 line 32 (nested closure inside `extract_python_symbols`)\n\nNote: the IBWD `ibwd_list_symbols` tool mentioned in CLAUDE.md isn't exposed in this session, so I read the file directly instead."
+}

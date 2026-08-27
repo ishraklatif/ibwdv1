@@ -10,13 +10,23 @@ CREATE TABLE IF NOT EXISTS nodes (
     end_line       INTEGER,
     content_hash   TEXT,
     created_at     TEXT DEFAULT (datetime('now')),
-    updated_at     TEXT DEFAULT (datetime('now')),
-    UNIQUE (node_type, file_path)
+    updated_at     TEXT DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_nodes_type ON nodes(node_type);
 CREATE INDEX IF NOT EXISTS idx_nodes_file ON nodes(file_path);
 CREATE INDEX IF NOT EXISTS idx_nodes_hash ON nodes(content_hash);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
+-- File/Directory: exactly one node per (node_type, file_path) — a
+-- table-level UNIQUE here would also block multiple *symbol* nodes
+-- (Class/Function/Method, added Sprint 2) that share a node_type + file_path
+-- (e.g. two methods in one file), so this is scoped to just the two
+-- container types via a partial index.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_nodes_file_container_unique
+    ON nodes(node_type, file_path) WHERE node_type IN ('File', 'Directory');
+-- Symbol nodes are keyed by qualified_name for upserts instead; SQLite
+-- treats NULL != NULL in a UNIQUE index, so File/Directory nodes
+-- (qualified_name IS NULL) are unaffected by this one.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_nodes_qualified_name ON nodes(qualified_name);
 
 CREATE TABLE IF NOT EXISTS edges (
     id            INTEGER PRIMARY KEY,

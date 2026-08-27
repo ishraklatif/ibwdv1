@@ -46,9 +46,47 @@ def upsert_node(conn: sqlite3.Connection, node: Node) -> int:
                             start_line, end_line, content_hash, updated_at)
         VALUES (:node_type, :name, :qualified_name, :file_path, :kind,
                 :start_line, :end_line, :content_hash, datetime('now'))
-        ON CONFLICT (node_type, file_path) DO UPDATE SET
+        ON CONFLICT (node_type, file_path) WHERE node_type IN ('File', 'Directory') DO UPDATE SET
             name = excluded.name,
             qualified_name = excluded.qualified_name,
+            kind = excluded.kind,
+            start_line = excluded.start_line,
+            end_line = excluded.end_line,
+            content_hash = excluded.content_hash,
+            updated_at = datetime('now')
+        RETURNING id
+        """,
+        {
+            "node_type": node.node_type,
+            "name": node.name,
+            "qualified_name": node.qualified_name,
+            "file_path": node.file_path,
+            "kind": node.kind,
+            "start_line": node.start_line,
+            "end_line": node.end_line,
+            "content_hash": node.content_hash,
+        },
+    )
+    return cur.fetchone()[0]
+
+
+def upsert_symbol_node(conn: sqlite3.Connection, node: Node) -> int:
+    """Insert or update a Class/Function/Method node keyed on qualified_name.
+
+    Unlike upsert_node (keyed on node_type+file_path, one row per file), a
+    file can define many symbols — qualified_name ("{file_path}::{Outer.Inner}")
+    is what's unique here.
+    """
+    cur = conn.execute(
+        """
+        INSERT INTO nodes (node_type, name, qualified_name, file_path, kind,
+                            start_line, end_line, content_hash, updated_at)
+        VALUES (:node_type, :name, :qualified_name, :file_path, :kind,
+                :start_line, :end_line, :content_hash, datetime('now'))
+        ON CONFLICT (qualified_name) DO UPDATE SET
+            node_type = excluded.node_type,
+            name = excluded.name,
+            file_path = excluded.file_path,
             kind = excluded.kind,
             start_line = excluded.start_line,
             end_line = excluded.end_line,

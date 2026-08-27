@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint2_q3",
+  "condition": "ibwd",
+  "question": "Find a function named `main` -- how many are there and where?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_find_symbol"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_find_symbol"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 179,
+  "cache_creation_input_tokens": 3218,
+  "cache_read_input_tokens": 73523,
+  "cost_usd": 0.044667899999999996,
+  "result_text": "There are 4 functions named `main`:\n\n- `benchmarks/run_sprint1_demo.py:111`\n- `benchmarks/run_sprint2_demo.py:118`\n- `src/ibwd/cli.py:10`\n- `src/ibwd/mcp/server.py:96`"
+}

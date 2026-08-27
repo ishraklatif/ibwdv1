@@ -22,6 +22,20 @@ async def test_ibwd_scan_and_find_files_tools(git_repo: Path, monkeypatch: pytes
     assert paths == {"src/app.py", "src/utils.py"}
 
 
+@pytest.mark.anyio
+async def test_ibwd_find_symbol_and_list_symbols_tools(symbol_repo: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.chdir(symbol_repo)
+
+    await mcp.call_tool("ibwd_scan", {})
+
+    found = _tool_result_json(await mcp.call_tool("ibwd_find_symbol", {"name": "greet"}))
+    matches = {(item["kind"], item["file"]) for item in found}
+    assert matches == {("Method", "src/models.py"), ("Function", "src/other.py")}
+
+    listed = _tool_result_json(await mcp.call_tool("ibwd_list_symbols", {"file": "src/models.py"}))
+    assert [item["name"] for item in listed] == ["User", "__init__", "greet", "create_user"]
+
+
 def _tool_result_json(result):
     # FastMCP/MCPServer tool results carry a structured_content field alongside
     # the text content blocks; fall back to parsing the first text block.

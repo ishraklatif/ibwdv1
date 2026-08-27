@@ -26,3 +26,59 @@ def git_repo(tmp_path: Path) -> Path:
     _write(tmp_path, ".gitignore", "ignored.txt\n")
 
     return tmp_path
+
+
+@pytest.fixture
+def symbol_repo(tmp_path: Path) -> Path:
+    """A git repo with Python + JS/TS source, for symbol-extraction tests.
+
+    `greet` is defined twice — once as a method (src/models.py::User.greet)
+    and once as a top-level function (src/other.py::greet) — so tests can
+    confirm ibwd_find_symbol returns both, not just one.
+    """
+    Repo.init(tmp_path)
+
+    _write(
+        tmp_path,
+        "src/models.py",
+        "class User:\n"
+        "    def __init__(self, name):\n"
+        "        self.name = name\n"
+        "\n"
+        "    def greet(self):\n"
+        "        return f'hi {self.name}'\n"
+        "\n"
+        "\n"
+        "def create_user(name):\n"
+        "    return User(name)\n",
+    )
+    _write(
+        tmp_path,
+        "src/other.py",
+        "def greet():\n"
+        "    return 'hello'\n",
+    )
+    _write(
+        tmp_path,
+        "web/app.js",
+        "function main() {\n"
+        "  return 1;\n"
+        "}\n"
+        "\n"
+        "class Widget {\n"
+        "  render() {\n"
+        "    return null;\n"
+        "  }\n"
+        "}\n"
+        "\n"
+        "const helper = () => 42;\n",
+    )
+    _write(
+        tmp_path,
+        "web/util.ts",
+        "export function util(): number {\n"
+        "  return 1;\n"
+        "}\n",
+    )
+
+    return tmp_path

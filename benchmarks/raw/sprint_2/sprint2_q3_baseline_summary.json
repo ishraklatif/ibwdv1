@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint2_q3",
+  "condition": "baseline",
+  "question": "Find a function named `main` -- how many are there and where?",
+  "all_tool_calls": [
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 879,
+  "cache_creation_input_tokens": 3553,
+  "cache_read_input_tokens": 69877,
+  "cost_usd": 0.0560741,
+  "result_text": "Found 5 functions/definitions named `main` (note: the IBWD `ibwd_find_symbol` tool isn't actually available in this session, so I used Grep as a fallback):\n\n1. `src/ibwd/mcp/server.py:96` \u2014 `def main() -> None:`\n2. `src/ibwd/cli.py:11` \u2014 `def main() -> None:`\n3. `benchmarks/run_sprint2_demo.py:118` \u2014 `def main() -> None:`\n4. `benchmarks/run_sprint1_demo.py:111` \u2014 `def main() -> None:`\n5. `tests/test_scanner_javascript.py:6` \u2014 `function main() {` (this one's a fixture string used to test the JS scanner, not a real entry point)\n\nSo effectively 4 real `main` entry points (CLI, MCP server, two benchmark scripts) plus 1 test fixture."
+}
