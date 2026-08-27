@@ -1,0 +1,57 @@
+-- graph/schema.sql
+CREATE TABLE IF NOT EXISTS nodes (
+    id             INTEGER PRIMARY KEY,
+    node_type      TEXT NOT NULL,   -- File, Directory, Class, Function, Method, Commit, ...
+    name           TEXT NOT NULL,
+    qualified_name TEXT,
+    file_path      TEXT,
+    kind           TEXT,            -- source | test | doc | config | other (File nodes only)
+    start_line     INTEGER,
+    end_line       INTEGER,
+    content_hash   TEXT,
+    created_at     TEXT DEFAULT (datetime('now')),
+    updated_at     TEXT DEFAULT (datetime('now')),
+    UNIQUE (node_type, file_path)
+);
+CREATE INDEX IF NOT EXISTS idx_nodes_type ON nodes(node_type);
+CREATE INDEX IF NOT EXISTS idx_nodes_file ON nodes(file_path);
+CREATE INDEX IF NOT EXISTS idx_nodes_hash ON nodes(content_hash);
+CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
+
+CREATE TABLE IF NOT EXISTS edges (
+    id            INTEGER PRIMARY KEY,
+    source_id     INTEGER NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    target_id     INTEGER NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    relation      TEXT NOT NULL,   -- CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS, TOUCHED, TESTED_BY, RELATES_TO, ...
+    confidence    REAL NOT NULL DEFAULT 1.0,
+    source_type   TEXT NOT NULL DEFAULT 'static_analysis',  -- static_analysis | llm_inference
+    created_at    TEXT DEFAULT (datetime('now')),
+    UNIQUE (source_id, target_id, relation)
+);
+CREATE INDEX IF NOT EXISTS idx_edges_source ON edges(source_id);
+CREATE INDEX IF NOT EXISTS idx_edges_target ON edges(target_id);
+CREATE INDEX IF NOT EXISTS idx_edges_relation ON edges(relation);
+
+-- Added Sprint 6:
+CREATE TABLE IF NOT EXISTS summaries (
+    node_id            INTEGER PRIMARY KEY REFERENCES nodes(id),
+    summary            TEXT,
+    responsibilities   TEXT,
+    architectural_role TEXT,
+    concepts           TEXT,
+    derived_from_hash  TEXT,
+    grader_status      TEXT DEFAULT 'unchecked'  -- unchecked | passed | downgraded | dropped
+);
+
+-- Added Sprint 5 (via the sqlite-vec extension):
+-- CREATE VIRTUAL TABLE vec_nodes USING vec0(node_id INTEGER PRIMARY KEY, embedding FLOAT[1024]);
+
+-- Recursive CTE example, added Sprint 3, "callers of node N up to depth 3":
+-- WITH RECURSIVE callers(id, depth) AS (
+--   SELECT source_id, 1 FROM edges WHERE target_id = :node_id AND relation = 'CALLS'
+--   UNION
+--   SELECT e.source_id, c.depth + 1 FROM edges e
+--   JOIN callers c ON e.target_id = c.id
+--   WHERE e.relation = 'CALLS' AND c.depth < 3
+-- )
+-- SELECT DISTINCT id, depth FROM callers ORDER BY depth;
