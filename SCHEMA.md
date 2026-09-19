@@ -1,0 +1,305 @@
+# Graph Schema Reference
+
+**File:** `src/ibwd/graph/schema.sql`
+**Engine:** SQLite (single-file database at `.ibwd/graph.db`)
+**Loaded by:** `ibwd.graph.database.connect()`, via `executescript()` on every connection
+
+## 1. Overview
+
+IBWD represents a codebase as a property graph persisted in two relational
+tables:
+
+| Table  | Represents                                                        |
+|--------|--------------------------------------------------------------------|
+| `nodes`| An entity in the codebase — a directory, a file, or a symbol (class, function, method). |
+| `edges`| A directed, typed relationship between two entities.               |
+
+A third table, `summaries`, attaches optional LLM-derived narrative
+metadata to individual nodes. All three tables share a single SQLite file
+and are created idempotently (`CREATE TABLE IF NOT EXISTS`), so applying
+the schema is safe on every scan and requires no separate migration step.
+
+This document specifies the schema's structure, its constraints and their
+rationale, the write path that enforces them, and a worked example.
+
+## 2. Table: `nodes`
+
+```sql
+CREATE TABLE IF NOT EXISTS nodes (
+    id             INTEGER PRIMARY KEY,
+    node_type      TEXT NOT NULL,
+    name           TEXT NOT NULL,
+    qualified_name TEXT,
+    file_path      TEXT,
+    kind           TEXT,
+    start_line     INTEGER,
+    end_line       INTEGER,
+    content_hash   TEXT,
+    created_at     TEXT DEFAULT (datetime('now')),
+    updated_at     TEXT DEFAULT (datetime('now'))
+);
+```
+
+### 2.1 Column reference
+
+| Column           | Type    | Nullable | Applies to                    | Description |
+|------------------|---------|----------|--------------------------------|-------------|
+| `id`             | INTEGER | No       | All                             | Surrogate primary key; SQLite `ROWID` alias. |
+| `node_type`      | TEXT    | No       | All                             | Discriminator: `Directory`, `File`, `Class`, `Function`, `Method`. Additional types (e.g. `Commit`) are reserved for future sprints. |
+| `name`           | TEXT    | No       | All                             | Local, non-unique display name (file/directory basename, or symbol identifier). |
+| `qualified_name` | TEXT    | Yes      | Symbol nodes only               | Globally unique identifier in the form `{file_path}::{Outer.Inner}`. `NULL` for `File`/`Directory` nodes. |
+| `file_path`      | TEXT    | Yes      | File, Directory, Symbol         | Repo-relative path. For a `File`/`Directory` node this *is* the entity; for a symbol node it identifies the containing file. |
+| `kind`           | TEXT    | Yes      | File nodes only                 | Content classification: `source`, `test`, `doc`, `config`, `other`. |
+| `start_line`     | INTEGER | Yes      | Symbol nodes only               | 1-indexed line where the definition begins. |
+| `end_line`       | INTEGER | Yes      | Symbol nodes only               | 1-indexed line where the definition ends. |
+| `content_hash`   | TEXT    | Yes      | File, Symbol                    | Hash of source content, used to detect no-op rescans without re-parsing. |
+| `created_at`     | TEXT    | No       | All                              | UTC timestamp, set once on insert. |
+| `updated_at`     | TEXT    | No       | All                              | UTC timestamp, refreshed on every upsert. |
+
+`node_type` is a single discriminator column rather than a table-per-type
+design: it lets one query traverse directories, files, and symbols
+uniformly (e.g. `WHERE node_type IN ('Class','Function','Method')`),
+at the cost of several columns being meaningful only for a subset of rows
+(documented above under "Applies to").
+
+### 2.2 Indexes
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_nodes_type ON nodes(node_type);
+CREATE INDEX IF NOT EXISTS idx_nodes_file ON nodes(file_path);
+CREATE INDEX IF NOT EXISTS idx_nodes_hash ON nodes(content_hash);
+CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
+```
+
+Non-unique secondary indexes supporting the primary lookup patterns:
+filtering by entity type, resolving a node by path, detecting unchanged
+content on rescan, and name-based symbol search.
+
+### 2.3 Uniqueness constraints
+
+Two distinct uniqueness rules apply to `nodes`, because `File`/`Directory`
+rows and symbol rows are deduplicated on different keys.
+
+**Rule 1 — one row per (`node_type`, `file_path`) for container nodes.**
+
+```sql
+CREATE UNIQUE INDEX IF NOT EXISTS idx_nodes_file_container_unique
+    ON nodes(node_type, file_path) WHERE node_type IN ('File', 'Directory');
+```
+
+A given file or directory path may have at most one `File` node and at
+most one `Directory` node. This is enforced via a *partial* unique index
+rather than a table-level constraint, because a table-level
+`UNIQUE(node_type, file_path)` would also restrict `Class`/`Function`/
+`Method` rows — which legitimately share both a `node_type` and a
+`file_path` when a file defines multiple symbols of the same kind (e.g.
+two functions in one module).
+
+**Rule 2 — one row per `qualified_name` for symbol nodes.**
+
+```sql
+CREATE UNIQUE INDEX IF NOT EXISTS idx_nodes_qualified_name ON nodes(qualified_name);
+```
+
+Symbol nodes are deduplicated by `qualified_name` instead, since that is
+what is unique per symbol (`file_path` is not — a file may define many
+symbols). SQLite's unique-index semantics treat `NULL <> NULL`, so
+`File`/`Directory` rows (`qualified_name IS NULL`) never collide with each
+other or with this index, and Rule 1 and Rule 2 do not interfere.
+
+Together, the two rules give idempotent re-scanning: re-running the scan
+on an unchanged tree updates existing rows in place rather than
+duplicating them.
+
+## 3. Table: `edges`
+
+```sql
+CREATE TABLE IF NOT EXISTS edges (
+    id            INTEGER PRIMARY KEY,
+    source_id     INTEGER NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    target_id     INTEGER NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    relation      TEXT NOT NULL,
+    confidence    REAL NOT NULL DEFAULT 1.0,
+    source_type   TEXT NOT NULL DEFAULT 'static_analysis',
+    created_at    TEXT DEFAULT (datetime('now')),
+    UNIQUE (source_id, target_id, relation)
+);
+```
+
+### 3.1 Column reference
+
+| Column        | Type    | Nullable | Description |
+|---------------|---------|----------|-------------|
+| `id`          | INTEGER | No       | Surrogate primary key. |
+| `source_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's origin. |
+| `target_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's destination. |
+| `relation`    | TEXT    | No       | Relationship type. Currently emitted: `CONTAINS` (directory→directory, directory→file), `DEFINES` (file→symbol). Reserved for later sprints: `CALLS`, `IMPORTS`, `INHERITS`, `TOUCHED`, `TESTED_BY`, `RELATES_TO`. |
+| `confidence`  | REAL    | No       | `1.0` for facts derived from parsing; `< 1.0` for inferred relationships (see §3.3). |
+| `source_type` | TEXT    | No       | `static_analysis` (parsed from source) or `llm_inference` (model-derived, not yet emitted by any sprint as of this schema). |
+| `created_at`  | TEXT    | No       | UTC timestamp, set on insert. |
+
+### 3.2 Referential integrity
+
+Both foreign keys are declared `ON DELETE CASCADE`. Combined with
+`PRAGMA foreign_keys = ON` (set at connection time in
+`database.connect()`), this guarantees that deleting a node also deletes
+every edge that references it as source or target — the graph cannot
+contain an edge pointing at a nonexistent node.
+
+### 3.3 Uniqueness and provenance
+
+`UNIQUE (source_id, target_id, relation)` ensures at most one edge of a
+given relation type exists between any ordered pair of nodes. Rescanning
+an unchanged relationship updates the existing row (`confidence`,
+`source_type`) rather than inserting a duplicate.
+
+The `confidence` / `source_type` pair exists to let structurally-derived
+facts and model-inferred relationships coexist in the same table while
+remaining distinguishable: a `CALLS` edge produced by parsing an AST
+carries `confidence = 1.0, source_type = 'static_analysis'`; a future
+edge produced by an LLM's best guess at an implicit dependency would carry
+something like `confidence = 0.7, source_type = 'llm_inference'`, and any
+consumer of the graph can filter or weight accordingly.
+
+### 3.4 Indexes
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_edges_source ON edges(source_id);
+CREATE INDEX IF NOT EXISTS idx_edges_target ON edges(target_id);
+CREATE INDEX IF NOT EXISTS idx_edges_relation ON edges(relation);
+```
+
+Supports traversal in both directions (parents of a node, children of a
+node) and filtering by relationship type.
+
+## 4. Table: `summaries` (Sprint 6)
+
+```sql
+CREATE TABLE IF NOT EXISTS summaries (
+    node_id            INTEGER PRIMARY KEY REFERENCES nodes(id),
+    summary            TEXT,
+    responsibilities   TEXT,
+    architectural_role TEXT,
+    concepts           TEXT,
+    derived_from_hash  TEXT,
+    grader_status      TEXT DEFAULT 'unchecked'
+);
+```
+
+A 1:1 extension table keyed on `node_id`, holding LLM-generated narrative
+metadata layered on top of the structural facts in `nodes`/`edges`.
+
+| Column               | Description |
+|----------------------|-------------|
+| `node_id`            | Primary key and foreign key to `nodes.id`; one summary row per node. |
+| `summary`            | Free-text description of the node's purpose. |
+| `responsibilities`   | What the node is responsible for, as inferred by the model. |
+| `architectural_role` | The node's role within the broader system architecture. |
+| `concepts`           | Domain or technical concepts associated with the node. |
+| `derived_from_hash`  | The `nodes.content_hash` value the summary was generated from; a mismatch on rescan signals the summary is stale and needs regeneration. |
+| `grader_status`      | Quality-check state: `unchecked`, `passed`, `downgraded`, `dropped`. |
+
+## 5. Planned extension: `vec_nodes` (Sprint 5, not yet active)
+
+```sql
+-- CREATE VIRTUAL TABLE vec_nodes USING vec0(node_id INTEGER PRIMARY KEY, embedding FLOAT[1024]);
+```
+
+Reserved for embedding-based similarity search over nodes via the
+`sqlite-vec` extension. Present in `schema.sql` as a comment; not created
+by the current schema.
+
+## 6. Query pattern: transitive traversal
+
+The schema comment below (Sprint 3) is a reference pattern for depth-bounded
+traversal, not part of the schema itself — it documents how to answer
+"callers of node N up to depth 3" using a recursive CTE over `edges`:
+
+```sql
+WITH RECURSIVE callers(id, depth) AS (
+  SELECT source_id, 1 FROM edges WHERE target_id = :node_id AND relation = 'CALLS'
+  UNION
+  SELECT e.source_id, c.depth + 1 FROM edges e
+  JOIN callers c ON e.target_id = c.id
+  WHERE e.relation = 'CALLS' AND c.depth < 3
+)
+SELECT DISTINCT id, depth FROM callers ORDER BY depth;
+```
+
+## 7. Worked example
+
+Given the following source tree:
+
+```
+myrepo/
+└── src/
+    └── app.py
+```
+
+with `app.py` containing:
+
+```python
+def greet():
+    return "hi"
+```
+
+a scan produces the following rows.
+
+**`nodes`**
+
+| id | node_type | name   | qualified_name    | file_path  | kind   | start_line |
+|----|-----------|--------|--------------------|------------|--------|------------|
+| 1  | Directory | .      | NULL               | .          | NULL   | NULL       |
+| 2  | Directory | src    | NULL               | src        | NULL   | NULL       |
+| 3  | File      | app.py | NULL               | src/app.py | source | NULL       |
+| 4  | Function  | greet  | src/app.py::greet  | src/app.py | NULL   | 1          |
+
+**`edges`**
+
+| id | source_id | target_id | relation |
+|----|-----------|-----------|----------|
+| 1  | 1         | 2         | CONTAINS |
+| 2  | 2         | 3         | CONTAINS |
+| 3  | 3         | 4         | DEFINES  |
+
+The edge rows, read against `nodes`, form a single chain: the repository
+root contains `src`, `src` contains `app.py`, and `app.py` defines
+`greet`.
+
+If `greet` is subsequently removed from `app.py`, node `4` is deleted;
+the `ON DELETE CASCADE` foreign key on `edges` removes edge `3` in the
+same transaction, so no dangling edge remains.
+
+## 8. Write path (`src/ibwd/graph/database.py`)
+
+The schema's constraints are enforced through the upsert functions used by
+the scan pipeline, each targeting a specific constraint:
+
+| Function              | Conflict target                              | Enforces |
+|------------------------|-----------------------------------------------|----------|
+| `upsert_node()`         | `ON CONFLICT (node_type, file_path) WHERE node_type IN ('File','Directory')` | §2.3 Rule 1 |
+| `upsert_symbol_node()`  | `ON CONFLICT (qualified_name)`                | §2.3 Rule 2 |
+| `upsert_edge()`         | `ON CONFLICT (source_id, target_id, relation)`| §3.3 |
+| `delete_node_by_path()` | `DELETE FROM nodes WHERE file_path = ?`       | Relies on cascade delete (§3.2) to remove dependent edges |
+
+`connect()` opens `.ibwd/graph.db`, sets `PRAGMA foreign_keys = ON`
+(required for cascade deletes to take effect — SQLite does not enforce
+foreign keys by default), and applies `schema.sql` via `executescript()`
+on every connection. Because every DDL statement uses `IF NOT EXISTS`,
+this is idempotent and requires no separate migration tooling.
+
+`src/ibwd/graph/queries.py` builds the higher-level scan reconciliation
+(`sync_files`, `sync_symbols`) and read queries (`find_symbol`,
+`list_symbols`, `find_files`) on top of these primitives, and is the
+layer that decides *what* to write, while `database.py` and this schema
+define *how* it is stored.
+
+## 9. Revision history
+
+| Sprint | Change |
+|--------|--------|
+| 1      | `nodes`, `edges` tables for `Directory`/`File` and `CONTAINS` edges. |
+| 2      | `Class`/`Function`/`Method` node types, `qualified_name` uniqueness, `DEFINES` edges. |
+| 3      | Recursive-CTE traversal pattern documented (no schema change). |
+| 5      | `vec_nodes` virtual table planned (not yet created). |
+| 6      | `summaries` table added for LLM-derived node metadata. |

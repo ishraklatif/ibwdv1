@@ -177,6 +177,25 @@ ibwd scan
 claude mcp add ibwd -- uv run python -m ibwd.mcp.server
 ```
 
+### Using IBWD with Codex CLI
+
+The server is a standard stdio MCP server, so any MCP-capable client can use it. For Codex:
+
+```bash
+codex mcp add ibwd -- uv run python -m ibwd.mcp.server
+```
+
+or add to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.ibwd]
+command = "uv"            # use the absolute path (see `which uv`) if Codex can't find it
+args = ["run", "python", "-m", "ibwd.mcp.server"]
+cwd = "/absolute/path/to/the/repo/to/index"
+```
+
+The server indexes whatever directory it is launched from (`.ibwd/graph.db` under the working directory), so `cwd` must be the repo you want indexed. Codex reads `AGENTS.md` rather than `CLAUDE.md`; `AGENTS.md` is a symlink to `CLAUDE.md` so the tool-routing guidance stays in one place. The `.claude/commands/` slash-command wrappers are Claude Code-specific; in Codex, call the MCP tools directly.
+
 ## Documents in this repo
 
 - **`IBWD_v1_EXECUTION_PLAN.md`** — the authoritative sprint-by-sprint build plan: build tasks, exact Claude Code prompts, demo protocols, go/no-go thresholds, and appendices (repo layout, SQLite schema, `CLAUDE.md` template, benchmark protocol).
