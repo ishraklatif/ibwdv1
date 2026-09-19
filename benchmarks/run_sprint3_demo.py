@@ -135,8 +135,12 @@ def run_condition(task_id: str, question: str, condition: str) -> dict:
 
 
 def main() -> None:
+    # IBWD_BENCH_TASKS="sprint3_q4,sprint3_q1" runs just those tasks (saves money on re-runs).
+    only = {t for t in os.environ.get("IBWD_BENCH_TASKS", "").split(",") if t}
     results = []
     for task in TASKS:
+        if only and task["id"] not in only:
+            continue
         for condition in ("baseline", "ibwd"):
             results.append(run_condition(task["id"], task["question"], condition))
 
@@ -150,7 +154,7 @@ def main() -> None:
         )
         print(f"  -> {r['result_text']!r}\n")
 
-    (RAW_DIR / "all_summaries.json").write_text(json.dumps(results, indent=2))
+    (RAW_DIR / ("all_summaries.json" if not only else "partial_summaries.json")).write_text(json.dumps(results, indent=2))
 
 
 if __name__ == "__main__":

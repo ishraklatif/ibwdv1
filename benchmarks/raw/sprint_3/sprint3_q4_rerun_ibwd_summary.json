@@ -1,0 +1,20 @@
+{
+  "task_id": "sprint3_q4",
+  "condition": "ibwd",
+  "question": "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it.",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_trace_path",
+    "mcp__ibwd__ibwd_trace_path"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_trace_path",
+    "mcp__ibwd__ibwd_trace_path"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 6,
+  "tokens_out": 734,
+  "cache_creation_input_tokens": 33488,
+  "cache_read_input_tokens": 65532,
+  "cost_usd": 0.1544104,
+  "result_text": "**No, not from `upsert_edge` to `ibwd_scan`.** The call graph has no chain of CALLS or IMPORTS edges in that direction. `upsert_edge` (`src/ibwd/graph/database.py:114`) is a low-level database helper and doesn't reach the MCP tool.\n\nThe chain exists in the opposite direction, from `ibwd_scan` to `upsert_edge`, in 3 hops:\n\n```\nibwd_scan      src/ibwd/mcp/server.py:29\n  \u2514\u2500CALLS\u2192 run_scan      src/ibwd/scan.py:16              (0.95)\n      \u2514\u2500CALLS\u2192 sync_files    src/ibwd/graph/queries.py:48     (0.95)\n          \u2514\u2500CALLS\u2192 upsert_edge   src/ibwd/graph/database.py:114   (0.95)\n```\n\nEvery edge is import-resolved at 0.95 confidence, so the chain is well supported. The MCP tool `ibwd_scan` calls `run_scan`, which calls `sync_files`, which calls `upsert_edge` to write edges into the graph.\n\nThe graph covers only source files and skips calls into external packages. If `ibwd_scan` were registered or invoked through a framework decorator (e.g. an MCP `@tool` registration), that wouldn't show up as a call edge. That could hide a path in the other direction, but it's unlikely here, since `upsert_edge` sits at the bottom of the stack."
+}

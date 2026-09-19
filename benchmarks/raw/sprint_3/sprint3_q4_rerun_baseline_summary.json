@@ -1,0 +1,26 @@
+{
+  "task_id": "sprint3_q4",
+  "condition": "baseline",
+  "question": "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it.",
+  "all_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 5,
+  "tokens_in": 8,
+  "tokens_out": 1816,
+  "cache_creation_input_tokens": 4017,
+  "cache_read_input_tokens": 121754,
+  "cost_usd": 0.0585948,
+  "result_text": "Yes. There is a call chain, but it runs in the opposite direction from the one you named. `ibwd_scan` calls down into `upsert_edge`. Nothing calls `ibwd_scan` from `upsert_edge`.\n\n**`ibwd_scan` \u2192 `upsert_edge`** (three paths):\n\n```\nibwd_scan            src/ibwd/mcp/server.py:30      (MCP tool)\n\u2514\u2500 run_scan          src/ibwd/scan.py:16            (called at server.py:36)\n   \u251c\u2500 sync_files                  scan.py:29   \u2192 queries.py:48\n   \u2502   \u251c\u2500 upsert_edge             queries.py:79   (dir \u2192 file, \"CONTAINS\")\n   \u2502   \u2514\u2500 _ensure_directory_chain queries.py:29\n   \u2502       \u2514\u2500 upsert_edge         queries.py:43   (parent \u2192 dir, \"CONTAINS\")\n   \u251c\u2500 sync_symbols                scan.py:43   \u2192 queries.py:101\n   \u2502   \u2514\u2500 upsert_edge             queries.py:116  (file \u2192 symbol, \"DEFINES\")\n   \u2514\u2500 rebuild_reference_edges     scan.py:56   \u2192 resolution.py:250\n       \u2514\u2500 upsert_edge             resolution.py:333 (static_analysis reference edges)\n```\n\n- **Not confirmed:** I didn't read the body of `sync_files` to check that it calls `_ensure_directory_chain`. I inferred that from `upsert_edge` at `queries.py:43` sitting inside that helper. I also didn't check whether `run_scan` guards these calls behind conditions such as a build-version check. The `EDGE_BUILD_VERSION` import at `scan.py:11` suggests `rebuild_reference_edges` may only run conditionally.\n- **Other callers:** `upsert_edge` is also called directly from `tests/test_traversal.py`, but nothing in `src/` calls it except the chain above.\n- **Tool coverage:** The IBWD tools (`ibwd_trace_path`, `ibwd_callers`) aren't available in this session. This trace comes from Grep and Read, not the graph, so it has no confidence scores."
+}

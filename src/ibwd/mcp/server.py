@@ -106,6 +106,10 @@ def ibwd_list_symbols(file: str) -> list[dict]:
     ]
 
 
+def _brief(row) -> dict:
+    return {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
+
+
 def _reach_tool(direction, symbol: str, depth: int, file: str | None) -> list[dict]:
     conn = connect(Path.cwd() / ".ibwd" / "graph.db")
     try:
@@ -186,7 +190,10 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
 
     Returns {"path": [{name, kind, file, line, edge_type, confidence}, ...],
     "cost": float, "hops": int}; each hop after the first names the edge that
-    reached it. "No path" is a valid answer: {"path": null, "reason": ...}.
+    reached it. "No path" is a valid, final answer: {"path": null, "reason": ...,
+    "source_resolved": [...], "target_resolved": [...]} — the resolved lists show
+    what each name matched, so there is no need to re-check that the symbols
+    exist. Direction matters: a path from A to B does not imply one from B to A.
     """
     edge_types = list(edge_types) if edge_types else list(DEFAULT_PATH_EDGE_TYPES)
     unknown = [t for t in edge_types if t not in TRAVERSAL_RELATIONS]
@@ -216,7 +223,14 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
         conn.close()
 
     if best is None:
-        return {"path": None, "reason": "no path found"}
+        # Echo what each name resolved to, so a "no path" answer is self-verifying:
+        # the caller can see both endpoints exist without extra find_symbol calls.
+        return {
+            "path": None,
+            "reason": "no path found: both endpoints exist in the graph but no edge chain connects them",
+            "source_resolved": [_brief(row) for row in sources],
+            "target_resolved": [_brief(row) for row in targets],
+        }
 
     cost, node_ids = best
     hops = []

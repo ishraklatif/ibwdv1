@@ -7,3 +7,5 @@ sprint3_q3,baseline,8,1933,9986,115611,5,0.0762,y
 sprint3_q3,ibwd,4,294,6370,59151,1,0.0395,y
 sprint3_q4,baseline,8,1950,10639,115543,6,0.078,y
 sprint3_q4,ibwd,6,817,6957,91834,4,0.0528,y
+sprint3_q4_rerun,baseline,8,1816,4017,121754,5,0.0586,y
+sprint3_q4_rerun,ibwd,6,734,33488,65532,2,0.1544,y

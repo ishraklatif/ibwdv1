@@ -82,7 +82,9 @@ async def test_ibwd_callers_dependents_and_trace_path_tools(tmp_path: Path, monk
     assert [(h["edge_type"], h["confidence"]) for h in traced["path"][1:]] == [("CALLS", 0.9)] * 3
 
     no_path = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "solo"}))
-    assert no_path == {"path": None, "reason": "no path found"}
+    assert no_path["path"] is None and no_path["reason"].startswith("no path found")
+    assert [(r["name"], r["file"]) for r in no_path["source_resolved"]] == [("a", "chain.py")]
+    assert [(r["name"], r["file"]) for r in no_path["target_resolved"]] == [("solo", "chain.py")]
 
     missing = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "nope"}))
     assert missing["path"] is None and "target not found" in missing["reason"]
