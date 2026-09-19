@@ -1,0 +1,28 @@
+{
+  "task_id": "sprint3_q4",
+  "condition": "baseline",
+  "question": "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it.",
+  "all_tool_calls": [
+    "Grep",
+    "Read",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Read",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 6,
+  "tokens_in": 8,
+  "tokens_out": 1950,
+  "cache_creation_input_tokens": 10639,
+  "cache_read_input_tokens": 115543,
+  "cost_usd": 0.07803910000000001,
+  "result_text": "**No, not in the direction you asked. The reverse chain does exist.**\n\n`upsert_edge` never calls `ibwd_scan`, directly or transitively. It's a leaf that runs a single SQL `INSERT ... ON CONFLICT DO UPDATE` (`src/ibwd/graph/database.py:114`). `ibwd_scan` is the MCP entry point, so the call graph runs the other way, from `ibwd_scan` down to `upsert_edge`:\n\n```\nibwd_scan            src/ibwd/mcp/server.py:30\n\u2514\u2500 run_scan          src/ibwd/scan.py:16\n   \u251c\u2500 sync_files          \u2192 upsert_edge(..., \"CONTAINS\")   queries.py:79\n   \u2502    \u2514\u2500 _ensure_directory_chain \u2192 upsert_edge(..., \"CONTAINS\")   queries.py:43\n   \u251c\u2500 sync_symbols        \u2192 upsert_edge(..., \"DEFINES\")    queries.py:116\n   \u2514\u2500 rebuild_reference_edges \u2192 upsert_edge(..., \"static_analysis\")   resolution.py:333\n```\n\n`run_scan` imports `sync_files`, `sync_symbols` and `rebuild_reference_edges` (`scan.py:10-11`). I didn't confirm that `sync_files` is the caller of `_ensure_directory_chain`. It has the same file and looks like the caller, but I didn't read that body.\n\nThe only other callers of `upsert_edge` are in `tests/test_traversal.py`, and they don't reach `ibwd_scan`.\n\nThe IBWD MCP tools weren't available in this session, so I traced this with Grep and by reading the files rather than with `ibwd_trace_path`."
+}

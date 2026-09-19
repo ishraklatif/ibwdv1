@@ -1,0 +1,24 @@
+{
+  "task_id": "sprint3_q1",
+  "condition": "baseline",
+  "question": "Which functions in src/ directly call `upsert_edge`?",
+  "all_tool_calls": [
+    "Grep",
+    "Grep",
+    "Grep",
+    "Read"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Grep",
+    "Grep",
+    "Read"
+  ],
+  "real_tool_call_count": 4,
+  "tokens_in": 8,
+  "tokens_out": 1536,
+  "cache_creation_input_tokens": 32364,
+  "cache_read_input_tokens": 90034,
+  "cost_usd": 0.1581378,
+  "result_text": "Four functions in `src/` call `upsert_edge` directly. It's defined at `src/ibwd/graph/database.py:114`.\n\n| Function | Location | Call |\n|---|---|---|\n| `_ensure_directory_chain` | `src/ibwd/graph/queries.py:43` | `upsert_edge(conn, parent_id, dir_id, \"CONTAINS\")` |\n| `sync_files` | `src/ibwd/graph/queries.py:79` | `upsert_edge(conn, dir_id, file_id, \"CONTAINS\")` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:116` | `upsert_edge(conn, file_id, symbol_id, \"DEFINES\")` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:333` | `upsert_edge(conn, source_id, target_id, relation, confidence, \"static_analysis\")` |\n\nThe IBWD MCP tools weren't available in this session, so I used Grep instead of `ibwd_callers`. I matched the hits to their enclosing functions by line ranges from the `def` lines. I read the `rebuild_reference_edges` body to confirm its call isn't inside the nested `add_edge` helper.\n\nThe grep for `upsert_edge` only matches by name. If it were called under an alias or through `getattr`, it wouldn't show up. The other hits are the imports at `resolution.py:25` and `queries.py:9`."
+}

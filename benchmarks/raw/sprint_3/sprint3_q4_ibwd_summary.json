@@ -1,0 +1,24 @@
+{
+  "task_id": "sprint3_q4",
+  "condition": "ibwd",
+  "question": "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it.",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_trace_path",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_trace_path"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_trace_path",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_trace_path"
+  ],
+  "real_tool_call_count": 4,
+  "tokens_in": 6,
+  "tokens_out": 817,
+  "cache_creation_input_tokens": 6957,
+  "cache_read_input_tokens": 91834,
+  "cost_usd": 0.052761300000000004,
+  "result_text": "No, there's no call chain from `upsert_edge` to `ibwd_scan`. The chain runs the other way, from `ibwd_scan` down to `upsert_edge`.\n\n`ibwd_trace_path(upsert_edge \u2192 ibwd_scan)` returned \"no path found\". Both symbols exist, so this isn't a lookup failure. `upsert_edge` is defined at `src/ibwd/graph/database.py:114` and `ibwd_scan` at `src/ibwd/mcp/server.py:29`.\n\nTracing `ibwd_scan \u2192 upsert_edge` gives three hops, all `CALLS` edges at 0.95 confidence:\n\n1. `ibwd_scan` (`src/ibwd/mcp/server.py:29`), the MCP tool entry point\n2. \u2192 `run_scan` (`src/ibwd/scan.py:16`)\n3. \u2192 `sync_files` (`src/ibwd/graph/queries.py:48`)\n4. \u2192 `upsert_edge` (`src/ibwd/graph/database.py:114`)\n\nThis fits the layering. `upsert_edge` is a low-level database write, so nothing beneath it would call back up into the MCP server. I took the path from the graph and did not open the source to confirm each call site. The graph also skips test files and external packages."
+}

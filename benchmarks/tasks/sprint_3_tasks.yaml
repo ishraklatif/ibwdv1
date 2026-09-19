@@ -1,0 +1,37 @@
+# Sprint 3 demo tasks (Appendix D protocol + path-finding addendum), with ground
+# truth noted up front. Ground truth is this repo as of the Sprint 3 commit and
+# was checked against `grep` of src/. Run against an isolated snapshot of that
+# commit (see run_sprint3_demo.py), and hand-grade each answer.
+tasks:
+  - id: sprint3_q1
+    question: "Which functions in src/ directly call `upsert_edge`?"
+    expected:
+      - _ensure_directory_chain (src/ibwd/graph/queries.py)
+      - sync_files (src/ibwd/graph/queries.py)
+      - sync_symbols (src/ibwd/graph/queries.py)
+      - rebuild_reference_edges (src/ibwd/graph/resolution.py)
+
+  - id: sprint3_q2
+    question: "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?"
+    expected:
+      - connect
+      - get_node_by_path
+      - load_manifest
+      - save_manifest
+      - sync_files
+      - sync_symbols
+      - rebuild_reference_edges
+      - scan_files
+      - extract_symbols
+
+  - id: sprint3_q3
+    question: "Trace the call chain from `ibwd_scan` to `upsert_edge` if one exists."
+    expected:
+      # two equally short (3-hop) chains; either is a correct answer
+      - ibwd_scan -> run_scan -> sync_files -> upsert_edge
+      - ibwd_scan -> run_scan -> rebuild_reference_edges -> upsert_edge
+
+  - id: sprint3_q4
+    question: "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it."
+    expected:
+      - "No path (a true negative: upsert_edge is a leaf; nothing in its call chain reaches ibwd_scan)"

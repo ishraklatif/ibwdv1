@@ -1,0 +1,26 @@
+{
+  "task_id": "sprint3_q3",
+  "condition": "baseline",
+  "question": "Trace the call chain from `ibwd_scan` to `upsert_edge` if one exists.",
+  "all_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 5,
+  "tokens_in": 8,
+  "tokens_out": 1933,
+  "cache_creation_input_tokens": 9986,
+  "cache_read_input_tokens": 115611,
+  "cost_usd": 0.0762457,
+  "result_text": "Yes, a call chain exists. `ibwd_scan` reaches `upsert_edge` by three routes, all through `run_scan`. I traced it with Grep and Read, because the IBWD MCP tools aren't available in this session. I did not read `run_scan`'s body. The chain relies on its imports and the call sites Grep found on lines 29, 43 and 56, so I haven't checked the conditions around them.\n\n```\nibwd_scan                      src/ibwd/mcp/server.py:30   (MCP tool)\n\u2514\u2500 run_scan                    src/ibwd/scan.py:16\n   \u251c\u2500 sync_files               scan.py:29 \u2192 graph/queries.py:48\n   \u2502  \u251c\u2500 _ensure_directory_chain  queries.py:29 \u2192 upsert_edge(..., \"CONTAINS\")  queries.py:43\n   \u2502  \u2514\u2500 upsert_edge(..., \"CONTAINS\")   dir \u2192 file                              queries.py:79\n   \u251c\u2500 sync_symbols             scan.py:43 \u2192 graph/queries.py:101\n   \u2502  \u2514\u2500 upsert_edge(..., \"DEFINES\")    file \u2192 symbol                           queries.py:116\n   \u2514\u2500 rebuild_reference_edges  scan.py:56 \u2192 graph/resolution.py:250\n      \u2514\u2500 upsert_edge(..., \"static_analysis\")   CALLS / INHERITS / IMPORTS       resolution.py:333\n                                        \u2502\n                                        \u25bc\n                     upsert_edge   src/ibwd/graph/database.py:114\n```\n\n- **Directory and file structure:** `sync_files` creates `CONTAINS` edges. `_ensure_directory_chain` adds the edges between nested directories (`queries.py:43`). `sync_files` itself adds the directory-to-file edge (`queries.py:79`).\n- **Symbols:** `sync_symbols` creates the `DEFINES` edge from each file to its symbols (`queries.py:116`).\n- **References:** `rebuild_reference_edges` creates the `CALLS`, `INHERITS` and `IMPORTS` edges.\n  - Its `add_edge` calls sit at `resolution.py:311` (`CALLS`) and `:327` (`INHERITS`), and `_resolve_imports` adds import edges via `add_import_edge` (`:222`, `:240`).\n  - The actual `upsert_edge` call is at `resolution.py:333`. It appears to be a final flush of the collected edges, but I didn't read that code.\n\nThe tests call `upsert_edge` directly in `tests/test_traversal.py`, so they don't exercise this chain."
+}

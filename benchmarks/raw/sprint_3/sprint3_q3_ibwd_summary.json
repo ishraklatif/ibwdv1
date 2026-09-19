@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint3_q3",
+  "condition": "ibwd",
+  "question": "Trace the call chain from `ibwd_scan` to `upsert_edge` if one exists.",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_trace_path"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_trace_path"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 294,
+  "cache_creation_input_tokens": 6370,
+  "cache_read_input_tokens": 59151,
+  "cost_usd": 0.039518700000000004,
+  "result_text": "A call chain exists, 3 hops long. Every hop is a `CALLS` edge with 0.95 confidence, so each was resolved through imports:\n\n```\nibwd_scan      src/ibwd/mcp/server.py:29\n  \u2514\u2500 run_scan     src/ibwd/scan.py:16\n       \u2514\u2500 sync_files   src/ibwd/graph/queries.py:48\n            \u2514\u2500 upsert_edge  src/ibwd/graph/database.py:114\n```\n\nI took this from the graph and did not open the source to confirm it. The tool's own guidance is to treat the graph as a map, not ground truth."
+}

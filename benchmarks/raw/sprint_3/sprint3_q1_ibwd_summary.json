@@ -1,0 +1,18 @@
+{
+  "task_id": "sprint3_q1",
+  "condition": "ibwd",
+  "question": "Which functions in src/ directly call `upsert_edge`?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_callers"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_callers"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 308,
+  "cache_creation_input_tokens": 32920,
+  "cache_read_input_tokens": 32503,
+  "cost_usd": 0.1406431,
+  "result_text": "Four functions in `src/` directly call `upsert_edge`. The call graph rates each of these at 0.95 confidence.\n\n| Function | File |\n|---|---|\n| `_ensure_directory_chain` | `src/ibwd/graph/queries.py:29` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` |\n\nThe call graph covers source files only, so any callers in tests aren't listed. It also skips calls that go through external packages."
+}

@@ -1,0 +1,178 @@
+[
+  {
+    "task_id": "sprint3_q1",
+    "condition": "baseline",
+    "question": "Which functions in src/ directly call `upsert_edge`?",
+    "all_tool_calls": [
+      "Grep",
+      "Grep",
+      "Grep",
+      "Read"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Grep",
+      "Grep",
+      "Read"
+    ],
+    "real_tool_call_count": 4,
+    "tokens_in": 8,
+    "tokens_out": 1536,
+    "cache_creation_input_tokens": 32364,
+    "cache_read_input_tokens": 90034,
+    "cost_usd": 0.1581378,
+    "result_text": "Four functions in `src/` call `upsert_edge` directly. It's defined at `src/ibwd/graph/database.py:114`.\n\n| Function | Location | Call |\n|---|---|---|\n| `_ensure_directory_chain` | `src/ibwd/graph/queries.py:43` | `upsert_edge(conn, parent_id, dir_id, \"CONTAINS\")` |\n| `sync_files` | `src/ibwd/graph/queries.py:79` | `upsert_edge(conn, dir_id, file_id, \"CONTAINS\")` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:116` | `upsert_edge(conn, file_id, symbol_id, \"DEFINES\")` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:333` | `upsert_edge(conn, source_id, target_id, relation, confidence, \"static_analysis\")` |\n\nThe IBWD MCP tools weren't available in this session, so I used Grep instead of `ibwd_callers`. I matched the hits to their enclosing functions by line ranges from the `def` lines. I read the `rebuild_reference_edges` body to confirm its call isn't inside the nested `add_edge` helper.\n\nThe grep for `upsert_edge` only matches by name. If it were called under an alias or through `getattr`, it wouldn't show up. The other hits are the imports at `resolution.py:25` and `queries.py:9`."
+  },
+  {
+    "task_id": "sprint3_q1",
+    "condition": "ibwd",
+    "question": "Which functions in src/ directly call `upsert_edge`?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_callers"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_callers"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 308,
+    "cache_creation_input_tokens": 32920,
+    "cache_read_input_tokens": 32503,
+    "cost_usd": 0.1406431,
+    "result_text": "Four functions in `src/` directly call `upsert_edge`. The call graph rates each of these at 0.95 confidence.\n\n| Function | File |\n|---|---|\n| `_ensure_directory_chain` | `src/ibwd/graph/queries.py:29` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` |\n\nThe call graph covers source files only, so any callers in tests aren't listed. It also skips calls that go through external packages."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "baseline",
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 6,
+    "tokens_out": 1176,
+    "cache_creation_input_tokens": 8357,
+    "cache_read_input_tokens": 83495,
+    "cost_usd": 0.0581865,
+    "result_text": "`run_scan` directly calls nine functions defined in `src/`. I read `scan.py` and grepped `src/` to confirm each definition.\n\n| Function | Defined in | Called at (`scan.py`) |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | line 24 |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | line 25 |\n| `connect` | `src/ibwd/graph/database.py:13` | line 27 |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | line 29 |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | line 39 |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | line 42 |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | line 43 |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | line 56 (only if source files changed or were removed, or the edge build version is stale) |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | line 69 |\n\nThe other calls in `run_scan` go to things outside `src/` or to non-function names:\n- **Standard library and methods:** `Path.cwd`, `Path(...)`, `asdict`, `conn.execute`, `conn.commit`, `conn.close`, `.fetchone`, `.fetchall`, `dict`, `set`, `any`.\n- **Not calls:** `ScanSummary`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS`, `EXTENSION_DIALECTS` and `DEFAULT_MANIFEST_PATH` are imported names. They are a type annotation and constants, not calls.\n\nThe IBWD MCP tools (`ibwd_callers` and the rest) weren't available in this session. This answer comes from reading the source, not from the call graph."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "ibwd",
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 508,
+    "cache_creation_input_tokens": 33299,
+    "cache_read_input_tokens": 32523,
+    "cost_usd": 0.14362460000000002,
+    "result_text": "`run_scan` (src/ibwd/scan.py) directly calls nine functions defined in src/. The call graph reports each with 0.95 confidence, meaning the import resolved. I haven't opened the source to confirm.\n\n| Function | Defined in |\n|---|---|\n| `connect` | src/ibwd/graph/database.py:13 |\n| `get_node_by_path` | src/ibwd/graph/database.py:135 |\n| `load_manifest` | src/ibwd/graph/manifest.py:35 |\n| `save_manifest` | src/ibwd/graph/manifest.py:50 |\n| `sync_files` | src/ibwd/graph/queries.py:48 |\n| `sync_symbols` | src/ibwd/graph/queries.py:101 |\n| `rebuild_reference_edges` | src/ibwd/graph/resolution.py:250 |\n| `scan_files` | src/ibwd/scanner/filesystem.py:88 |\n| `extract_symbols` | src/ibwd/scanner/symbols.py:30 |\n\nThe call graph skips calls into external packages and test files, so calls to standard-library or third-party functions aren't listed."
+  },
+  {
+    "task_id": "sprint3_q3",
+    "condition": "baseline",
+    "question": "Trace the call chain from `ibwd_scan` to `upsert_edge` if one exists.",
+    "all_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_call_count": 5,
+    "tokens_in": 8,
+    "tokens_out": 1933,
+    "cache_creation_input_tokens": 9986,
+    "cache_read_input_tokens": 115611,
+    "cost_usd": 0.0762457,
+    "result_text": "Yes, a call chain exists. `ibwd_scan` reaches `upsert_edge` by three routes, all through `run_scan`. I traced it with Grep and Read, because the IBWD MCP tools aren't available in this session. I did not read `run_scan`'s body. The chain relies on its imports and the call sites Grep found on lines 29, 43 and 56, so I haven't checked the conditions around them.\n\n```\nibwd_scan                      src/ibwd/mcp/server.py:30   (MCP tool)\n\u2514\u2500 run_scan                    src/ibwd/scan.py:16\n   \u251c\u2500 sync_files               scan.py:29 \u2192 graph/queries.py:48\n   \u2502  \u251c\u2500 _ensure_directory_chain  queries.py:29 \u2192 upsert_edge(..., \"CONTAINS\")  queries.py:43\n   \u2502  \u2514\u2500 upsert_edge(..., \"CONTAINS\")   dir \u2192 file                              queries.py:79\n   \u251c\u2500 sync_symbols             scan.py:43 \u2192 graph/queries.py:101\n   \u2502  \u2514\u2500 upsert_edge(..., \"DEFINES\")    file \u2192 symbol                           queries.py:116\n   \u2514\u2500 rebuild_reference_edges  scan.py:56 \u2192 graph/resolution.py:250\n      \u2514\u2500 upsert_edge(..., \"static_analysis\")   CALLS / INHERITS / IMPORTS       resolution.py:333\n                                        \u2502\n                                        \u25bc\n                     upsert_edge   src/ibwd/graph/database.py:114\n```\n\n- **Directory and file structure:** `sync_files` creates `CONTAINS` edges. `_ensure_directory_chain` adds the edges between nested directories (`queries.py:43`). `sync_files` itself adds the directory-to-file edge (`queries.py:79`).\n- **Symbols:** `sync_symbols` creates the `DEFINES` edge from each file to its symbols (`queries.py:116`).\n- **References:** `rebuild_reference_edges` creates the `CALLS`, `INHERITS` and `IMPORTS` edges.\n  - Its `add_edge` calls sit at `resolution.py:311` (`CALLS`) and `:327` (`INHERITS`), and `_resolve_imports` adds import edges via `add_import_edge` (`:222`, `:240`).\n  - The actual `upsert_edge` call is at `resolution.py:333`. It appears to be a final flush of the collected edges, but I didn't read that code.\n\nThe tests call `upsert_edge` directly in `tests/test_traversal.py`, so they don't exercise this chain."
+  },
+  {
+    "task_id": "sprint3_q3",
+    "condition": "ibwd",
+    "question": "Trace the call chain from `ibwd_scan` to `upsert_edge` if one exists.",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_trace_path"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_trace_path"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 294,
+    "cache_creation_input_tokens": 6370,
+    "cache_read_input_tokens": 59151,
+    "cost_usd": 0.039518700000000004,
+    "result_text": "A call chain exists, 3 hops long. Every hop is a `CALLS` edge with 0.95 confidence, so each was resolved through imports:\n\n```\nibwd_scan      src/ibwd/mcp/server.py:29\n  \u2514\u2500 run_scan     src/ibwd/scan.py:16\n       \u2514\u2500 sync_files   src/ibwd/graph/queries.py:48\n            \u2514\u2500 upsert_edge  src/ibwd/graph/database.py:114\n```\n\nI took this from the graph and did not open the source to confirm it. The tool's own guidance is to treat the graph as a map, not ground truth."
+  },
+  {
+    "task_id": "sprint3_q4",
+    "condition": "baseline",
+    "question": "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it.",
+    "all_tool_calls": [
+      "Grep",
+      "Read",
+      "Read",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Read",
+      "Read",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_call_count": 6,
+    "tokens_in": 8,
+    "tokens_out": 1950,
+    "cache_creation_input_tokens": 10639,
+    "cache_read_input_tokens": 115543,
+    "cost_usd": 0.07803910000000001,
+    "result_text": "**No, not in the direction you asked. The reverse chain does exist.**\n\n`upsert_edge` never calls `ibwd_scan`, directly or transitively. It's a leaf that runs a single SQL `INSERT ... ON CONFLICT DO UPDATE` (`src/ibwd/graph/database.py:114`). `ibwd_scan` is the MCP entry point, so the call graph runs the other way, from `ibwd_scan` down to `upsert_edge`:\n\n```\nibwd_scan            src/ibwd/mcp/server.py:30\n\u2514\u2500 run_scan          src/ibwd/scan.py:16\n   \u251c\u2500 sync_files          \u2192 upsert_edge(..., \"CONTAINS\")   queries.py:79\n   \u2502    \u2514\u2500 _ensure_directory_chain \u2192 upsert_edge(..., \"CONTAINS\")   queries.py:43\n   \u251c\u2500 sync_symbols        \u2192 upsert_edge(..., \"DEFINES\")    queries.py:116\n   \u2514\u2500 rebuild_reference_edges \u2192 upsert_edge(..., \"static_analysis\")   resolution.py:333\n```\n\n`run_scan` imports `sync_files`, `sync_symbols` and `rebuild_reference_edges` (`scan.py:10-11`). I didn't confirm that `sync_files` is the caller of `_ensure_directory_chain`. It has the same file and looks like the caller, but I didn't read that body.\n\nThe only other callers of `upsert_edge` are in `tests/test_traversal.py`, and they don't reach `ibwd_scan`.\n\nThe IBWD MCP tools weren't available in this session, so I traced this with Grep and by reading the files rather than with `ibwd_trace_path`."
+  },
+  {
+    "task_id": "sprint3_q4",
+    "condition": "ibwd",
+    "question": "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it.",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_trace_path",
+      "mcp__ibwd__ibwd_find_symbol",
+      "mcp__ibwd__ibwd_find_symbol",
+      "mcp__ibwd__ibwd_trace_path"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_trace_path",
+      "mcp__ibwd__ibwd_find_symbol",
+      "mcp__ibwd__ibwd_find_symbol",
+      "mcp__ibwd__ibwd_trace_path"
+    ],
+    "real_tool_call_count": 4,
+    "tokens_in": 6,
+    "tokens_out": 817,
+    "cache_creation_input_tokens": 6957,
+    "cache_read_input_tokens": 91834,
+    "cost_usd": 0.052761300000000004,
+    "result_text": "No, there's no call chain from `upsert_edge` to `ibwd_scan`. The chain runs the other way, from `ibwd_scan` down to `upsert_edge`.\n\n`ibwd_trace_path(upsert_edge \u2192 ibwd_scan)` returned \"no path found\". Both symbols exist, so this isn't a lookup failure. `upsert_edge` is defined at `src/ibwd/graph/database.py:114` and `ibwd_scan` at `src/ibwd/mcp/server.py:29`.\n\nTracing `ibwd_scan \u2192 upsert_edge` gives three hops, all `CALLS` edges at 0.95 confidence:\n\n1. `ibwd_scan` (`src/ibwd/mcp/server.py:29`), the MCP tool entry point\n2. \u2192 `run_scan` (`src/ibwd/scan.py:16`)\n3. \u2192 `sync_files` (`src/ibwd/graph/queries.py:48`)\n4. \u2192 `upsert_edge` (`src/ibwd/graph/database.py:114`)\n\nThis fits the layering. `upsert_edge` is a low-level database write, so nothing beneath it would call back up into the MCP server. I took the path from the graph and did not open the source to confirm each call site. The graph also skips test files and external packages."
+  }
+]
