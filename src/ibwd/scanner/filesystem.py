@@ -30,62 +30,79 @@ SOURCE_EXTENSIONS = {
 }
 
 
-@dataclass
+@dataclass # dataclass is used for convenience, but we don't need to compare or sort these objects
 class ScannedFile:
-    path: str  # posix-style, relative to repo root
-    kind: str  # source | test | doc | config | other
-    content_hash: str
+    """
+    Represents a file scanned from the filesystem.
+    E.g., a file in a git repository, 
+    with its path relative to the repo root, 
+    its classification (source, test, doc, config, or other), 
+    and a hash of its contents.
+    """
+    path: str  # posix-style, relative to repo root e.g posix-style: "src/ibwd/scanner/filesystem.py"; windows-style: "src\ibwd\scanner\filesystem.py"  
+    kind: str  # source | test | doc | config | other; source = code, test = test code, doc = documentation, config = configuration file, other = anything else
+    content_hash: str # 64-bit hash of file contents, hex-encoded
 
 
 def _load_gitignore_spec(repo_root: Path) -> pathspec.PathSpec:
-    gitignore = repo_root / ".gitignore"
-    lines: list[str] = []
-    if gitignore.exists():
-        lines = gitignore.read_text(errors="ignore").splitlines()
-    return pathspec.PathSpec.from_lines("gitignore", lines)
+    """
+    Load the .gitignore file from the repo root and return a PathSpec object for matching files.
+    E.g., if the .gitignore file contains "*.pyc" in first line and second line is "build/", 
+    then the PathSpec object will match any file with a .pyc extension 
+    and any file in the build/ directory.
+    """
+    gitignore = repo_root / ".gitignore" # .gitignore file is expected to be in the root of the repository
+    lines: list[str] = [] # Initialize an empty list to hold the lines from the .gitignore file
+    if gitignore.exists(): # If the .gitignore file exists, read its contents and split it into lines
+        lines = gitignore.read_text(errors="ignore").splitlines() # Read the .gitignore file, ignoring any errors, and split it into lines
+    return pathspec.PathSpec.from_lines("gitignore", lines) # Create a PathSpec object from the lines of the .gitignore file, using the "gitignore" syntax
 
 
 def classify_file(rel_path: str) -> str:
-    p = Path(rel_path)
-    name_lower = p.name.lower()
-    ext = p.suffix.lower()
-    parts_lower = {part.lower() for part in p.parts[:-1]}
+    """Classify a file based on its path and name.
+    Returns one of: "source", "test", "doc", "config", "other"
+    """
+    p = Path(rel_path) # Create a Path object from the relative path of the file
+    name_lower = p.name.lower() # Get the name of the file in lowercase
+    ext = p.suffix.lower() # Get the file extension in lowercase
+    parts_lower = {part.lower() for part in p.parts[:-1]} # Get the parts of the path (excluding the file name) in lowercase e.g., for "src/ibwd/scanner/filesystem.py", parts_lower will be {"src", "ibwd", "scanner"}
 
-    if parts_lower & TEST_DIR_NAMES or any(pat in name_lower for pat in TEST_NAME_PATTERNS):
+    if parts_lower & TEST_DIR_NAMES or any(pat in name_lower for pat in TEST_NAME_PATTERNS): # If the file is in a test directory or its name matches a test pattern, classify it as a test file
         return "test"
-    if ext in CONFIG_EXTENSIONS or name_lower in CONFIG_NAMES:
+    if ext in CONFIG_EXTENSIONS or name_lower in CONFIG_NAMES: # If the file has a configuration file extension or its name matches a known configuration file name, classify it as a config file
         return "config"
-    if ext in DOC_EXTENSIONS or name_lower.split(".")[0] in DOC_NAMES or parts_lower & DOC_DIR_NAMES:
+    if ext in DOC_EXTENSIONS or name_lower.split(".")[0] in DOC_NAMES or parts_lower & DOC_DIR_NAMES: # If the file has a documentation file extension, its name matches a known documentation file name, or it is in a documentation directory, classify it as a doc file
         return "doc"
-    if ext in SOURCE_EXTENSIONS:
+    if ext in SOURCE_EXTENSIONS: # If the file has a source code file extension, classify it as a source file
         return "source"
     return "other"
 
 
 def hash_file(path: Path) -> str:
-    hasher = xxhash.xxh3_64()
-    hasher.update(path.read_bytes())
+    """Return a 64-bit hash of the file contents, hex-encoded."""
+    hasher = xxhash.xxh3_64() # Create a new xxhash object for hashing the file contents
+    hasher.update(path.read_bytes()) # Read the contents of the file and update the hash object with it
     return hasher.hexdigest()
 
 
 def scan_files(repo_root: Path) -> list[ScannedFile]:
     """Walk repo_root respecting .gitignore + ALWAYS_IGNORE, return classified+hashed files."""
-    spec = _load_gitignore_spec(repo_root)
-    results: list[ScannedFile] = []
+    spec = _load_gitignore_spec(repo_root) # Load the .gitignore file from the repo root and create a PathSpec object for matching files
+    results: list[ScannedFile] = [] # Initialize an empty list to hold the scanned files
 
-    for path in sorted(repo_root.rglob("*")):
-        if not path.is_file():
+    for path in sorted(repo_root.rglob("*")):# Recursively walk the repo_root directory and its subdirectories, yielding all files and directories
+        if not path.is_file(): # If the path is not a file (e.g., it is a directory), skip it and continue to the next path
             continue
-        rel_path = path.relative_to(repo_root)
-        if any(part in ALWAYS_IGNORE for part in rel_path.parts):
+        rel_path = path.relative_to(repo_root) # Get the relative path of the file with respect to the repo_root directory
+        if any(part in ALWAYS_IGNORE for part in rel_path.parts): # If any part of the relative path is in the ALWAYS_IGNORE set, skip it and continue to the next path
             continue
-        rel_posix = rel_path.as_posix()
-        if spec.match_file(rel_posix):
+        rel_posix = rel_path.as_posix() # Convert the relative path to a POSIX-style string (e.g., "src/ibwd/scanner/filesystem.py")
+        if spec.match_file(rel_posix): # If the relative path matches any pattern in the .gitignore file, skip it and continue to the next path
             continue
-        try:
-            content_hash = hash_file(path)
+        try: # Try to hash the contents of the file and catch any OSError that may occur (e.g., if the file is not readable)
+            content_hash = hash_file(path) # Hash the contents of the file and get a 64-bit hash of the file contents, hex-encoded
         except OSError:
             continue
-        results.append(ScannedFile(path=rel_posix, kind=classify_file(rel_posix), content_hash=content_hash))
+        results.append(ScannedFile(path=rel_posix, kind=classify_file(rel_posix), content_hash=content_hash)) # Create a ScannedFile object with the relative path, classification, and content hash of the file, and append it to the results list
 
     return results

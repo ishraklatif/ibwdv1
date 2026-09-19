@@ -46,3 +46,18 @@ def test_extract_python_symbols_handles_decorators():
     assert decorated.kind == "Function"
     # start_line includes the decorator line
     assert decorated.start_line == 13
+
+
+def test_nested_functions_are_not_indexed():
+    """Closures are a deliberate Sprint 2 scope cut (see python.py/javascript.py
+    docstrings and SPRINT_2.md's Q2 benchmark caveat) -- pin the behavior so a
+    future change to it is a conscious decision, not a silent regression."""
+    source = b"""\
+def outer():
+    def inner():
+        return 1
+    return inner
+"""
+    symbols = extract_python_symbols(source, "src/nested.py")
+    names = {s.name for s in symbols}
+    assert names == {"outer"}
