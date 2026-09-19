@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS edges (
 | `id`          | INTEGER | No       | Surrogate primary key. |
 | `source_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's origin. |
 | `target_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's destination. |
-| `relation`    | TEXT    | No       | Relationship type. Currently emitted: `CONTAINS` (directory→directory, directory→file), `DEFINES` (file→symbol). Reserved for later sprints: `CALLS`, `IMPORTS`, `INHERITS`, `TOUCHED`, `TESTED_BY`, `RELATES_TO`. |
+| `relation`    | TEXT    | No       | Relationship type. Currently emitted: `CONTAINS` (directory→directory, directory→file), `DEFINES` (file→symbol), `IMPORTS` (file→file), `CALLS` (symbol-or-file→symbol; a module-level call is attributed to its `File` node), `INHERITS` (class→class). Reserved for later sprints: `TOUCHED`, `TESTED_BY`, `RELATES_TO`. |
 | `confidence`  | REAL    | No       | `1.0` for facts derived from parsing; `< 1.0` for inferred relationships (see §3.3). |
 | `source_type` | TEXT    | No       | `static_analysis` (parsed from source) or `llm_inference` (model-derived, not yet emitted by any sprint as of this schema). |
 | `created_at`  | TEXT    | No       | UTC timestamp, set on insert. |
@@ -300,6 +300,6 @@ define *how* it is stored.
 |--------|--------|
 | 1      | `nodes`, `edges` tables for `Directory`/`File` and `CONTAINS` edges. |
 | 2      | `Class`/`Function`/`Method` node types, `qualified_name` uniqueness, `DEFINES` edges. |
-| 3      | Recursive-CTE traversal pattern documented (no schema change). |
+| 3      | No schema change. `IMPORTS`/`CALLS`/`INHERITS` edges now emitted (confidence 0.35–1.0, `source_type='static_analysis'`) and rebuilt wholesale on any source change; `PRAGMA user_version` records the edge-build version so older graphs are rebuilt on the next scan. Recursive-CTE traversal implemented in `retrieval/traversal.py`. |
 | 5      | `vec_nodes` virtual table planned (not yet created). |
 | 6      | `summaries` table added for LLM-derived node metadata. |

@@ -49,3 +49,59 @@ def _tool_result_json(result):
 
     content = result.content if hasattr(result, "content") else result[0]
     return json.loads(content[0].text)
+
+
+@pytest.mark.anyio
+async def test_ibwd_callers_dependents_and_trace_path_tools(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    (tmp_path / "chain.py").write_text(
+        "def a():\n    return b()\n\n"
+        "def b():\n    return c()\n\n"
+        "def c():\n    return d()\n\n"
+        "def d():\n    return 1\n\n"
+        "def solo():\n    return 0\n"
+    )
+    monkeypatch.chdir(tmp_path)
+    await mcp.call_tool("ibwd_scan", {})
+
+    callers = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "d"}))
+    assert [(r["name"], r["distance"], r["confidence"]) for r in callers] == [("c", 1, 0.9)]
+    assert callers[0]["file"] == "chain.py" and callers[0]["line"] == 7 and callers[0]["relation"] == "CALLS"
+
+    deep = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "d", "depth": 3}))
+    assert [r["name"] for r in deep] == ["c", "b", "a"]
+
+    dependents = _tool_result_json(await mcp.call_tool("ibwd_dependents", {"symbol": "a", "depth": 2}))
+    assert [(r["name"], r["distance"]) for r in dependents] == [("b", 1), ("c", 2)]
+
+    assert _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "nope"})) == []
+
+    traced = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "d"}))
+    assert [hop["name"] for hop in traced["path"]] == ["a", "b", "c", "d"]
+    assert traced["hops"] == 3
+    assert traced["path"][0]["edge_type"] is None
+    assert [(h["edge_type"], h["confidence"]) for h in traced["path"][1:]] == [("CALLS", 0.9)] * 3
+
+    no_path = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "solo"}))
+    assert no_path == {"path": None, "reason": "no path found"}
+
+    missing = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "nope"}))
+    assert missing["path"] is None and "target not found" in missing["reason"]
+
+    bad = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "d", "edge_types": ["BOGUS"]}))
+    assert bad["path"] is None and "unsupported edge_types" in bad["reason"]
+
+
+@pytest.mark.anyio
+async def test_ibwd_callers_labels_ambiguous_targets(symbol_repo: Path, monkeypatch: pytest.MonkeyPatch):
+    (symbol_repo / "src" / "use.py").write_text(
+        "from other import greet\n\ndef go():\n    return greet()\n"
+    )
+    monkeypatch.chdir(symbol_repo)
+    await mcp.call_tool("ibwd_scan", {})
+
+    # `greet` is defined twice (User.greet and other.greet): results say which one they reach
+    callers = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "greet"}))
+    assert {(r["name"], r["of"]) for r in callers} == {("go", "src/other.py:1")}
+
+    narrowed = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "greet", "file": "src/other.py"}))
+    assert [r["name"] for r in narrowed] == ["go"] and "of" not in narrowed[0]

@@ -8,8 +8,9 @@ from pathlib import Path
 from ibwd.graph.database import connect, get_node_by_path
 from ibwd.graph.manifest import DEFAULT_MANIFEST_PATH, load_manifest, save_manifest
 from ibwd.graph.queries import ScanSummary, sync_files, sync_symbols
+from ibwd.graph.resolution import EDGE_BUILD_VERSION, REFERENCE_RELATIONS, rebuild_reference_edges
 from ibwd.scanner.filesystem import scan_files
-from ibwd.scanner.symbols import extract_symbols
+from ibwd.scanner.symbols import EXTENSION_DIALECTS, extract_symbols
 
 
 def run_scan(repo_root: Path | None = None) -> dict:
@@ -29,6 +30,7 @@ def run_scan(repo_root: Path | None = None) -> dict:
 
         # Only reparse source files whose content actually changed since the
         # last scan — symbol extraction is the relatively expensive step.
+        source_changed = False
         for scanned_file in scanned:
             if scanned_file.kind != "source":
                 continue
@@ -39,11 +41,35 @@ def run_scan(repo_root: Path | None = None) -> dict:
                 continue
             symbols = extract_symbols(repo_root / scanned_file.path, scanned_file.path)
             sync_symbols(conn, file_row["id"], scanned_file.path, symbols)
+            source_changed = True
         conn.commit()
+
+        # IMPORTS/CALLS/INHERITS resolution is repo-wide (an edit in one file can
+        # newly resolve a call in another), so any source change — or a graph
+        # built by an older extraction version — rebuilds all three relations.
+        removed_source = any(
+            Path(path).suffix.lower() in EXTENSION_DIALECTS
+            for path in set(previous_manifest) - {f.path for f in scanned}
+        )
+        stale_edges = conn.execute("PRAGMA user_version").fetchone()[0] < EDGE_BUILD_VERSION
+        if source_changed or removed_source or stale_edges:
+            rebuild_reference_edges(conn, repo_root)
+
+        placeholders = ",".join("?" * len(REFERENCE_RELATIONS))
+        edge_counts = dict(
+            conn.execute(
+                f"SELECT relation, COUNT(*) FROM edges WHERE relation IN ({placeholders}) GROUP BY relation",
+                REFERENCE_RELATIONS,
+            ).fetchall()
+        )
     finally:
         conn.close()
 
     new_manifest = {f.path: f.content_hash for f in scanned}
     save_manifest(new_manifest, manifest_path)
 
-    return {**asdict(summary), "total_files": summary.total}
+    return {
+        **asdict(summary),
+        "total_files": summary.total,
+        "edges": {relation: edge_counts.get(relation, 0) for relation in REFERENCE_RELATIONS},
+    }

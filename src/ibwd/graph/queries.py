@@ -121,7 +121,7 @@ def find_symbol(conn: sqlite3.Connection, name: str) -> list[sqlite3.Row]:
     placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
     exact = conn.execute(
         f"""
-        SELECT name, node_type AS kind, file_path, start_line, end_line
+        SELECT id, name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND name = ?
         ORDER BY file_path, start_line
         """,
@@ -132,12 +132,33 @@ def find_symbol(conn: sqlite3.Connection, name: str) -> list[sqlite3.Row]:
 
     return conn.execute(
         f"""
-        SELECT name, node_type AS kind, file_path, start_line, end_line
+        SELECT id, name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND name LIKE ? ESCAPE '\\'
         ORDER BY file_path, start_line
         """,
         (*SYMBOL_NODE_TYPES, f"%{_escape_like(name)}%"),
     ).fetchall()
+
+
+def resolve_targets(conn: sqlite3.Connection, name: str, file: str | None = None) -> list[sqlite3.Row]:
+    """Resolve a user-supplied name to graph nodes: a File path, else symbol(s) by name.
+
+    Returns rows with {id, name, kind, file_path, start_line}. An exact File
+    path wins (so callers/dependents work on files too); otherwise this is
+    find_symbol's exact-then-substring matching, optionally narrowed to one file.
+    """
+    file_row = conn.execute(
+        "SELECT id, name, node_type AS kind, file_path, start_line FROM nodes "
+        "WHERE node_type = 'File' AND file_path = ?",
+        (name,),
+    ).fetchone()
+    if file_row is not None and file is None:
+        return [file_row]
+
+    rows = find_symbol(conn, name)
+    if file is not None:
+        rows = [row for row in rows if row["file_path"] == file]
+    return rows
 
 
 def list_symbols(conn: sqlite3.Connection, file_path: str) -> list[sqlite3.Row]:

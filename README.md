@@ -103,7 +103,7 @@ Rejected/deferred: Neo4j and other graph DBs (SQLite CTEs suffice at this scale)
 |---|---|---|
 | `ibwd_scan`, `ibwd_find_files` | Sprint 1 | "Which files are tests/configs/X?" |
 | `ibwd_find_symbol`, `ibwd_list_symbols` | Sprint 2 | "Where is X defined?" |
-| `ibwd_callers`, `ibwd_dependents` | Sprint 3 | "What calls/imports X?" |
+| `ibwd_callers`, `ibwd_dependents`, `ibwd_trace_path` | Sprint 3 | "What calls/imports X? What does X depend on? How does A reach B?" |
 | `ibwd_impact`, `ibwd_tests_for` | Sprint 4 | "What breaks if I change X? What tests cover it?" |
 | `ibwd_search` | Sprint 5 | Vague/conceptual queries without an exact symbol name |
 | `ibwd_explain` | Sprint 6 | "What is X responsible for?" (with confidence/source_type on every claim) |
