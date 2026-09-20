@@ -227,6 +227,21 @@ def _js_reexport(node: Node, refs: FileReferences) -> None:
     refs.reexports.append(ReExport(spec, names))
 
 
+def _js_local_export_specifiers(node: Node) -> list[tuple[str, str]]:
+    """`export { a, b as c }` WITHOUT a source: (local name, exported name) pairs."""
+    if node.child_by_field_name("source") is not None:
+        return []
+    out: list[tuple[str, str]] = []
+    for child in node.children:
+        if child.type == "export_clause":
+            for part in child.children:
+                if part.type == "export_specifier":
+                    name, alias = part.child_by_field_name("name"), part.child_by_field_name("alias")
+                    if name is not None:
+                        out.append((_text(name), _text(alias) if alias else _text(name)))
+    return out
+
+
 def _require_spec(node: Node | None) -> str | None:
     """The './x' in `require('./x')`, else None."""
     if node is None or node.type != "call_expression":
@@ -370,6 +385,7 @@ def extract_javascript_references(source: bytes, dialect: str = "javascript") ->
     parser = Parser(_LANGUAGES[dialect])  # keep a reference: a temporary Parser crashes Node.text
     tree = parser.parse(source)
     refs = FileReferences()
+    pending_local_exports: list[tuple[str, str]] = []
 
     stack = [tree.root_node]
     while stack:
@@ -380,6 +396,7 @@ def extract_javascript_references(source: bytes, dialect: str = "javascript") ->
         elif node.type == "export_statement":
             _js_reexport(node, refs)
             _js_default_export(node, refs)
+            pending_local_exports.extend(_js_local_export_specifiers(node))
         elif node.type == "assignment_expression":
             _js_commonjs_export(node, refs)
         elif node.type == "variable_declarator":
@@ -397,6 +414,13 @@ def extract_javascript_references(source: bytes, dialect: str = "javascript") ->
         elif node.type == "class_declaration":
             _js_bases(node, refs)
         stack.extend(reversed(node.children))
+
+    # `import { a } from './m'; export { a }` re-exports `a` exactly like `export { a } from './m'` (a barrel written in two steps)
+    by_local = {b.local: (imp.spec, b.member) for imp in refs.imports for b in imp.bindings if b.member not in (None, "default")}
+    for local, exported in pending_local_exports:
+        if local in by_local:
+            spec, member = by_local[local]
+            refs.reexports.append(ReExport(spec, [(member, exported)]))
 
     refs.value_refs = javascript_value_refs(tree.root_node)
     return refs

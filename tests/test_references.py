@@ -270,3 +270,20 @@ def test_javascript_dynamic_import_anywhere_and_default_parameter_values_and_ove
     values = {(v.name, v.receiver) for v in refs.value_refs}
     assert ("noop", None) in values
     assert ("over", None) not in values                      # overload signature names are declarations
+
+
+def test_a_barrel_written_as_import_then_export_list_is_followed(tmp_path):
+    from ibwd.graph.database import connect
+    from ibwd.scan import run_scan
+
+    (tmp_path / "module.ts").write_text("export const coreModule = () => 1\n")
+    (tmp_path / "core.ts").write_text("import { coreModule } from './module'\nexport { coreModule }\n")
+    (tmp_path / "index.ts").write_text("export { coreModule } from './core'\n")
+    (tmp_path / "use.ts").write_text("import { coreModule } from './index'\nexport function go() { return coreModule() }\n")
+    run_scan(tmp_path)
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    rows = {(r[0], r[1]) for r in conn.execute(
+        "SELECT s.qualified_name, t.qualified_name FROM edges e JOIN nodes s ON s.id = e.source_id JOIN nodes t ON t.id = e.target_id "
+        "WHERE e.relation = 'CALLS' AND e.resolution_status = 'resolved'")}
+    conn.close()
+    assert ("use.ts::go", "module.ts::coreModule") in rows

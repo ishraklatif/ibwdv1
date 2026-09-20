@@ -40,7 +40,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 25
+EDGE_BUILD_VERSION = 26
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
