@@ -101,6 +101,97 @@ def _py_locals(fn: Node) -> set[str]:
     return names
 
 
+def _param_names(fn: Node, names: set[str]) -> None:
+    params = fn.child_by_field_name("parameters")
+    if params is None:
+        return
+    for child in params.children:
+        if child.type == "identifier":
+            names.add(_text(child))
+        elif child.type in ("default_parameter", "typed_default_parameter"):
+            _py_pattern_names(child.child_by_field_name("name"), names)
+        elif child.type == "typed_parameter":
+            for sub in child.children:
+                if sub.type == "identifier":
+                    names.add(_text(sub))
+                    break
+                if sub.type in ("list_splat_pattern", "dictionary_splat_pattern"):
+                    _py_pattern_names(sub, names)
+                    break
+        elif child.type in ("list_splat_pattern", "dictionary_splat_pattern"):
+            _py_pattern_names(child, names)
+
+
+_COMPREHENSIONS = ("list_comprehension", "set_comprehension", "dictionary_comprehension", "generator_expression")
+
+
+def python_local_names(root: Node) -> list[tuple[str, int, int]]:
+    """(name, first_line, last_line): names a function (or comprehension/lambda) binds itself.
+
+    Python scoping: a name bound anywhere in a function (parameter, assignment, for/with/except target, walrus, nested
+    def/class) is local to the *whole* body, so it shadows a same-named module-level function or import there — a call
+    through it goes to whatever the variable holds, never provably to the module-level symbol. Imports are handled by the
+    import scope, `global`/`nonlocal` names are not local, and default values/annotations in the signature are evaluated
+    in the enclosing scope (the scope starts at the body).
+    """
+    out: list[tuple[str, int, int]] = []
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        stack.extend(node.children)
+        if node.type in _COMPREHENSIONS:
+            names: set[str] = set()
+            for child in node.children:
+                if child.type == "for_in_clause":
+                    _py_pattern_names(child.child_by_field_name("left"), names)
+            out.extend((n, node.start_point.row + 1, node.end_point.row + 1) for n in names)
+            continue
+        if node.type not in ("function_definition", "lambda"):
+            continue
+        names = set()
+        _param_names(node, names) if node.type == "function_definition" else _lambda_params(node, names)
+        body = node.child_by_field_name("body")
+        excluded: set[str] = set()
+        walk = list(body.children) if body is not None and node.type == "function_definition" else []
+        while walk:
+            n = walk.pop()
+            t = n.type
+            if t in ("function_definition", "class_definition"):
+                name = n.child_by_field_name("name")
+                if name is not None:
+                    names.add(_text(name))
+                continue                      # a nested scope's own bindings are not this function's
+            if t == "lambda" or t in _COMPREHENSIONS:
+                continue
+            if t in ("assignment", "augmented_assignment", "for_statement"):
+                _py_pattern_names(n.child_by_field_name("left"), names)
+            elif t == "named_expression":
+                _py_pattern_names(n.child_by_field_name("name"), names)
+            elif t == "as_pattern":
+                for child in n.children:
+                    if child.type == "as_pattern_target":
+                        _py_pattern_names(child, names)
+            elif t in ("global_statement", "nonlocal_statement"):
+                excluded.update(_text(c) for c in n.children if c.type == "identifier")
+            walk.extend(n.children)
+        names -= excluded
+        start = body.start_point.row + 1 if body is not None else node.start_point.row + 1
+        out.extend((n, start, node.end_point.row + 1) for n in names)
+    return out
+
+
+def _lambda_params(node: Node, names: set[str]) -> None:
+    params = node.child_by_field_name("parameters")
+    if params is not None:
+        for child in params.children:
+            if child.type == "identifier":
+                names.add(_text(child))
+            elif child.type in ("default_parameter", "typed_default_parameter"):
+                _py_pattern_names(child.child_by_field_name("name"), names)
+            elif child.type in ("list_splat_pattern", "dictionary_splat_pattern"):
+                _py_pattern_names(child, names)
+
+
 def _py_is_value_use(node: Node) -> bool:
     parent = node.parent
     if parent is None:

@@ -234,3 +234,32 @@ def test_export_carries_status_and_the_oracle_denominator_is_not_narrowed(tmp_pa
     everything, resolved_only = run("all"), run("resolved")
     assert everything["expected"] == resolved_only["expected"]        # the oracle denominator is untouched by the policy
     assert resolved_only["actual"] < everything["actual"] and resolved_only["fn"] > everything["fn"]   # recall honestly drops
+
+
+def test_inherited_edge_is_only_a_candidate_when_an_external_base_precedes_the_defining_base(tmp_path: Path):
+    _write(tmp_path, {
+        "mixin.py": "class Mixin:\n    def __init__(self, *a):\n        self.m = 1\n\n    def run(self):\n        return 1\n",
+        "app.py": (
+            "import external_lib\nfrom mixin import Mixin\n\n"
+            "class ExternalFirst(external_lib.Base, Mixin):\n"
+            "    def __init__(self, *a):\n        super().__init__(*a)\n\n"
+            "    def go(self):\n        return self.run()\n\n"
+            "class MixinFirst(Mixin, external_lib.Base):\n"
+            "    def __init__(self, *a):\n        super().__init__(*a)\n\n"
+            "    def go(self):\n        return self.run()\n"
+        ),
+    })
+    run_scan(tmp_path)
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    rows = {
+        (r["s"], r["t"]): (r["resolution_status"], r["resolution_tier"])
+        for r in conn.execute(
+            "SELECT s.qualified_name AS s, t.qualified_name AS t, e.resolution_status, e.resolution_tier FROM edges e "
+            "JOIN nodes s ON s.id = e.source_id JOIN nodes t ON t.id = e.target_id WHERE e.relation = 'CALLS'"
+        )
+    }
+    conn.close()
+    assert rows[("app.py::ExternalFirst.go", "mixin.py::Mixin.run")] == ("candidate", "inherited_uncertain")
+    assert rows[("app.py::ExternalFirst.__init__", "mixin.py::Mixin.__init__")] == ("candidate", "inherited_uncertain")
+    assert rows[("app.py::MixinFirst.go", "mixin.py::Mixin.run")] == ("resolved", "inherited")
+    assert rows[("app.py::MixinFirst.__init__", "mixin.py::Mixin.__init__")] == ("resolved", "inherited")

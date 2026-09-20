@@ -82,6 +82,9 @@ class FileReferences:
     # Every definition's (qualname, start_line, end_line), *including* repeated qualnames (property getter/setter pairs,
     # typing.overload stubs). The graph keeps one node per qualname, so this is what attributes a call to its owner.
     def_ranges: list[tuple[str, int, int]] = field(default_factory=list)
+    # Python: (name, first_line, last_line) of names a function/comprehension binds itself (parameters, assigned variables,
+    # nested defs): they shadow same-named module-level symbols and imports on those lines. See valuerefs.python_local_names.
+    local_names: list[tuple[str, int, int]] = field(default_factory=list)
     # JS/TS: name of the symbol this file exports by default (`export default Foo`), if nameable.
     default_export: str | None = None
 
@@ -108,6 +111,7 @@ def refs_from_json(text: str) -> FileReferences:
             for r in data.get("reexports", [])
         ],
         def_ranges=[(q, a, b) for q, a, b in data.get("def_ranges", [])],
+        local_names=[(n, a, b) for n, a, b in data.get("local_names", [])],
         default_export=data.get("default_export"),
     )
 

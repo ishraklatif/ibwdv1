@@ -14,7 +14,7 @@ from ibwd.scanner.references import (
     clean_receiver,
 )
 from ibwd.scanner.symbols import SymbolInfo
-from ibwd.scanner.valuerefs import python_value_refs
+from ibwd.scanner.valuerefs import python_local_names, python_value_refs
 
 _LANGUAGE = Language(tspython.language())
 
@@ -220,4 +220,5 @@ def extract_python_references(source: bytes) -> FileReferences:
         stack.extend(reversed(node.children))
 
     refs.value_refs = python_value_refs(tree.root_node)
+    refs.local_names = python_local_names(tree.root_node)
     return refs

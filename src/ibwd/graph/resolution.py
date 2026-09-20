@@ -40,7 +40,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 14
+EDGE_BUILD_VERSION = 15
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -50,14 +50,19 @@ CONF_UNIQUE_NAME = 0.75
 CONF_SUFFIX = 0.55
 CONF_FUZZY = 0.35
 CONF_INHERITED = 0.85  # self.x()/super().x() found on a base class (between same-module and unique-name)
+# Found on a resolved base class, but an unresolved (external) base precedes it in the class's declaration order, so the method
+# may equally come from that base: a hint, not a resolved edge.
+CONF_INHERITED_UNCERTAIN = 0.60
 
 # Default edge policy (frozen, benchmarks/SPRINT3_gate_definition.md section 6): import-map, same-module and inherited edges
 # are RESOLVED; unique-name and suffix are CANDIDATE hints that default queries never use; fuzzy is DISABLED unless the
 # experimental flag IBWD_EXPERIMENTAL_FUZZY=1 is set (then it is created as a candidate).
 _TIER_BY_CONFIDENCE = {
-    0.95: "import_map", 0.90: "same_module", 0.85: "inherited", 0.75: "unique_name", 0.55: "suffix", 0.35: "fuzzy",
+    0.95: "import_map", 0.90: "same_module", 0.85: "inherited", 0.75: "unique_name", 0.60: "inherited_uncertain", 0.55: "suffix", 0.35: "fuzzy",
 }
-CANDIDATE_TIERS = frozenset({"unique_name", "suffix", "fuzzy"})
+CANDIDATE_TIERS = frozenset({"unique_name", "inherited_uncertain", "suffix", "fuzzy"})
+# External bases that add no user-defined methods and so never make an inherited lookup uncertain.
+_TRANSPARENT_BASES = frozenset({"object", "Generic", "Protocol", "ABC"})
 
 
 def fuzzy_enabled() -> bool:
@@ -126,6 +131,11 @@ class ResolvedBinding:
     file: str | None  # repo file the binding points at (None = external / unresolved)
     member: str | None  # None = the module itself
     external: bool = False
+    # A parameter / local variable / nested def: it shadows any same-named import or module-level symbol on these lines.
+    local: bool = False
+
+
+LOCAL = ResolvedBinding(None, None, local=True)
 
 
 def _norm(name: str) -> str:
@@ -228,29 +238,40 @@ def _inherited_method(
     class_qualname: str,
     name: str,
     index: SymbolIndex,
-    bases_of: dict[int, list[Sym]],
+    base_order: dict[int, list[Sym | None]],
     include_self: bool,
-) -> Sym | None:
-    """Search a class's resolved bases (breadth-first, cycle-safe) for a method called `name`."""
+) -> tuple[Sym, bool] | None:
+    """Search a class's bases depth-first in declaration order (cycle-safe) for a method called `name`.
+
+    Returns (method, uncertain). `uncertain` is True when an unresolved (external) base was passed on the way: that base
+    may define the method itself (`class Node(docutils.Element, Mixin)`), so the mixin's method is only a possibility.
+    """
     start = index.by_qual.get((file_path, class_qualname))
     if start is None or start.node_type != "Class":
         return None
     seen = {start.id}
-    queue: list[Sym] = [start] if include_self else list(bases_of.get(start.id, ()))
-    depth = 0
-    while queue and depth < 12:
-        depth += 1
-        nxt: list[Sym] = []
-        for cls in queue:
-            if cls.id in seen and cls.id != start.id:
-                continue
-            seen.add(cls.id)
+    uncertain = False
+
+    def search(cls: Sym, depth: int) -> Sym | None:
+        nonlocal uncertain
+        if depth > 12:
+            return None
+        if depth or include_self:
             method = index.by_qual.get((cls.file_path, f"{cls.qualname}.{name}"))
             if method is not None:
                 return method
-            nxt.extend(b for b in bases_of.get(cls.id, ()) if b.id not in seen)
-        queue = nxt
-    return None
+        for base in base_order.get(cls.id, ()):
+            if base is None:
+                uncertain = True
+            elif base.id not in seen:
+                seen.add(base.id)
+                found = search(base, depth + 1)
+                if found is not None:
+                    return found
+        return None
+
+    method = search(start, 0)
+    return (method, uncertain) if method is not None else None
 
 
 def resolve_ref(
@@ -262,7 +283,7 @@ def resolve_ref(
     bindings: dict[str, ResolvedBinding],
     index: SymbolIndex,
     kinds: frozenset[str] = _CALL_KINDS,
-    bases_of: dict[int, list[Sym]] | None = None,
+    base_order: dict[int, list[Sym | None]] | None = None,
     value_mode: bool = False,
 ) -> tuple[Sym, float] | None:
     """Resolve one call/base-class reference through the 5-tier cascade.
@@ -276,6 +297,17 @@ def resolve_ref(
         return sym is not None and sym.node_type in kinds
 
     root_binding = bindings.get(receiver.split(".")[0]) if receiver is not None else None
+    receiver_is_local = root_binding is not None and root_binding.local and receiver not in _SELF_RECEIVERS
+    if receiver_is_local:
+        root_binding = None
+
+    # -- Tier 0: a local binding shadows everything ----------------------------
+    # `def f(cb=cb): cb()` / `setup = getattr(mod, "setup"); setup(app)`: the callee is a variable, so no module-level symbol
+    # (or unique-name guess) is a provable target. Value flow is out of scope; the edge would be a possible target at best.
+    if receiver is None:
+        local_binding = bindings.get(name)
+        if local_binding is not None and local_binding.local:
+            return None
 
     # -- Tier 1: import map ---------------------------------------------
     if receiver is None:
@@ -289,7 +321,7 @@ def resolve_ref(
                 if ok(sym):
                     return sym, CONF_IMPORT_MAP
     else:
-        binding = bindings.get(receiver)
+        binding = None if receiver_is_local else bindings.get(receiver)
         if binding is not None:
             if binding.external:
                 return None
@@ -318,11 +350,11 @@ def resolve_ref(
                 sym = index.by_qual.get((file_path, f"{class_qualname}.{name}"))
                 if ok(sym):
                     return sym, CONF_SAME_MODULE
-            if bases_of:
-                sym = _inherited_method(file_path, class_qualname, name, index, bases_of, include_self=False)
-                if ok(sym):
-                    return sym, CONF_INHERITED
-    elif receiver != UNKNOWN_RECEIVER:
+            if base_order:
+                found = _inherited_method(file_path, class_qualname, name, index, base_order, include_self=False)
+                if found is not None and ok(found[0]):
+                    return found[0], (CONF_INHERITED_UNCERTAIN if found[1] else CONF_INHERITED)
+    elif receiver != UNKNOWN_RECEIVER and not receiver_is_local:
         sym = index.by_qual.get((file_path, f"{receiver}.{name}"))
         if ok(sym):
             return sym, CONF_SAME_MODULE
@@ -387,6 +419,7 @@ def _resolve_imports(
     index: SymbolIndex,
     add_import_edge,
     default_exports: dict[str, str] | None = None,
+    local_names: list[tuple[str, int, int]] | None = None,
 ) -> tuple[dict[str, ResolvedBinding], list[tuple[tuple[int, int], dict[str, ResolvedBinding]]]]:
     """Resolve a file's imports: emit IMPORTS edges, return (file-level bindings, function-local bindings).
 
@@ -396,6 +429,10 @@ def _resolve_imports(
     bindings: dict[str, ResolvedBinding] = {}
     local: dict[tuple[int, int], dict[str, ResolvedBinding]] = {}
     is_python = language_of(path) == "python"
+
+    for name, first, last in local_names or ():
+        if name not in _SELF_RECEIVERS:
+            local.setdefault((first, last), {})[name] = LOCAL
 
     for imp in imports:
         target, conf = resolver.resolve(imp.spec, imp.level, path)
@@ -536,6 +573,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
             index,
             lambda target, conf, file_id=file_id: add_edge(file_id, file_ids[target], "IMPORTS", conf),
             default_exports,
+            refs.local_names,
         ))
 
     index.py_bindings = {
@@ -544,7 +582,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
     index.ranges = {path: refs.def_ranges for path, refs in parsed.items()}
 
     # Pass 2: inheritance, before any calls, so self.x()/super().x() can walk to base classes
-    bases_of: dict[int, list[Sym]] = defaultdict(list)
+    base_order: dict[int, list[Sym | None]] = defaultdict(list)   # declared bases in order; None = unresolved (external)
     for path, refs in parsed.items():
         for base in refs.bases:
             cls = index.innermost(path, base.class_line, name=base.class_name, node_type="Class")
@@ -561,7 +599,9 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
             )
             if resolved and resolved[0].id != cls.id:
                 add_edge(cls.id, resolved[0].id, "INHERITS", resolved[1])
-                bases_of[cls.id].append(resolved[0])
+                base_order[cls.id].append(resolved[0])
+            elif not resolved and base.name not in _TRANSPARENT_BASES:
+                base_order[cls.id].append(None)
 
     # Pass 3: calls
     for path, refs in parsed.items():
@@ -575,7 +615,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 owner_qualname=owner.qualname if owner else None,
                 bindings=bindings_by_file[path].at(call.line),
                 index=index,
-                bases_of=bases_of,
+                base_order=base_order,
             )
             if resolved:
                 target, conf = resolved
@@ -591,7 +631,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 owner_qualname=owner.qualname if owner else None,
                 bindings=bindings_by_file[path].at(ref.line),
                 index=index,
-                bases_of=bases_of,
+                base_order=base_order,
                 value_mode=True,
             )
             if resolved and (owner is None or resolved[0].id != owner.id):
