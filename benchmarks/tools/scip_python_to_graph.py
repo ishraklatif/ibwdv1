@@ -114,6 +114,7 @@ class FileModel:
         self.base_spans: list[tuple[tuple[int, int], tuple[int, int], str]] = []
         self.import_lines: set[int] = set()
         self.import_names: set[str] = set()   # names bound by import statements (module aliases, imported classes/functions)
+        self.module_names: set[str] = set()   # names bound by a plain `import x [as y]`: always a module
         self.relative_imports: list[tuple[int, int, int, str]] = []   # (line, level, start_col, dotted module) for `from .x import y`
         self.decorator_ends: set[tuple[int, int]] = set()
         self.tree = None
@@ -176,6 +177,8 @@ class FileModel:
                 self.import_lines.update(range(child.lineno, (child.end_lineno or child.lineno) + 1))
                 for alias in child.names:
                     self.import_names.add(alias.asname or alias.name.split(".")[0])
+                    if isinstance(child, ast.Import):
+                        self.module_names.add(alias.asname or alias.name.split(".")[0])
                 if isinstance(child, ast.ImportFrom) and child.level:
                     self.relative_imports.append((child.lineno, child.level, child.col_offset, child.module or ""))
             self._walk(child, prefix, in_function, chain)
@@ -207,7 +210,14 @@ def receiver_basis(model: "FileModel", fn: ast.Attribute, lexical_receivers: set
     through an inferred type (`obj.method` with `obj: Base`) and is only a POSSIBLE target."""
     obj = fn.value
     obj_start = (obj.lineno, ast_col_to_char(model.lines[obj.lineno - 1], obj.col_offset))
-    if isinstance(obj, ast.Name) and (obj.id in ("self", "cls") or obj_start in lexical_receivers or obj.id in model.import_names):
+    if isinstance(obj, ast.Name) and obj.id in ("self", "cls"):
+        # `self` is lexically the class only inside a method; in a module-level function it is an ordinary parameter whose
+        # class comes from an annotation (`def visit(self: HTML5Translator, ...)`), i.e. an inferred type.
+        _, projected = model.owners(obj.lineno)
+        return "binding" if projected is not None and projected["kind"] == "Method" else "type_declared"
+    # A module or a class name has a module/class SCIP symbol at the receiver. An imported *variable* (`LOGGER`, `timezone`,
+    # `current_app`: an instance created elsewhere) does not: its methods are found through its inferred type.
+    if isinstance(obj, ast.Name) and (obj_start in lexical_receivers or obj.id in model.module_names):
         return "binding"
     if isinstance(obj, ast.Call) and isinstance(obj.func, ast.Name) and obj.func.id == "super":
         return "binding"

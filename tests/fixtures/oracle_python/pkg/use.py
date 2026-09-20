@@ -56,3 +56,14 @@ def r1(obj: Base):
 
 def r2():
     return list(map(Base.new_method, [1]))
+
+
+def flat(self: Base):
+    return self.new_method()
+
+
+instance = Base()
+
+
+def via_variable():
+    return instance.new_method()
