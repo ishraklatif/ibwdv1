@@ -168,5 +168,9 @@
   "celery/worker/worker.py"
  ],
  "excluded_files": [],
- "manifest_sha256": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407"
+ "manifest_sha256": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407",
+ "ground_truth": {
+  "file": "benchmarks/ground_truth/celery.yaml",
+  "sha256": "17855534cdd4a0fee8f048659d9594508a6990f5042dc3780bdc1fd3b0568802"
+ }
 }

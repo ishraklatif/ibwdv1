@@ -125,5 +125,9 @@
   "packages/toolkit/src/utils.ts"
  ],
  "excluded_files": [],
- "manifest_sha256": "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e"
+ "manifest_sha256": "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e",
+ "ground_truth": {
+  "file": "benchmarks/ground_truth/redux-toolkit.yaml",
+  "sha256": "7cfd226938a5ca53f5ebbade71a07f6847b78ea17de010a390b024ec9f0b7a4d"
+ }
 }

@@ -1103,5 +1103,9 @@
    "category": "out_of_language_scope"
   }
  ],
- "manifest_sha256": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353"
+ "manifest_sha256": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353",
+ "ground_truth": {
+  "file": "benchmarks/ground_truth/sphinx.yaml",
+  "sha256": "36da51b8e4f1c26194af6b3acc0895e752d1ce5a396e1988712879c5138c1630"
+ }
 }

@@ -1414,5 +1414,9 @@
    "category": "duplicate_variant"
   }
  ],
- "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e"
+ "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e",
+ "ground_truth": {
+  "file": "benchmarks/ground_truth/bulletproof-react.yaml",
+  "sha256": "28ec0e8c1312edb6db8c728c3d5d5448112636445e1b07607e314ad47815274a"
+ }
 }
