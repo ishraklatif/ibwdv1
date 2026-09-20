@@ -50,3 +50,7 @@ def test_function_local_imports_do_not_hide_value_uses_and_super_attributes_are_
 def test_except_with_a_dotted_exception_class_is_a_use():
     refs = _refs("def f():\n    try:\n        pass\n    except requests.Redirect as err:\n        raise\n")
     assert ("Redirect", "requests") in refs and ("err", None) not in refs
+
+
+def test_del_is_not_a_use():
+    assert ("_StrPath", None) not in _refs("del _StrPath\n")

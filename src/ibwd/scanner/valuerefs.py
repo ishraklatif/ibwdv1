@@ -225,6 +225,8 @@ def _py_is_value_use(node: Node) -> bool:
         return False
     if t in ("assignment", "augmented_assignment") and f in ("left", "type"):
         return False
+    if t == "delete_statement":  # `del name` unbinds it; it is not a use
+        return False
     if t in ("for_statement", "for_in_clause") and f == "left":
         return False
     if t in _PY_PATTERN_TYPES or (t == "as_pattern" and f == "alias"):
