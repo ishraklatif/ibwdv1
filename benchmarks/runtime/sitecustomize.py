@@ -76,6 +76,14 @@ if OUT:
         except Exception:
             pass
 
+    _orig_exit = os._exit
+
+    def _exit_with_flush(code):          # forked workers (multiprocessing, parallel builds) leave through os._exit, skipping atexit
+        _flush()
+        _orig_exit(code)
+
+    os._exit = _exit_with_flush
+
     def _after_fork():
         edges.clear(); originals.clear(); seen.clear()
         open(os.path.join(OUT, f"start-{os.getpid()}"), "w").close()

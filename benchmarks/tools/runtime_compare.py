@@ -84,6 +84,26 @@ def main() -> int:
         if p is None:
             absent.append({"source": a, "target": b, "count": n, "oracle_basis": orc.get((a, b))})
     absent.sort(key=lambda r: -r["count"])
+    # classify why an observed edge is not a static edge (heuristic, for reading the result; not a verdict)
+    static_targets_by_name: dict = {}
+    for status in ("resolved", "candidate"):
+        for (a, b) in static[status]:
+            static_targets_by_name.setdefault((a, b.split("::", 1)[-1].split(".")[-1]), True)
+    callee_dunder = lambda b: b.split("::", 1)[-1].split(".")[-1].startswith("__")
+    for r in absent:
+        a, b = r["source"], r["target"]
+        name = b.split("::", 1)[-1].split(".")[-1]
+        if "::" not in a:
+            r["why"] = "caller_is_module_level_code"
+        elif (a, name) in static_targets_by_name:
+            r["why"] = "dispatch_to_override_or_same_name_target_present"
+        elif callee_dunder(b):
+            r["why"] = "implicit_protocol_call_dunder"
+        elif r["oracle_basis"]:
+            r["why"] = "in_oracle_graph_only"
+        else:
+            r["why"] = "other"
+    why = Counter(r["why"] for r in absent)
     result = {
         "repo": manifest["repo"], "repo_sha": manifest["repo_sha"], "ibwd": {k: ibwd.get(k) for k in ("ibwd_commit", "ibwd_dirty", "edge_build_version")},
         "tests_without_tracing": junit(run / "plain" / "junit.xml"), "tests_with_tracing": junit(run / "traced" / "junit.xml"),
@@ -95,6 +115,7 @@ def main() -> int:
         "absent_and_not_in_oracle_graph": sum(1 for r in absent if not r["oracle_basis"]),
         "processes_started": len(procs), "processes_with_trace": len(traced_procs & procs),
         "uninstrumented_processes": sorted(procs - traced_procs)[:20], "uninstrumented_process_count": len(procs - traced_procs),
+        "absent_edge_reasons": dict(why),
         "top_absent_edges": absent[:40],
     }
     Path(out_path).write_text(json.dumps(result, indent=1) + "\n")
