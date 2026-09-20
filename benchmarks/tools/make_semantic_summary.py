@@ -21,8 +21,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 ADAPTERS = {"sphinx": "benchmarks/tools/scip_python_to_graph.py", "scrapy": "benchmarks/tools/scip_python_to_graph.py",
-            "celery": "benchmarks/tools/scip_python_to_graph.py", "redux-toolkit": "benchmarks/tools/scip_typescript_to_graph.py",
-            "bulletproof-react": "benchmarks/tools/scip_typescript_to_graph.py"}
+            "celery": "benchmarks/tools/scip_python_to_graph.py", "redux-toolkit": "benchmarks/tools/ts_oracle.js",
+            "bulletproof-react": "benchmarks/tools/ts_oracle.js"}
 ADJUDICATIONS = "benchmarks/adjudications/sprint_3_adjudications_v2.json"
 
 
