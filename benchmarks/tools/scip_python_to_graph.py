@@ -109,6 +109,7 @@ class FileModel:
         self.lines = text.splitlines()
         self.defs: list[dict] = []
         self.callee_ends: dict[tuple[int, int], ast.Call] = {}
+        self.store_ends: set[tuple[int, int]] = set()   # end of a Name being assigned/deleted (a write, not a use)
         self.attribute_ends: dict[tuple[int, int], ast.Attribute] = {}   # end of `.name` -> its Attribute node (any use, not only calls)
         self.annotation_spans: list[tuple[tuple[int, int], tuple[int, int]]] = []
         self.base_heads: dict[tuple[int, int], str] = {}
@@ -166,6 +167,8 @@ class FileModel:
                     new_chain = [*chain, child.name] if in_function else [*prefix, child.name]
                     self._walk(child, prefix, True, new_chain)
                 continue
+            if isinstance(child, ast.Name) and not isinstance(child.ctx, ast.Load):
+                self.store_ends.add(self._end(child))
             if isinstance(child, ast.Attribute):
                 self.attribute_ends[self._end(child)] = child
             if isinstance(child, ast.Call):
@@ -350,7 +353,7 @@ def main() -> int:
             elif occ.symbol in canon_by_def:
                 target_id = canon_by_def[occ.symbol]
                 stored = model.attribute_ends.get(end)
-                if stored is not None and not isinstance(stored.ctx, ast.Load):
+                if (stored is not None and not isinstance(stored.ctx, ast.Load)) or end in model.store_ends:
                     continue      # `self.start = ...` / `del self.x`: a write to an attribute, not a use of the same-named method
                 if "# type:" in text[:start_char]:
                     continue      # a `# type: Sequence[Signature]` comment: type-only
