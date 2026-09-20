@@ -1,10 +1,17 @@
-"""IBWD MCP server — exposes the codebase graph as typed tools for Claude Code."""
+"""IBWD MCP server — local codebase tools for Codex and Claude Code."""
 
 from __future__ import annotations
 
 from pathlib import Path
+import argparse
+import os
 
-from mcp.server.mcpserver import MCPServer
+try:
+    from mcp.server.mcpserver import MCPServer
+    from mcp.server.mcpserver.exceptions import ToolError
+except ModuleNotFoundError:  # Stable MCP SDK 1.x calls this class FastMCP.
+    from mcp.server.fastmcp import FastMCP as MCPServer
+    from mcp.server.fastmcp.exceptions import ToolError
 
 from ibwd.graph.database import connect
 from ibwd.graph.queries import find_files, find_symbol, list_symbols, resolve_targets
@@ -24,6 +31,13 @@ from ibwd.scan import run_scan
 MAX_PATH_CANDIDATES = 10
 
 mcp = MCPServer("ibwd")
+
+
+def _connect_index():
+    root = Path.cwd()
+    if not (root / ".ibwd" / "graph.db").is_file() or not (root / ".ibwd" / "manifest.json").is_file():
+        raise ToolError("Repository is not indexed. Run ibwd_scan first; an absent index is not an empty graph.")
+    return connect(root / ".ibwd" / "graph.db")
 
 
 @mcp.tool()
@@ -48,7 +62,7 @@ def ibwd_find_files(kind: str | None = None, name_pattern: str | None = None) ->
     calls for file discovery/categorization questions. Results reflect the
     graph as of the last ibwd_scan; call ibwd_scan first if unsure.
     """
-    conn = connect(Path.cwd() / ".ibwd" / "graph.db")
+    conn = _connect_index()
     try:
         rows = find_files(conn, kind=kind, name_pattern=name_pattern)
     finally:
@@ -67,20 +81,20 @@ def ibwd_find_symbol(name: str) -> list[dict]:
     from comments/strings/usages.
 
     Args:
-        name: the symbol name to look up.
+        name: the symbol name or exact file::symbol identity to look up.
 
-    Returns a list of {name, kind, file, line} — kind is one of
+    Returns a list of {name, symbol_id, kind, file, line} — kind is one of
     "Class"/"Function"/"Method". Results reflect the graph as of the last
     ibwd_scan; call ibwd_scan first if unsure. Currently covers Python and
     JS/JSX/TS/TSX only.
     """
-    conn = connect(Path.cwd() / ".ibwd" / "graph.db")
+    conn = _connect_index()
     try:
         rows = find_symbol(conn, name)
     finally:
         conn.close()
     return [
-        {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
+        {"name": row["name"], "symbol_id": row["qualified_name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
         for row in rows
     ]
 
@@ -92,22 +106,25 @@ def ibwd_list_symbols(file: str) -> list[dict]:
     Args:
         file: repo-relative path to the file (as returned by ibwd_find_files).
 
-    Returns a list of {name, kind, file, line}. Results reflect the graph as
+    Returns a list of {name, symbol_id, kind, file, line}. Results reflect the graph as
     of the last ibwd_scan; call ibwd_scan first if unsure.
     """
-    conn = connect(Path.cwd() / ".ibwd" / "graph.db")
+    conn = _connect_index()
     try:
         rows = list_symbols(conn, file)
     finally:
         conn.close()
     return [
-        {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
+        {"name": row["name"], "symbol_id": row["qualified_name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
         for row in rows
     ]
 
 
 def _brief(row) -> dict:
-    return {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
+    result = {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
+    if "qualified_name" in row.keys():
+        result["symbol_id"] = row["qualified_name"]
+    return result
 
 
 GRAPH_SCOPE = (
@@ -135,7 +152,7 @@ def _empty_result(kind: str, symbol: str, targets: list, relations: list[str], i
 
 
 def _reach_tool(direction, symbol: str, depth: int, file: str | None, include_candidates: bool = False) -> list[dict]:
-    conn = connect(Path.cwd() / ".ibwd" / "graph.db")
+    conn = _connect_index()
     try:
         targets = resolve_targets(conn, symbol, file)
         results: list[dict] = []
@@ -174,7 +191,7 @@ def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None, include_c
     case results are the files importing it.
 
     Args:
-        symbol: symbol name or file path.
+        symbol: symbol name, exact file::symbol identity, or file path.
         depth: how many hops to follow (1 = direct callers only; capped at 5).
         file: optionally restrict a same-named symbol to one file.
         include_candidates: also follow *candidate* hints (unique-name / suffix
@@ -224,8 +241,8 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
     higher-scored hops and fewer of them. It is not a probability.
 
     Args:
-        source: symbol name or file path to start from.
-        target: symbol name or file path to reach.
+        source: symbol name, exact file::symbol identity, or file path to start from.
+        target: symbol name, exact file::symbol identity, or file path to reach.
         edge_types: subset of CALLS/IMPORTS/INHERITS/REFERENCES. Default CALLS
             only, i.e. a call chain; other relations make it a mixed
             dependency path and must be requested explicitly.
@@ -238,16 +255,27 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
     "source_resolved": [...], "target_resolved": [...]} — the resolved lists show
     what each name matched, so there is no need to re-check that the symbols
     exist. Direction matters: a path from A to B does not imply one from B to A.
+    More than ten matches at either endpoint returns ambiguous=true without
+    searching; use a symbol_id from discovery to disambiguate.
     """
     edge_types = list(edge_types) if edge_types else list(DEFAULT_PATH_EDGE_TYPES)
     unknown = [t for t in edge_types if t not in TRAVERSAL_RELATIONS]
     if unknown:
         return {"path": None, "reason": f"unsupported edge_types {unknown}; use {list(TRAVERSAL_RELATIONS)}"}
 
-    conn = connect(Path.cwd() / ".ibwd" / "graph.db")
+    conn = _connect_index()
     try:
-        sources = resolve_targets(conn, source)[:MAX_PATH_CANDIDATES]
-        targets = resolve_targets(conn, target)[:MAX_PATH_CANDIDATES]
+        sources = resolve_targets(conn, source)
+        targets = resolve_targets(conn, target)
+        if len(sources) > MAX_PATH_CANDIDATES or len(targets) > MAX_PATH_CANDIDATES:
+            return {
+                "path": None, "ambiguous": True,
+                "reason": "Too many matching endpoints; no path search performed. Use an exact file::symbol identity from ibwd_find_symbol.",
+                "source_matches": len(sources), "target_matches": len(targets),
+                "source_examples": [_brief(r) for r in sources[:MAX_PATH_CANDIDATES]],
+                "target_examples": [_brief(r) for r in targets[:MAX_PATH_CANDIDATES]],
+                "examples_truncated": True,
+            }
         if not sources:
             return {"path": None, "reason": f"source not found: {source}"}
         if not targets:
@@ -308,7 +336,14 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
     }
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo", type=Path, default=Path.cwd(), help="Repository to index (default: current directory).")
+    args = parser.parse_args(argv)
+    root = args.repo.expanduser().resolve()
+    if not root.is_dir():
+        parser.error(f"repository is not a directory: {root}")
+    os.chdir(root)
     mcp.run()
 
 

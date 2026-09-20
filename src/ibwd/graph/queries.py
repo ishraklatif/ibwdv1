@@ -119,9 +119,16 @@ def sync_symbols(conn: sqlite3.Connection, file_id: int, file_path: str, symbols
 def find_symbol(conn: sqlite3.Connection, name: str) -> list[sqlite3.Row]:
     """Exact match (case-sensitive) first; if none, case-insensitive substring match."""
     placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
+    # An explicit identity must never fall back to a different symbol.
+    if "::" in name:
+        return conn.execute(
+            f"SELECT id, name, qualified_name, node_type AS kind, file_path, start_line, end_line "
+            f"FROM nodes WHERE node_type IN ({placeholders}) AND qualified_name = ?",
+            (*SYMBOL_NODE_TYPES, name),
+        ).fetchall()
     exact = conn.execute(
         f"""
-        SELECT id, name, node_type AS kind, file_path, start_line, end_line
+        SELECT id, name, qualified_name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND name = ?
         ORDER BY file_path, start_line
         """,
@@ -132,7 +139,7 @@ def find_symbol(conn: sqlite3.Connection, name: str) -> list[sqlite3.Row]:
 
     return conn.execute(
         f"""
-        SELECT id, name, node_type AS kind, file_path, start_line, end_line
+        SELECT id, name, qualified_name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND name LIKE ? ESCAPE '\\'
         ORDER BY file_path, start_line
         """,
@@ -165,7 +172,7 @@ def list_symbols(conn: sqlite3.Connection, file_path: str) -> list[sqlite3.Row]:
     placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
     return conn.execute(
         f"""
-        SELECT name, node_type AS kind, file_path, start_line, end_line
+        SELECT name, qualified_name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND file_path = ?
         ORDER BY start_line
         """,

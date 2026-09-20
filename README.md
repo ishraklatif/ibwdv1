@@ -1,8 +1,10 @@
 # IBWD — Persistent Codebase Memory for AI Coding Agents
 
-**IBWD** builds a persistent, deterministically-derived structural + semantic graph of a codebase and exposes it to Claude Code as an MCP server — so the agent can answer "where is X defined," "what calls X," and "what breaks if I change X" from a sub-millisecond graph query instead of repeated `Glob`/`Grep`/`Read` exploration.
+**IBWD** builds a persistent, deterministically-derived structural + semantic graph of a codebase and exposes it to Codex and Claude Code as a local MCP server — so the agent can answer "where is X defined," "what calls X," and "what breaks if I change X" from a sub-millisecond graph query instead of repeated `Glob`/`Grep`/`Read` exploration.
 
 > **Status:** Sprints 1–3 are built (file index, symbol index, call graph with `ibwd_trace_path`), with an MCP server and tests. The Sprint 3 benchmark gate is **still open (untested)**: the free validation stages are complete with the verdict *READY FOR PAID A/B* ([`benchmarks/SPRINT3_free_stage_report.md`](benchmarks/SPRINT3_free_stage_report.md)); the paid A/B has **not** been run, so the ≥3x token claim rests only on the earlier 2-of-3 demo on IBWD's own repo. Sprints 4–8 (impact analysis, semantic search, summaries) are still planned; parts of this README below describe that target design. Known gaps are tracked in [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md); per-sprint write-ups are `SPRINT_1.md`–`SPRINT_3.md`.
+
+> **Current direction:** no paid model calls. Development continues with local correctness, index-health, and MCP transport checks for both clients. See [DEVELOPMENT.md](DEVELOPMENT.md). The frozen benchmark is historical evidence; the paid token-savings gate remains untested.
 
 ## Core hypothesis
 
@@ -12,7 +14,7 @@ This is a hypothesis under active test, not an assumed fact. Every sprint in the
 
 ## Golden rule
 
-Deterministic, tree-sitter-derived facts are tagged `confidence=1.0, source_type=static_analysis`. LLM-inferred facts (summaries, responsibility claims, semantic relations) are tagged `confidence<1.0, source_type=llm_inference`. **Claude must verify graph claims against actual source before editing anything.** The graph is a map, never the territory — this mirrors Anthropic's own caution that Claude Code's glob/grep approach deliberately avoids stale-index risk, so IBWD has to earn its keep with measured wins, not by being trusted blindly.
+Deterministic, tree-sitter-derived facts are tagged `confidence=1.0, source_type=static_analysis`. LLM-inferred facts (summaries, responsibility claims, semantic relations) are tagged `confidence<1.0, source_type=llm_inference`. **Agents must verify graph claims against actual source before editing anything.** The graph is a map, never the territory — this mirrors Anthropic's own caution that Claude Code's glob/grep approach deliberately avoids stale-index risk, so IBWD has to earn its keep with measured wins, not by being trusted blindly.
 
 ## Why this approach (research grounding)
 
@@ -109,7 +111,7 @@ Rejected/deferred: Neo4j and other graph DBs (SQLite CTEs suffice at this scale)
 | `ibwd_explain` | Sprint 6 | "What is X responsible for?" (with confidence/source_type on every claim) |
 | *(upgrade)* ranked + budgeted output | Sprint 7 | Complex multi-hop questions, fit to a token budget |
 
-Every tool response includes exact `file:line`, `confidence`, and `source_type` so Claude can decide how much to trust a result and where to go verify it.
+Symbol discovery returns definition locations and exact `symbol_id` identities. Traversal returns relations, heuristic confidence and resolution status; scan and diagnostic responses use their own schemas. Definition lines are not call-site positions.
 
 ## Build plan: 8 sprints, not phases
 
@@ -159,47 +161,56 @@ ibwd/
 └── benchmarks/          # harness.py, tasks.yaml, per-sprint results, RESULTS.md
 ```
 
-## Getting started
+## Getting started — local, no model required
+
+For both clients, follow the [daily-work setup guide](docs/DAILY_USE.md), then
+[measure existing session logs](docs/USAGE_MEASUREMENT.md) with `ibwd usage-report` and `ibwd usage-summary`.
+These analyzers run locally without starting a model or benchmark session.
+
+Use Python 3.11+ and install this existing repository once:
 
 ```bash
-python3 --version          # need 3.11+
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Ollama, for embeddings/summarization (needed from Sprint 5 onward)
-curl -fsSL https://ollama.com/install.sh | sh
-ollama serve &
-ollama pull qwen3-embedding:0.6b
-ollama pull qwen3-coder:30b
-
-# Claude Code CLI
-npm install -g @anthropic-ai/claude-code
-
-uv init --python 3.11
-uv sync
-ibwd scan
-claude mcp add ibwd -- uv run python -m ibwd.mcp.server
+python3 -m venv .venv
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python -m ibwd.cli scan --repo /absolute/path/to/target-repo
+.venv/bin/python -m ibwd.cli doctor --repo /absolute/path/to/target-repo
 ```
 
-### Using IBWD with Codex CLI
+Installation downloads Python dependencies; scanning, querying and diagnostics run locally and require no model or API key.
+Ollama, embeddings and generated summaries are not required for the shipped tools.
+`doctor` emits JSON and exits with status 1 for a missing, stale, inconsistent or invalid index. It does not modify the index.
 
-The server is a standard stdio MCP server, so any MCP-capable client can use it. For Codex:
+Generate the configuration for either client from IBWD's environment:
 
 ```bash
-codex mcp add ibwd -- uv run python -m ibwd.mcp.server
+.venv/bin/python -m ibwd.cli client-config --client codex --repo /absolute/path/to/target-repo
+.venv/bin/python -m ibwd.cli client-config --client claude --repo /absolute/path/to/target-repo
 ```
 
-or add to `~/.codex/config.toml`:
+For Codex, merge the printed `[mcp_servers.ibwd]` table into your user `~/.codex/config.toml` or trusted project's
+`.codex/config.toml` ([official MCP configuration](https://developers.openai.com/codex/mcp)). For Claude Code, merge the printed
+`mcpServers.ibwd` entry into the target project's `.mcp.json`. Preserve other settings and servers. These commands only print
+configuration; they do not install it or replace existing files. Restart/reconnect the client and complete its normal project trust
+and MCP approval flow if prompted.
 
-```toml
-[mcp_servers.ibwd]
-command = "uv"            # use the absolute path (see `which uv`) if Codex can't find it
-args = ["run", "python", "-m", "ibwd.mcp.server"]
-cwd = "/absolute/path/to/the/repo/to/index"
+Both configurations invoke the installed Python by absolute path and pass `--repo` explicitly. They work even when the client
+starts elsewhere, without asking `uv run` to resolve IBWD from the target project's dependencies. Regenerate configuration if the
+IBWD installation or target repository moves. You can also start the server directly:
+
+```bash
+.venv/bin/python -m ibwd.cli serve --repo /absolute/path/to/target-repo
 ```
 
-The server indexes whatever directory it is launched from (`.ibwd/graph.db` under the working directory), so `cwd` must be the repo you want indexed. Codex reads `AGENTS.md` rather than `CLAUDE.md`; `AGENTS.md` is a symlink to `CLAUDE.md` so the tool-routing guidance stays in one place. The `.claude/commands/` slash-command wrappers are Claude Code-specific; in Codex, call the MCP tools directly.
+The server uses stdio for MCP; it is not an interactive terminal command. Query tools ask for `ibwd_scan` when the target has no
+index. After edits, rescan explicitly. Use the `symbol_id` returned by discovery (for example `src/models.py::User.greet`) to
+resolve ambiguous names in callers, dependencies and path queries. A path query with too many matches asks for an exact identity
+rather than silently omitting possible endpoints.
+
+Codex reads `AGENTS.md`; Claude Code reads `CLAUDE.md`. In this repository `AGENTS.md` links to `CLAUDE.md` so both share the routing
+and no-spending instructions. In other repositories, add the relevant graph-first guidance to their existing instruction files.
+The `.claude/commands/` wrappers are client-specific; the seven MCP tools work through either client's standard MCP interface.
 
 ## Documents in this repo
 
-- **`IBWD_v1_EXECUTION_PLAN.md`** — the authoritative sprint-by-sprint build plan: build tasks, exact Claude Code prompts, demo protocols, go/no-go thresholds, and appendices (repo layout, SQLite schema, `CLAUDE.md` template, benchmark protocol).
+- **`IBWD_v1_EXECUTION_PLAN.md`** — the original sprint-by-sprint build plan (current direction is in `DEVELOPMENT.md`): build tasks, exact Claude Code prompts, demo protocols, go/no-go thresholds, and appendices (repo layout, SQLite schema, `CLAUDE.md` template, benchmark protocol).
 - **`compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md`** — the research report grounding every architectural decision above in prior art (Codebase-Memory, Aider, Cursor, Continue.dev, Anthropic's context-engineering guidance) and correcting an earlier draft plan's model names/tags.

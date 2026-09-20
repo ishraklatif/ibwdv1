@@ -131,3 +131,33 @@ async def test_empty_results_state_their_scope_and_never_claim_deletion_safety(t
 
     no_path = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "caller", "target": "unused"}))
     assert no_path["path"] is None and "not proof that no runtime path exists" in no_path["reason"] and no_path["scope"]
+
+
+@pytest.mark.anyio
+async def test_ambiguous_paths_are_not_silently_truncated(tmp_path, monkeypatch):
+    for i in range(11):
+        (tmp_path / f"module{i:02d}.py").write_text("def start():\n    return 0\n")
+    (tmp_path / "module10.py").write_text("def start():\n    return finish()\n\ndef finish():\n    return 1\n")
+    monkeypatch.chdir(tmp_path)
+    await mcp.call_tool("ibwd_scan", {})
+    result = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "start", "target": "finish"}))
+    assert result["ambiguous"] and result["source_matches"] == 11
+    assert "no path search performed" in result["reason"]
+    found = _tool_result_json(await mcp.call_tool("ibwd_find_symbol", {"name": "module10.py::start"}))
+    assert len(found) == 1 and found[0]["symbol_id"] == "module10.py::start"
+    path = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": found[0]["symbol_id"], "target": "module10.py::finish"}))
+    assert path["hops"] == 1
+    callers = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "module10.py::finish"}))
+    assert callers[0]["file"] == "module10.py"
+    assert _tool_result_json(await mcp.call_tool("ibwd_find_symbol", {"name": "wrong.py::start"})) == []
+
+
+@pytest.mark.anyio
+async def test_exact_method_identity_distinguishes_classes_in_same_file(tmp_path, monkeypatch):
+    (tmp_path / "models.py").write_text("class A:\n    def run(self): pass\n\nclass B:\n    def run(self): pass\n")
+    monkeypatch.chdir(tmp_path)
+    await mcp.call_tool("ibwd_scan", {})
+    found = _tool_result_json(await mcp.call_tool("ibwd_find_symbol", {"name": "run"}))
+    assert {r["symbol_id"] for r in found} == {"models.py::A.run", "models.py::B.run"}
+    exact = _tool_result_json(await mcp.call_tool("ibwd_find_symbol", {"name": "models.py::B.run"}))
+    assert len(exact) == 1 and exact[0]["line"] == 5

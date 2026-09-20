@@ -1,5 +1,14 @@
 ## IBWD — codebase memory
 
+**Current owner direction (2026-09-20):** develop the existing repository for both Codex and Claude Code with no paid model calls.
+Do not run the paid pilot, 120-session experiment, or other billable jobs. Continue with deterministic local tests and MCP transport
+checks. The frozen Sprint 3 artefacts/tag are historical evidence, not the current development configuration; the paid gate remains
+untested. See `DEVELOPMENT.md` for the current priorities and validation commands. `AGENTS.md` shares these instructions.
+
+Use `ibwd doctor --repo PATH` to inspect index freshness without modifying it. Scan before querying an unindexed repository.
+Discovery tools return `symbol_id` (`file::Class.method` or `file::function`); pass that exact identity to graph queries when names
+are ambiguous. An ambiguous path response means no search was performed, not that no path exists.
+
 This repo has an IBWD MCP server providing structural + semantic queries
 over the codebase (tree-sitter-derived facts + local-LLM-inferred summaries,
 added in later sprints). It's built incrementally — this file grows one
