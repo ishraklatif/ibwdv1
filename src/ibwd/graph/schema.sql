@@ -36,6 +36,10 @@ CREATE TABLE IF NOT EXISTS edges (
     confidence    REAL NOT NULL DEFAULT 1.0,
     source_type   TEXT NOT NULL DEFAULT 'static_analysis',  -- static_analysis | llm_inference
     created_at    TEXT DEFAULT (datetime('now')),
+    -- resolved: import-map / same-module / inherited (and IMPORTS). candidate: unique-name / suffix hints, excluded from
+    -- default callers / dependents / trace-path answers. resolution_tier keeps the mechanism; confidence is the heuristic score.
+    resolution_status TEXT NOT NULL DEFAULT 'resolved',
+    resolution_tier   TEXT,
     UNIQUE (source_id, target_id, relation)
 );
 CREATE INDEX IF NOT EXISTS idx_edges_source ON edges(source_id);

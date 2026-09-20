@@ -164,17 +164,19 @@ def test_module_alias_receiver_follows_a_python_reexport(tmp_path: Path):
     assert _edges(tmp_path, "CALLS")[("main.py::go", "impl.py::reexported")] == 0.95
 
 
-def test_tier5_fuzzy_ignores_case_and_underscores(tmp_path: Path):
-    _write(
-        tmp_path,
-        {
-            "a.py": "def fetch_data():\n    return 1\n",
-            "b.py": "def caller():\n    return fetchData()\n",
-        },
-    )
-    run_scan(tmp_path)
+def test_fuzzy_tier_is_disabled_by_default_and_experimental_when_enabled(tmp_path: Path, monkeypatch):
+    files = {
+        "a.py": "def fetch_data():\n    return 1\n",
+        "b.py": "def caller():\n    return fetchData()\n",
+    }
+    _write(tmp_path / "off", files)
+    run_scan(tmp_path / "off")
+    assert _edges(tmp_path / "off", "CALLS") == {}  # fuzzy never creates an ordinary edge
 
-    assert _edges(tmp_path, "CALLS")[("b.py::caller", "a.py::fetch_data")] == 0.35
+    monkeypatch.setenv("IBWD_EXPERIMENTAL_FUZZY", "1")
+    _write(tmp_path / "on", files)
+    run_scan(tmp_path / "on")
+    assert _edges(tmp_path / "on", "CALLS")[("b.py::caller", "a.py::fetch_data")] == 0.35  # opt-in only
 
 
 def test_ambiguous_names_are_left_unresolved(tmp_path: Path):

@@ -39,7 +39,8 @@ def test_export_uses_stable_symbol_ids_and_tiers(tmp_path: Path):
     assert edges[("lib.py::Base.step", "lib.py::helper", "CALLS")]["tier"] == "same_module"
     assert edges[("app.py::Child.go", "lib.py::Base.step", "CALLS")]["tier"] == "inherited"
     assert edges[("app.py::Child", "lib.py::Base", "INHERITS")]["tier"] == "import_map"
-    assert edges[("app.py", "lib.py", "IMPORTS")]["tier"] is None
+    assert edges[("app.py", "lib.py", "IMPORTS")]["tier"] == "path"
+    assert all(e["resolution_status"] == "resolved" for e in data["edges"])  # every tier in this fixture is resolved
     assert not any(str(k[0]).isdigit() for k in edges)  # never SQLite row ids
 
 

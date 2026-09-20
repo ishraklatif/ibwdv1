@@ -24,6 +24,12 @@ def _init_schema(conn: sqlite3.Connection) -> None:
     """Initialize the database schema by executing the SQL script from the schema.sql file."""
     schema_sql = resources.files("ibwd.graph").joinpath("schema.sql").read_text() # Read the contents of the schema.sql file from the ibwd.graph package
     conn.executescript(schema_sql) # Execute the SQL script to create the necessary tables and indexes in the database
+    # Databases created before edge resolution status existed get the columns added in place (idempotent).
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(edges)")}
+    if "resolution_status" not in columns:
+        conn.execute("ALTER TABLE edges ADD COLUMN resolution_status TEXT NOT NULL DEFAULT 'resolved'")
+    if "resolution_tier" not in columns:
+        conn.execute("ALTER TABLE edges ADD COLUMN resolution_tier TEXT")
     conn.commit() # Commit the changes to the database to ensure that the schema is saved and available for use
 
 
@@ -118,17 +124,21 @@ def upsert_edge(
     relation: str,
     confidence: float = 1.0,
     source_type: str = "static_analysis",
+    resolution_status: str = "resolved",
+    resolution_tier: str | None = None,
 ) -> None:
     """Insert or update an edge in the graph database, keyed on (source_id, target_id, relation)."""
     conn.execute(
         """
-        INSERT INTO edges (source_id, target_id, relation, confidence, source_type)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO edges (source_id, target_id, relation, confidence, source_type, resolution_status, resolution_tier)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (source_id, target_id, relation) DO UPDATE SET
             confidence = excluded.confidence,
-            source_type = excluded.source_type
+            source_type = excluded.source_type,
+            resolution_status = excluded.resolution_status,
+            resolution_tier = excluded.resolution_tier
         """,
-        (source_id, target_id, relation, confidence, source_type),
+        (source_id, target_id, relation, confidence, source_type, resolution_status, resolution_tier),
     )
 
 

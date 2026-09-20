@@ -3,8 +3,8 @@
 Symbol identity is stable and independent of SQLite row ids: a symbol is "{file}::{Outer.inner}"
 (its qualified_name); a File node (module-level calls, IMPORTS) is just its repo-relative path.
 
-Edges carry the pair (source, target, relation), the confidence and, for CALLS / REFERENCES /
-INHERITS, the resolution tier. IBWD edges do not store callsite positions, so comparisons are at
+Edges carry the pair (source, target, relation), the heuristic confidence, the resolution tier and the
+resolution_status (resolved | candidate). IBWD edges do not store callsite positions, so comparisons are at
 (caller symbol -> target symbol) granularity: they can show a *relation* is missing, not that an
 individual callsite was.
 """
@@ -67,14 +67,15 @@ def export_graph(conn: sqlite3.Connection, repo_name: str, repo_sha: str | None 
     placeholders = ",".join("?" * len(REFERENCE_RELATIONS))
     edges: list[dict] = []
     for row in conn.execute(
-        f"SELECT source_id, target_id, relation, confidence FROM edges WHERE relation IN ({placeholders})",
+        f"SELECT source_id, target_id, relation, confidence, resolution_status, resolution_tier FROM edges WHERE relation IN ({placeholders})",
         REFERENCE_RELATIONS,
     ):
         source, target = node_ids.get(row["source_id"]), node_ids.get(row["target_id"])
         if source is None or target is None:
             continue
         edges.append({"source": source, "target": target, "relation": row["relation"],
-                      "confidence": row["confidence"], "tier": _tier(row["relation"], row["confidence"])})
+                      "confidence": row["confidence"], "tier": row["resolution_tier"] or _tier(row["relation"], row["confidence"]),
+                      "resolution_status": row["resolution_status"]})
 
     symbols.sort(key=lambda s: (s["file"], s["line"] or 0, s["id"]))
     edges.sort(key=lambda e: (e["source"], e["target"], e["relation"]))

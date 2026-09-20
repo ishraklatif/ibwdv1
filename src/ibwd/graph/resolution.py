@@ -21,6 +21,7 @@ than guessed.
 from __future__ import annotations
 
 import sqlite3
+import os
 import re
 from collections import defaultdict
 from dataclasses import dataclass
@@ -39,7 +40,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 13
+EDGE_BUILD_VERSION = 14
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -49,6 +50,27 @@ CONF_UNIQUE_NAME = 0.75
 CONF_SUFFIX = 0.55
 CONF_FUZZY = 0.35
 CONF_INHERITED = 0.85  # self.x()/super().x() found on a base class (between same-module and unique-name)
+
+# Default edge policy (frozen, benchmarks/SPRINT3_gate_definition.md section 6): import-map, same-module and inherited edges
+# are RESOLVED; unique-name and suffix are CANDIDATE hints that default queries never use; fuzzy is DISABLED unless the
+# experimental flag IBWD_EXPERIMENTAL_FUZZY=1 is set (then it is created as a candidate).
+_TIER_BY_CONFIDENCE = {
+    0.95: "import_map", 0.90: "same_module", 0.85: "inherited", 0.75: "unique_name", 0.55: "suffix", 0.35: "fuzzy",
+}
+CANDIDATE_TIERS = frozenset({"unique_name", "suffix", "fuzzy"})
+
+
+def fuzzy_enabled() -> bool:
+    return os.environ.get("IBWD_EXPERIMENTAL_FUZZY") == "1"
+
+
+def classify_edge(relation: str, confidence: float) -> tuple[str, str]:
+    """(resolution_tier, resolution_status) for an edge produced with this relation and heuristic score."""
+    if relation == "IMPORTS":
+        return "path", "resolved"
+    tier = _TIER_BY_CONFIDENCE.get(round(confidence, 2), "unknown")
+    return tier, ("candidate" if tier in CANDIDATE_TIERS else "resolved")
+
 
 _SELF_RECEIVERS = {"self", "cls", "this"}
 
@@ -349,7 +371,7 @@ def resolve_ref(
             return sym, CONF_SUFFIX
 
     # -- Tier 5: fuzzy (same multi-word name in a different naming style) --
-    shape = None if generic_method else _name_shape(name)
+    shape = None if (generic_method or not fuzzy_enabled()) else _name_shape(name)
     if shape is not None:
         sym = _unique([s for s in index.by_shape.get(shape, ()) if eligible(s) and s.name != name])
         if sym is not None:
@@ -459,12 +481,13 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
     index = SymbolIndex(syms)
     resolver = ModuleResolver(file_ids, repo_root)
 
-    edges: dict[tuple[int, int, str], float] = {}
+    edges: dict[tuple[int, int, str], tuple[float, str, str]] = {}
 
     def add_edge(source_id: int, target_id: int, relation: str, confidence: float) -> None:
         key = (source_id, target_id, relation)
-        if confidence > edges.get(key, 0.0):
-            edges[key] = confidence
+        if key not in edges or confidence > edges[key][0]:
+            tier, status = classify_edge(relation, confidence)
+            edges[key] = (confidence, tier, status)
 
     # Extracted references are cached per file (keyed by content hash + extraction version), so only
     # files that actually changed are re-parsed; everything else is loaded from the table.
@@ -577,9 +600,9 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
     # Write only the difference from what's already stored (most rescans change few edges).
     placeholders = ",".join("?" * len(REFERENCE_RELATIONS))
     existing = {
-        (row["source_id"], row["target_id"], row["relation"]): row["confidence"]
+        (row["source_id"], row["target_id"], row["relation"]): (row["confidence"], row["resolution_tier"], row["resolution_status"])
         for row in conn.execute(
-            f"SELECT source_id, target_id, relation, confidence FROM edges WHERE relation IN ({placeholders})",
+            f"SELECT source_id, target_id, relation, confidence, resolution_tier, resolution_status FROM edges WHERE relation IN ({placeholders})",
             REFERENCE_RELATIONS,
         )
     }
@@ -587,9 +610,9 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
         "DELETE FROM edges WHERE source_id = ? AND target_id = ? AND relation = ?",
         [key for key in existing if key not in edges],
     )
-    for (source_id, target_id, relation), confidence in edges.items():
-        if existing.get((source_id, target_id, relation)) != confidence:
-            upsert_edge(conn, source_id, target_id, relation, confidence, "static_analysis")
+    for (source_id, target_id, relation), (confidence, tier, status) in edges.items():
+        if existing.get((source_id, target_id, relation)) != (confidence, tier, status):
+            upsert_edge(conn, source_id, target_id, relation, confidence, "static_analysis", status, tier)
     counts = dict.fromkeys(REFERENCE_RELATIONS, 0)
     for _, _, relation in edges:
         counts[relation] += 1

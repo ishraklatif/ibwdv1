@@ -110,13 +110,13 @@ def _brief(row) -> dict:
     return {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
 
 
-def _reach_tool(direction, symbol: str, depth: int, file: str | None) -> list[dict]:
+def _reach_tool(direction, symbol: str, depth: int, file: str | None, include_candidates: bool = False) -> list[dict]:
     conn = connect(Path.cwd() / ".ibwd" / "graph.db")
     try:
         targets = resolve_targets(conn, symbol, file)
         results: list[dict] = []
         for target in targets:
-            reached: list[Reach] = direction(conn, target["id"], depth)
+            reached: list[Reach] = direction(conn, target["id"], depth, include_candidates)
             for r in reached:
                 item = {
                     "name": r.name,
@@ -126,6 +126,8 @@ def _reach_tool(direction, symbol: str, depth: int, file: str | None) -> list[di
                     "distance": r.distance,
                     "confidence": r.confidence,
                     "relation": r.relation,
+                    "relations": r.relations,
+                    "resolution_status": r.resolution_status,
                 }
                 if len(targets) > 1:
                     item["of"] = f"{target['file_path']}:{target['start_line']}"
@@ -136,7 +138,7 @@ def _reach_tool(direction, symbol: str, depth: int, file: str | None) -> list[di
 
 
 @mcp.tool()
-def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None) -> list[dict]:
+def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None, include_candidates: bool = False) -> list[dict]:
     """What calls / imports / subclasses / references a symbol (or file), out to `depth` hops.
 
     Prefer this over manually Grep-tracing call sites. `symbol` is a
@@ -148,9 +150,14 @@ def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None) -> list[d
         symbol: symbol name or file path.
         depth: how many hops to follow (1 = direct callers only; capped at 5).
         file: optionally restrict a same-named symbol to one file.
+        include_candidates: also follow *candidate* hints (unique-name / suffix
+            matches). Default false: only resolved edges (import-map, same-module,
+            inherited) are used, so a guess never appears in an ordinary answer.
 
-    Returns a list of {name, kind, file, line, distance, confidence, relation}
-    sorted by distance then confidence. `confidence` is the product of the
+    Returns a list of {name, kind, file, line, distance, confidence, relation,
+    relations, resolution_status} sorted by distance then confidence. When a pair
+    is linked by both CALLS and REFERENCES, `relations` lists both.
+    `resolution_status` is "resolved" or (only with include_candidates) "candidate". `confidence` is the product of the
     resolution confidence of each edge on the path (0.95 import-resolved ...
     0.35 fuzzy): treat low values as leads to verify in source, not facts.
     `relation` is CALLS/IMPORTS/INHERITS/REFERENCES. Module-level calls show up
@@ -162,11 +169,11 @@ def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None) -> list[d
     ("file:line") naming which one it reaches. Results reflect the graph as of
     the last ibwd_scan; call ibwd_scan first if unsure. Python and JS/TS only.
     """
-    return _reach_tool(callers_of, symbol, depth, file)
+    return _reach_tool(callers_of, symbol, depth, file, include_candidates)
 
 
 @mcp.tool()
-def ibwd_dependents(symbol: str, depth: int = 1, file: str | None = None) -> list[dict]:
+def ibwd_dependents(symbol: str, depth: int = 1, file: str | None = None, include_candidates: bool = False) -> list[dict]:
     """What a symbol (or file) calls / imports / inherits from, out to `depth` hops.
 
     The mirror of ibwd_callers: use it for "what does X depend on?" instead of
@@ -175,22 +182,26 @@ def ibwd_dependents(symbol: str, depth: int = 1, file: str | None = None) -> lis
     reaching X). Calls into external packages are not listed — only symbols and
     files inside this repo.
     """
-    return _reach_tool(dependents_of, symbol, depth, file)
+    return _reach_tool(dependents_of, symbol, depth, file, include_candidates)
 
 
 @mcp.tool()
-def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = None) -> dict:
+def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = None, include_candidates: bool = False) -> dict:
     """Find how `source` reaches `target` through the call/import graph, if it does.
 
     Prefer this over calling ibwd_callers/ibwd_dependents at increasing depth
-    for "how does A reach B" / "is A connected to B" questions. The search
-    prefers high-confidence hops (edge cost = 1/confidence), so a route through
-    verified edges beats a shorter one through fuzzy guesses.
+    for "how does A reach B" / "is A connected to B" questions. The path cost is
+    a *heuristic cost* (the sum of 1/heuristic-score per hop): it prefers
+    higher-scored hops and fewer of them. It is not a probability.
 
     Args:
         source: symbol name or file path to start from.
         target: symbol name or file path to reach.
-        edge_types: subset of CALLS/IMPORTS/INHERITS/REFERENCES (default CALLS + IMPORTS).
+        edge_types: subset of CALLS/IMPORTS/INHERITS/REFERENCES. Default CALLS
+            only, i.e. a call chain; other relations make it a mixed
+            dependency path and must be requested explicitly.
+        include_candidates: also allow candidate hints (default false: resolved
+            edges only, so a chain is never built from unique-name/suffix guesses).
 
     Returns {"path": [{name, kind, file, line, edge_type, confidence}, ...],
     "cost": float, "hops": int}; each hop after the first names the edge that
@@ -213,7 +224,7 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
         if not targets:
             return {"path": None, "reason": f"target not found: {target}"}
 
-        graph = build_call_subgraph(conn, edge_types)
+        graph = build_call_subgraph(conn, edge_types, include_candidates)
         best: tuple[float, list[int]] | None = None
         for s in sources:
             for t in targets:
@@ -246,14 +257,24 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
             "file": attrs["file_path"],
             "line": attrs["line"],
             "edge_type": None,
+            "edge_types": None,
             "confidence": None,
+            "resolution_status": None,
         }
         if index > 0:
             edge = graph[node_ids[index - 1]][node_id]
             hop["edge_type"] = edge["relation"]
+            hop["edge_types"] = sorted(edge["relations"])  # every selected relation linking this pair is preserved
             hop["confidence"] = edge["confidence"]
+            hop["resolution_status"] = edge["status"]
         hops.append(hop)
-    return {"path": hops, "cost": round(cost, 4), "hops": len(node_ids) - 1}
+    return {
+        "path": hops,
+        "cost": round(cost, 4),
+        "cost_kind": "heuristic cost (sum of 1/score per hop), not a probability",
+        "hops": len(node_ids) - 1,
+        "uses_candidate_edges": any(h["resolution_status"] == "candidate" for h in hops),
+    }
 
 
 def main() -> None:

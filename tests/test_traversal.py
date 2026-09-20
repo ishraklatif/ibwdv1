@@ -181,4 +181,6 @@ def test_file_nodes_are_used_for_module_level_paths(tmp_path: Path):
     upsert_edge(conn, a, b, "IMPORTS", 1.0)
     conn.commit()
 
-    assert find_path(build_call_subgraph(conn), a, b) == [a, b]
+    # a mixed (IMPORTS) dependency path must be requested explicitly; the default call-chain graph is CALLS-only
+    assert find_path(build_call_subgraph(conn), a, b) is None
+    assert find_path(build_call_subgraph(conn, ("IMPORTS",)), a, b) == [a, b]
