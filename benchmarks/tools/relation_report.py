@@ -50,13 +50,14 @@ def main() -> int:
 
     O = {}          # (s, t, r) -> basis
     unmapped = 0
+    unmapped_edges: set = set()
     for e in oracle["edges"]:
         s, t = e["source"], e["target"]
         if not (ok(s, o_file) and ok(t, o_file)):
             continue
         if s not in file_of or t not in file_of:
-            unmapped += 1
-            continue
+            unmapped += 1          # IBWD has no such symbol (e.g. a function inside an IIFE): the edge stays in the denominator as a miss
+            unmapped_edges.add((s, t, e["relation"]))
         O[(s, t, e["relation"])] = e["basis"]
     B = {"resolved": {}, "candidate": {}}
     for e in ibwd["edges"]:
@@ -69,7 +70,7 @@ def main() -> int:
         "ibwd": {k: ibwd.get(k) for k in ("ibwd_commit", "ibwd_dirty", "edge_build_version")},
         "oracle": {"name": oracle.get("oracle"), "adapter": oracle.get("adapter"), "text_encoding": oracle.get("text_encoding")},
         "input_sha256": {"ibwd_export": hashlib.sha256(ibwd_raw).hexdigest(), "oracle_export": hashlib.sha256(oracle_raw).hexdigest()},
-        "oracle_edges_unmapped_to_ibwd_symbols": unmapped, "relations": {},
+        "oracle_edges_whose_symbol_ibwd_does_not_index": unmapped, "relations": {},
     }
     disagreements = []
     for rel in RELATIONS:
@@ -111,7 +112,8 @@ def main() -> int:
                     "supported_FN_verdicts": dict(fn_v), "unadjudicated_supported_FN": fn_v.get("UNADJUDICATED", 0),
                 })
                 for k in fn:
-                    disagreements.append({"kind": "FN", "basis": Or[k], "source": k[0], "target": k[1], "relation": k[2], "in_supported_scope": k in supported})
+                    disagreements.append({"kind": "FN", "basis": Or[k], "source": k[0], "target": k[1], "relation": k[2], "in_supported_scope": k in supported,
+                                          "symbol_not_indexed": k in unmapped_edges})
             else:
                 withc = len(Or.keys() & (Br | {k for k in B["resolved"] if k[2] == rel}))
                 block[status]["recall_resolved_plus_candidates"] = round(withc / len(Or), 4) if Or else None
