@@ -41,7 +41,10 @@ class Ctx:
 
     def tree(self, file: str) -> ast.Module:
         if file not in self._tree:
-            self._tree[file] = ast.parse("\n".join(self.lines(file)))
+            try:
+                self._tree[file] = ast.parse("\n".join(self.lines(file)))
+            except SyntaxError:               # a TypeScript file: the Python-ast detectors do not apply, the text detectors do
+                self._tree[file] = ast.Module(body=[], type_ignores=[])
         return self._tree[file]
 
     def find_def(self, file: str, qual: str):
@@ -80,9 +83,8 @@ def sites(ctx: Ctx, file: str, qual: str | None, simple: str) -> list[tuple[int,
     lo, hi = 1, len(lines)
     if qual:
         node = ctx.find_def(file, qual)
-        if node is None:
-            return []
-        lo, hi = node.lineno, node.end_lineno
+        if node is not None:
+            lo, hi = node.lineno, node.end_lineno
     return [(i, lines[i - 1].strip()) for i in range(lo, hi + 1) if re.search(r"(?<![A-Za-z0-9_])" + re.escape(simple) + r"(?![A-Za-z0-9_])", lines[i - 1])]
 
 
