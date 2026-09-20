@@ -268,6 +268,12 @@ def python_value_refs(root: Node) -> list[CallRef]:
             if not any(name in scope for scope in scopes):
                 out.append(CallRef(name, None, node.start_point.row + 1))
             continue
+        if t == "attribute" and node.parent is not None and node.parent.type == "attribute" \
+                and _field_of(node) == "object" and not _in_class_base_subscript(node):
+            # the inner part of a longer chain: `self.client.delete(key)` reads the attribute/property `client` of `self`
+            obj, attr = node.child_by_field_name("object"), node.child_by_field_name("attribute")
+            if obj is not None and attr is not None and obj.type == "identifier":
+                out.append(CallRef(_text(attr), _text(obj), node.start_point.row + 1))
         if t == "attribute" and _py_is_value_use_attribute(node):
             if _is_simple_dotted(node, "attribute", "object", ("identifier",)):
                 receiver = clean_receiver(_text(node.child_by_field_name("object")))
@@ -275,6 +281,8 @@ def python_value_refs(root: Node) -> list[CallRef]:
                 if receiver != UNKNOWN_RECEIVER and attr is not None:
                     out.append(CallRef(_text(attr), receiver, node.start_point.row + 1))
                     head = receiver.split(".")[0]
+                    if "." in receiver:                      # `self.a.b` also reads `self.a`
+                        out.append(CallRef(receiver.split(".")[1], head, node.start_point.row + 1))
                     if head not in ("self", "cls", "super") and not any(head in scope for scope in scopes):
                         out.append(CallRef(head, None, node.start_point.row + 1))   # the class/function used as a namespace
                 continue  # don't visit the chain's inner names

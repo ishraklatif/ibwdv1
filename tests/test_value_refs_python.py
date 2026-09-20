@@ -35,3 +35,8 @@ def test_head_of_an_attribute_chain_is_a_use_of_a_class_or_function_namespace():
     refs = _refs("def f():\n    return Cls.CONST, logtool.command(1), self.foo\n")
     assert ("Cls", None) in refs and ("logtool", None) in refs and ("CONST", "Cls") in refs
     assert ("self", None) not in refs
+
+
+def test_a_property_read_at_the_start_of_a_longer_chain_is_a_use():
+    refs = _refs("def f(self):\n    self.client.delete(1)\n    return self.a.b\n")
+    assert ("client", "self") in refs and ("a", "self") in refs and ("b", "self.a") in refs
