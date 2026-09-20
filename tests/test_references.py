@@ -287,3 +287,10 @@ def test_a_barrel_written_as_import_then_export_list_is_followed(tmp_path):
         "WHERE e.relation = 'CALLS' AND e.resolution_status = 'resolved'")}
     conn.close()
     assert ("use.ts::go", "module.ts::coreModule") in rows
+
+
+def test_a_function_declared_in_an_iife_is_a_use_target_from_the_iife_body():
+    values = _js_values("export const make = (() => {\n  function make() {}\n  return make\n})()\n")
+    assert ("make", None) in values                       # the IIFE is transparent: `make` is indexed like a top-level function
+    values = _js_values("export const make = () => {\n  function inner() {}\n  return inner\n}\n")
+    assert ("inner", None) not in values                  # inside an indexed function, `inner` is a nested (non-indexed) local

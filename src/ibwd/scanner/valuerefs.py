@@ -347,7 +347,19 @@ def _js_pattern_names(node: Node | None, out: set[str]) -> None:
             _js_pattern_names(child, out)
 
 
+def _js_is_indexed_function(fn: Node) -> bool:
+    """Does the symbol extractor index this function as a definition? (Then definitions nested in it are NOT indexed.)
+    Anonymous callbacks and IIFEs are transparent: a function declared in them is indexed like a top-level one."""
+    if fn.type in ("function_declaration", "generator_function_declaration", "method_definition"):
+        return True
+    p = fn.parent
+    while p is not None and p.type in ("parenthesized_expression", "as_expression", "satisfies_expression", "non_null_expression"):
+        p = p.parent
+    return p is not None and p.type in ("variable_declarator", "field_definition")
+
+
 def _js_locals(fn: Node) -> set[str]:
+    indexed = _js_is_indexed_function(fn)
     names: set[str] = set()
     _js_pattern_names(fn.child_by_field_name("parameters"), names)
     _js_pattern_names(fn.child_by_field_name("parameter"), names)  # arrow fn with a single bare param
@@ -361,7 +373,7 @@ def _js_locals(fn: Node) -> set[str]:
             _js_pattern_names(node.child_by_field_name("parameter"), names)
         elif t == "for_in_statement":
             _js_pattern_names(node.child_by_field_name("left"), names)
-        elif t in ("function_declaration", "generator_function_declaration", "class_declaration"):
+        elif t in ("function_declaration", "generator_function_declaration", "class_declaration") and indexed:
             name = node.child_by_field_name("name")
             if name is not None:
                 names.add(_text(name))
