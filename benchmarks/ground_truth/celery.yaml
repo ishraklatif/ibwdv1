@@ -1,0 +1,340 @@
+repo: "celery"
+repo_sha: "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6"
+manifest_sha256: "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407"
+oracle: "scip-python 0.6.6 (Pyright) + ast roles/owners"
+oracle_adapter: "benchmarks/tools/scip_python_to_graph.py"
+selection:
+  seed: "sprint3-gt-v1"
+  rule: "candidates ordered by sha256(seed:repo:stratum:id); the first is taken; IBWD output is never consulted"
+qualification_report:
+  repo: "celery"
+  repo_sha: "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6"
+  oracle: "scip-python 0.6.6 (Pyright) + ast roles/owners"
+  seed: "sprint3-gt-v1"
+  production_files: 155
+  test_like_files_excluded: 6
+  candidates:
+    Q1: 31
+    Q2: 14
+    Q3: 262
+    small: 110
+  candidate_order_first_five:
+    Q1:
+      - "celery/utils/text.py::truncate"
+      - "celery/_state.py::task_join_will_block"
+      - "celery/_state.py::_set_task_join_will_block"
+      - "celery/platforms.py::close_open_fds"
+      - "celery/utils/serialization.py::get_pickleable_exception"
+    Q2:
+      - "celery/app/base.py::Celery.__init__"
+      - "celery/bin/control.py::inspect"
+      - "celery/app/amqp.py::AMQP.as_task_v2"
+      - "celery/backends/base.py::Backend.exception_to_python"
+      - "celery/app/base.py::Celery.send_task"
+    Q3:
+      - "celery/app/amqp.py::AMQP.as_task_v2 -> celery/utils/saferepr.py::saferepr -> celery/utils/saferepr.py::_saferepr -> celery/utils/saferepr.py::reprstream"
+      - "celery/canvas.py::group.freeze -> celery/canvas.py::group._freeze_group_tasks -> celery/utils/functional.py::regen -> celery/utils/functional.py::_regen"
+      - "celery/backends/rpc.py::RPCBackend._to_result -> celery/backends/base.py::Backend._get_result_meta -> celery/backends/base.py::Backend.encode -> celery/backends/base.py::Backend._encode"
+    small:
+      - "celery/utils/collections.py::ConfigurationView.first"
+      - "celery/bin/events.py::_run_evtop"
+      - "celery/worker/worker.py::WorkController.terminate"
+      - "celery/backends/redis.py::RedisBackend._create_client"
+      - "celery/app/task.py::_reprtask"
+failed_admission_criteria: []
+tasks:
+  - id: "celery-q1"
+    stratum: "Q1"
+    relation: "CALLS"
+    target:
+      id: "celery/utils/text.py::truncate"
+      file: "celery/utils/text.py"
+      line: 89
+      lines: 5
+    question: "Which functions and methods in the production code call `truncate` (defined in celery/utils/text.py)? List each caller with its file."
+    expected:
+      - caller: "celery/canvas.py::xmap.__repr__"
+        file: "celery/canvas.py"
+      - caller: "celery/canvas.py::xstarmap.__repr__"
+        file: "celery/canvas.py"
+      - caller: "celery/concurrency/base.py::BasePool.apply_async"
+        file: "celery/concurrency/base.py"
+      - caller: "celery/utils/saferepr.py::_format_chars"
+        file: "celery/utils/saferepr.py"
+      - caller: "celery/utils/saferepr.py::_saferepr"
+        file: "celery/utils/saferepr.py"
+      - caller: "celery/worker/consumer/consumer.py::dump_body"
+        file: "celery/worker/consumer/consumer.py"
+    evidence:
+      - source: "celery/canvas.py::xmap.__repr__"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/canvas.py"
+        line: 1488
+        text: "return f'[{task.task}(x) for x in {truncate(repr(it), 100)}]'"
+      - source: "celery/canvas.py::xstarmap.__repr__"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/canvas.py"
+        line: 1499
+        text: "return f'[{task.task}(*x) for x in {truncate(repr(it), 100)}]'"
+      - source: "celery/concurrency/base.py::BasePool.apply_async"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/concurrency/base.py"
+        line: 150
+        text: "target, truncate(safe_repr(args), 1024),"
+      - source: "celery/utils/saferepr.py::_format_chars"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/utils/saferepr.py"
+        line: 146
+        text: "return \"'{}'\".format(truncate(val, maxlen).replace(\"'\", \"\\\\'\"))"
+      - source: "celery/utils/saferepr.py::_saferepr"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/utils/saferepr.py"
+        line: 175
+        text: "val = _safetext(truncate(token, maxlen))"
+      - source: "celery/worker/consumer/consumer.py::dump_body"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/worker/consumer/consumer.py"
+        line: 142
+        text: "return '{} ({}b)'.format(truncate(safe_repr(body), 1024),"
+    grading: "exact set of caller symbols"
+  - id: "celery-q2"
+    stratum: "Q2"
+    relation: "CALLS"
+    source:
+      id: "celery/app/base.py::Celery.__init__"
+      file: "celery/app/base.py"
+      line: 384
+      lines: 98
+    question: "Which functions, methods and classes defined in this repository does `Celery.__init__` (in celery/app/base.py) call directly? List each with its file."
+    expected:
+      - callee: "celery/_state.py::_register_app"
+        file: "celery/_state.py"
+      - callee: "celery/app/base.py::Celery.__autoset"
+        file: "celery/app/base.py"
+      - callee: "celery/app/base.py::Celery._get_default_loader"
+        file: "celery/app/base.py"
+      - callee: "celery/app/base.py::Celery.on_init"
+        file: "celery/app/base.py"
+      - callee: "celery/app/base.py::Celery.set_current"
+        file: "celery/app/base.py"
+      - callee: "celery/app/base.py::PendingConfiguration"
+        file: "celery/app/base.py"
+      - callee: "celery/app/base.py::app_has_custom"
+        file: "celery/app/base.py"
+      - callee: "celery/app/utils.py::Settings"
+        file: "celery/app/utils.py"
+      - callee: "celery/utils/dispatch/signal.py::Signal"
+        file: "celery/utils/dispatch/signal.py"
+    evidence:
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/_state.py::_register_app"
+        file: "celery/app/base.py"
+        line: 481
+        text: "_register_app(self)"
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/base.py::Celery.__autoset"
+        file: "celery/app/base.py"
+        line: 443
+        text: "self.__autoset('broker_url', broker)"
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/base.py::Celery._get_default_loader"
+        file: "celery/app/base.py"
+        line: 398
+        text: "self.loader_cls = loader or self._get_default_loader()"
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/base.py::Celery.on_init"
+        file: "celery/app/base.py"
+        line: 480
+        text: "self.on_init()"
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/base.py::Celery.set_current"
+        file: "celery/app/base.py"
+        line: 463
+        text: "self.set_current()"
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/base.py::PendingConfiguration"
+        file: "celery/app/base.py"
+        line: 451
+        text: "PendingConfiguration("
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/base.py::app_has_custom"
+        file: "celery/app/base.py"
+        line: 405
+        text: "or bool(app_has_custom(self, 'task_cls'))"
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/app/utils.py::Settings"
+        file: "celery/app/base.py"
+        line: 450
+        text: "self._conf = Settings("
+      - source: "celery/app/base.py::Celery.__init__"
+        target: "celery/utils/dispatch/signal.py::Signal"
+        file: "celery/app/base.py"
+        line: 468
+        text: "self.on_configure = Signal(name='app.on_configure')"
+    grading: "exact set of internal callees"
+  - id: "celery-q3"
+    stratum: "Q3"
+    relation: "CALLS"
+    source:
+      id: "celery/app/amqp.py::AMQP.as_task_v2"
+      file: "celery/app/amqp.py"
+      line: 327
+      lines: 93
+    target:
+      id: "celery/utils/saferepr.py::reprstream"
+      file: "celery/utils/saferepr.py"
+      line: 197
+      lines: 73
+    question: "Trace the shortest call path from `AMQP.as_task_v2` (celery/app/amqp.py) to `reprstream` (celery/utils/saferepr.py). Give every function on the path."
+    expected:
+      path:
+        - "celery/app/amqp.py::AMQP.as_task_v2"
+        - "celery/utils/saferepr.py::saferepr"
+        - "celery/utils/saferepr.py::_saferepr"
+        - "celery/utils/saferepr.py::reprstream"
+      hops: 3
+      any_valid_path_of_this_length: false
+      note: "the shortest path is unique in the oracle graph"
+    evidence:
+      - source: "celery/app/amqp.py::AMQP.as_task_v2"
+        target: "celery/utils/saferepr.py::saferepr"
+        file: "celery/app/amqp.py"
+        line: 364
+        text: "argsrepr = saferepr(args, self.argsrepr_maxsize, maxlevels=self.app.conf.task_repr_maxlevels)"
+      - source: "celery/utils/saferepr.py::saferepr"
+        target: "celery/utils/saferepr.py::_saferepr"
+        file: "celery/utils/saferepr.py"
+        line: 75
+        text: "return ''.join(_saferepr("
+      - source: "celery/utils/saferepr.py::_saferepr"
+        target: "celery/utils/saferepr.py::reprstream"
+        file: "celery/utils/saferepr.py"
+        line: 161
+        text: "for token, it in reprstream(stack, seen=seen, maxlevels=maxlevels):"
+    grading: "the exact three-hop path"
+  - id: "celery-small"
+    stratum: "small"
+    relation: "CALLS"
+    source:
+      id: "celery/utils/collections.py::ConfigurationView.first"
+      file: "celery/utils/collections.py"
+      line: 416
+      lines: 3
+    question: "Which functions, methods and classes defined in this repository does `ConfigurationView.first` (in celery/utils/collections.py) call directly? List each with its file."
+    expected:
+      - callee: "celery/utils/collections.py::ConfigurationView.get"
+        file: "celery/utils/collections.py"
+      - callee: "celery/utils/functional.py::first"
+        file: "celery/utils/functional.py"
+    evidence:
+      - source: "celery/utils/collections.py::ConfigurationView.first"
+        target: "celery/utils/collections.py::ConfigurationView.get"
+        file: "celery/utils/collections.py"
+        line: 418
+        text: "return first(None, (self.get(key) for key in keys))"
+      - source: "celery/utils/collections.py::ConfigurationView.first"
+        target: "celery/utils/functional.py::first"
+        file: "celery/utils/collections.py"
+        line: 418
+        text: "return first(None, (self.get(key) for key in keys))"
+    grading: "exact set of internal callees"
+candidates:
+  Q1:
+    - id: "celery/utils/text.py::truncate"
+      file: "celery/utils/text.py"
+      line: 89
+      lines: 5
+    - id: "celery/_state.py::task_join_will_block"
+      file: "celery/_state.py"
+      line: 60
+      lines: 2
+    - id: "celery/_state.py::_set_task_join_will_block"
+      file: "celery/_state.py"
+      line: 55
+      lines: 3
+    - id: "celery/platforms.py::close_open_fds"
+      file: "celery/platforms.py"
+      line: 350
+      lines: 22
+    - id: "celery/utils/serialization.py::get_pickleable_exception"
+      file: "celery/utils/serialization.py"
+      line: 161
+      lines: 12
+    - id: "celery/utils/log.py::mlevel"
+      file: "celery/utils/log.py"
+      line: 116
+      lines: 5
+    - id: "celery/backends/base.py::Backend._get_result_meta"
+      file: "celery/backends/base.py"
+      line: 686
+      lines: 50
+    - id: "celery/result.py::allow_join_result"
+      file: "celery/result.py"
+      line: 43
+      lines: 7
+  Q2:
+    - id: "celery/app/base.py::Celery.__init__"
+      file: "celery/app/base.py"
+      line: 384
+      lines: 98
+    - id: "celery/bin/control.py::inspect"
+      file: "celery/bin/control.py"
+      line: 178
+      lines: 31
+    - id: "celery/app/amqp.py::AMQP.as_task_v2"
+      file: "celery/app/amqp.py"
+      line: 327
+      lines: 93
+    - id: "celery/backends/base.py::Backend.exception_to_python"
+      file: "celery/backends/base.py"
+      line: 532
+      lines: 70
+    - id: "celery/app/base.py::Celery.send_task"
+      file: "celery/app/base.py"
+      line: 945
+      lines: 196
+    - id: "celery/app/base.py::Celery.task"
+      file: "celery/app/base.py"
+      line: 562
+      lines: 72
+    - id: "celery/backends/cache.py::CacheBackend.__init__"
+      file: "celery/backends/cache.py"
+      line: 98
+      lines: 20
+    - id: "celery/bin/worker.py::worker"
+      file: "celery/bin/worker.py"
+      line: 315
+      lines: 65
+  small:
+    - id: "celery/utils/collections.py::ConfigurationView.first"
+      file: "celery/utils/collections.py"
+      line: 416
+      lines: 3
+    - id: "celery/bin/events.py::_run_evtop"
+      file: "celery/bin/events.py"
+      line: 40
+      lines: 9
+    - id: "celery/worker/worker.py::WorkController.terminate"
+      file: "celery/worker/worker.py"
+      line: 254
+      lines: 13
+    - id: "celery/backends/redis.py::RedisBackend._create_client"
+      file: "celery/backends/redis.py"
+      line: 701
+      lines: 4
+    - id: "celery/app/task.py::_reprtask"
+      file: "celery/app/task.py"
+      line: 64
+      lines: 9
+    - id: "celery/utils/debug.py::_memdump"
+      file: "celery/utils/debug.py"
+      line: 73
+      lines: 8
+    - id: "celery/backends/base.py::BaseKeyValueStoreBackend.__init__"
+      file: "celery/backends/base.py"
+      line: 1101
+      lines: 8
+    - id: "celery/apps/multi.py::MultiParser._node_from_options"
+      file: "celery/apps/multi.py"
+      line: 328
+      lines: 6

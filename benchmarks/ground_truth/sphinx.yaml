@@ -1,0 +1,326 @@
+repo: "sphinx"
+repo_sha: "b04a2101295ac3fb725b16111eda0284b6da4cca"
+manifest_sha256: "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353"
+oracle: "scip-python 0.6.6 (Pyright) + ast roles/owners"
+oracle_adapter: "benchmarks/tools/scip_python_to_graph.py"
+selection:
+  seed: "sprint3-gt-v1"
+  rule: "candidates ordered by sha256(seed:repo:stratum:id); the first is taken; IBWD output is never consulted"
+qualification_report:
+  repo: "sphinx"
+  repo_sha: "b04a2101295ac3fb725b16111eda0284b6da4cca"
+  oracle: "scip-python 0.6.6 (Pyright) + ast roles/owners"
+  seed: "sprint3-gt-v1"
+  production_files: 239
+  test_like_files_excluded: 4
+  candidates:
+    Q1: 41
+    Q2: 77
+    Q3: 723
+    small: 109
+  candidate_order_first_five:
+    Q1:
+      - "sphinx/util/inspect.py::isattributedescriptor"
+      - "sphinx/util/docstrings.py::prepare_docstring"
+      - "sphinx/ext/autodoc/_dynamic/_loader.py::_load_object_by_name"
+      - "sphinx/ext/autodoc/_dynamic/_member_finder.py::_filter_enum_dict"
+      - "sphinx/domains/python/_annotations.py::_parse_annotation"
+    Q2:
+      - "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+      - "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_cast_expression"
+      - "sphinx/domains/c/_parser.py::DefinitionParser._parse_assignment_expression"
+      - "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_conditional_expression_tail"
+      - "sphinx/ext/autodoc/_generate.py::_add_directive_lines"
+    Q3:
+      - "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init -> sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer -> sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list -> sphinx/domains/c/_ast.py::ASTBracedInitList"
+      - "sphinx/domains/cpp/_parser.py::DefinitionParser.parse_xref_object -> sphinx/domains/cpp/_parser.py::DefinitionParser._parse_nested_name -> sphinx/domains/cpp/_parser.py::DefinitionParser._parse_template_argument_list -> sphinx/domains/cpp/_ast.py::ASTTemplateArgConstant"
+      - "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_constant_expression -> sphinx/domains/cpp/_parser.py::DefinitionParser._parse_conditional_expression_tail -> sphinx/domains/cpp/_parser.py::DefinitionParser._parse_expression -> sphinx/domains/cpp/_ast.py::ASTCommaExpr"
+    small:
+      - "sphinx/domains/c/_parser.py::DefinitionParser._parse_paren_expression_list"
+      - "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_expression_list_or_braced_init_list"
+      - "sphinx/domains/c/_parser.py::DefinitionParser._parse_enum"
+      - "sphinx/pycode/parser.py::VariableCommentPicker.add_variable_annotation"
+      - "sphinx/util/cfamily.py::BaseParser.skip_word_and_ws"
+failed_admission_criteria: []
+tasks:
+  - id: "sphinx-q1"
+    stratum: "Q1"
+    relation: "CALLS"
+    target:
+      id: "sphinx/util/inspect.py::isattributedescriptor"
+      file: "sphinx/util/inspect.py"
+      line: 357
+      lines: 23
+    question: "Which functions and methods in the production code call `isattributedescriptor` (defined in sphinx/util/inspect.py)? List each caller with its file."
+    expected:
+      - caller: "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines"
+        file: "sphinx/ext/autodoc/_dynamic/_docstrings.py"
+      - caller: "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object"
+        file: "sphinx/ext/autodoc/_dynamic/_loader.py"
+      - caller: "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member"
+        file: "sphinx/ext/autodoc/_dynamic/_member_finder.py"
+      - caller: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member"
+        file: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py"
+      - caller: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object"
+        file: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py"
+    evidence:
+      - source: "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines"
+        target: "sphinx/util/inspect.py::isattributedescriptor"
+        file: "sphinx/ext/autodoc/_dynamic/_docstrings.py"
+        line: 285
+        text: "if not inspect.isattributedescriptor(obj):"
+      - source: "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object"
+        target: "sphinx/util/inspect.py::isattributedescriptor"
+        file: "sphinx/ext/autodoc/_dynamic/_loader.py"
+        line: 402
+        text: "_obj_is_attribute_descriptor=inspect.isattributedescriptor(obj),"
+      - source: "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member"
+        target: "sphinx/util/inspect.py::isattributedescriptor"
+        file: "sphinx/ext/autodoc/_dynamic/_member_finder.py"
+        line: 549
+        text: "if inspect.isattributedescriptor(member) or not ("
+      - source: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member"
+        target: "sphinx/util/inspect.py::isattributedescriptor"
+        file: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py"
+        line: 2680
+        text: "if inspect.isattributedescriptor(member):"
+      - source: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object"
+        target: "sphinx/util/inspect.py::isattributedescriptor"
+        file: "sphinx/ext/autodoc/_legacy_class_based/_documenters.py"
+        line: 2438
+        text: "if ret and not inspect.isattributedescriptor(self.object):"
+    grading: "exact set of caller symbols"
+  - id: "sphinx-q2"
+    stratum: "Q2"
+    relation: "CALLS"
+    source:
+      id: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+      file: "sphinx/domains/python/_annotations.py"
+      line: 541
+      lines: 79
+    question: "Which functions, methods and classes defined in this repository does `_pseudo_parse_arglist` (in sphinx/domains/python/_annotations.py) call directly? List each with its file."
+    expected:
+      - callee: "sphinx/addnodes.py::desc_optional"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/addnodes.py::desc_parameter"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/addnodes.py::desc_parameterlist"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/addnodes.py::desc_sig_name"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/addnodes.py::desc_sig_operator"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/addnodes.py::desc_sig_punctuation"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/addnodes.py::desc_sig_space"
+        file: "sphinx/addnodes.py"
+      - callee: "sphinx/domains/python/_annotations.py::_parse_annotation"
+        file: "sphinx/domains/python/_annotations.py"
+    evidence:
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_optional"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 565
+        text: "stack.append(addnodes.desc_optional())"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_parameter"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 582
+        text: "node = addnodes.desc_parameter()"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_parameterlist"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 556
+        text: "paramlist = addnodes.desc_parameterlist()"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_sig_name"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 583
+        text: "node += addnodes.desc_sig_name('', param_name.strip())"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_sig_operator"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 592
+        text: "node += addnodes.desc_sig_operator('', '=')"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_sig_punctuation"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 586
+        text: "node += addnodes.desc_sig_punctuation('', ':')"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/addnodes.py::desc_sig_space"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 587
+        text: "node += addnodes.desc_sig_space()"
+      - source: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+        target: "sphinx/domains/python/_annotations.py::_parse_annotation"
+        file: "sphinx/domains/python/_annotations.py"
+        line: 585
+        text: "children = _parse_annotation(annotation.strip(), env=env)"
+    grading: "exact set of internal callees"
+  - id: "sphinx-q3"
+    stratum: "Q3"
+    relation: "CALLS"
+    source:
+      id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init"
+      file: "sphinx/domains/c/_parser.py"
+      line: 955
+      lines: 8
+    target:
+      id: "sphinx/domains/c/_ast.py::ASTBracedInitList"
+      file: "sphinx/domains/c/_ast.py"
+      line: 1476
+      lines: 34
+    question: "Trace the shortest call path from `DefinitionParser._parse_type_with_init` (sphinx/domains/c/_parser.py) to `ASTBracedInitList` (sphinx/domains/c/_ast.py). Give every function on the path."
+    expected:
+      path:
+        - "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init"
+        - "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer"
+        - "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list"
+        - "sphinx/domains/c/_ast.py::ASTBracedInitList"
+      hops: 3
+      any_valid_path_of_this_length: false
+      note: "the shortest path is unique in the oracle graph"
+    evidence:
+      - source: "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init"
+        target: "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer"
+        file: "sphinx/domains/c/_parser.py"
+        line: 961
+        text: "init = self._parse_initializer(outer=outer)"
+      - source: "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer"
+        target: "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list"
+        file: "sphinx/domains/c/_parser.py"
+        line: 876
+        text: "braced_init = self._parse_braced_init_list()"
+      - source: "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list"
+        target: "sphinx/domains/c/_ast.py::ASTBracedInitList"
+        file: "sphinx/domains/c/_parser.py"
+        line: 248
+        text: "return ASTBracedInitList(exprs, trailing_comma)"
+    grading: "the exact three-hop path"
+  - id: "sphinx-small"
+    stratum: "small"
+    relation: "CALLS"
+    source:
+      id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_paren_expression_list"
+      file: "sphinx/domains/c/_parser.py"
+      line: 226
+      lines: 13
+    question: "Which functions, methods and classes defined in this repository does `DefinitionParser._parse_paren_expression_list` (in sphinx/domains/c/_parser.py) call directly? List each with its file."
+    expected:
+      - callee: "sphinx/domains/c/_ast.py::ASTParenExprList"
+        file: "sphinx/domains/c/_ast.py"
+      - callee: "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer_list"
+        file: "sphinx/domains/c/_parser.py"
+    evidence:
+      - source: "sphinx/domains/c/_parser.py::DefinitionParser._parse_paren_expression_list"
+        target: "sphinx/domains/c/_ast.py::ASTParenExprList"
+        file: "sphinx/domains/c/_parser.py"
+        line: 238
+        text: "return ASTParenExprList(exprs)"
+      - source: "sphinx/domains/c/_parser.py::DefinitionParser._parse_paren_expression_list"
+        target: "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer_list"
+        file: "sphinx/domains/c/_parser.py"
+        line: 233
+        text: "exprs, _trailing_comma = self._parse_initializer_list("
+    grading: "exact set of internal callees"
+candidates:
+  Q1:
+    - id: "sphinx/util/inspect.py::isattributedescriptor"
+      file: "sphinx/util/inspect.py"
+      line: 357
+      lines: 23
+    - id: "sphinx/util/docstrings.py::prepare_docstring"
+      file: "sphinx/util/docstrings.py"
+      line: 42
+      lines: 29
+    - id: "sphinx/ext/autodoc/_dynamic/_loader.py::_load_object_by_name"
+      file: "sphinx/ext/autodoc/_dynamic/_loader.py"
+      line: 57
+      lines: 103
+    - id: "sphinx/ext/autodoc/_dynamic/_member_finder.py::_filter_enum_dict"
+      file: "sphinx/ext/autodoc/_dynamic/_member_finder.py"
+      line: 648
+      lines: 78
+    - id: "sphinx/domains/python/_annotations.py::_parse_annotation"
+      file: "sphinx/domains/python/_annotations.py"
+      line: 95
+      lines: 157
+    - id: "sphinx/util/docutils.py::SphinxDirective.parse_content_to_nodes"
+      file: "sphinx/util/docutils.py"
+      line: 532
+      lines: 21
+    - id: "sphinx/ext/autodoc/_dynamic/_mock.py::undecorate"
+      file: "sphinx/ext/autodoc/_dynamic/_mock.py"
+      line: 212
+      lines: 9
+    - id: "sphinx/ext/autodoc/_dynamic/_type_comments.py::_update_annotations_using_type_comments"
+      file: "sphinx/ext/autodoc/_dynamic/_type_comments.py"
+      line: 105
+      lines: 20
+  Q2:
+    - id: "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist"
+      file: "sphinx/domains/python/_annotations.py"
+      line: 541
+      lines: 79
+    - id: "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_cast_expression"
+      file: "sphinx/domains/cpp/_parser.py"
+      line: 646
+      lines: 25
+    - id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_assignment_expression"
+      file: "sphinx/domains/c/_parser.py"
+      line: 417
+      lines: 29
+    - id: "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_conditional_expression_tail"
+      file: "sphinx/domains/cpp/_parser.py"
+      line: 732
+      lines: 15
+    - id: "sphinx/ext/autodoc/_generate.py::_add_directive_lines"
+      file: "sphinx/ext/autodoc/_generate.py"
+      line: 197
+      lines: 47
+    - id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_literal"
+      file: "sphinx/domains/c/_parser.py"
+      line: 122
+      lines: 45
+    - id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_cast_expression"
+      file: "sphinx/domains/c/_parser.py"
+      line: 332
+      lines: 25
+    - id: "sphinx/util/fileutil.py::copy_asset"
+      file: "sphinx/util/fileutil.py"
+      line: 101
+      lines: 68
+  small:
+    - id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_paren_expression_list"
+      file: "sphinx/domains/c/_parser.py"
+      line: 226
+      lines: 13
+    - id: "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_expression_list_or_braced_init_list"
+      file: "sphinx/domains/cpp/_parser.py"
+      line: 391
+      lines: 7
+    - id: "sphinx/domains/c/_parser.py::DefinitionParser._parse_enum"
+      file: "sphinx/domains/c/_parser.py"
+      line: 1011
+      lines: 3
+    - id: "sphinx/pycode/parser.py::VariableCommentPicker.add_variable_annotation"
+      file: "sphinx/pycode/parser.py"
+      line: 296
+      lines: 5
+    - id: "sphinx/util/cfamily.py::BaseParser.skip_word_and_ws"
+      file: "sphinx/util/cfamily.py"
+      line: 386
+      lines: 5
+    - id: "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.copy_html_logo"
+      file: "sphinx/builders/html/__init__.py"
+      line: 895
+      lines: 8
+    - id: "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_union"
+      file: "sphinx/domains/cpp/_parser.py"
+      line: 1801
+      lines: 4
+    - id: "sphinx/theming.py::HTMLThemeFactory._load_builtin_themes"
+      file: "sphinx/theming.py"
+      line: 190
+      lines: 5
