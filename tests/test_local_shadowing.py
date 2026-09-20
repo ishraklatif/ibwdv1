@@ -125,3 +125,21 @@ def test_class_body_names_resolve_to_earlier_class_members_before_imports(tmp_pa
     assert ("task.py::Task.signature", "lib.py::signature", "CALLS") in rows
     assert ("task.py::Task", "task.py::Task.signature", "REFERENCES") in rows
     assert ("task.py::Task", "lib.py::signature", "REFERENCES") not in rows
+
+
+def test_a_class_alias_is_followed_in_a_base_list(tmp_path: Path):
+    (tmp_path / "base.py").write_text("class Base:\n    def step(self):\n        return 1\n\n    def __init__(self, c):\n        self.c = c\n")
+    (tmp_path / "h.py").write_text(
+        "from typing import TYPE_CHECKING\nfrom base import Base\n\n"
+        "if TYPE_CHECKING:\n    _Base = Base[int]\nelse:\n    _Base = Base\n\n\n"
+        "class Handler(_Base):\n    def __init__(self, c):\n        super().__init__(c)\n\n    def go(self):\n        return self.step()\n"
+    )
+    run_scan(tmp_path)
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    rows = {(r[0], r[1], r[2]) for r in conn.execute(
+        "SELECT s.qualified_name, t.qualified_name, e.relation FROM edges e JOIN nodes s ON s.id = e.source_id "
+        "JOIN nodes t ON t.id = e.target_id WHERE e.relation IN ('CALLS', 'INHERITS') AND e.resolution_status = 'resolved'")}
+    conn.close()
+    assert ("h.py::Handler", "base.py::Base", "INHERITS") in rows
+    assert ("h.py::Handler.go", "base.py::Base.step", "CALLS") in rows
+    assert ("h.py::Handler.__init__", "base.py::Base.__init__", "CALLS") in rows

@@ -85,6 +85,9 @@ class FileReferences:
     # Python: (name, first_line, last_line) of names a function/comprehension binds itself (parameters, assigned variables,
     # nested defs): they shadow same-named module-level symbols and imports on those lines. See valuerefs.python_local_names.
     local_names: list[tuple[str, int, int]] = field(default_factory=list)
+    # Python: module-level `Alias = Target` / `Alias = Target[Args]` (also inside if/else/try): (alias, target_name, target_receiver).
+    # Only used to follow a class alias in a base-class list (`class Handler(_Base)`).
+    aliases: list[tuple[str, str, str | None]] = field(default_factory=list)
     # JS/TS: name of the symbol this file exports by default (`export default Foo`), if nameable.
     default_export: str | None = None
 
@@ -112,6 +115,7 @@ def refs_from_json(text: str) -> FileReferences:
         ],
         def_ranges=[(q, a, b) for q, a, b in data.get("def_ranges", [])],
         local_names=[(n, a, b) for n, a, b in data.get("local_names", [])],
+        aliases=[(a, n, r) for a, n, r in data.get("aliases", [])],
         default_export=data.get("default_export"),
     )
 

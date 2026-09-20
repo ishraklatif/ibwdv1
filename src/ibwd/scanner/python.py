@@ -200,6 +200,30 @@ def _python_bases(node: Node, refs: FileReferences) -> None:
                 refs.bases.append(BaseRef(class_name, class_line, _text(attr), clean_receiver(_text(obj))))
 
 
+def _python_aliases(root: Node) -> list[tuple[str, str, str | None]]:
+    """Module-level `Alias = Target` or `Alias = Target[Args]`, including inside if/else/try blocks (never inside a def/class)."""
+    out: list[tuple[str, str, str | None]] = []
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        if node.type in ("function_definition", "class_definition", "lambda"):
+            continue
+        if node.type == "assignment":
+            left, right = node.child_by_field_name("left"), node.child_by_field_name("right")
+            if left is not None and right is not None and left.type == "identifier":
+                if right.type == "subscript":
+                    right = right.child_by_field_name("value") or right
+                if right.type == "identifier":
+                    out.append((_text(left), _text(right), None))
+                elif right.type == "attribute":
+                    obj, attr = right.child_by_field_name("object"), right.child_by_field_name("attribute")
+                    if obj is not None and attr is not None:
+                        out.append((_text(left), _text(attr), clean_receiver(_text(obj))))
+            continue
+        stack.extend(node.children)
+    return out
+
+
 def extract_python_references(source: bytes) -> FileReferences:
     """Extract imports, call sites and base classes (unresolved) from Python source."""
     parser = Parser(_LANGUAGE)  # keep a reference: a temporary Parser crashes Node.text
@@ -221,4 +245,5 @@ def extract_python_references(source: bytes) -> FileReferences:
 
     refs.value_refs = python_value_refs(tree.root_node)
     refs.local_names = python_local_names(tree.root_node)
+    refs.aliases = _python_aliases(tree.root_node)
     return refs

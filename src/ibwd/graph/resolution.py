@@ -40,7 +40,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 17
+EDGE_BUILD_VERSION = 18
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -515,6 +515,21 @@ class _BindingViews:
         return view
 
 
+def _resolve_class_alias(
+    name: str, path: str, line: int, refs: FileReferences, views: "_BindingViews", index: SymbolIndex
+) -> tuple[Sym, float] | None:
+    """`class H(_Base)` where the module says `_Base = Target` (or `Target[Args]`, in if/else branches): follow the alias when
+    every assignment of it resolves to the same class."""
+    targets = [(target, receiver) for alias, target, receiver in refs.aliases if alias == name]
+    found: dict[int, tuple[Sym, float]] = {}
+    for target, receiver in targets:
+        hit = resolve_ref(target, receiver, file_path=path, owner_qualname=None, bindings=views.at(line), index=index, kinds=_CLASS_ONLY)
+        if hit is None:
+            return None            # one branch we cannot resolve: not provably the same class
+        found[hit[0].id] = (hit[0], min(hit[1], CONF_SAME_MODULE))
+    return next(iter(found.values())) if len(found) == 1 else None
+
+
 def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[str, int]:
     """Re-derive every IMPORTS/CALLS/INHERITS edge from source. Returns counts by relation.
 
@@ -622,6 +637,8 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 index=index,
                 kinds=_CLASS_ONLY,
             )
+            if resolved is None and base.receiver is None:
+                resolved = _resolve_class_alias(base.name, path, base.class_line, refs, bindings_by_file[path], index)
             if resolved and resolved[0].id != cls.id:
                 add_edge(cls.id, resolved[0].id, "INHERITS", resolved[1])
                 hierarchy.bases[cls.id].append(resolved[0])
