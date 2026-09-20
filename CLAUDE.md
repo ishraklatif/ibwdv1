@@ -13,8 +13,9 @@ block per sprint.
 - "How does A reach B?" / "is A connected to B?" -> `ibwd_trace_path(source, target)` instead of calling `ibwd_callers`/`ibwd_dependents` at increasing depth; "no path found" is a real answer (Sprint 3)
 - Symbol and call-graph tools currently cover Python and JS/JSX/TS/TSX only; other languages fall through to Grep. The call graph covers source files only (not test files) and skips calls into external packages
 
-**Read `KNOWN_LIMITATIONS.md` before trusting a graph answer.** Key rule: "no callers" is not proof a
-function is safe to delete (dynamic dispatch and framework entry points have no static caller) —
+**Read `KNOWN_LIMITATIONS.md` before trusting a graph answer.** Key rule: an empty result means only
+"no matching resolved edges in the indexed production graph" — other uses may exist (dynamic dispatch, framework entry points,
+type-inferred receivers), so it is never proof that a function is unused or safe to delete —
 check the code before deleting.
 
 **Fall back to Glob/Grep/Read for:**

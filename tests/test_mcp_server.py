@@ -73,7 +73,8 @@ async def test_ibwd_callers_dependents_and_trace_path_tools(tmp_path: Path, monk
     dependents = _tool_result_json(await mcp.call_tool("ibwd_dependents", {"symbol": "a", "depth": 2}))
     assert [(r["name"], r["distance"]) for r in dependents] == [("b", 1), ("c", 2)]
 
-    assert _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "nope"})) == []
+    unknown = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "nope"}))
+    assert len(unknown) == 1 and unknown[0]["empty_result"] is True and "No symbol or file matching" in unknown[0]["statement"]
 
     traced = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "a", "target": "d"}))
     assert [hop["name"] for hop in traced["path"]] == ["a", "b", "c", "d"]
@@ -107,3 +108,26 @@ async def test_ibwd_callers_labels_ambiguous_targets(symbol_repo: Path, monkeypa
 
     narrowed = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "greet", "file": "src/other.py"}))
     assert [r["name"] for r in narrowed] == ["go"] and "of" not in narrowed[0]
+
+
+@pytest.mark.anyio
+async def test_empty_results_state_their_scope_and_never_claim_deletion_safety(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    (tmp_path / "m.py").write_text("def caller():\n    return 1\n\ndef unused():\n    return 2\n")
+    monkeypatch.chdir(tmp_path)
+    await mcp.call_tool("ibwd_scan", {})
+
+    empty = _tool_result_json(await mcp.call_tool("ibwd_callers", {"symbol": "unused"}))
+    assert len(empty) == 1 and empty[0]["empty_result"] is True
+    text = empty[0]["statement"]
+    assert "No resolved incoming CALLS or IMPORTS or INHERITS or REFERENCES edges were found within the indexed production scope" in text
+    assert "Other uses may exist" in text and "not evidence that the symbol is unused or safe to delete" in text
+    assert empty[0]["supported_claim"] == "no matching edges in this graph" and empty[0]["unsupported_claim"] == "no possible uses in the program"
+    assert empty[0]["candidate_hints_included"] is False and empty[0]["matched_targets"][0]["name"] == "unused"
+    for forbidden in ("no static use", "safe to delete.", "dead code", "is unused."):
+        assert forbidden not in text.lower().replace("not evidence that the symbol is unused or safe to delete", "")
+
+    outgoing = _tool_result_json(await mcp.call_tool("ibwd_dependents", {"symbol": "unused", "include_candidates": True}))
+    assert outgoing[0]["empty_result"] is True and "outgoing" in outgoing[0]["statement"] and "resolved and candidate" in outgoing[0]["statement"]
+
+    no_path = _tool_result_json(await mcp.call_tool("ibwd_trace_path", {"source": "caller", "target": "unused"}))
+    assert no_path["path"] is None and "not proof that no runtime path exists" in no_path["reason"] and no_path["scope"]

@@ -110,6 +110,30 @@ def _brief(row) -> dict:
     return {"name": row["name"], "kind": row["kind"], "file": row["file_path"], "line": row["start_line"]}
 
 
+GRAPH_SCOPE = (
+    "the indexed production scope: Python and JS/JSX/TS/TSX source files only (test, vendored, minified and generated files are not "
+    "indexed); calls into external packages are not represented"
+)
+
+
+def _empty_result(kind: str, symbol: str, targets: list, relations: list[str], include_candidates: bool) -> list[dict]:
+    """An empty answer states what it covers. It supports only 'no matching edges in this graph', never 'no possible uses'."""
+    direction = "incoming" if kind == "callers" else "outgoing"
+    rel = " or ".join(relations)
+    if not targets:
+        statement = f"No symbol or file matching {symbol!r} was found in the graph. This says nothing about whether it exists elsewhere."
+    else:
+        kinds = "resolved" if not include_candidates else "resolved and candidate"
+        statement = (f"No {kinds} {direction} {rel} edges were found within {GRAPH_SCOPE}. Other uses may exist "
+                     "(dynamic dispatch, framework registration, type-inferred receivers, unindexed files); this is not evidence that the symbol is unused or safe to delete.")
+    return [{
+        "empty_result": True, "statement": statement, "supported_claim": "no matching edges in this graph",
+        "unsupported_claim": "no possible uses in the program", "scope": GRAPH_SCOPE,
+        "relations_checked": relations, "candidate_hints_included": include_candidates,
+        "matched_targets": [_brief(t) for t in targets][:5],
+    }]
+
+
 def _reach_tool(direction, symbol: str, depth: int, file: str | None, include_candidates: bool = False) -> list[dict]:
     conn = connect(Path.cwd() / ".ibwd" / "graph.db")
     try:
@@ -134,6 +158,9 @@ def _reach_tool(direction, symbol: str, depth: int, file: str | None, include_ca
                 results.append(item)
     finally:
         conn.close()
+    if not results:
+        kind = "callers" if direction is callers_of else "dependents"
+        return _empty_result(kind, symbol, targets, ["CALLS", "IMPORTS", "INHERITS", "REFERENCES"], include_candidates)
     return results
 
 
@@ -163,9 +190,11 @@ def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None, include_c
     `relation` is CALLS/IMPORTS/INHERITS/REFERENCES. Module-level calls show up
     as kind "File". Rendering a React component (`<Card />`) counts as CALLS; a
     function passed as a value (`useReducer(fn)`, `component={Screen}`) is
-    REFERENCES. Empty results do NOT prove a function is safe to delete: dynamic
-    dispatch and framework entry points have no static caller (see
-    KNOWN_LIMITATIONS.md). If several definitions match `symbol`, each result carries an `of`
+    REFERENCES. An empty result returns one record with `empty_result: true`, its scope and the
+    statement "No resolved incoming ... edges were found within the indexed production scope. Other
+    uses may exist." That supports only "no matching edges in this graph", never "no possible uses"
+    or "safe to delete": dynamic dispatch, framework registration and type-inferred receivers have no
+    static edge (see KNOWN_LIMITATIONS.md). If several definitions match `symbol`, each result carries an `of`
     ("file:line") naming which one it reaches. Results reflect the graph as of
     the last ibwd_scan; call ibwd_scan first if unsure. Python and JS/TS only.
     """
@@ -242,7 +271,9 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
         # the caller can see both endpoints exist without extra find_symbol calls.
         return {
             "path": None,
-            "reason": "no path found: both endpoints exist in the graph but no edge chain connects them",
+            "reason": "no path found: both endpoints exist in the graph but no edge chain of the requested relations connects them "
+                      "(resolved edges only unless include_candidates; within the indexed production scope). This is not proof that no runtime path exists.",
+            "scope": GRAPH_SCOPE, "relations_checked": edge_types, "candidate_hints_included": include_candidates,
             "source_resolved": [_brief(row) for row in sources],
             "target_resolved": [_brief(row) for row in targets],
         }

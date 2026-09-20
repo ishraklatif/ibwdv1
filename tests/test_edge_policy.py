@@ -125,7 +125,7 @@ def test_tools_default_to_resolved_and_label_candidates_when_asked(tmp_path: Pat
         return default, with_cand, resolved
 
     default, with_cand, resolved = _in(tmp_path, calls)
-    assert default == []
+    assert len(default) == 1 and default[0]["empty_result"] is True and default[0]["candidate_hints_included"] is False
     assert [(r["name"], r["resolution_status"]) for r in with_cand] == [("by_name", "candidate")]
     assert [(r["name"], r["resolution_status"]) for r in resolved] == [("by_import", "resolved")]
 
