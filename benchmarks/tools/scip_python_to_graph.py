@@ -154,7 +154,8 @@ class FileModel:
                     for base in child.bases:
                         head = base.value if isinstance(base, ast.Subscript) else base
                         self.base_heads[self._end(head)] = qual
-                        self.base_spans.append((self._span(base)[0], self._span(base)[1], qual))
+                        if isinstance(base, ast.Subscript):     # `Base[Arg]`: Arg is a type expression; a call/attribute base is a value
+                            self.base_spans.append((self._span(base.slice)[0], self._span(base.slice)[1], qual))
                     self._walk(child, prefix if in_function else [*prefix, child.name], in_function, chain if in_function else chain)
                 else:
                     a = child.args
@@ -265,6 +266,19 @@ def main() -> int:
         for d in model.defs:
             by_line.setdefault(d["def_line"], d)
         for occ in doc.occurrences:
+            if not occ.symbol.startswith("local ") and occ.range[0] < len(model.lines):
+                dl = by_line.get(occ.range[0] + 1)
+                if dl is not None and dl["kind"] != "Class":
+                    simple = dl["qualname"].split(".")[-1]
+                    seg = model.lines[occ.range[0]]
+                    a = scip_col_to_char(seg, occ.range[1], encoding)
+                    b = scip_col_to_char(seg, occ.range[2], encoding) if len(occ.range) == 3 else -1
+                    dtail = descriptor_tail(occ.symbol)
+                    if seg[a:b] == simple and seg[:a].rstrip().endswith("def") and dtail.endswith(("().", ".")):
+                        # scip-python names a @property (or a def under `if TYPE_CHECKING:`) as a term at its def line (role 8, not a
+                        # definition) but refers to it as `Class#name().`: the def-line name occurrence ties both spellings to the def
+                        for spelling in (occ.symbol, occ.symbol[:-1] + "()." if not dtail.endswith("().") else occ.symbol):
+                            canon_by_def.setdefault(spelling, f"{rel}::{dl['qualname']}")
             if occ.symbol.startswith("local ") or not occ.symbol_roles & Definition:
                 continue
             tail = descriptor_tail(occ.symbol)
