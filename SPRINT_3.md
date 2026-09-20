@@ -33,7 +33,7 @@ repo and missed on the third (2.3x). Multi-repository validation is in progress
 
 ## Tests
 
-102 tests (up from 24): extraction (Python, JS/TS, JSX, value uses, default exports), each resolution tier, inheritance
+108 tests (up from 24): extraction (Python, JS/TS, JSX, value uses, default exports), each resolution tier, inheritance
 and `super()`, tsconfig aliases (JSONC, `baseUrl`, local `extends`), vendored/generated classification, cache correctness
 (incremental scan == fresh scan), traversal (depth 1–3, cycles, path preference), and the MCP tools end to end.
 
@@ -82,7 +82,8 @@ above the 3x threshold. Sprint 4 readiness is **not yet established**: it also r
 incremental/fresh equivalence for edits to imports, exports, inheritance, deletion and configuration (gate definition, §8). They exposed **seven** precision/recall bugs that IBWD's own repo could not: an over-loose fuzzy tier (127–235 false callers on one
 symbol), builtin-method-name matches (`dict.pop` → a repo `pop`), function-local imports shadowing module names, barrel
 re-exports, dynamic imports, a tree-sitter grammar quirk, and `typeof fn` in a type position counted as a value use. All are fixed
-with regression tests (102 tests) and recorded in `KNOWN_LIMITATIONS.md`.
+with regression tests (108 tests) and recorded in `KNOWN_LIMITATIONS.md`. A further six were then found by full-repo comparison against
+scip-python (see below), for **thirteen** in total.
 
 Recall against the kit's syntax-only candidate oracles (CALLS, pair level) is 2831/2833 adjudicated-valid edges (**broader
 semantic coverage 99.9%**). The two misses are Redux Toolkit **unsupported resolution cases** (type/data-flow-resolved, real
@@ -90,6 +91,22 @@ references that stay in the denominator). A third candidate miss, Sphinx `parse_
 error** (a function-local import legitimately shadows the module-level name) and dropped from the denominator with evidence.
 Supported-scope recall is 2831/2831. These candidates hold only import-map and same-module edges, so this is recall of obvious
 edges, **not precision**; the 6/6 (Python) and 4/4 (TypeScript) oracle pilots validate examples, not whole-repository precision.
+
+### Full-repo semantic comparison (Python; scip-python / Pyright oracle; CALLS, pair level, raw precision)
+
+| Repo | Precision | Broader semantic coverage | Supported-scope recall | Tier precision (import-map / same-module / inherited / unique-name / suffix) |
+|---|---|---|---|---|
+| Sphinx (Python files) | 97.9% | 82.8% | 99.9% | 99.9 / 99.6 / 99.8 / 82.7 / 76.4 |
+| Scrapy | 96.2% | 88.8% | 100% | 100 / 99.5 / 100 / 87.4 / 64.6 (fuzzy 0 of 3) |
+| Celery (negative control) | 83.0% | 94.0% | 99.8% | 97.9 / 99.2 / 100 / **13.6** / 26.4 (fuzzy 0 of 2) |
+
+The oracle found six more bugs, all fixed with tests: a Python module inside a package resolved `import asyncio` to a
+*sibling* `asyncio.py` instead of the standard library; logging method names (`logger.info`) matched a repo `info`;
+`super().x()` on an external base fell through to name matching (and matched itself); generic bases
+(`class C(Base[T])`) were not recognised; Python re-exports through `__init__.py` were not followed; and calls inside the
+first of two same-named definitions (property getter/setter, overloads) lost their owner. Raw precision is unadjudicated;
+the loose tiers are weak (unique-name 83/87/14%, suffix 76/65/26%, fuzzy 0 of 5), which is a finding, not yet a decision.
+TypeScript oracles (Redux Toolkit, Bulletproof React), runtime traces and the Q1/Q2/Q3 qualification are not yet done.
 
 ## Definition of done — status
 

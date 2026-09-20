@@ -169,6 +169,23 @@ against independent full-repository oracles.
   category was named after seeing these misses, so the broader figure is the honest headline). These candidate graphs hold
   only import-map and same-module edges, so they measure recall of obvious edges, **not precision**. The oracle pilots (Jedi:
   6/6 use-sites; TypeScript language service: 4/4) validate examples, not whole-repository precision.
+- **Six further bugs found by full-repo comparison against scip-python** (Pyright-resolved, independent of tree-sitter):
+  a package module's `import asyncio` resolved to a sibling `asyncio.py` (only scripts outside packages have their own
+  folder on sys.path); logging method names (`info`, `error`, …) matched repo methods; `super().x()` on an external base fell
+  through to name matching; generic bases `Base[T]` were ignored, so inherited `self.method()` calls were lost (10 Sphinx
+  misses); Python re-exports through `__init__.py` were not followed; and calls inside the first of two same-named definitions
+  (property getter/setter, overloads) lost their owner because only the last definition's lines were kept.
+  Results are in `benchmarks/sprint_3_semantic_comparison.json`.
+- **Remaining supported-scope misses, each adjudicated** (Sphinx 4, Celery 6; none is an IBWD defect):
+  Sphinx `write_documents → ChangesBuilder.hl` — oracle error (the bare `hl(...)` is a *nested* function, not the method);
+  Sphinx `_find_signature → ClassDocumenter.get_doc` — mixin MRO (the composed class's dynamic type);
+  Sphinx `visit_/depart_todo_node → HTML5Translator.*_admonition` — `self` is an annotated parameter of a module-level
+  function (type-resolved); Celery `Local.*` ×4 and `Request.acknowledge/reject` — a callable stored in a slot/instance
+  attribute (`self.__ident_func__()`, `self._on_ack(...)`), which SCIP attributes to the class (oracle artifact; dynamic).
+- **Loose tiers are weak and uncalibrated** (raw precision vs the oracle): unique-name 82.7% / 87.4% / 13.6%
+  (Sphinx / Scrapy / Celery control), suffix 76.4% / 64.6% / 26.4%, fuzzy 0 of 5. Tiers 1–2 (import-map, same-module,
+  inherited) are 97.9–100%. The confidence numbers are heuristic scores, not calibrated probabilities. Whether to keep,
+  demote or remove the fuzzy tier is an open decision.
 - **After the fixes (measured on the five repos):** the largest single-symbol caller counts are genuine hubs
   (`getLogger`, `useUser`, `nanoid`, `load_object`, `shared_task`); unique-name edges in Sphinx fell from 899 to 445.
 
