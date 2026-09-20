@@ -75,6 +75,7 @@ def freeze(cfg, tasks, experiment_id):
         "experiment_id": experiment_id, "status": "frozen", "frozen_at": subprocess.run(["date", "-u", "+%Y-%m-%dT%H:%M:%SZ"], capture_output=True, text=True).stdout.strip(),
         "ibwd_commit": git("rev-parse", "HEAD"), "edge_build_version": prep["edge_build_version"], "tool_contract_version": 2,
         "release_runtime_commit": (Path(cfg["layout"]["workspace_root"]) / "release" / "RELEASE_COMMIT").read_text().strip(),
+        "release_dependency_freeze_sha256": sha256_bytes((Path(cfg["layout"]["workspace_root"]) / "release-freeze.txt").read_bytes()),
         "gate_definition_sha256": sha256_bytes(GATE.read_bytes()),
         "prompt_template_sha256": sha256_bytes(PROMPT_TEMPLATE.encode()),
         "task_specs_index_sha256": sha256_bytes((ROOT / cfg["tasks_index"]).read_bytes()),
@@ -121,8 +122,14 @@ def preflight(cfg, tasks, strict=True) -> int:
     if cfg.get("ibwd_commit") and git("cat-file", "-t", cfg["ibwd_commit"]) != "commit":
         problems.append("frozen ibwd_commit not found")
     if cfg.get("ibwd_commit"):
-        if git("diff", "--name-only", cfg["ibwd_commit"], "HEAD", "--", "src") or cfg.get("release_runtime_commit") != cfg["ibwd_commit"]:
-            problems.append("implementation (src/) or the release runtime differs from the frozen commit")
+        if git("diff", "--name-only", cfg["ibwd_commit"], "HEAD", "--", "src", "pyproject.toml"):
+            problems.append("implementation (src/) changed since the frozen commit")
+        rc = (Path(cfg["layout"]["workspace_root"]) / "release" / "RELEASE_COMMIT")
+        if not rc.exists() or git("diff", "--name-only", rc.read_text().strip(), cfg["ibwd_commit"], "--", "src", "pyproject.toml"):
+            problems.append("the release runtime was built from different implementation sources than the frozen commit")
+        fz = Path(cfg["layout"]["workspace_root"]) / "release-freeze.txt"
+        if not fz.exists() or sha256_bytes(fz.read_bytes()) != cfg.get("release_dependency_freeze_sha256"):
+            problems.append("release dependency freeze differs from the frozen hash")
         for f, h in cfg.get("grader_and_harness_sha256", {}).items():
             if sha256_bytes((ROOT / f).read_bytes()) != h:
                 problems.append(f"harness file changed since the freeze: {f}")
