@@ -1,0 +1,101 @@
+{
+ "status": "Free graph validation reported complete; paid harness validation pending.",
+ "result_version": "build-27 development validation (recorded, not to be overwritten; any later graph-behavior change creates a new result version)",
+ "ibwd_commit": "8e7255432228a5e0f2d4654a13c03f9ea6c66cc0",
+ "edge_build_version": 27,
+ "working_tree_clean": false,
+ "working_tree_status": "?? benchmarks/tools/preparation_record.py",
+ "gate_definition": {
+  "file": "benchmarks/SPRINT3_gate_definition.md",
+  "sha256": "7f423f7a1cd2689f38f37057844fb3814464a832d589ffb9462545bbc9c04ed9"
+ },
+ "semantic_summary": {
+  "file": "benchmarks/sprint_3_semantic_comparison.json",
+  "sha256": "160cd3987b66301888afe797f79a1b4ff7e58dec3aabf4d049507a573360bdae"
+ },
+ "adjudications": {
+  "file": "benchmarks/adjudications/sprint_3_adjudications_v2.json",
+  "sha256": "91d49a021a2341a8ab89ab3b1317becdf65c2ca69b8a5f42ed5f5b49f4364977"
+ },
+ "repositories": {
+  "sphinx": {
+   "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+   "manifest_sha256_file": "19a689cfec0ee35031186f7f11e0b81b52c144fcb05daa28d2546b12443059e4",
+   "manifest_sha256_field": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353",
+   "ibwd_export_sha256": "ad653eb9fe167ef6df883c0b1c60382d2925e258d903fbabbbdc9b888b3f1dc2",
+   "ibwd_export_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+   "ibwd_export_edge_build": 27,
+   "oracle": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+   "oracle_export_sha256": "52edbc16759ff499bd2f43bab81b69cb807f46be29f968ad377fa01f7076efa2",
+   "ground_truth_yaml_sha256": "387dcac825933213517482fe0f3d89ff2ad2757f94f0097f1ba8153cef465f1b",
+   "ground_truth_recorded_in_manifest": "387dcac825933213517482fe0f3d89ff2ad2757f94f0097f1ba8153cef465f1b"
+  },
+  "scrapy": {
+   "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+   "manifest_sha256_file": "dc4a68c17fed4cd4be7999e6d29295e1c2a723ab901612d9346c04dbafba78b4",
+   "manifest_sha256_field": "c1448decc3b29ffdf958a342e4ebc328a66a08fb369a20c4841b7c4b030645f5",
+   "ibwd_export_sha256": "155a881dde03b052b3770506b5b285ad3495fadd5c05821471243e3c32ef00dc",
+   "ibwd_export_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+   "ibwd_export_edge_build": 27,
+   "oracle": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+   "oracle_export_sha256": "4f4a05d6b8f22cf3b044da654dccfe75078c3adadf075948668a57ad2546b51c",
+   "ground_truth_yaml_sha256": "a0262ff1e90ba2b2cfae7d3da12aae8bf1995b5c6443ee83fd5f0f1bccbc8756",
+   "ground_truth_recorded_in_manifest": "a0262ff1e90ba2b2cfae7d3da12aae8bf1995b5c6443ee83fd5f0f1bccbc8756"
+  },
+  "celery": {
+   "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+   "manifest_sha256_file": "14a29b3e62145ad06784adf13abae742bea97d568259be8ae6d540560c9cc141",
+   "manifest_sha256_field": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407",
+   "ibwd_export_sha256": "0442fd11b1661edbeea2063a32d697012f6f0bb92f2fe639a78128420fd56d53",
+   "ibwd_export_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+   "ibwd_export_edge_build": 27,
+   "oracle": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+   "oracle_export_sha256": "f32c977b625f5d0c6eb2f9030c99810d7c88a6d659c0caf9a273432e279973d1",
+   "ground_truth_yaml_sha256": "d74df536de143f9279f04502780243a2c153bac5373d055d410e4803102b87e3",
+   "ground_truth_recorded_in_manifest": "d74df536de143f9279f04502780243a2c153bac5373d055d410e4803102b87e3"
+  },
+  "redux-toolkit": {
+   "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+   "manifest_sha256_file": "4041c3b50285b057f6eaf5c434a73b93045ce8646e8f3dcc8f983abb8311c9b6",
+   "manifest_sha256_field": "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e",
+   "ibwd_export_sha256": "a2a3bc888d19c6e4fbf4815569a1f7ec54923fa90f1e9f876d527a7c45144251",
+   "ibwd_export_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+   "ibwd_export_edge_build": 27,
+   "oracle": "TypeScript compiler 6.0.3 (checker symbol resolution)",
+   "oracle_export_sha256": "f68690f8b16fbaead9eb49824f8178e6aa966b35dc418d5cff0338dfda959f4c",
+   "ground_truth_yaml_sha256": "fea5b56dfc5705677cc0f6d7b3a27f636c2b9ba080aa2796eb0b7cdd34246844",
+   "ground_truth_recorded_in_manifest": "fea5b56dfc5705677cc0f6d7b3a27f636c2b9ba080aa2796eb0b7cdd34246844"
+  },
+  "bulletproof-react": {
+   "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+   "manifest_sha256_file": "e3bd55de661a083b592db3dc3cc044588d6cf8439e7e01b285a505f54e7f51fd",
+   "manifest_sha256_field": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e",
+   "ibwd_export_sha256": "be1fc53a9992602816458320c407ef710eebabb7078e8b1dd4459d1a1294b536",
+   "ibwd_export_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+   "ibwd_export_edge_build": 27,
+   "oracle": "TypeScript compiler 5.4.5 (checker symbol resolution)",
+   "oracle_export_sha256": "7f6886f4422ee990c9cb968ee9065b16c0f6f2beea62569119863aad5bf59001",
+   "ground_truth_yaml_sha256": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259",
+   "ground_truth_recorded_in_manifest": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259"
+  }
+ },
+ "existing_evidence": [
+  "oracle and IBWD exports (build 27)",
+  "relation-level comparison and adjudications",
+  "20 qualified golden tasks and the golden check",
+  "no-static-use / hard-case diagnostics",
+  "runtime traces of three Python suites (accounting to be reconciled, step 2)",
+  "readiness timing medians and incremental-vs-fresh tests"
+ ],
+ "pending": [
+  "runtime accounting reconciliation",
+  "scoped wording for empty graph results",
+  "task/grader semantic consistency check (20 tasks)",
+  "deterministic grader",
+  "A/B runner with mock mode",
+  "isolation checks and summarizer",
+  "experiment freeze and preflight",
+  "4 paid pilot sessions (needs spending authorisation)",
+  "120-session experiment and verdict"
+ ]
+}
