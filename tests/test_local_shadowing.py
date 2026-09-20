@@ -102,3 +102,26 @@ def test_self_and_method_calls_are_unaffected(tmp_path: Path):
         "SELECT s.name, t.name FROM edges e JOIN nodes s ON s.id = e.source_id JOIN nodes t ON t.id = e.target_id WHERE e.relation = 'CALLS'")}
     conn.close()
     assert ("a", "b") in rows                                     # self is never treated as a shadowing local
+
+
+def test_class_body_names_resolve_to_earlier_class_members_before_imports(tmp_path: Path):
+    (tmp_path / "lib.py").write_text("def signature():\n    return 1\n")
+    (tmp_path / "task.py").write_text(
+        "from lib import signature\n\n\n"
+        "class Task:\n"
+        "    def signature(self):\n        return signature()\n\n"      # a method body does not see the class scope -> lib.signature
+        "    subtask = signature\n"                                   # the class body does -> Task.signature
+    )
+    run_scan(tmp_path)
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    rows = {
+        (r[0], r[1], r[2])
+        for r in conn.execute(
+            "SELECT s.qualified_name, t.qualified_name, e.relation FROM edges e JOIN nodes s ON s.id = e.source_id "
+            "JOIN nodes t ON t.id = e.target_id WHERE e.relation IN ('CALLS', 'REFERENCES')"
+        )
+    }
+    conn.close()
+    assert ("task.py::Task.signature", "lib.py::signature", "CALLS") in rows
+    assert ("task.py::Task", "task.py::Task.signature", "REFERENCES") in rows
+    assert ("task.py::Task", "lib.py::signature", "REFERENCES") not in rows

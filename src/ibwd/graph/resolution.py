@@ -40,7 +40,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 15
+EDGE_BUILD_VERSION = 16
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -628,12 +628,20 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
             elif not resolved and base.name not in _TRANSPARENT_BASES:
                 hierarchy.bases[cls.id].append(None)
 
+    def class_scope_member(owner: Sym | None, name: str, line: int) -> tuple[Sym, float] | None:
+        """A bare name used directly in a class body resolves to a member defined earlier in that body before any import or
+        module-level name (`subtask = signature` after `def signature(...)` refers to the method)."""
+        if owner is None or owner.node_type != "Class" or language_of(owner.file_path) != "python":  # JS needs `this.`
+            return None
+        member = index.by_qual.get((owner.file_path, f"{owner.qualname}.{name}"))
+        return (member, CONF_SAME_MODULE) if member is not None and member.start_line < line else None
+
     # Pass 3: calls
     for path, refs in parsed.items():
         file_id = file_ids[path]
         for call in refs.calls:
             owner = index.owner_of(path, call.line)
-            resolved = resolve_ref(
+            resolved = (call.receiver is None and class_scope_member(owner, call.name, call.line)) or resolve_ref(
                 call.name,
                 call.receiver,
                 file_path=path,
@@ -649,7 +657,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
         # Pass 4: functions used as values -> REFERENCES (never via the loose name tiers)
         for ref in refs.value_refs:
             owner = index.owner_of(path, ref.line)
-            resolved = resolve_ref(
+            resolved = (ref.receiver is None and class_scope_member(owner, ref.name, ref.line)) or resolve_ref(
                 ref.name,
                 ref.receiver,
                 file_path=path,

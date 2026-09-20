@@ -192,9 +192,26 @@ def _lambda_params(node: Node, names: set[str]) -> None:
                 _py_pattern_names(child, names)
 
 
+def _in_class_base_subscript(node: Node) -> bool:
+    """Inside a generic base such as `class C(ObjectDescription[Arg])`: the head is the inheritance edge and the arguments are
+    type expressions, not runtime uses of a function/class."""
+    p = node.parent
+    while p is not None:
+        if p.type == "subscript":
+            grand = p.parent
+            if grand is not None and grand.type == "argument_list" and grand.parent is not None and grand.parent.type == "class_definition":
+                return True
+        elif p.type in ("call", "block", "module", "function_definition", "lambda", "argument_list", "keyword_argument"):
+            return False
+        p = p.parent
+    return False
+
+
 def _py_is_value_use(node: Node) -> bool:
     parent = node.parent
     if parent is None:
+        return False
+    if _in_class_base_subscript(node):
         return False
     t, f = parent.type, _field_of(node)
     if t in ("function_definition", "class_definition") and f == "name":
@@ -260,6 +277,8 @@ def _py_is_value_use_attribute(node: Node) -> bool:
     """Is this attribute chain (`mod.fn`, `self.handler`) used as a value, from its top-most node?"""
     parent = node.parent
     if parent is None or parent.type == "attribute":  # inner part of a longer chain
+        return False
+    if _in_class_base_subscript(node):
         return False
     t, f = parent.type, _field_of(node)
     if t == "call" and f == "function":
