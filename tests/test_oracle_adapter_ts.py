@@ -31,7 +31,7 @@ EXPECTED_EDGES = {
     ("CALLS", f"{CORE}::ov", f"{CORE}::helper", "binding"),                        # overload signatures do not replace the implementation
     ("IMPORTS", INDEX, CORE, "path"),                                              # export { helper, outer } from "./core"
     ("IMPORTS", USE, CARD, "path"),
-    ("IMPORTS", USE, CORE, "path"),                                                # "@/core": tsconfig paths alias
+    ("IMPORTS", USE, CORE, "path"),                                                # "@/core" alias, and the dynamic import("./core")
     ("IMPORTS", USE, INDEX, "path"),
     ("CALLS", f"{USE}::a", f"{CORE}::helper", "binding"),                          # fn()
     ("CALLS", f"{USE}::b", f"{CORE}::outer", "binding"),                           # outer(fn): CALLS outer ...
@@ -53,6 +53,7 @@ EXPECTED_EDGES = {
     ("CALLS", f"{USE}::anon", f"{CORE}::helper", "binding"),                       # anonymous callback: owner is `anon`
     ("CALLS", f"{USE}::ov1", f"{CORE}::ov", "binding"),
     ("REFERENCES", f"{USE}::useProp", f"{CORE}::P.conf", "type_declared"),         # accessor read through a typed receiver
+    ("CALLS", f"{USE}::lazyLoad", f"{CORE}::helper", "binding"),                   # const { helper: lazyHelper } = await import("./core"); lazyHelper()
 }
 
 

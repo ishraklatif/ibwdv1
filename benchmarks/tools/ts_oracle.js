@@ -170,6 +170,20 @@ function resolveTarget(checker, id, expr) {
   for (const decl of sym.declarations || []) {
     const d = defs.get(decl);
     if (d) return d;
+    // `const { initializeDb } = await import('./db')`: the local is a binding element, but it IS the module's export
+    if (ts.isBindingElement(decl) && ts.isObjectBindingPattern(decl.parent) && ts.isVariableDeclaration(decl.parent.parent) && decl.parent.parent.initializer) {
+      let init = decl.parent.parent.initializer;
+      const whole = init;
+      if (ts.isAwaitExpression(init)) init = init.expression;
+      if (ts.isCallExpression(init) && init.expression.kind === ts.SyntaxKind.ImportKeyword && !decl.dotDotDotToken) {
+        const key = decl.propertyName || decl.name;
+        if (ts.isIdentifier(key)) {
+          let prop = checker.getPropertyOfType(checker.getTypeAtLocation(whole), key.text);
+          if (prop && (prop.flags & ts.SymbolFlags.Alias)) { try { prop = checker.getAliasedSymbol(prop); } catch (e) { prop = null; } }
+          for (const pd of (prop && prop.declarations) || []) { const dd = defs.get(pd); if (dd) return dd; }
+        }
+      }
+    }
   }
   return null;
 }

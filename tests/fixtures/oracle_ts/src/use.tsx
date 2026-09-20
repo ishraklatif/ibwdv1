@@ -85,3 +85,8 @@ export function ov1() {
 export function useProp(p: P) {
   return p.conf;
 }
+
+export async function lazyLoad() {
+  const { helper: lazyHelper } = await import("./core");
+  return lazyHelper();
+}
