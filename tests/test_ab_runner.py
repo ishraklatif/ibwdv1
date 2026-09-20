@@ -194,3 +194,26 @@ def test_sandbox_profile_denies_sentinels_outside_the_workspace_and_allows_the_w
     for denied in (secret / "s.txt", other / "x.txt"):                       # another workspace and a sensitive tree do not
         r = read(denied)
         assert r.returncode != 0 and "VALUE" not in r.stdout
+
+
+def test_total_budget_ceiling_is_enforced_across_attempts_and_retries(tmp_path):
+    four = SCHED[:4]
+    # every session costs 0.05 and succeeds: 4 x $1 worst case fits a $4 ceiling exactly
+    store = Store(tmp_path / "a")
+    r = run_schedule(four, BY_ID, MockExecutor(BY_ID), store, CFG, on_event=quiet, max_total_usd=4.0)
+    assert r["attempts_made"] == 4 and "stopped_by_total_budget" not in r
+    # crashes have unknown cost, so each reserves its full $1 cap: session 2 crashes three times (retries exhausted), then session 3 cannot start
+    # because 0.05 + 3.00 committed + a $1 cap would exceed $4 - the run stops, keeps every attempt, and nothing is skipped or replaced
+    store2 = Store(tmp_path / "b")
+    r2 = run_schedule(four, BY_ID, MockExecutor(BY_ID, lambda s: "infra_failure" if s["session_id"] == four[1]["session_id"] else "success"), store2, CFG,
+                      on_event=quiet, max_total_usd=4.0)
+    assert r2["stopped_by_total_budget"] and len(store2.all_attempts()) == 4
+    assert [a["status"] for a in store2.attempts(four[1]["session_id"])] == ["infra_failure"] * 3 and store2.attempts(four[2]["session_id"]) == []
+    # unknown-cost attempts (timeouts) reserve their full cap
+    store3 = Store(tmp_path / "c")
+    run_schedule(four[:1], BY_ID, MockExecutor(BY_ID, lambda s: "timeout"), store3, CFG, on_event=quiet, max_total_usd=4.0)
+    assert store3.committed_spend(1.0)["committed_usd"] == 1.0
+    # an interrupted attempt (started, never recorded) also reserves its cap
+    store4 = Store(tmp_path / "d")
+    store4.mark_started(four[0]["session_id"], 1)
+    assert store4.committed_spend(1.0)["committed_usd"] == 1.0

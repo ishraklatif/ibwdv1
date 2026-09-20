@@ -165,6 +165,7 @@ def main() -> int:
     ap.add_argument("paths", nargs="*")
     ap.add_argument("--config", type=Path, default=None)
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--max-total-usd", type=float, default=None, help="hard ceiling over ALL attempts in the run directory, retries included")
     ap.add_argument("--i-authorise-spending", action="store_true")
     a = ap.parse_args()
     cfg = load_config(a.config) if a.config else load_config()
@@ -201,9 +202,13 @@ def main() -> int:
     store = Store(Path(a.paths[0]))
     if a.cmd == "pilot":
         ps = pilot_sessions(cfg, tasks, sched)
-        print(run_schedule(ps, by_id, ex, store, cfg))
+        cap = a.max_total_usd if a.max_total_usd is not None else cfg["pilot_max_total_usd"]
+        print(run_schedule(ps, by_id, ex, store, cfg, max_total_usd=cap))
     else:
-        print(run_schedule(sched, by_id, ex, store, cfg, limit=a.limit))
+        if a.max_total_usd is None:
+            print("REFUSED: `run` needs an explicit --max-total-usd ceiling.", file=sys.stderr)
+            return 2
+        print(run_schedule(sched, by_id, ex, store, cfg, limit=a.limit, max_total_usd=a.max_total_usd))
     return 0
 
 

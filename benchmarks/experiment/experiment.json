@@ -119,5 +119,6 @@
    "mcp": "release runtime, stdio"
   }
  },
- "isolation": "macOS sandbox-exec profile per session (benchmarks/ab/execute.py); per-session APFS clone of the checkout; evidence in benchmarks/evidence/isolation_check.json"
+ "isolation": "macOS sandbox-exec profile per session (benchmarks/ab/execute.py); per-session APFS clone of the checkout; evidence in benchmarks/evidence/isolation_check.json",
+ "pilot_max_total_usd": 4.0
 }

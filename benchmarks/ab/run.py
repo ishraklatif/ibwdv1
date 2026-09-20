@@ -47,8 +47,12 @@ def run_attempt(session: dict, spec: dict, executor, store: Store, cfg: dict) ->
     return rec
 
 
-def run_schedule(schedule: list[dict], tasks_by_id: dict, executor, store: Store, cfg: dict, limit: int | None = None, on_event=print) -> dict:
+def run_schedule(schedule: list[dict], tasks_by_id: dict, executor, store: Store, cfg: dict, limit: int | None = None, on_event=print,
+                 max_total_usd: float | None = None) -> dict:
+    """`max_total_usd` is a hard ceiling over ALL attempts in the run directory, retries included: an attempt starts only if the worst-case money already
+    committed plus this attempt's own per-session cap fits under it; otherwise the run stops (nothing is skipped or replaced)."""
     done = skipped = attempts = 0
+    per = float(cfg["max_budget_usd_per_session"])
     for session in schedule:
         if store.is_complete(session["session_id"], cfg["max_infra_retries"]):
             skipped += 1
@@ -56,9 +60,15 @@ def run_schedule(schedule: list[dict], tasks_by_id: dict, executor, store: Store
         if limit is not None and done >= limit:
             break
         while not store.is_complete(session["session_id"], cfg["max_infra_retries"]):
+            if max_total_usd is not None:
+                c = store.committed_spend(per)
+                if c["committed_usd"] + per > max_total_usd + 1e-9:
+                    on_event(f"STOP: total budget ${max_total_usd:.2f} would be exceeded (committed ${c['committed_usd']:.2f} + next attempt cap ${per:.2f})")
+                    return {"completed_now": done, "skipped_already_complete": skipped, "attempts_made": attempts, "stopped_by_total_budget": True, "committed": c}
             rec = run_attempt(session, tasks_by_id[session["task_id"]], executor, store, cfg)
             attempts += 1
             on_event(f"[{session['position']:>3}/{len(schedule)}] {session['session_id']} a{rec['attempt']} {rec['status']}"
                      + (f" T={rec['tokens']}" if rec["tokens"] is not None else ""))
         done += 1
-    return {"completed_now": done, "skipped_already_complete": skipped, "attempts_made": attempts}
+    return {"completed_now": done, "skipped_already_complete": skipped, "attempts_made": attempts,
+            **({"committed": store.committed_spend(per)} if max_total_usd is not None else {})}

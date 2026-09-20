@@ -57,3 +57,22 @@ class Store:
 
     def all_attempts(self) -> list[dict]:
         return [json.loads(p.read_text()) for p in sorted((self.root / "attempts").glob("*.json"))]
+
+
+    def committed_spend(self, per_session_cap: float) -> dict:
+        """Worst-case money already committed in this run directory: the reported cost of every finished attempt, but the FULL per-attempt cap
+        whenever the true cost is unknown (timeout, crash without a result, missing cost, or an interrupted attempt that never wrote a record)."""
+        known = unknown = 0.0
+        n_unknown = 0
+        sessions = {p.name.split("__a")[0] for p in (self.root / "raw").glob("*.started")}
+        for a in self.all_attempts():
+            if isinstance(a.get("cost_usd"), (int, float)) and a["status"] not in ("timeout",):
+                known += a["cost_usd"]
+            else:
+                unknown += per_session_cap
+                n_unknown += 1
+        for sid in sessions:
+            orphans = self.interrupted(sid.replace("__", "/"))
+            unknown += per_session_cap * len(orphans)
+            n_unknown += len(orphans)
+        return {"known_usd": round(known, 4), "unknown_cost_attempts": n_unknown, "reserved_for_unknown_usd": round(unknown, 4), "committed_usd": round(known + unknown, 4)}
