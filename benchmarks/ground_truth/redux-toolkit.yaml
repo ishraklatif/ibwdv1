@@ -1,0 +1,312 @@
+repo: "redux-toolkit"
+repo_sha: "c9dac937d77adc3bf04842a43955e81d0e7a46da"
+manifest_sha256: "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e"
+oracle: "TypeScript compiler 6.0.3 (checker symbol resolution)"
+oracle_adapter: "benchmarks/tools/ts_oracle.js"
+selection:
+  seed: "sprint3-gt-v1"
+  rule: "candidates ordered by sha256(seed:repo:stratum:id); the first is taken; IBWD output is never consulted"
+qualification_report:
+  repo: "redux-toolkit"
+  repo_sha: "c9dac937d77adc3bf04842a43955e81d0e7a46da"
+  oracle: "TypeScript compiler 6.0.3 (checker symbol resolution)"
+  seed: "sprint3-gt-v1"
+  production_files: 118
+  test_like_files_excluded: 0
+  candidates:
+    Q1: 9
+    Q2: 24
+    Q3: 43
+    small: 12
+  candidate_order_first_five:
+    Q1:
+      - "packages/toolkit/src/entities/utils.ts::selectIdValue"
+      - "packages/toolkit/src/entities/utils.ts::ensureEntitiesArray"
+      - "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition"
+      - "packages/toolkit/src/query/core/buildSlice.ts::getMutationCacheKey"
+      - "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition"
+    Q2:
+      - "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+      - "packages/toolkit/src/getDefaultMiddleware.ts::buildGetDefaultMiddleware"
+      - "packages/toolkit/src/query/core/buildThunks.ts::calculateProvidedByThunk"
+      - "packages/toolkit/src/entities/create_adapter.ts::createEntityAdapter"
+      - "packages/toolkit/src/query/fetchBaseQuery.ts::fetchBaseQuery"
+    Q3:
+      - "packages/toolkit/src/listenerMiddleware/task.ts::createDelay -> packages/toolkit/src/listenerMiddleware/task.ts::createPause -> packages/toolkit/src/listenerMiddleware/task.ts::validateActive -> packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
+      - "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run -> packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints -> packages/rtk-query-codegen-openapi/src/generate.ts::generateApi -> packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+      - "packages/toolkit/src/matchers.ts::isRejected -> packages/toolkit/src/matchers.ts::isAnyOf -> packages/toolkit/src/matchers.ts::matches -> packages/toolkit/src/tsHelpers.ts::hasMatchFunction"
+    small:
+      - "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
+      - "packages/toolkit/src/query/endpointDefinitions.ts::isAnyQueryDefinition"
+      - "packages/toolkit/src/getDefaultEnhancers.ts::buildGetDefaultEnhancers"
+      - "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints"
+      - "packages/toolkit/src/matchers.ts::isRejected"
+failed_admission_criteria: []
+tasks:
+  - id: "redux-toolkit-q1"
+    stratum: "Q1"
+    relation: "CALLS"
+    target:
+      id: "packages/toolkit/src/entities/utils.ts::selectIdValue"
+      file: "packages/toolkit/src/entities/utils.ts"
+      line: 10
+      lines: 19
+    question: "Which functions and methods in the production code call `selectIdValue` (defined in packages/toolkit/src/entities/utils.ts)? List each caller with its file."
+    expected:
+      - caller: "packages/toolkit/src/entities/sorted_state_adapter.ts::createSortedStateAdapter"
+        file: "packages/toolkit/src/entities/sorted_state_adapter.ts"
+      - caller: "packages/toolkit/src/entities/unsorted_state_adapter.ts::createUnsortedStateAdapter"
+        file: "packages/toolkit/src/entities/unsorted_state_adapter.ts"
+      - caller: "packages/toolkit/src/entities/utils.ts::splitAddedUpdatedEntities"
+        file: "packages/toolkit/src/entities/utils.ts"
+    evidence:
+      - source: "packages/toolkit/src/entities/sorted_state_adapter.ts::createSortedStateAdapter"
+        target: "packages/toolkit/src/entities/utils.ts::selectIdValue"
+        file: "packages/toolkit/src/entities/sorted_state_adapter.ts"
+        line: 75
+        text: "const modelId = selectIdValue(model, selectId)"
+      - source: "packages/toolkit/src/entities/unsorted_state_adapter.ts::createUnsortedStateAdapter"
+        target: "packages/toolkit/src/entities/utils.ts::selectIdValue"
+        file: "packages/toolkit/src/entities/unsorted_state_adapter.ts"
+        line: 25
+        text: "const key = selectIdValue(entity, selectId)"
+      - source: "packages/toolkit/src/entities/utils.ts::splitAddedUpdatedEntities"
+        target: "packages/toolkit/src/entities/utils.ts::selectIdValue"
+        file: "packages/toolkit/src/entities/utils.ts"
+        line: 59
+        text: "const id = selectIdValue(entity, selectId)"
+    grading: "exact set of caller symbols"
+  - id: "redux-toolkit-q2"
+    stratum: "Q2"
+    relation: "CALLS"
+    source:
+      id: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+      file: "packages/toolkit/src/query/react/module.ts"
+      line: 157
+      lines: 119
+    question: "Which functions, methods and classes defined in this repository does `reactHooksModule` (in packages/toolkit/src/query/react/module.ts) call directly? List each with its file."
+    expected:
+      - callee: "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition"
+        file: "packages/toolkit/src/query/endpointDefinitions.ts"
+      - callee: "packages/toolkit/src/query/endpointDefinitions.ts::isMutationDefinition"
+        file: "packages/toolkit/src/query/endpointDefinitions.ts"
+      - callee: "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition"
+        file: "packages/toolkit/src/query/endpointDefinitions.ts"
+      - callee: "packages/toolkit/src/query/react/buildHooks.ts::buildHooks"
+        file: "packages/toolkit/src/query/react/buildHooks.ts"
+      - callee: "packages/toolkit/src/query/tsHelpers.ts::safeAssign"
+        file: "packages/toolkit/src/query/tsHelpers.ts"
+      - callee: "packages/toolkit/src/query/utils/capitalize.ts::capitalize"
+        file: "packages/toolkit/src/query/utils/capitalize.ts"
+      - callee: "packages/toolkit/src/query/utils/countObjectKeys.ts::countObjectKeys"
+        file: "packages/toolkit/src/query/utils/countObjectKeys.ts"
+    evidence:
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 257
+        text: "} else if (isInfiniteQueryDefinition(definition)) {"
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/endpointDefinitions.ts::isMutationDefinition"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 250
+        text: "if (isMutationDefinition(definition)) {"
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 231
+        text: "if (isQueryDefinition(definition)) {"
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/react/buildHooks.ts::buildHooks"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 215
+        text: "} = buildHooks({"
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/tsHelpers.ts::safeAssign"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 226
+        text: "safeAssign(anyApi, { usePrefetch })"
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/utils/capitalize.ts::capitalize"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 246
+        text: ";(api as any)[`use${capitalize(endpointName)}Query`] = useQuery"
+      - source: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+        target: "packages/toolkit/src/query/utils/countObjectKeys.ts::countObjectKeys"
+        file: "packages/toolkit/src/query/react/module.ts"
+        line: 173
+        text: "if (countObjectKeys(rest) > 0) {"
+    grading: "exact set of internal callees"
+  - id: "redux-toolkit-q3"
+    stratum: "Q3"
+    relation: "CALLS"
+    source:
+      id: "packages/toolkit/src/listenerMiddleware/task.ts::createDelay"
+      file: "packages/toolkit/src/listenerMiddleware/task.ts"
+      line: 95
+      lines: 6
+    target:
+      id: "packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
+      file: "packages/toolkit/src/listenerMiddleware/exceptions.ts"
+      line: 14
+      lines: 7
+    question: "Trace the shortest call path from `createDelay` (packages/toolkit/src/listenerMiddleware/task.ts) to `TaskAbortError` (packages/toolkit/src/listenerMiddleware/exceptions.ts). Give every function on the path."
+    expected:
+      path:
+        - "packages/toolkit/src/listenerMiddleware/task.ts::createDelay"
+        - "packages/toolkit/src/listenerMiddleware/task.ts::createPause"
+        - "packages/toolkit/src/listenerMiddleware/task.ts::validateActive"
+        - "packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
+      hops: 3
+      any_valid_path_of_this_length: false
+      note: "the shortest path is unique in the oracle graph"
+    evidence:
+      - source: "packages/toolkit/src/listenerMiddleware/task.ts::createDelay"
+        target: "packages/toolkit/src/listenerMiddleware/task.ts::createPause"
+        file: "packages/toolkit/src/listenerMiddleware/task.ts"
+        line: 96
+        text: "const pause = createPause<void>(signal)"
+      - source: "packages/toolkit/src/listenerMiddleware/task.ts::createPause"
+        target: "packages/toolkit/src/listenerMiddleware/task.ts::validateActive"
+        file: "packages/toolkit/src/listenerMiddleware/task.ts"
+        line: 82
+        text: "validateActive(signal)"
+      - source: "packages/toolkit/src/listenerMiddleware/task.ts::validateActive"
+        target: "packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
+        file: "packages/toolkit/src/listenerMiddleware/task.ts"
+        line: 13
+        text: "throw new TaskAbortError(signal.reason)"
+    grading: "the exact three-hop path"
+  - id: "redux-toolkit-small"
+    stratum: "small"
+    relation: "CALLS"
+    source:
+      id: "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 352
+      lines: 20
+    question: "Which functions, methods and classes defined in this repository does `isAsyncThunkAction` (in packages/toolkit/src/matchers.ts) call directly? List each with its file."
+    expected:
+      - callee: "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata"
+        file: "packages/toolkit/src/matchers.ts"
+      - callee: "packages/toolkit/src/matchers.ts::isAnyOf"
+        file: "packages/toolkit/src/matchers.ts"
+      - callee: "packages/toolkit/src/matchers.ts::isAsyncThunkArray"
+        file: "packages/toolkit/src/matchers.ts"
+    evidence:
+      - source: "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
+        target: "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata"
+        file: "packages/toolkit/src/matchers.ts"
+        line: 357
+        text: "hasExpectedRequestMetadata(action, ['pending', 'fulfilled', 'rejected'])"
+      - source: "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
+        target: "packages/toolkit/src/matchers.ts::isAnyOf"
+        file: "packages/toolkit/src/matchers.ts"
+        line: 364
+        text: "return isAnyOf("
+      - source: "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
+        target: "packages/toolkit/src/matchers.ts::isAsyncThunkArray"
+        file: "packages/toolkit/src/matchers.ts"
+        line: 360
+        text: "if (!isAsyncThunkArray(asyncThunks)) {"
+    grading: "exact set of internal callees"
+candidates:
+  Q1:
+    - id: "packages/toolkit/src/entities/utils.ts::selectIdValue"
+      file: "packages/toolkit/src/entities/utils.ts"
+      line: 10
+      lines: 19
+    - id: "packages/toolkit/src/entities/utils.ts::ensureEntitiesArray"
+      file: "packages/toolkit/src/entities/utils.ts"
+      line: 30
+      lines: 9
+    - id: "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition"
+      file: "packages/toolkit/src/query/endpointDefinitions.ts"
+      line: 1304
+      lines: 5
+    - id: "packages/toolkit/src/query/core/buildSlice.ts::getMutationCacheKey"
+      file: "packages/toolkit/src/query/core/buildSlice.ts"
+      line: 135
+      lines: 8
+    - id: "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition"
+      file: "packages/toolkit/src/query/endpointDefinitions.ts"
+      line: 1292
+      lines: 5
+    - id: "packages/toolkit/src/matchers.ts::isAllOf"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 56
+      lines: 7
+    - id: "packages/toolkit/src/entities/state_adapter.ts::createStateOperator"
+      file: "packages/toolkit/src/entities/state_adapter.ts"
+      line: 25
+      lines: 34
+    - id: "packages/toolkit/src/matchers.ts::isAnyOf"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 39
+      lines: 7
+  Q2:
+    - id: "packages/toolkit/src/query/react/module.ts::reactHooksModule"
+      file: "packages/toolkit/src/query/react/module.ts"
+      line: 157
+      lines: 119
+    - id: "packages/toolkit/src/getDefaultMiddleware.ts::buildGetDefaultMiddleware"
+      file: "packages/toolkit/src/getDefaultMiddleware.ts"
+      line: 53
+      lines: 61
+    - id: "packages/toolkit/src/query/core/buildThunks.ts::calculateProvidedByThunk"
+      file: "packages/toolkit/src/query/core/buildThunks.ts"
+      line: 1123
+      lines: 21
+    - id: "packages/toolkit/src/entities/create_adapter.ts::createEntityAdapter"
+      file: "packages/toolkit/src/entities/create_adapter.ts"
+      line: 22
+      lines: 26
+    - id: "packages/toolkit/src/query/fetchBaseQuery.ts::fetchBaseQuery"
+      file: "packages/toolkit/src/query/fetchBaseQuery.ts"
+      line: 200
+      lines: 186
+    - id: "packages/toolkit/src/query/react/buildHooks.ts::buildHooks"
+      file: "packages/toolkit/src/query/react/buildHooks.ts"
+      line: 1511
+      lines: 782
+    - id: "packages/toolkit/src/createAsyncThunk.ts::createAsyncThunk"
+      file: "packages/toolkit/src/createAsyncThunk.ts"
+      line: 521
+      lines: 241
+    - id: "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts::createBinding"
+      file: "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts"
+      line: 25
+      lines: 17
+  small:
+    - id: "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 352
+      lines: 20
+    - id: "packages/toolkit/src/query/endpointDefinitions.ts::isAnyQueryDefinition"
+      file: "packages/toolkit/src/query/endpointDefinitions.ts"
+      line: 1310
+      lines: 7
+    - id: "packages/toolkit/src/getDefaultEnhancers.ts::buildGetDefaultEnhancers"
+      file: "packages/toolkit/src/getDefaultEnhancers.ts"
+      line: 16
+      lines: 16
+    - id: "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints"
+      file: "packages/rtk-query-codegen-openapi/src/index.ts"
+      line: 19
+      lines: 20
+    - id: "packages/toolkit/src/matchers.ts::isRejected"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 180
+      lines: 13
+    - id: "packages/toolkit/src/matchers.ts::isFulfilled"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 293
+      lines: 13
+    - id: "packages/toolkit/src/matchers.ts::isRejectedWithValue"
+      file: "packages/toolkit/src/matchers.ts"
+      line: 237
+      lines: 17
+    - id: "packages/rtk-query-codegen-openapi/src/generate.ts::operationMatches"
+      file: "packages/rtk-query-codegen-openapi/src/generate.ts"
+      line: 135
+      lines: 8

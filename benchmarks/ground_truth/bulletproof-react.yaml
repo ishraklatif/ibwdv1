@@ -1,0 +1,266 @@
+repo: "bulletproof-react"
+repo_sha: "9506629ed003a561c6627735480cce4994244bb4"
+manifest_sha256: "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e"
+oracle: "TypeScript compiler 5.4.5 (checker symbol resolution)"
+oracle_adapter: "benchmarks/tools/ts_oracle.js"
+selection:
+  seed: "sprint3-gt-v1"
+  rule: "candidates ordered by sha256(seed:repo:stratum:id); the first is taken; IBWD output is never consulted"
+qualification_report:
+  repo: "bulletproof-react"
+  repo_sha: "9506629ed003a561c6627735480cce4994244bb4"
+  oracle: "TypeScript compiler 5.4.5 (checker symbol resolution)"
+  seed: "sprint3-gt-v1"
+  production_files: 90
+  test_like_files_excluded: 14
+  candidates:
+    Q1: 4
+    Q2: 15
+    Q3: 74
+    small: 3
+  candidate_order_first_five:
+    Q1:
+      - "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+      - "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion"
+      - "apps/react-vite/src/components/seo/head.tsx::Head"
+      - "apps/react-vite/src/utils/format.ts::formatDate"
+    Q2:
+      - "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+      - "apps/react-vite/src/features/comments/components/comments-list.tsx::CommentsList"
+      - "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+      - "apps/react-vite/src/features/comments/components/create-comment.tsx::CreateComment"
+      - "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer"
+    Q3:
+      - "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute -> apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList -> apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion -> apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+      - "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute -> apps/react-vite/src/features/users/components/users-list.tsx::UsersList -> apps/react-vite/src/features/users/api/get-users.ts::useUsers -> apps/react-vite/src/features/users/api/get-users.ts::getUsersQueryOptions"
+      - "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList -> apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion -> apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx::ConfirmationDialog -> apps/react-vite/src/hooks/use-disclosure.ts::useDisclosure"
+    small:
+      - "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
+      - "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationNext"
+      - "apps/react-vite/src/features/comments/components/comments.tsx::Comments"
+failed_admission_criteria: []
+tasks:
+  - id: "bulletproof-react-q1"
+    stratum: "Q1"
+    relation: "CALLS"
+    target:
+      id: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+      file: "apps/react-vite/src/components/layouts/content-layout.tsx"
+      line: 10
+      lines: 15
+    question: "Which functions and methods in the production code call `ContentLayout` (defined in apps/react-vite/src/components/layouts/content-layout.tsx)? List each caller with its file."
+    expected:
+      - caller: "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute"
+        file: "apps/react-vite/src/app/routes/app/dashboard.tsx"
+      - caller: "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute"
+        file: "apps/react-vite/src/app/routes/app/discussions/discussion.tsx"
+      - caller: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute"
+        file: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx"
+      - caller: "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute"
+        file: "apps/react-vite/src/app/routes/app/profile.tsx"
+      - caller: "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+        file: "apps/react-vite/src/app/routes/app/users.tsx"
+    evidence:
+      - source: "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute"
+        target: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+        file: "apps/react-vite/src/app/routes/app/dashboard.tsx"
+        line: 8
+        text: "<ContentLayout title=\"Dashboard\">"
+      - source: "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute"
+        target: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+        file: "apps/react-vite/src/app/routes/app/discussions/discussion.tsx"
+        line: 59
+        text: "<ContentLayout title={discussion.title}>"
+      - source: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute"
+        target: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+        file: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx"
+        line: 28
+        text: "<ContentLayout title=\"Discussions\">"
+      - source: "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute"
+        target: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+        file: "apps/react-vite/src/app/routes/app/profile.tsx"
+        line: 24
+        text: "<ContentLayout title=\"Profile\">"
+      - source: "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+        target: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+        file: "apps/react-vite/src/app/routes/app/users.tsx"
+        line: 19
+        text: "<ContentLayout title=\"Users\">"
+    grading: "exact set of caller symbols"
+  - id: "bulletproof-react-q2"
+    stratum: "Q2"
+    relation: "CALLS"
+    source:
+      id: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+      file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+      line: 18
+      lines: 72
+    question: "Which functions, methods and classes defined in this repository does `UpdateDiscussion` (in apps/react-vite/src/features/discussions/components/update-discussion.tsx) call directly? List each with its file."
+    expected:
+      - callee: "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer"
+        file: "apps/react-vite/src/components/ui/form/form-drawer.tsx"
+      - callee: "apps/react-vite/src/components/ui/form/form.tsx::Form"
+        file: "apps/react-vite/src/components/ui/form/form.tsx"
+      - callee: "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion"
+        file: "apps/react-vite/src/features/discussions/api/get-discussion.ts"
+      - callee: "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion"
+        file: "apps/react-vite/src/features/discussions/api/update-discussion.ts"
+      - callee: "apps/react-vite/src/lib/authorization.tsx::Authorization"
+        file: "apps/react-vite/src/lib/authorization.tsx"
+    evidence:
+      - source: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+        target: "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer"
+        file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+        line: 36
+        text: "<FormDrawer"
+      - source: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+        target: "apps/react-vite/src/components/ui/form/form.tsx::Form"
+        file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+        line: 55
+        text: "<Form"
+      - source: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+        target: "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion"
+        file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+        line: 20
+        text: "const discussionQuery = useDiscussion({ discussionId });"
+      - source: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+        target: "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion"
+        file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+        line: 21
+        text: "const updateDiscussionMutation = useUpdateDiscussion({"
+      - source: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+        target: "apps/react-vite/src/lib/authorization.tsx::Authorization"
+        file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+        line: 35
+        text: "<Authorization allowedRoles={[ROLES.ADMIN]}>"
+    grading: "exact set of internal callees"
+  - id: "bulletproof-react-q3"
+    stratum: "Q3"
+    relation: "CALLS"
+    source:
+      id: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute"
+      file: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx"
+      line: 25
+      lines: 20
+    target:
+      id: "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+      file: "apps/react-vite/src/features/discussions/api/delete-discussion.ts"
+      line: 20
+      lines: 18
+    question: "Trace the shortest call path from `DiscussionsRoute` (apps/react-vite/src/app/routes/app/discussions/discussions.tsx) to `useDeleteDiscussion` (apps/react-vite/src/features/discussions/api/delete-discussion.ts). Give every function on the path."
+    expected:
+      path:
+        - "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute"
+        - "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList"
+        - "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion"
+        - "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+      hops: 3
+      any_valid_path_of_this_length: false
+      note: "the shortest path is unique in the oracle graph"
+    evidence:
+      - source: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute"
+        target: "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList"
+        file: "apps/react-vite/src/app/routes/app/discussions/discussions.tsx"
+        line: 33
+        text: "<DiscussionsList"
+      - source: "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList"
+        target: "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion"
+        file: "apps/react-vite/src/features/discussions/components/discussions-list.tsx"
+        line: 79
+        text: "return <DeleteDiscussion id={id} />;"
+      - source: "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion"
+        target: "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+        file: "apps/react-vite/src/features/discussions/components/delete-discussion.tsx"
+        line: 16
+        text: "const deleteDiscussionMutation = useDeleteDiscussion({"
+    grading: "the exact three-hop path"
+  - id: "bulletproof-react-small"
+    stratum: "small"
+    relation: "CALLS"
+    source:
+      id: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
+      file: "apps/react-vite/src/components/ui/table/pagination.tsx"
+      line: 73
+      lines: 14
+    question: "Which functions, methods and classes defined in this repository does `PaginationPrevious` (in apps/react-vite/src/components/ui/table/pagination.tsx) call directly? List each with its file."
+    expected:
+      - callee: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationLink"
+        file: "apps/react-vite/src/components/ui/table/pagination.tsx"
+      - callee: "apps/react-vite/src/utils/cn.ts::cn"
+        file: "apps/react-vite/src/utils/cn.ts"
+    evidence:
+      - source: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
+        target: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationLink"
+        file: "apps/react-vite/src/components/ui/table/pagination.tsx"
+        line: 77
+        text: "<PaginationLink"
+      - source: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
+        target: "apps/react-vite/src/utils/cn.ts::cn"
+        file: "apps/react-vite/src/components/ui/table/pagination.tsx"
+        line: 80
+        text: "className={cn('gap-1 pl-2.5', className)}"
+    grading: "exact set of internal callees"
+candidates:
+  Q1:
+    - id: "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
+      file: "apps/react-vite/src/components/layouts/content-layout.tsx"
+      line: 10
+      lines: 15
+    - id: "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion"
+      file: "apps/react-vite/src/features/discussions/api/get-discussion.ts"
+      line: 27
+      lines: 9
+    - id: "apps/react-vite/src/components/seo/head.tsx::Head"
+      file: "apps/react-vite/src/components/seo/head.tsx"
+      line: 10
+      lines: 11
+    - id: "apps/react-vite/src/utils/format.ts::formatDate"
+      file: "apps/react-vite/src/utils/format.ts"
+      line: 3
+      lines: 2
+  Q2:
+    - id: "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion"
+      file: "apps/react-vite/src/features/discussions/components/update-discussion.tsx"
+      line: 18
+      lines: 72
+    - id: "apps/react-vite/src/features/comments/components/comments-list.tsx::CommentsList"
+      file: "apps/react-vite/src/features/comments/components/comments-list.tsx"
+      line: 19
+      lines: 75
+    - id: "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+      file: "apps/react-vite/src/app/routes/app/users.tsx"
+      line: 17
+      lines: 12
+    - id: "apps/react-vite/src/features/comments/components/create-comment.tsx::CreateComment"
+      file: "apps/react-vite/src/features/comments/components/create-comment.tsx"
+      line: 16
+      lines: 61
+    - id: "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer"
+      file: "apps/react-vite/src/components/ui/form/form-drawer.tsx"
+      line: 24
+      lines: 46
+    - id: "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute"
+      file: "apps/react-vite/src/app/routes/app/discussions/discussion.tsx"
+      line: 38
+      lines: 36
+    - id: "apps/react-vite/src/features/discussions/components/create-discussion.tsx::CreateDiscussion"
+      file: "apps/react-vite/src/features/discussions/components/create-discussion.tsx"
+      line: 13
+      lines: 61
+    - id: "apps/react-vite/src/features/users/components/users-list.tsx::UsersList"
+      file: "apps/react-vite/src/features/users/components/users-list.tsx"
+      line: 9
+      lines: 53
+  small:
+    - id: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
+      file: "apps/react-vite/src/components/ui/table/pagination.tsx"
+      line: 73
+      lines: 14
+    - id: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationNext"
+      file: "apps/react-vite/src/components/ui/table/pagination.tsx"
+      line: 89
+      lines: 14
+    - id: "apps/react-vite/src/features/comments/components/comments.tsx::Comments"
+      file: "apps/react-vite/src/features/comments/components/comments.tsx"
+      line: 8
+      lines: 11

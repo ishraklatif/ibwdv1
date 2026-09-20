@@ -11,7 +11,7 @@ criterion; nothing is manufactured to fill it.
 Qualification (all conditions are computed from the oracle's `binding` CALLS edges between indexed, non-nested symbols in
 production manifest files):
   Q1  target: function/method, callers in >= 3 distinct production files, 3..15 caller symbols, no type_declared incoming CALLS,
-      and (Python) the number of textual call sites `name(` in production files equals the oracle's CALLS occurrences (the oracle is
+      and the number of textual call sites (`name(`, JSX `<name`) in production files equals the oracle's CALLS occurrences (the oracle is
       demonstrably complete for this name).
   Q2  source: function/method calling >= 3 distinct internal functions defined OUTSIDE its own module, 3..12 internal callees in
       total, no type_declared outgoing CALLS, >= 12 lines long.
@@ -118,12 +118,15 @@ def main() -> int:
         nonlocal prod_text
         if prod_text is None:
             prod_text = {f: lines(f) for f in prod}
-        pat = re.compile(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"\s*\(")
+        if language == "python":
+            pat = re.compile(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"\s*\(")
+        else:                                               # name( , name<T>( , new name( and the JSX tags <name ...> / <name/>
+            pat = re.compile(r"(?<![A-Za-z0-9_$.])" + re.escape(name) + r"\s*(?:<[^<>()]*>)?\s*\(|<" + re.escape(name) + r"(?=[\s/>])")
         n = 0
         for f, ls in prod_text.items():
             for ln in ls:
                 s = ln.strip()
-                if s.startswith(("def ", "async def ", "class ", "#", "function ")) or re.match(r"^(export\s+)?(async\s+)?function\s", s):
+                if s.startswith(("def ", "async def ", "class ", "#", "function ", "//", "*", "/*", "import ", "export type", "type ")) or re.match(r"^(export\s+)?(default\s+)?(async\s+)?function\s", s):
                     continue
                 n += len(pat.findall(ln))
         return n
@@ -149,7 +152,7 @@ def main() -> int:
         if not (3 <= len(cs) <= 15 and len(files) >= 3):
             continue
         n_occ = sum(len(occ[(c, t)]) for c in cs)
-        if language == "python" and textual_call_sites(simple(t)) != n_occ:
+        if textual_call_sites(simple(t)) != n_occ:
             continue           # the name is called somewhere the oracle did not resolve: its caller set may be incomplete
         q1.append(t)
     # ---------------- Q2 / small
