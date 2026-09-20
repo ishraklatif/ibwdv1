@@ -15,6 +15,7 @@ from ibwd.scanner.references import (
     clean_receiver,
 )
 from ibwd.scanner.symbols import SymbolInfo
+from ibwd.scanner.valuerefs import javascript_value_refs
 
 _LANGUAGES = {
     "javascript": Language(tsjavascript.language()),
@@ -125,6 +126,53 @@ def _js_import_statement(node: Node, refs: FileReferences) -> None:
     refs.imports.append(ImportRef(_string_value(source), 0, bindings, node.start_point.row + 1))
 
 
+def _default_export_name(value: Node | None) -> str | None:
+    """The nameable symbol behind `export default <value>`: `Foo`, or `Foo` in a wrapper like `memo(Foo)`."""
+    if value is None:
+        return None
+    if value.type == "identifier":
+        return _text(value)
+    if value.type == "call_expression":  # export default connect(mapState)(Foo) / memo(Foo) / React.memo(Foo)
+        args = value.child_by_field_name("arguments")
+        if args is not None:
+            idents = [a for a in args.named_children if a.type == "identifier"]
+            if idents:
+                return _text(idents[-1])
+        return _default_export_name(value.child_by_field_name("function"))
+    return None
+
+
+def _js_default_export(node: Node, refs: FileReferences) -> None:
+    """`export default function Foo`, `export default Foo`, `export { Foo as default }`."""
+    if any(child.type == "default" for child in node.children):
+        declaration = node.child_by_field_name("declaration")
+        if declaration is not None:
+            name = declaration.child_by_field_name("name")
+            if name is not None:
+                refs.default_export = _text(name)
+            return
+        refs.default_export = _default_export_name(node.child_by_field_name("value"))
+        return
+    for clause in node.children:
+        if clause.type != "export_clause" or node.child_by_field_name("source") is not None:
+            continue
+        for spec in clause.children:
+            alias = spec.child_by_field_name("alias") if spec.type == "export_specifier" else None
+            name = spec.child_by_field_name("name") if alias is not None else None
+            if alias is not None and name is not None and _text(alias) == "default":
+                refs.default_export = _text(name)
+
+
+def _js_commonjs_export(node: Node, refs: FileReferences) -> None:
+    """`module.exports = Foo` names the file's default export."""
+    left = node.child_by_field_name("left")
+    right = node.child_by_field_name("right")
+    if left is not None and right is not None and left.type == "member_expression" and _text(left) == "module.exports":
+        name = _default_export_name(right)
+        if name:
+            refs.default_export = name
+
+
 def _js_reexport(node: Node, refs: FileReferences) -> None:
     """`export { a } from './m'` / `export * from './m'` — a file->file import with no local bindings."""
     source = node.child_by_field_name("source")
@@ -180,6 +228,27 @@ def _js_callee(function: Node | None, line: int, refs: FileReferences) -> None:
             refs.calls.append(CallRef(_text(prop), clean_receiver(_text(obj)), line))
 
 
+def _js_jsx(node: Node, refs: FileReferences) -> None:
+    """`<Card />` / `<Card.Header>` / `<ui.Btn />` — rendering a component is a use of it.
+
+    Recorded as a call so callers/dependents/trace_path see React usage. Lowercase
+    bare tags (`<div>`) are intrinsic DOM elements, not repo symbols, and are skipped.
+    """
+    name = node.child_by_field_name("name")
+    if name is None:
+        return
+    line = node.start_point.row + 1
+    if name.type == "identifier":
+        text = _text(name)
+        if text[:1].isupper():
+            refs.calls.append(CallRef(text, None, line))
+    elif name.type == "member_expression":
+        obj = name.child_by_field_name("object")
+        prop = name.child_by_field_name("property")
+        if obj is not None and prop is not None:
+            refs.calls.append(CallRef(_text(prop), clean_receiver(_text(obj)), line))
+
+
 def _js_bases(node: Node, refs: FileReferences) -> None:
     name_node = node.child_by_field_name("name")
     if name_node is None:
@@ -221,14 +290,20 @@ def extract_javascript_references(source: bytes, dialect: str = "javascript") ->
             _js_import_statement(node, refs)
         elif node.type == "export_statement":
             _js_reexport(node, refs)
+            _js_default_export(node, refs)
+        elif node.type == "assignment_expression":
+            _js_commonjs_export(node, refs)
         elif node.type == "variable_declarator":
             _js_require(node, refs)
         elif node.type == "call_expression":
             _js_callee(node.child_by_field_name("function"), line, refs)
         elif node.type == "new_expression":
             _js_callee(node.child_by_field_name("constructor"), line, refs)
+        elif node.type in ("jsx_opening_element", "jsx_self_closing_element"):
+            _js_jsx(node, refs)
         elif node.type == "class_declaration":
             _js_bases(node, refs)
         stack.extend(reversed(node.children))
 
+    refs.value_refs = javascript_value_refs(tree.root_node)
     return refs

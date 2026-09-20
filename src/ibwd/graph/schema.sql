@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     name           TEXT NOT NULL,
     qualified_name TEXT,
     file_path      TEXT,
-    kind           TEXT,            -- source | test | doc | config | other (File nodes only)
+    kind           TEXT,            -- source | test | doc | config | vendor | generated | other (File nodes only)
     start_line     INTEGER,
     end_line       INTEGER,
     content_hash   TEXT,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS edges (
     id            INTEGER PRIMARY KEY,
     source_id     INTEGER NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
     target_id     INTEGER NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
-    relation      TEXT NOT NULL,   -- CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS, TOUCHED, TESTED_BY, RELATES_TO, ...
+    relation      TEXT NOT NULL,   -- CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS, REFERENCES, TOUCHED, TESTED_BY, RELATES_TO, ...
     confidence    REAL NOT NULL DEFAULT 1.0,
     source_type   TEXT NOT NULL DEFAULT 'static_analysis',  -- static_analysis | llm_inference
     created_at    TEXT DEFAULT (datetime('now')),
@@ -41,6 +41,15 @@ CREATE TABLE IF NOT EXISTS edges (
 CREATE INDEX IF NOT EXISTS idx_edges_source ON edges(source_id);
 CREATE INDEX IF NOT EXISTS idx_edges_target ON edges(target_id);
 CREATE INDEX IF NOT EXISTS idx_edges_relation ON edges(relation);
+
+-- Added Sprint 3 follow-up: per-file extracted references (imports/calls/bases), keyed by content
+-- hash, so a rescan re-parses only files that changed. `version` = the extraction logic version.
+CREATE TABLE IF NOT EXISTS file_refs (
+    file_path    TEXT PRIMARY KEY,
+    content_hash TEXT NOT NULL,
+    version      INTEGER NOT NULL,
+    refs_json    TEXT NOT NULL
+);
 
 -- Added Sprint 6:
 CREATE TABLE IF NOT EXISTS summaries (

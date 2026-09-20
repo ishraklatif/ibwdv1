@@ -6,8 +6,9 @@ them into graph edges (IMPORTS / CALLS / INHERITS) is graph/resolution.py's job.
 
 from __future__ import annotations
 
+import json
 import re
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from ibwd.scanner.symbols import EXTENSION_DIALECTS
@@ -64,6 +65,28 @@ class FileReferences:
     imports: list[ImportRef] = field(default_factory=list)
     calls: list[CallRef] = field(default_factory=list)
     bases: list[BaseRef] = field(default_factory=list)
+    # A function used without being called (`useReducer(fn)`, `component={Screen}`): see valuerefs.py.
+    value_refs: list[CallRef] = field(default_factory=list)
+    # JS/TS: name of the symbol this file exports by default (`export default Foo`), if nameable.
+    default_export: str | None = None
+
+
+def refs_to_json(refs: FileReferences) -> str:
+    return json.dumps(asdict(refs), separators=(",", ":"))
+
+
+def refs_from_json(text: str) -> FileReferences:
+    data = json.loads(text)
+    return FileReferences(
+        imports=[
+            ImportRef(i["spec"], i["level"], [Binding(b["local"], b["member"]) for b in i["bindings"]], i["line"])
+            for i in data["imports"]
+        ],
+        calls=[CallRef(c["name"], c["receiver"], c["line"]) for c in data["calls"]],
+        bases=[BaseRef(b["class_name"], b["class_line"], b["name"], b["receiver"]) for b in data["bases"]],
+        value_refs=[CallRef(c["name"], c["receiver"], c["line"]) for c in data.get("value_refs", [])],
+        default_export=data.get("default_export"),
+    )
 
 
 def extract_references(abs_path: Path, file_path: str) -> FileReferences | None:

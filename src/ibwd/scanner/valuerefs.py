@@ -1,0 +1,320 @@
+"""Value references: a function used without being called (`useReducer(fn)`, `component={Screen}`, `.map(render)`).
+
+Recorded as CallRef(name, receiver, line), like calls, but resolved conservatively into REFERENCES
+edges (imports and same-module names only — never the loose unique-name fallback). To avoid linking
+a *variable* to a same-named function, names bound locally (parameters, assignments, loop and catch
+variables, nested defs) in any enclosing function are skipped.
+"""
+
+from __future__ import annotations
+
+from tree_sitter import Node
+
+from ibwd.scanner.references import UNKNOWN_RECEIVER, CallRef, clean_receiver
+
+
+def _text(node: Node) -> str:
+    return node.text.decode("utf-8")
+
+
+def _field_of(node: Node) -> str | None:
+    parent = node.parent
+    if parent is None:
+        return None
+    for index, child in enumerate(parent.children):
+        if child == node:
+            return parent.field_name_for_child(index)
+    return None
+
+
+def _is_simple_dotted(node: Node, member_type: str, object_field: str, leaf_types: tuple[str, ...]) -> bool:
+    """`a`, `a.b`, `self.x`, `this.x.y` — an attribute chain rooted at a plain name."""
+    while node.type == member_type:
+        node = node.child_by_field_name(object_field)
+        if node is None:
+            return False
+    return node.type in leaf_types
+
+
+# --------------------------------------------------------------------------- Python
+
+_PY_FUNCTION_SCOPES = ("function_definition", "lambda")
+_PY_PARAM_PARENTS = {
+    "parameters", "lambda_parameters", "default_parameter", "typed_parameter",
+    "typed_default_parameter", "list_splat_pattern", "dictionary_splat_pattern",
+}
+_PY_SKIP_SUBTREES = {"import_statement", "import_from_statement", "global_statement", "nonlocal_statement", "type"}
+_PY_PATTERN_TYPES = ("pattern_list", "tuple_pattern", "list_pattern", "list_splat_pattern", "as_pattern_target")
+
+
+def _py_pattern_names(node: Node | None, out: set[str]) -> None:
+    if node is None:
+        return
+    if node.type == "identifier":
+        out.add(_text(node))
+    elif node.type in _PY_PATTERN_TYPES or node.type == "expression_list":
+        for child in node.children:
+            _py_pattern_names(child, out)
+
+
+def _py_locals(fn: Node) -> set[str]:
+    names: set[str] = set()
+    params = fn.child_by_field_name("parameters")
+    if params is not None:
+        for child in params.children:
+            if child.type == "identifier":
+                names.add(_text(child))
+            elif child.type in ("default_parameter", "typed_default_parameter"):
+                _py_pattern_names(child.child_by_field_name("name"), names)
+            elif child.type == "typed_parameter":
+                for sub in child.children:
+                    if sub.type == "identifier":
+                        names.add(_text(sub))
+                        break
+                    if sub.type in ("list_splat_pattern", "dictionary_splat_pattern"):
+                        _py_pattern_names(sub, names)
+                        break
+            elif child.type in ("list_splat_pattern", "dictionary_splat_pattern"):
+                _py_pattern_names(child, names)
+    stack = list(fn.children)
+    while stack:
+        node = stack.pop()
+        t = node.type
+        if t in ("assignment", "augmented_assignment", "for_statement", "for_in_clause"):
+            _py_pattern_names(node.child_by_field_name("left"), names)
+        elif t == "named_expression":
+            _py_pattern_names(node.child_by_field_name("name"), names)
+        elif t == "as_pattern":
+            for child in node.children:
+                if child.type == "as_pattern_target":
+                    _py_pattern_names(child, names)
+        elif t in ("function_definition", "class_definition"):
+            name = node.child_by_field_name("name")
+            if name is not None:
+                names.add(_text(name))
+        elif t in ("import_statement", "import_from_statement"):
+            for alias in node.children_by_field_name("name"):
+                target = alias.child_by_field_name("alias") if alias.type == "aliased_import" else alias
+                if target is not None:
+                    names.add(_text(target).split(".")[0])
+        stack.extend(node.children)
+    return names
+
+
+def _py_is_value_use(node: Node) -> bool:
+    parent = node.parent
+    if parent is None:
+        return False
+    t, f = parent.type, _field_of(node)
+    if t in ("function_definition", "class_definition") and f == "name":
+        return False
+    if t == "call" and f == "function":
+        return False
+    if t == "keyword_argument" and f == "name":
+        return False
+    if t in _PY_PARAM_PARENTS and f != "value":
+        return False
+    if t in ("assignment", "augmented_assignment") and f in ("left", "type"):
+        return False
+    if t in ("for_statement", "for_in_clause") and f == "left":
+        return False
+    if t in _PY_PATTERN_TYPES or t == "as_pattern":
+        return False
+    if t == "named_expression" and f == "name":
+        return False
+    if t == "attribute":  # the `.attr` part, or the object (a whole chain is emitted from its top)
+        return False
+    if t == "argument_list" and parent.parent is not None and parent.parent.type == "class_definition":
+        return False  # base classes
+    return True
+
+
+def python_value_refs(root: Node) -> list[CallRef]:
+    out: list[CallRef] = []
+    locals_cache: dict[int, set[str]] = {}
+    stack: list[tuple[Node, tuple[set[str], ...]]] = [(root, ())]
+    while stack:
+        node, scopes = stack.pop()
+        t = node.type
+        if t in _PY_SKIP_SUBTREES:
+            continue
+        if t in _PY_FUNCTION_SCOPES:
+            key = node.id
+            if key not in locals_cache:
+                locals_cache[key] = _py_locals(node)
+            scopes = (*scopes, locals_cache[key])
+        if t == "identifier" and _py_is_value_use(node):
+            name = _text(node)
+            if not any(name in scope for scope in scopes):
+                out.append(CallRef(name, None, node.start_point.row + 1))
+            continue
+        if t == "attribute" and _py_is_value_use_attribute(node):
+            if _is_simple_dotted(node, "attribute", "object", ("identifier",)):
+                receiver = clean_receiver(_text(node.child_by_field_name("object")))
+                attr = node.child_by_field_name("attribute")
+                if receiver != UNKNOWN_RECEIVER and attr is not None:
+                    out.append(CallRef(_text(attr), receiver, node.start_point.row + 1))
+                continue  # don't visit the chain's inner names
+        for child in reversed(node.children):
+            stack.append((child, scopes))
+    return out
+
+
+def _py_is_value_use_attribute(node: Node) -> bool:
+    """Is this attribute chain (`mod.fn`, `self.handler`) used as a value, from its top-most node?"""
+    parent = node.parent
+    if parent is None or parent.type == "attribute":  # inner part of a longer chain
+        return False
+    t, f = parent.type, _field_of(node)
+    if t == "call" and f == "function":
+        return False
+    if t in ("assignment", "augmented_assignment") and f in ("left", "type"):
+        return False
+    if t in ("for_statement", "for_in_clause") and f == "left":
+        return False
+    if t in _PY_PATTERN_TYPES or t == "as_pattern":
+        return False
+    if t == "keyword_argument" and f == "name":
+        return False
+    if t == "argument_list" and parent.parent is not None and parent.parent.type == "class_definition":
+        return False
+    return True
+
+
+# --------------------------------------------------------------------------- JavaScript / TypeScript
+
+_JS_FUNCTION_SCOPES = (
+    "function_declaration", "function_expression", "generator_function_declaration",
+    "generator_function", "arrow_function", "method_definition",
+)
+_JS_SKIP_SUBTREES = {"import_statement", "export_specifier", "export_clause"}
+_JS_PATTERN_LEAVES = ("identifier", "shorthand_property_identifier_pattern")
+
+
+def _js_pattern_names(node: Node | None, out: set[str]) -> None:
+    if node is None:
+        return
+    t = node.type
+    if t in _JS_PATTERN_LEAVES:
+        out.add(_text(node))
+    elif t == "pair_pattern":
+        _js_pattern_names(node.child_by_field_name("value"), out)
+    elif t == "assignment_pattern":
+        _js_pattern_names(node.child_by_field_name("left"), out)
+    elif t in ("required_parameter", "optional_parameter"):
+        _js_pattern_names(node.child_by_field_name("pattern"), out)
+    elif t in ("object_pattern", "array_pattern", "rest_pattern", "formal_parameters"):
+        for child in node.children:
+            _js_pattern_names(child, out)
+
+
+def _js_locals(fn: Node) -> set[str]:
+    names: set[str] = set()
+    _js_pattern_names(fn.child_by_field_name("parameters"), names)
+    _js_pattern_names(fn.child_by_field_name("parameter"), names)  # arrow fn with a single bare param
+    stack = list(fn.children)
+    while stack:
+        node = stack.pop()
+        t = node.type
+        if t == "variable_declarator":
+            _js_pattern_names(node.child_by_field_name("name"), names)
+        elif t == "catch_clause":
+            _js_pattern_names(node.child_by_field_name("parameter"), names)
+        elif t == "for_in_statement":
+            _js_pattern_names(node.child_by_field_name("left"), names)
+        elif t in ("function_declaration", "generator_function_declaration", "class_declaration"):
+            name = node.child_by_field_name("name")
+            if name is not None:
+                names.add(_text(name))
+        stack.extend(node.children)
+    return names
+
+
+def _js_is_value_use(node: Node) -> bool:
+    parent = node.parent
+    if parent is None:
+        return False
+    t, f = parent.type, _field_of(node)
+    if t in ("function_declaration", "function_expression", "generator_function_declaration", "class_declaration") and f == "name":
+        return False
+    if t == "call_expression" and f == "function":
+        return False
+    if t == "new_expression" and f == "constructor":
+        return False
+    if t in ("jsx_opening_element", "jsx_closing_element", "jsx_self_closing_element") and f == "name":
+        return False
+    if t == "variable_declarator" and f == "name":
+        return False
+    if t in ("formal_parameters", "required_parameter", "optional_parameter", "rest_pattern", "object_pattern", "array_pattern"):
+        return False
+    if t == "assignment_pattern" and f == "left":
+        return False
+    if t == "pair_pattern" and f == "value":
+        return False
+    if t in ("assignment_expression", "augmented_assignment_expression") and f == "left":
+        return False
+    if t in ("update_expression", "namespace_import", "import_clause", "import_specifier", "class_heritage", "extends_clause", "export_statement"):
+        return False
+    if t == "for_in_statement" and f == "left":
+        return False
+    if t == "catch_clause" and f == "parameter":
+        return False
+    if t == "arrow_function" and f == "parameter":
+        return False
+    if t == "member_expression":  # the object of a chain: the whole chain is emitted from its top
+        return False
+    return True
+
+
+def _js_is_value_use_member(node: Node) -> bool:
+    parent = node.parent
+    if parent is None:
+        return False
+    t, f = parent.type, _field_of(node)
+    if t == "member_expression":
+        return False
+    if t == "call_expression" and f == "function":
+        return False
+    if t in ("assignment_expression", "augmented_assignment_expression") and f == "left":
+        return False
+    if t in ("update_expression", "export_statement", "class_heritage", "extends_clause"):
+        return False
+    if t == "new_expression" and f == "constructor":
+        return False
+    if t in ("jsx_opening_element", "jsx_closing_element", "jsx_self_closing_element") and f == "name":
+        return False
+    if t == "for_in_statement" and f == "left":
+        return False
+    return True
+
+
+def javascript_value_refs(root: Node) -> list[CallRef]:
+    out: list[CallRef] = []
+    locals_cache: dict[int, set[str]] = {}
+    stack: list[tuple[Node, tuple[set[str], ...]]] = [(root, ())]
+    while stack:
+        node, scopes = stack.pop()
+        t = node.type
+        if t in _JS_SKIP_SUBTREES:
+            continue
+        if t in _JS_FUNCTION_SCOPES:
+            key = node.id
+            if key not in locals_cache:
+                locals_cache[key] = _js_locals(node)
+            scopes = (*scopes, locals_cache[key])
+        if t in ("identifier", "shorthand_property_identifier"):
+            if _js_is_value_use(node):
+                name = _text(node)
+                if not any(name in scope for scope in scopes):
+                    out.append(CallRef(name, None, node.start_point.row + 1))
+            continue
+        if t == "member_expression" and _js_is_value_use_member(node):
+            if _is_simple_dotted(node, "member_expression", "object", ("identifier", "this")):
+                receiver = clean_receiver(_text(node.child_by_field_name("object")))
+                prop = node.child_by_field_name("property")
+                if receiver != UNKNOWN_RECEIVER and prop is not None:
+                    out.append(CallRef(_text(prop), receiver, node.start_point.row + 1))
+                continue
+        for child in reversed(node.children):
+            stack.append((child, scopes))
+    return out

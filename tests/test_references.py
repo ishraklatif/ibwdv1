@@ -76,3 +76,106 @@ def test_typescript_extends_but_not_implements():
         dialect="typescript",
     )
     assert {(b.class_name, b.name, b.receiver) for b in refs.bases} == {("A", "B", None), ("C", "D", "ns")}
+
+
+def test_jsx_tags_are_recorded_as_component_uses():
+    refs = extract_javascript_references(
+        b"function A() { return (<View><Card.Header title='x'/><ui.Btn/><Foo>hi</Foo><div/><Card/></View>); }",
+        dialect="tsx",
+    )
+    calls = {(c.name, c.receiver) for c in refs.calls}
+    assert calls == {("View", None), ("Header", "Card"), ("Btn", "ui"), ("Foo", None), ("Card", None)}
+    assert ("div", None) not in calls  # lowercase bare tags are DOM elements, not components
+
+
+def test_default_export_names_are_recorded():
+    def default_of(src: bytes) -> str | None:
+        return extract_javascript_references(src, dialect="tsx").default_export
+
+    assert default_of(b"export default function Foo() {}") == "Foo"
+    assert default_of(b"export default class Foo {}") == "Foo"
+    assert default_of(b"const Foo = () => null;\nexport default Foo;") == "Foo"
+    assert default_of(b"const Foo = () => null;\nexport { Foo as default };") == "Foo"
+    assert default_of(b"const Foo = () => null;\nexport default React.memo(Foo);") == "Foo"
+    assert default_of(b"const Foo = () => null;\nexport default connect(mapState)(Foo);") == "Foo"
+    assert default_of(b"class Foo {}\nmodule.exports = Foo;") == "Foo"
+    assert default_of(b"export default () => null;") is None  # anonymous: nothing to resolve
+    assert default_of(b"export { default } from './x';") is None  # a re-export, not this file's own default
+
+
+def _py_values(src: str) -> set[tuple[str, str | None]]:
+    return {(c.name, c.receiver) for c in extract_python_references(src.encode()).value_refs}
+
+
+def _js_values(src: str, dialect: str = "tsx") -> set[tuple[str, str | None]]:
+    return {(c.name, c.receiver) for c in extract_javascript_references(src.encode(), dialect=dialect).value_refs}
+
+
+def test_python_value_uses_are_recorded():
+    values = _py_values(
+        "def f(items):\n"
+        "    a = handler\n"
+        "    b = [render, other]\n"
+        "    c = {'k': fn}\n"
+        "    run(cb, key=opt)\n"
+        "    return self.method_ref, mod.func\n"
+    )
+    assert {("handler", None), ("render", None), ("other", None), ("fn", None), ("cb", None), ("opt", None)} <= values
+    assert {("method_ref", "self"), ("func", "mod")} <= values
+
+
+def test_python_calls_bindings_and_shadowed_names_are_not_value_uses():
+    values = _py_values(
+        "import os\n"
+        "from x import imported\n"
+        "class K(Base):\n"
+        "    pass\n"
+        "def helper(): pass\n"
+        "def f(param, dflt=default_fn):\n"
+        "    local = 1\n"
+        "    for loop_var in range(3):\n"
+        "        pass\n"
+        "    helper()\n"          # a call, not a value use
+        "    obj.method()\n"      # callee
+        "    return param, local, loop_var, os.path\n"
+    )
+    names = {n for n, _ in values}
+    assert "helper" not in names  # only ever called
+    assert "param" not in names and "local" not in names and "loop_var" not in names  # locals shadow
+    assert "Base" not in names  # base class, not a value use
+    assert "imported" not in names  # import statement itself
+    assert ("default_fn", None) in values  # a default value is evaluated in the outer scope
+
+
+def test_python_local_variable_named_like_a_function_is_not_a_value_use():
+    values = _py_values("def process(): pass\ndef f():\n    process = 3\n    return process\n")
+    assert ("process", None) not in values
+
+
+def test_javascript_value_uses_are_recorded():
+    values = _js_values(
+        "function A() {\n"
+        "  const [state] = useReducer(reduceWithContext, init);\n"
+        "  return (<Stack.Screen component={HomeScreen} onPress={this.handle} />);\n"
+        "}\n"
+        "const m = items.map(renderItem);\n"
+        "const o = { onDone, key: other };\n"
+    )
+    assert {("reduceWithContext", None), ("HomeScreen", None), ("renderItem", None), ("onDone", None), ("other", None)} <= values
+    assert ("handle", "this") in values
+
+
+def test_javascript_calls_tags_bindings_and_shadowed_names_are_not_value_uses():
+    values = _js_values(
+        "import { imp } from './x';\n"
+        "function helper() {}\n"
+        "function A(param, { destructured }) {\n"
+        "  const local = 1;\n"
+        "  helper();\n"
+        "  this.foo();\n"
+        "  return (<Card title={local}><param /></Card>) && param && destructured;\n"
+        "}\n"
+        "export default A;\n"
+    )
+    names = {n for n, _ in values}
+    assert names.isdisjoint({"helper", "Card", "param", "destructured", "local", "imp", "A"})

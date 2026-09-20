@@ -41,7 +41,7 @@ def ibwd_find_files(kind: str | None = None, name_pattern: str | None = None) ->
     """List files in the codebase graph, optionally filtered.
 
     Args:
-        kind: restrict to one of "source", "test", "doc", "config", "other".
+        kind: restrict to one of "source", "test", "doc", "config", "vendor", "generated", "other".
         name_pattern: substring to match against the file path.
 
     Returns a compact list of {path, kind} — prefer this over repeated Glob
@@ -153,8 +153,12 @@ def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None) -> list[d
     sorted by distance then confidence. `confidence` is the product of the
     resolution confidence of each edge on the path (0.95 import-resolved ...
     0.35 fuzzy): treat low values as leads to verify in source, not facts.
-    `relation` is CALLS/IMPORTS/INHERITS. Module-level calls show up as kind
-    "File". If several definitions match `symbol`, each result carries an `of`
+    `relation` is CALLS/IMPORTS/INHERITS/REFERENCES. Module-level calls show up
+    as kind "File". Rendering a React component (`<Card />`) counts as CALLS; a
+    function passed as a value (`useReducer(fn)`, `component={Screen}`) is
+    REFERENCES. Empty results do NOT prove a function is safe to delete: dynamic
+    dispatch and framework entry points have no static caller (see
+    KNOWN_LIMITATIONS.md). If several definitions match `symbol`, each result carries an `of`
     ("file:line") naming which one it reaches. Results reflect the graph as of
     the last ibwd_scan; call ibwd_scan first if unsure. Python and JS/TS only.
     """
@@ -186,7 +190,7 @@ def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = Non
     Args:
         source: symbol name or file path to start from.
         target: symbol name or file path to reach.
-        edge_types: subset of CALLS/IMPORTS/INHERITS (default CALLS + IMPORTS).
+        edge_types: subset of CALLS/IMPORTS/INHERITS/REFERENCES (default CALLS + IMPORTS).
 
     Returns {"path": [{name, kind, file, line, edge_type, confidence}, ...],
     "cost": float, "hops": int}; each hop after the first names the edge that

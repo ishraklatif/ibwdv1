@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS edges (
 | `id`          | INTEGER | No       | Surrogate primary key. |
 | `source_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's origin. |
 | `target_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's destination. |
-| `relation`    | TEXT    | No       | Relationship type. Currently emitted: `CONTAINS` (directory→directory, directory→file), `DEFINES` (file→symbol), `IMPORTS` (file→file), `CALLS` (symbol-or-file→symbol; a module-level call is attributed to its `File` node), `INHERITS` (class→class). Reserved for later sprints: `TOUCHED`, `TESTED_BY`, `RELATES_TO`. |
+| `relation`    | TEXT    | No       | Relationship type. Currently emitted: `CONTAINS` (directory→directory, directory→file), `DEFINES` (file→symbol), `IMPORTS` (file→file), `CALLS` (symbol-or-file→symbol; a module-level call is attributed to its `File` node; a JSX tag such as `<Card />` counts as a call to the component), `INHERITS` (class→class), `REFERENCES` (symbol-or-file→symbol; a function used as a value, e.g. `useReducer(fn)`). Reserved for later sprints: `TOUCHED`, `TESTED_BY`, `RELATES_TO`. |
 | `confidence`  | REAL    | No       | `1.0` for facts derived from parsing; `< 1.0` for inferred relationships (see §3.3). |
 | `source_type` | TEXT    | No       | `static_analysis` (parsed from source) or `llm_inference` (model-derived, not yet emitted by any sprint as of this schema). |
 | `created_at`  | TEXT    | No       | UTC timestamp, set on insert. |
@@ -171,6 +171,21 @@ CREATE INDEX IF NOT EXISTS idx_edges_relation ON edges(relation);
 
 Supports traversal in both directions (parents of a node, children of a
 node) and filtering by relationship type.
+
+## 3b. Table: `file_refs` (Sprint 3 follow-up)
+
+Cache of each source file's extracted (unresolved) references — imports, call sites, value uses, base
+classes, default export — as JSON, so an incremental scan re-parses only files whose content changed and
+re-runs cheap in-memory resolution over the rest.
+
+| Column         | Type    | Notes |
+|----------------|---------|-------|
+| `file_path`    | TEXT PK | Repo-relative path. Rows for deleted files are removed on the next scan. |
+| `content_hash` | TEXT    | The file's hash when the references were extracted. |
+| `version`      | INTEGER | Extraction-logic version (`EDGE_BUILD_VERSION`); a mismatch forces a re-parse. |
+| `refs_json`    | TEXT    | Serialized `FileReferences`. |
+
+Created with `CREATE TABLE IF NOT EXISTS`, so existing databases upgrade without a rebuild.
 
 ## 4. Table: `summaries` (Sprint 6)
 
@@ -300,6 +315,7 @@ define *how* it is stored.
 |--------|--------|
 | 1      | `nodes`, `edges` tables for `Directory`/`File` and `CONTAINS` edges. |
 | 2      | `Class`/`Function`/`Method` node types, `qualified_name` uniqueness, `DEFINES` edges. |
-| 3      | No schema change. `IMPORTS`/`CALLS`/`INHERITS` edges now emitted (confidence 0.35–1.0, `source_type='static_analysis'`) and rebuilt wholesale on any source change; `PRAGMA user_version` records the edge-build version so older graphs are rebuilt on the next scan. Recursive-CTE traversal implemented in `retrieval/traversal.py`. |
+| 3      | No schema change (edge-build version 3: JSX tags count as calls; tsconfig `paths` aliases resolve JS/TS imports). `IMPORTS`/`CALLS`/`INHERITS` edges now emitted (confidence 0.35–1.0, `source_type='static_analysis'`) and rebuilt wholesale on any source change; `PRAGMA user_version` records the edge-build version so older graphs are rebuilt on the next scan. Recursive-CTE traversal implemented in `retrieval/traversal.py`. |
+| 3b     | Additive: `file_refs` table (per-file extracted references keyed by content hash, so rescans re-parse only changed files); `REFERENCES` relation; File `kind` gains `vendor` / `generated`; edge-build version 7. |
 | 5      | `vec_nodes` virtual table planned (not yet created). |
 | 6      | `summaries` table added for LLM-derived node metadata. |

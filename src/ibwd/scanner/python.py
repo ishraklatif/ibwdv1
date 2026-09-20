@@ -14,6 +14,7 @@ from ibwd.scanner.references import (
     clean_receiver,
 )
 from ibwd.scanner.symbols import SymbolInfo
+from ibwd.scanner.valuerefs import python_value_refs
 
 _LANGUAGE = Language(tspython.language())
 
@@ -149,7 +150,16 @@ def _python_call(node: Node, refs: FileReferences) -> None:
         obj = function.child_by_field_name("object")
         attr = function.child_by_field_name("attribute")
         if obj is not None and attr is not None:
-            refs.calls.append(CallRef(_text(attr), clean_receiver(_text(obj)), line))
+            refs.calls.append(CallRef(_text(attr), _python_receiver(obj), line))
+
+
+def _python_receiver(obj: Node) -> str:
+    """`super()` / `super(Cls, self)` -> "super"; otherwise the usual cleaned receiver text."""
+    if obj.type == "call":
+        function = obj.child_by_field_name("function")
+        if function is not None and function.type == "identifier" and _text(function) == "super":
+            return "super"
+    return clean_receiver(_text(obj))
 
 
 def _python_bases(node: Node, refs: FileReferences) -> None:
@@ -188,4 +198,5 @@ def extract_python_references(source: bytes) -> FileReferences:
             _python_bases(node, refs)
         stack.extend(reversed(node.children))
 
+    refs.value_refs = python_value_refs(tree.root_node)
     return refs

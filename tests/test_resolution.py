@@ -331,3 +331,340 @@ def test_unchanged_scan_keeps_edges_and_stale_graph_is_rebuilt(tmp_path: Path):
     third = run_scan(tmp_path)
     assert third["unchanged"] == third["total_files"]
     assert third["edges"] == first["edges"]
+
+
+JSX_REPO = {
+    "app/Button.tsx": "export function Button() { return <button />; }\n",
+    "app/Card.tsx": "export default function Card() { return <div />; }\n",
+    "app/ui/index.ts": "export function Badge() { return null; }\n",
+    "app/Screen.tsx": (
+        "import { Button } from './Button';\n"
+        "import Card from './Card';\n"
+        "import * as ui from './ui';\n"
+        "function Header() { return <h1 />; }\n"
+        "export function Screen() {\n"
+        "  return (<div><Header /><Button /><Card /><ui.Badge /></div>);\n"
+        "}\n"
+    ),
+}
+
+
+def test_jsx_tags_create_calls_edges_from_the_rendering_component(tmp_path: Path):
+    _write(tmp_path, JSX_REPO)
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("app/Screen.tsx::Screen", "app/Screen.tsx::Header")] == 0.90  # same file
+    assert calls[("app/Screen.tsx::Screen", "app/Button.tsx::Button")] == 0.95  # named import
+    assert calls[("app/Screen.tsx::Screen", "app/Card.tsx::Card")] == 0.95  # default import
+    assert calls[("app/Screen.tsx::Screen", "app/ui/index.ts::Badge")] == 0.95  # namespace import, <ui.Badge />
+    # intrinsic DOM tags create nothing
+    assert not any("button" in tgt or "h1" in tgt for _, tgt in calls)
+
+
+TSCONFIG_REPO = {
+    "app/tsconfig.json": (
+        "{\n"
+        "  // JSONC: comments and trailing commas are legal in tsconfig\n"
+        '  "compilerOptions": {\n'
+        '    "baseUrl": ".",\n'
+        '    "paths": { "@/*": ["./*"], "@lib": ["lib/index.ts"], },\n'
+        "  },\n"
+        "}\n"
+    ),
+    "app/components/Ui.tsx": "export function Panel() { return null; }\n",
+    "app/lib/index.ts": "export function helper() { return 1; }\n",
+    "app/screens/Home.tsx": (
+        "import { Panel } from '@/components/Ui';\n"
+        "import { helper } from '@lib';\n"
+        "import React from 'react';\n"
+        "export function Home() { helper(); return <Panel />; }\n"
+    ),
+}
+
+
+def test_tsconfig_paths_aliases_resolve_imports(tmp_path: Path):
+    _write(tmp_path, TSCONFIG_REPO)
+    run_scan(tmp_path)
+
+    imports = _edges(tmp_path, "IMPORTS")
+    assert imports[("app/screens/Home.tsx", "app/components/Ui.tsx")] == 1.0  # '@/*' wildcard
+    assert imports[("app/screens/Home.tsx", "app/lib/index.ts")] == 1.0  # exact alias '@lib'
+    assert not any(tgt.endswith("react") for _, tgt in imports)  # npm package stays external
+
+    calls = _edges(tmp_path, "CALLS")
+    assert calls[("app/screens/Home.tsx::Home", "app/components/Ui.tsx::Panel")] == 0.95
+    assert calls[("app/screens/Home.tsx::Home", "app/lib/index.ts::helper")] == 0.95
+
+
+def test_alias_without_any_tsconfig_stays_unresolved(tmp_path: Path):
+    files = {k: v for k, v in TSCONFIG_REPO.items() if k != "app/tsconfig.json"}
+    _write(tmp_path, files)
+    run_scan(tmp_path)
+
+    assert not any(src == "app/screens/Home.tsx" for src, _ in _edges(tmp_path, "IMPORTS"))
+
+
+def test_local_extends_supplies_paths_and_nearest_config_wins(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "tsconfig.base.json": '{"compilerOptions": {"baseUrl": ".", "paths": {"@/*": ["src/*"]}}}',
+            "web/tsconfig.json": '{"extends": "../tsconfig.base.json"}',
+            "src/util.ts": "export function u() { return 1; }\n",
+            "web/page.ts": "import { u } from '@/util';\nexport function page() { return u(); }\n",
+        },
+    )
+    run_scan(tmp_path)
+
+    assert _edges(tmp_path, "IMPORTS")[("web/page.ts", "src/util.ts")] == 1.0
+
+
+def test_changing_tsconfig_alone_triggers_a_rebuild(tmp_path: Path):
+    files = dict(TSCONFIG_REPO)
+    files["app/tsconfig.json"] = '{"compilerOptions": {"baseUrl": "."}}'  # no aliases yet
+    _write(tmp_path, files)
+    run_scan(tmp_path)
+    assert not any(src == "app/screens/Home.tsx" for src, _ in _edges(tmp_path, "IMPORTS"))
+
+    _write(tmp_path, {"app/tsconfig.json": TSCONFIG_REPO["app/tsconfig.json"]})  # only the config changes
+    summary = run_scan(tmp_path)
+
+    assert summary["changed"] == 1
+    assert _edges(tmp_path, "IMPORTS")[("app/screens/Home.tsx", "app/components/Ui.tsx")] == 1.0
+
+
+def test_default_import_resolves_through_the_files_default_export_when_names_differ(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "app/MyCard.tsx": "function MyCard() { return null; }\nexport default MyCard;\n",
+            "app/Wrapped.tsx": "const Inner = () => null;\nexport default React.memo(Inner);\n",
+            "app/Screen.tsx": (
+                "import Card from './MyCard';\n"
+                "import Widget from './Wrapped';\n"
+                "export function Screen() { return (<div><Card /><Widget /></div>); }\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    # local names (Card, Widget) differ from the exported names (MyCard, Inner)
+    assert calls[("app/Screen.tsx::Screen", "app/MyCard.tsx::MyCard")] == 0.95
+    assert calls[("app/Screen.tsx::Screen", "app/Wrapped.tsx::Inner")] == 0.95
+
+
+INHERIT_REPO = {
+    "base.py": (
+        "class Base:\n"
+        "    def step(self):\n"
+        "        return 1\n"
+        "    def shared(self):\n"
+        "        return 2\n"
+    ),
+    "other.py": "class Other:\n    def step(self):\n        return 9\n",  # makes `step` ambiguous by name alone
+    "child.py": (
+        "from base import Base\n"
+        "\n"
+        "class Child(Base):\n"
+        "    def run(self):\n"
+        "        return self.step()\n"
+        "    def shared(self):\n"
+        "        return super().shared()\n"
+        "    def own(self):\n"
+        "        return self.shared()\n"
+        "\n"
+        "class GrandChild(Child):\n"
+        "    def deep(self):\n"
+        "        return self.step()\n"
+    ),
+}
+
+
+def test_self_method_follows_inheritance_across_files(tmp_path: Path):
+    _write(tmp_path, INHERIT_REPO)
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    # `step` exists on Base and Other, so the name alone is ambiguous; inheritance decides
+    assert calls[("child.py::Child.run", "base.py::Base.step")] == 0.85
+    assert ("child.py::Child.run", "other.py::Other.step") not in calls
+    # two levels up: GrandChild -> Child -> Base
+    assert calls[("child.py::GrandChild.deep", "base.py::Base.step")] == 0.85
+
+
+def test_own_class_beats_base_and_super_goes_to_base(tmp_path: Path):
+    _write(tmp_path, INHERIT_REPO)
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("child.py::Child.own", "child.py::Child.shared")] == 0.90  # overridden in Child itself
+    assert calls[("child.py::Child.shared", "base.py::Base.shared")] == 0.85  # super().shared() skips Child.shared
+    assert ("child.py::Child.shared", "child.py::Child.shared") not in calls
+
+
+def test_inheritance_cycles_do_not_hang(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "cyc.py": (
+                "class A(B):\n    def go(self):\n        return self.missing()\n\n"
+                "class B(A):\n    def other(self):\n        return 1\n"
+            )
+        },
+    )
+    run_scan(tmp_path)  # must terminate; `missing` simply stays unresolved
+    assert not any(tgt.endswith("missing") for _, tgt in _edges(tmp_path, "CALLS"))
+
+
+def test_javascript_this_and_super_follow_extends(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "web/base.js": "export class Base { render() { return 1; } paint() { return 2; } }\n",
+            "web/other.js": "export class Other { render() { return 9; } }\n",
+            "web/child.js": (
+                "import { Base } from './base';\n"
+                "export class Child extends Base {\n"
+                "  go() { return this.render(); }\n"
+                "  paint() { return super.paint(); }\n"
+                "}\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("web/child.js::Child.go", "web/base.js::Base.render")] == 0.85
+    assert calls[("web/child.js::Child.paint", "web/base.js::Base.paint")] == 0.85
+
+
+def _all_edges(root: Path) -> dict:
+    return {rel: _edges(root, rel) for rel in ("IMPORTS", "CALLS", "INHERITS")}
+
+
+def test_only_changed_files_are_reparsed(tmp_path: Path, monkeypatch):
+    from ibwd.graph import resolution
+
+    _write(tmp_path, PY_REPO)
+    run_scan(tmp_path)
+
+    parsed: list[str] = []
+    real = resolution.extract_references
+    monkeypatch.setattr(resolution, "extract_references", lambda abs_path, path: parsed.append(path) or real(abs_path, path))
+
+    run_scan(tmp_path)
+    assert parsed == []  # nothing changed: every file's references come from the cache
+
+    (tmp_path / "pkg" / "core.py").write_text((tmp_path / "pkg" / "core.py").read_text() + "\ndef extra():\n    return helper()\n")
+    run_scan(tmp_path)
+    assert parsed == ["pkg/core.py"]
+
+
+def test_incremental_rescan_gives_the_same_edges_as_a_fresh_scan(tmp_path: Path):
+    inc, fresh = tmp_path / "inc", tmp_path / "fresh"
+    _write(inc, {**PY_REPO, **INHERIT_REPO})
+    run_scan(inc)
+
+    # a mix of edits: change one file, add one, delete one, and touch an unrelated one
+    _write(inc, {"pkg/app.py": PY_REPO["pkg/app.py"] + "\ndef newer():\n    return h()\n", "extra.py": "from base import Base\n\nclass X(Base):\n    def go(self):\n        return self.step()\n"})
+    (inc / "other.py").unlink()
+    run_scan(inc)
+
+    files = {**PY_REPO, **INHERIT_REPO}
+    files.pop("other.py")
+    files["pkg/app.py"] = PY_REPO["pkg/app.py"] + "\ndef newer():\n    return h()\n"
+    files["extra.py"] = "from base import Base\n\nclass X(Base):\n    def go(self):\n        return self.step()\n"
+    _write(fresh, files)
+    run_scan(fresh)
+
+    assert _all_edges(inc) == _all_edges(fresh)
+
+
+def test_reference_cache_rows_follow_deleted_files(tmp_path: Path):
+    _write(tmp_path, {"a.py": "def a():\n    return 1\n", "b.py": "def b():\n    return 2\n"})
+    run_scan(tmp_path)
+
+    (tmp_path / "b.py").unlink()
+    run_scan(tmp_path)
+
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    assert [r["file_path"] for r in conn.execute("SELECT file_path FROM file_refs")] == ["a.py"]
+
+
+def test_function_used_as_a_value_becomes_a_references_edge(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "hooks/reducer.ts": "export function reduceWithContext(state) { return state; }\n",
+            "hooks/useScan.ts": (
+                "import { reduceWithContext } from './reducer';\n"
+                "export function useScan() { return useReducer(reduceWithContext, 0); }\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+
+    refs = _edges(tmp_path, "REFERENCES")
+    assert refs[("hooks/useScan.ts::useScan", "hooks/reducer.ts::reduceWithContext")] == 0.95
+    assert _edges(tmp_path, "CALLS") == {}  # it is referenced, not called
+
+
+def test_value_references_never_use_the_loose_name_tiers(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "a.py": "def callback():\n    return 1\n",
+            # `callback` here is an unrelated parameter and an unimported name: no edge may be guessed
+            "b.py": "def use(callback):\n    return [callback]\n\ndef other():\n    return [callback]\n",
+        },
+    )
+    run_scan(tmp_path)
+
+    assert _edges(tmp_path, "REFERENCES") == {}
+
+
+def test_python_value_reference_same_module_and_self_method(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "svc.py": (
+                "def on_done():\n    return 1\n\n"
+                "class Svc:\n"
+                "    def handler(self):\n        return 2\n"
+                "    def start(self):\n"
+                "        register(on_done)\n"
+                "        register(self.handler)\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    refs = _edges(tmp_path, "REFERENCES")
+
+    assert refs[("svc.py::Svc.start", "svc.py::on_done")] == 0.90
+    assert refs[("svc.py::Svc.start", "svc.py::Svc.handler")] == 0.90
+
+
+def test_references_are_returned_by_callers_and_labelled(tmp_path: Path):
+    import asyncio, json
+    from ibwd.mcp.server import mcp
+
+    _write(
+        tmp_path,
+        {
+            "hooks.ts": "export function reducer(s) { return s; }\n",
+            "use.ts": "import { reducer } from './hooks';\nexport function useIt() { return useReducer(reducer, 0); }\n",
+        },
+    )
+    import os
+    old = os.getcwd()
+    os.chdir(tmp_path)
+    try:
+        run_scan(tmp_path)
+        result = asyncio.run(mcp.call_tool("ibwd_callers", {"symbol": "reducer"}))
+        data = result.structured_content.get("result") if getattr(result, "structured_content", None) else json.loads(result.content[0].text)
+    finally:
+        os.chdir(old)
+
+    assert [(r["name"], r["relation"]) for r in data] == [("useIt", "REFERENCES")]

@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import networkx as nx
 
-TRAVERSAL_RELATIONS = ("CALLS", "IMPORTS", "INHERITS")
+TRAVERSAL_RELATIONS = ("CALLS", "IMPORTS", "INHERITS", "REFERENCES")
 DEFAULT_PATH_EDGE_TYPES = ("CALLS", "IMPORTS")
 # Path enumeration inside the CTE grows with depth on dense graphs; 5 hops is
 # already far beyond what a caller/dependent listing is useful for.
