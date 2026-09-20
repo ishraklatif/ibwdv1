@@ -1,0 +1,145 @@
+{
+ "tasks": [
+  {
+   "task_id": "sphinx-q1",
+   "repository": "sphinx",
+   "stratum": "Q1",
+   "file": "benchmarks/experiment/tasks/sphinx-q1.json",
+   "sha256": "393a5cb030965dc93d2b80d85a45fb7a1d20681ee1275485ee856cd7ffe79954"
+  },
+  {
+   "task_id": "sphinx-q2",
+   "repository": "sphinx",
+   "stratum": "Q2",
+   "file": "benchmarks/experiment/tasks/sphinx-q2.json",
+   "sha256": "87deda5c182a0db0dff57ac88acfafb7c7170aa52af5479547a1056ff6809610"
+  },
+  {
+   "task_id": "sphinx-q3",
+   "repository": "sphinx",
+   "stratum": "Q3",
+   "file": "benchmarks/experiment/tasks/sphinx-q3.json",
+   "sha256": "12f26883a9fa900658207b23340edb6a5dbdbf5c78efc8e6b4afce5ec9e3cffd"
+  },
+  {
+   "task_id": "sphinx-small",
+   "repository": "sphinx",
+   "stratum": "small",
+   "file": "benchmarks/experiment/tasks/sphinx-small.json",
+   "sha256": "8b693c1cccf9a194243c5e8f14bcf8588d87868d4108f4a93811513680d13cc7"
+  },
+  {
+   "task_id": "scrapy-q1",
+   "repository": "scrapy",
+   "stratum": "Q1",
+   "file": "benchmarks/experiment/tasks/scrapy-q1.json",
+   "sha256": "23058ea48ee62e3daa8d8c3bdc31ff263cd1bcb1863f45ecb58bd0eadf0ad0ab"
+  },
+  {
+   "task_id": "scrapy-q2",
+   "repository": "scrapy",
+   "stratum": "Q2",
+   "file": "benchmarks/experiment/tasks/scrapy-q2.json",
+   "sha256": "f0ff9fe07e3fdbf4cfcc2143e7dce49111033c726332f37c936f4c669004fee0"
+  },
+  {
+   "task_id": "scrapy-q3",
+   "repository": "scrapy",
+   "stratum": "Q3",
+   "file": "benchmarks/experiment/tasks/scrapy-q3.json",
+   "sha256": "ec133171352538aa24b2be1787d147ea6b7ff701ed6ac2aa9b5df359e88a955e"
+  },
+  {
+   "task_id": "scrapy-small",
+   "repository": "scrapy",
+   "stratum": "small",
+   "file": "benchmarks/experiment/tasks/scrapy-small.json",
+   "sha256": "a3618a09f1b24331d9757b2dc1a2f62f3ed34d0e59d83ed4923629df0e84f18c"
+  },
+  {
+   "task_id": "celery-q1",
+   "repository": "celery",
+   "stratum": "Q1",
+   "file": "benchmarks/experiment/tasks/celery-q1.json",
+   "sha256": "b73582fe0252a72285f1e2a56c7b537e712bcdbe996e3ed262be96908d2aa593"
+  },
+  {
+   "task_id": "celery-q2",
+   "repository": "celery",
+   "stratum": "Q2",
+   "file": "benchmarks/experiment/tasks/celery-q2.json",
+   "sha256": "2dd0d7a03d7c7f270fda40bff48ba274c703aa17e40f4651a85dfa344f144135"
+  },
+  {
+   "task_id": "celery-q3",
+   "repository": "celery",
+   "stratum": "Q3",
+   "file": "benchmarks/experiment/tasks/celery-q3.json",
+   "sha256": "716a0d0fa9b1d14da0818667656a25b30afc8d3ab029095bf36f208b59d995d4"
+  },
+  {
+   "task_id": "celery-small",
+   "repository": "celery",
+   "stratum": "small",
+   "file": "benchmarks/experiment/tasks/celery-small.json",
+   "sha256": "324cf572e1ea7219f60c2333332e75c28567a9369f2c8a0df75b2facfef75ffc"
+  },
+  {
+   "task_id": "redux-toolkit-q1",
+   "repository": "redux-toolkit",
+   "stratum": "Q1",
+   "file": "benchmarks/experiment/tasks/redux-toolkit-q1.json",
+   "sha256": "782e146a287e3d6e110af0e75b9806ad15a622f4ec3bb4928bac35048f2c1334"
+  },
+  {
+   "task_id": "redux-toolkit-q2",
+   "repository": "redux-toolkit",
+   "stratum": "Q2",
+   "file": "benchmarks/experiment/tasks/redux-toolkit-q2.json",
+   "sha256": "18c185a123d454b14d9d5a55d141233b5a14d86cd998d55e4487038591702447"
+  },
+  {
+   "task_id": "redux-toolkit-q3",
+   "repository": "redux-toolkit",
+   "stratum": "Q3",
+   "file": "benchmarks/experiment/tasks/redux-toolkit-q3.json",
+   "sha256": "e28b56320e8350bf3c3798e7c0294536840becff2b02b025b1d8ac302a08b9c7"
+  },
+  {
+   "task_id": "redux-toolkit-small",
+   "repository": "redux-toolkit",
+   "stratum": "small",
+   "file": "benchmarks/experiment/tasks/redux-toolkit-small.json",
+   "sha256": "c9be29c93d47ad9faa08f5d65924dc5d54a938ed90b95902d320ce571debf23a"
+  },
+  {
+   "task_id": "bulletproof-react-q1",
+   "repository": "bulletproof-react",
+   "stratum": "Q1",
+   "file": "benchmarks/experiment/tasks/bulletproof-react-q1.json",
+   "sha256": "6a086878a969366a5e9d5b93c652ec01308738772805435ada81cdb30984a763"
+  },
+  {
+   "task_id": "bulletproof-react-q2",
+   "repository": "bulletproof-react",
+   "stratum": "Q2",
+   "file": "benchmarks/experiment/tasks/bulletproof-react-q2.json",
+   "sha256": "1d1dfc8f07d60cb491972b3e2239e5484511bd2e1d0f70365a245b6c9fe12bef"
+  },
+  {
+   "task_id": "bulletproof-react-q3",
+   "repository": "bulletproof-react",
+   "stratum": "Q3",
+   "file": "benchmarks/experiment/tasks/bulletproof-react-q3.json",
+   "sha256": "089f6fb5a2c6ee53207c25ae4a4f70bff643ce71032509b9b56e78a7fcf5a3dd"
+  },
+  {
+   "task_id": "bulletproof-react-small",
+   "repository": "bulletproof-react",
+   "stratum": "small",
+   "file": "benchmarks/experiment/tasks/bulletproof-react-small.json",
+   "sha256": "682d898916f202ca149c6a1b4c12803d29b79821732408aeaab5fa65d098402e"
+  }
+ ],
+ "index_note": "sha256 of each frozen task specification"
+}

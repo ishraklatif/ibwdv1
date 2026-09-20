@@ -1,0 +1,95 @@
+{
+ "answer_schema": {
+  "answer": {
+   "path": [
+    {
+     "file": "repo-relative path",
+     "symbol": "name | Class.method"
+    }
+   ],
+   "relation": "CALLS"
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "evidence_references": [
+  {
+   "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+   "line": 33,
+   "source": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+   "target": "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList",
+   "text": "<DiscussionsList"
+  },
+  {
+   "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+   "line": 79,
+   "source": "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList",
+   "target": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion",
+   "text": "return <DeleteDiscussion id={id} />;"
+  },
+  {
+   "file": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx",
+   "line": 16,
+   "source": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion",
+   "target": "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion",
+   "text": "const deleteDiscussionMutation = useDeleteDiscussion({"
+  }
+ ],
+ "expected": {
+  "accepted_paths": [
+   [
+    {
+     "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+     "symbol": "DiscussionsRoute"
+    },
+    {
+     "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+     "symbol": "DiscussionsList"
+    },
+    {
+     "file": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx",
+     "symbol": "DeleteDiscussion"
+    },
+    {
+     "file": "apps/react-vite/src/features/discussions/api/delete-discussion.ts",
+     "symbol": "useDeleteDiscussion"
+    }
+   ]
+  ],
+  "cost_objective": "sum(1/confidence) over hops (IBWD's declared heuristic cost)",
+  "grading": "any path that is a minimum-cost path over the oracle's binding CALLS edges is accepted; equal-cost alternatives are all listed",
+  "hops": 3,
+  "minimum_cost": 3.157894737
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 104,
+  "manifest": "benchmarks/manifests/bulletproof-react.json",
+  "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/bulletproof-react.yaml",
+ "ground_truth_sha256": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259",
+ "headline": true,
+ "hop_count_shortest_is_min_cost": true,
+ "language": "typescript",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Trace the shortest call path (fewest calls) from `DiscussionsRoute` (apps/react-vite/src/app/routes/app/discussions/discussions.tsx) to `useDeleteDiscussion` (apps/react-vite/src/features/discussions/api/delete-discussion.ts). Give every function on the path. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+ "repository": "bulletproof-react",
+ "source": {
+  "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+  "symbol": "DiscussionsRoute"
+ },
+ "stratum": "Q3",
+ "target": {
+  "file": "apps/react-vite/src/features/discussions/api/delete-discussion.ts",
+  "symbol": "useDeleteDiscussion"
+ },
+ "task_id": "bulletproof-react-q3",
+ "valid_symbols_file": "benchmarks/experiment/symbols/bulletproof-react.json",
+ "valid_symbols_sha256": "2007215fda82c3c9c5bb1d6862777e5704c0cdb63f1cef0943633411e48442ad"
+}

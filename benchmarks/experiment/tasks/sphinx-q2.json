@@ -1,0 +1,145 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callees": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method | Class"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 565,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_optional",
+   "text": "stack.append(addnodes.desc_optional())"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 582,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_parameter",
+   "text": "node = addnodes.desc_parameter()"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 556,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_parameterlist",
+   "text": "paramlist = addnodes.desc_parameterlist()"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 583,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_sig_name",
+   "text": "node += addnodes.desc_sig_name('', param_name.strip())"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 592,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_sig_operator",
+   "text": "node += addnodes.desc_sig_operator('', '=')"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 586,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_sig_punctuation",
+   "text": "node += addnodes.desc_sig_punctuation('', ':')"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 587,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/addnodes.py::desc_sig_space",
+   "text": "node += addnodes.desc_sig_space()"
+  },
+  {
+   "file": "sphinx/domains/python/_annotations.py",
+   "line": 585,
+   "source": "sphinx/domains/python/_annotations.py::_pseudo_parse_arglist",
+   "target": "sphinx/domains/python/_annotations.py::_parse_annotation",
+   "text": "children = _parse_annotation(annotation.strip(), env=env)"
+  }
+ ],
+ "expected": {
+  "callees": [
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_optional"
+   },
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_parameter"
+   },
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_parameterlist"
+   },
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_sig_name"
+   },
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_sig_operator"
+   },
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_sig_punctuation"
+   },
+   {
+    "file": "sphinx/addnodes.py",
+    "relation": "CALLS",
+    "symbol": "desc_sig_space"
+   },
+   {
+    "file": "sphinx/domains/python/_annotations.py",
+    "relation": "CALLS",
+    "symbol": "_parse_annotation"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 243,
+  "manifest": "benchmarks/manifests/sphinx.json",
+  "manifest_sha256": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/sphinx.yaml",
+ "ground_truth_sha256": "387dcac825933213517482fe0f3d89ff2ad2757f94f0097f1ba8153cef465f1b",
+ "headline": true,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions, methods and classes defined in this repository does `_pseudo_parse_arglist` (in sphinx/domains/python/_annotations.py) call directly? List each with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+ "repository": "sphinx",
+ "rollup_callees": [],
+ "source": {
+  "file": "sphinx/domains/python/_annotations.py",
+  "symbol": "_pseudo_parse_arglist"
+ },
+ "stratum": "Q2",
+ "task_id": "sphinx-q2",
+ "valid_symbols_file": "benchmarks/experiment/symbols/sphinx.json",
+ "valid_symbols_sha256": "e8dda3ef1c3502c55617dea9fb7da152412b85b0d1f9ae08e1813ab29cc14a33"
+}

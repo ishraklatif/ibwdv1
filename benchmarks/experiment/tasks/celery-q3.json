@@ -1,0 +1,95 @@
+{
+ "answer_schema": {
+  "answer": {
+   "path": [
+    {
+     "file": "repo-relative path",
+     "symbol": "name | Class.method"
+    }
+   ],
+   "relation": "CALLS"
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "celery_negative_control",
+ "evidence_references": [
+  {
+   "file": "celery/contrib/testing/app.py",
+   "line": 95,
+   "source": "celery/contrib/testing/app.py::setup_default_app",
+   "target": "celery/_state.py::get_current_app",
+   "text": "prev_current_app = _state.get_current_app()"
+  },
+  {
+   "file": "celery/_state.py",
+   "line": 116,
+   "source": "celery/_state.py::get_current_app",
+   "target": "celery/_state.py::_get_current_app",
+   "text": "return _get_current_app()"
+  },
+  {
+   "file": "celery/_state.py",
+   "line": 96,
+   "source": "celery/_state.py::_get_current_app",
+   "target": "celery/app/base.py::Celery",
+   "text": "set_default_app(Celery("
+  }
+ ],
+ "expected": {
+  "accepted_paths": [
+   [
+    {
+     "file": "celery/contrib/testing/app.py",
+     "symbol": "setup_default_app"
+    },
+    {
+     "file": "celery/_state.py",
+     "symbol": "get_current_app"
+    },
+    {
+     "file": "celery/_state.py",
+     "symbol": "_get_current_app"
+    },
+    {
+     "file": "celery/app/base.py",
+     "symbol": "Celery"
+    }
+   ]
+  ],
+  "cost_objective": "sum(1/confidence) over hops (IBWD's declared heuristic cost)",
+  "grading": "any path that is a minimum-cost path over the oracle's binding CALLS edges is accepted; equal-cost alternatives are all listed",
+  "hops": 3,
+  "minimum_cost": 3.216374269
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 161,
+  "manifest": "benchmarks/manifests/celery.json",
+  "manifest_sha256": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/celery.yaml",
+ "ground_truth_sha256": "d74df536de143f9279f04502780243a2c153bac5373d055d410e4803102b87e3",
+ "headline": false,
+ "hop_count_shortest_is_min_cost": true,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Trace the shortest call path (fewest calls) from `setup_default_app` (celery/contrib/testing/app.py) to `Celery` (celery/app/base.py). Give every function on the path. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+ "repository": "celery",
+ "source": {
+  "file": "celery/contrib/testing/app.py",
+  "symbol": "setup_default_app"
+ },
+ "stratum": "Q3",
+ "target": {
+  "file": "celery/app/base.py",
+  "symbol": "Celery"
+ },
+ "task_id": "celery-q3",
+ "valid_symbols_file": "benchmarks/experiment/symbols/celery.json",
+ "valid_symbols_sha256": "b7be9d634f5b57a0267bab8c37b38335b5074685036eacbac5682b2c939a5c14"
+}

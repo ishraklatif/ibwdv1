@@ -1,0 +1,95 @@
+{
+ "answer_schema": {
+  "answer": {
+   "path": [
+    {
+     "file": "repo-relative path",
+     "symbol": "name | Class.method"
+    }
+   ],
+   "relation": "CALLS"
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "evidence_references": [
+  {
+   "file": "sphinx/domains/c/_parser.py",
+   "line": 961,
+   "source": "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init",
+   "target": "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer",
+   "text": "init = self._parse_initializer(outer=outer)"
+  },
+  {
+   "file": "sphinx/domains/c/_parser.py",
+   "line": 876,
+   "source": "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer",
+   "target": "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list",
+   "text": "braced_init = self._parse_braced_init_list()"
+  },
+  {
+   "file": "sphinx/domains/c/_parser.py",
+   "line": 248,
+   "source": "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list",
+   "target": "sphinx/domains/c/_ast.py::ASTBracedInitList",
+   "text": "return ASTBracedInitList(exprs, trailing_comma)"
+  }
+ ],
+ "expected": {
+  "accepted_paths": [
+   [
+    {
+     "file": "sphinx/domains/c/_parser.py",
+     "symbol": "DefinitionParser._parse_type_with_init"
+    },
+    {
+     "file": "sphinx/domains/c/_parser.py",
+     "symbol": "DefinitionParser._parse_initializer"
+    },
+    {
+     "file": "sphinx/domains/c/_parser.py",
+     "symbol": "DefinitionParser._parse_braced_init_list"
+    },
+    {
+     "file": "sphinx/domains/c/_ast.py",
+     "symbol": "ASTBracedInitList"
+    }
+   ]
+  ],
+  "cost_objective": "sum(1/confidence) over hops (IBWD's declared heuristic cost)",
+  "grading": "any path that is a minimum-cost path over the oracle's binding CALLS edges is accepted; equal-cost alternatives are all listed",
+  "hops": 3,
+  "minimum_cost": 3.274853801
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 243,
+  "manifest": "benchmarks/manifests/sphinx.json",
+  "manifest_sha256": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/sphinx.yaml",
+ "ground_truth_sha256": "387dcac825933213517482fe0f3d89ff2ad2757f94f0097f1ba8153cef465f1b",
+ "headline": true,
+ "hop_count_shortest_is_min_cost": true,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Trace the shortest call path (fewest calls) from `DefinitionParser._parse_type_with_init` (sphinx/domains/c/_parser.py) to `ASTBracedInitList` (sphinx/domains/c/_ast.py). Give every function on the path. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+ "repository": "sphinx",
+ "source": {
+  "file": "sphinx/domains/c/_parser.py",
+  "symbol": "DefinitionParser._parse_type_with_init"
+ },
+ "stratum": "Q3",
+ "target": {
+  "file": "sphinx/domains/c/_ast.py",
+  "symbol": "ASTBracedInitList"
+ },
+ "task_id": "sphinx-q3",
+ "valid_symbols_file": "benchmarks/experiment/symbols/sphinx.json",
+ "valid_symbols_sha256": "e8dda3ef1c3502c55617dea9fb7da152412b85b0d1f9ae08e1813ab29cc14a33"
+}

@@ -1,0 +1,95 @@
+{
+ "answer_schema": {
+  "answer": {
+   "path": [
+    {
+     "file": "repo-relative path",
+     "symbol": "name | Class.method"
+    }
+   ],
+   "relation": "CALLS"
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "evidence_references": [
+  {
+   "file": "scrapy/signalmanager.py",
+   "line": 116,
+   "source": "scrapy/signalmanager.py::SignalManager.wait_for",
+   "target": "scrapy/utils/defer.py::maybe_deferred_to_future",
+   "text": "await maybe_deferred_to_future(d)"
+  },
+  {
+   "file": "scrapy/utils/defer.py",
+   "line": 550,
+   "source": "scrapy/utils/defer.py::maybe_deferred_to_future",
+   "target": "scrapy/utils/asyncio.py::is_asyncio_available",
+   "text": "if not is_asyncio_available():"
+  },
+  {
+   "file": "scrapy/utils/asyncio.py",
+   "line": 92,
+   "source": "scrapy/utils/asyncio.py::is_asyncio_available",
+   "target": "scrapy/utils/reactor.py::is_reactor_installed",
+   "text": "if not is_reactor_installed():"
+  }
+ ],
+ "expected": {
+  "accepted_paths": [
+   [
+    {
+     "file": "scrapy/signalmanager.py",
+     "symbol": "SignalManager.wait_for"
+    },
+    {
+     "file": "scrapy/utils/defer.py",
+     "symbol": "maybe_deferred_to_future"
+    },
+    {
+     "file": "scrapy/utils/asyncio.py",
+     "symbol": "is_asyncio_available"
+    },
+    {
+     "file": "scrapy/utils/reactor.py",
+     "symbol": "is_reactor_installed"
+    }
+   ]
+  ],
+  "cost_objective": "sum(1/confidence) over hops (IBWD's declared heuristic cost)",
+  "grading": "any path that is a minimum-cost path over the oracle's binding CALLS edges is accepted; equal-cost alternatives are all listed",
+  "hops": 3,
+  "minimum_cost": 3.157894737
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 190,
+  "manifest": "benchmarks/manifests/scrapy.json",
+  "manifest_sha256": "c1448decc3b29ffdf958a342e4ebc328a66a08fb369a20c4841b7c4b030645f5"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/scrapy.yaml",
+ "ground_truth_sha256": "a0262ff1e90ba2b2cfae7d3da12aae8bf1995b5c6443ee83fd5f0f1bccbc8756",
+ "headline": true,
+ "hop_count_shortest_is_min_cost": true,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Trace the shortest call path (fewest calls) from `SignalManager.wait_for` (scrapy/signalmanager.py) to `is_reactor_installed` (scrapy/utils/reactor.py). Give every function on the path. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+ "repository": "scrapy",
+ "source": {
+  "file": "scrapy/signalmanager.py",
+  "symbol": "SignalManager.wait_for"
+ },
+ "stratum": "Q3",
+ "target": {
+  "file": "scrapy/utils/reactor.py",
+  "symbol": "is_reactor_installed"
+ },
+ "task_id": "scrapy-q3",
+ "valid_symbols_file": "benchmarks/experiment/symbols/scrapy.json",
+ "valid_symbols_sha256": "3f062efffffa92061335698d63cfbf89246e5ba53b7e5c25c32d2debe2903b52"
+}

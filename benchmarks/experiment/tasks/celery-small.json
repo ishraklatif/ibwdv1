@@ -1,0 +1,79 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callees": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method | Class"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "celery_negative_control",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "celery/utils/collections.py",
+   "line": 418,
+   "source": "celery/utils/collections.py::ConfigurationView.first",
+   "target": "celery/utils/collections.py::ConfigurationView.get",
+   "text": "return first(None, (self.get(key) for key in keys))"
+  },
+  {
+   "file": "celery/utils/collections.py",
+   "line": 418,
+   "source": "celery/utils/collections.py::ConfigurationView.first",
+   "target": "celery/utils/functional.py::first",
+   "text": "return first(None, (self.get(key) for key in keys))"
+  }
+ ],
+ "expected": {
+  "callees": [
+   {
+    "file": "celery/utils/collections.py",
+    "relation": "CALLS",
+    "symbol": "ConfigurationView.get"
+   },
+   {
+    "file": "celery/utils/functional.py",
+    "relation": "CALLS",
+    "symbol": "first"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 161,
+  "manifest": "benchmarks/manifests/celery.json",
+  "manifest_sha256": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/celery.yaml",
+ "ground_truth_sha256": "d74df536de143f9279f04502780243a2c153bac5373d055d410e4803102b87e3",
+ "headline": false,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions, methods and classes defined in this repository does `ConfigurationView.first` (in celery/utils/collections.py) call directly? List each with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+ "repository": "celery",
+ "rollup_callees": [],
+ "small_criterion": {
+  "callees": 2,
+  "callers": 5,
+  "declared": "<= 20 lines, 2..4 internal callees, >= 1 caller",
+  "lines": 3
+ },
+ "source": {
+  "file": "celery/utils/collections.py",
+  "symbol": "ConfigurationView.first"
+ },
+ "stratum": "small",
+ "task_id": "celery-small",
+ "valid_symbols_file": "benchmarks/experiment/symbols/celery.json",
+ "valid_symbols_sha256": "b7be9d634f5b57a0267bab8c37b38335b5074685036eacbac5682b2c939a5c14"
+}

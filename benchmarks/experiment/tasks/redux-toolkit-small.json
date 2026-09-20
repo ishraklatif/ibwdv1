@@ -1,0 +1,91 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callees": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method | Class"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "packages/toolkit/src/matchers.ts",
+   "line": 357,
+   "source": "packages/toolkit/src/matchers.ts::isAsyncThunkAction",
+   "target": "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata",
+   "text": "hasExpectedRequestMetadata(action, ['pending', 'fulfilled', 'rejected'])"
+  },
+  {
+   "file": "packages/toolkit/src/matchers.ts",
+   "line": 364,
+   "source": "packages/toolkit/src/matchers.ts::isAsyncThunkAction",
+   "target": "packages/toolkit/src/matchers.ts::isAnyOf",
+   "text": "return isAnyOf("
+  },
+  {
+   "file": "packages/toolkit/src/matchers.ts",
+   "line": 360,
+   "source": "packages/toolkit/src/matchers.ts::isAsyncThunkAction",
+   "target": "packages/toolkit/src/matchers.ts::isAsyncThunkArray",
+   "text": "if (!isAsyncThunkArray(asyncThunks)) {"
+  }
+ ],
+ "expected": {
+  "callees": [
+   {
+    "file": "packages/toolkit/src/matchers.ts",
+    "relation": "CALLS",
+    "symbol": "hasExpectedRequestMetadata"
+   },
+   {
+    "file": "packages/toolkit/src/matchers.ts",
+    "relation": "CALLS",
+    "symbol": "isAnyOf"
+   },
+   {
+    "file": "packages/toolkit/src/matchers.ts",
+    "relation": "CALLS",
+    "symbol": "isAsyncThunkArray"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 118,
+  "manifest": "benchmarks/manifests/redux-toolkit.json",
+  "manifest_sha256": "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/redux-toolkit.yaml",
+ "ground_truth_sha256": "fea5b56dfc5705677cc0f6d7b3a27f636c2b9ba080aa2796eb0b7cdd34246844",
+ "headline": true,
+ "language": "typescript",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions, methods and classes defined in this repository does `isAsyncThunkAction` (in packages/toolkit/src/matchers.ts) call directly? List each with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+ "repository": "redux-toolkit",
+ "rollup_callees": [],
+ "small_criterion": {
+  "callees": 3,
+  "callers": 1,
+  "declared": "<= 20 lines, 2..4 internal callees, >= 1 caller",
+  "lines": 20
+ },
+ "source": {
+  "file": "packages/toolkit/src/matchers.ts",
+  "symbol": "isAsyncThunkAction"
+ },
+ "stratum": "small",
+ "task_id": "redux-toolkit-small",
+ "valid_symbols_file": "benchmarks/experiment/symbols/redux-toolkit.json",
+ "valid_symbols_sha256": "f82b6e89a3ebe8ad1ca1dc5dcd5279c1af1adaf561d7af3361aa53eb119e532a"
+}

@@ -1,0 +1,85 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callers": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "scrapy/core/downloader/handlers/_base_streaming.py",
+   "line": 289,
+   "source": "scrapy/core/downloader/handlers/_base_streaming.py::BaseStreamingDownloadHandler._extract_proxy",
+   "target": "scrapy/utils/url.py::add_http_if_no_scheme",
+   "text": "proxy = add_http_if_no_scheme(proxy)"
+  },
+  {
+   "file": "scrapy/core/downloader/handlers/http11.py",
+   "line": 459,
+   "source": "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._get_agent",
+   "target": "scrapy/utils/url.py::add_http_if_no_scheme",
+   "text": "proxy = add_http_if_no_scheme(proxy)"
+  },
+  {
+   "file": "scrapy/utils/url.py",
+   "line": 118,
+   "source": "scrapy/utils/url.py::guess_scheme",
+   "target": "scrapy/utils/url.py::add_http_if_no_scheme",
+   "text": "return add_http_if_no_scheme(url)"
+  }
+ ],
+ "expected": {
+  "callers": [
+   {
+    "file": "scrapy/core/downloader/handlers/_base_streaming.py",
+    "relation": "CALLS",
+    "symbol": "BaseStreamingDownloadHandler._extract_proxy"
+   },
+   {
+    "file": "scrapy/core/downloader/handlers/http11.py",
+    "relation": "CALLS",
+    "symbol": "_ScrapyAgent._get_agent"
+   },
+   {
+    "file": "scrapy/utils/url.py",
+    "relation": "CALLS",
+    "symbol": "guess_scheme"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 190,
+  "manifest": "benchmarks/manifests/scrapy.json",
+  "manifest_sha256": "c1448decc3b29ffdf958a342e4ebc328a66a08fb369a20c4841b7c4b030645f5"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/scrapy.yaml",
+ "ground_truth_sha256": "a0262ff1e90ba2b2cfae7d3da12aae8bf1995b5c6443ee83fd5f0f1bccbc8756",
+ "headline": true,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions and methods in the production code call `add_http_if_no_scheme` (defined in scrapy/utils/url.py)? List each caller with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+ "repository": "scrapy",
+ "rollup_callers": [],
+ "stratum": "Q1",
+ "target": {
+  "file": "scrapy/utils/url.py",
+  "symbol": "add_http_if_no_scheme"
+ },
+ "task_id": "scrapy-q1",
+ "valid_symbols_file": "benchmarks/experiment/symbols/scrapy.json",
+ "valid_symbols_sha256": "3f062efffffa92061335698d63cfbf89246e5ba53b7e5c25c32d2debe2903b52"
+}

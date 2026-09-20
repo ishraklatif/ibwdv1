@@ -1,0 +1,109 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callees": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method | Class"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+   "line": 36,
+   "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion",
+   "target": "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer",
+   "text": "<FormDrawer"
+  },
+  {
+   "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+   "line": 55,
+   "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion",
+   "target": "apps/react-vite/src/components/ui/form/form.tsx::Form",
+   "text": "<Form"
+  },
+  {
+   "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+   "line": 20,
+   "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion",
+   "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion",
+   "text": "const discussionQuery = useDiscussion({ discussionId });"
+  },
+  {
+   "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+   "line": 21,
+   "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion",
+   "target": "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion",
+   "text": "const updateDiscussionMutation = useUpdateDiscussion({"
+  },
+  {
+   "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+   "line": 35,
+   "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx::UpdateDiscussion",
+   "target": "apps/react-vite/src/lib/authorization.tsx::Authorization",
+   "text": "<Authorization allowedRoles={[ROLES.ADMIN]}>"
+  }
+ ],
+ "expected": {
+  "callees": [
+   {
+    "file": "apps/react-vite/src/components/ui/form/form-drawer.tsx",
+    "relation": "CALLS",
+    "symbol": "FormDrawer"
+   },
+   {
+    "file": "apps/react-vite/src/components/ui/form/form.tsx",
+    "relation": "CALLS",
+    "symbol": "Form"
+   },
+   {
+    "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+    "relation": "CALLS",
+    "symbol": "useDiscussion"
+   },
+   {
+    "file": "apps/react-vite/src/features/discussions/api/update-discussion.ts",
+    "relation": "CALLS",
+    "symbol": "useUpdateDiscussion"
+   },
+   {
+    "file": "apps/react-vite/src/lib/authorization.tsx",
+    "relation": "CALLS",
+    "symbol": "Authorization"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 104,
+  "manifest": "benchmarks/manifests/bulletproof-react.json",
+  "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/bulletproof-react.yaml",
+ "ground_truth_sha256": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259",
+ "headline": true,
+ "language": "typescript",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions, methods and classes defined in this repository does `UpdateDiscussion` (in apps/react-vite/src/features/discussions/components/update-discussion.tsx) call directly? List each with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+ "repository": "bulletproof-react",
+ "rollup_callees": [],
+ "source": {
+  "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+  "symbol": "UpdateDiscussion"
+ },
+ "stratum": "Q2",
+ "task_id": "bulletproof-react-q2",
+ "valid_symbols_file": "benchmarks/experiment/symbols/bulletproof-react.json",
+ "valid_symbols_sha256": "2007215fda82c3c9c5bb1d6862777e5704c0cdb63f1cef0943633411e48442ad"
+}

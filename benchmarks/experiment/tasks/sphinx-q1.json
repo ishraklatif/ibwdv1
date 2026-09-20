@@ -1,0 +1,109 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callers": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "sphinx/ext/autodoc/_dynamic/_docstrings.py",
+   "line": 285,
+   "source": "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines",
+   "target": "sphinx/util/inspect.py::isattributedescriptor",
+   "text": "if not inspect.isattributedescriptor(obj):"
+  },
+  {
+   "file": "sphinx/ext/autodoc/_dynamic/_loader.py",
+   "line": 402,
+   "source": "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+   "target": "sphinx/util/inspect.py::isattributedescriptor",
+   "text": "_obj_is_attribute_descriptor=inspect.isattributedescriptor(obj),"
+  },
+  {
+   "file": "sphinx/ext/autodoc/_dynamic/_member_finder.py",
+   "line": 549,
+   "source": "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member",
+   "target": "sphinx/util/inspect.py::isattributedescriptor",
+   "text": "if inspect.isattributedescriptor(member) or not ("
+  },
+  {
+   "file": "sphinx/ext/autodoc/_legacy_class_based/_documenters.py",
+   "line": 2680,
+   "source": "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member",
+   "target": "sphinx/util/inspect.py::isattributedescriptor",
+   "text": "if inspect.isattributedescriptor(member):"
+  },
+  {
+   "file": "sphinx/ext/autodoc/_legacy_class_based/_documenters.py",
+   "line": 2438,
+   "source": "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object",
+   "target": "sphinx/util/inspect.py::isattributedescriptor",
+   "text": "if ret and not inspect.isattributedescriptor(self.object):"
+  }
+ ],
+ "expected": {
+  "callers": [
+   {
+    "file": "sphinx/ext/autodoc/_dynamic/_docstrings.py",
+    "relation": "CALLS",
+    "symbol": "_get_docstring_lines"
+   },
+   {
+    "file": "sphinx/ext/autodoc/_dynamic/_loader.py",
+    "relation": "CALLS",
+    "symbol": "_make_props_from_imported_object"
+   },
+   {
+    "file": "sphinx/ext/autodoc/_dynamic/_member_finder.py",
+    "relation": "CALLS",
+    "symbol": "_best_object_type_for_member"
+   },
+   {
+    "file": "sphinx/ext/autodoc/_legacy_class_based/_documenters.py",
+    "relation": "CALLS",
+    "symbol": "AttributeDocumenter.can_document_member"
+   },
+   {
+    "file": "sphinx/ext/autodoc/_legacy_class_based/_documenters.py",
+    "relation": "CALLS",
+    "symbol": "NonDataDescriptorMixin.import_object"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 243,
+  "manifest": "benchmarks/manifests/sphinx.json",
+  "manifest_sha256": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/sphinx.yaml",
+ "ground_truth_sha256": "387dcac825933213517482fe0f3d89ff2ad2757f94f0097f1ba8153cef465f1b",
+ "headline": true,
+ "language": "python",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions and methods in the production code call `isattributedescriptor` (defined in sphinx/util/inspect.py)? List each caller with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+ "repository": "sphinx",
+ "rollup_callers": [],
+ "stratum": "Q1",
+ "target": {
+  "file": "sphinx/util/inspect.py",
+  "symbol": "isattributedescriptor"
+ },
+ "task_id": "sphinx-q1",
+ "valid_symbols_file": "benchmarks/experiment/symbols/sphinx.json",
+ "valid_symbols_sha256": "e8dda3ef1c3502c55617dea9fb7da152412b85b0d1f9ae08e1813ab29cc14a33"
+}

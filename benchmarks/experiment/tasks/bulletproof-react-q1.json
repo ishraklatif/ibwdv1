@@ -1,0 +1,109 @@
+{
+ "answer_schema": {
+  "answer": {
+   "callers": [
+    {
+     "file": "repo-relative path",
+     "relation": "CALLS",
+     "symbol": "name | Class.method"
+    }
+   ]
+  },
+  "task_id": "string"
+ },
+ "callsite_positions_required": false,
+ "condition_scope": "headline",
+ "distractors_references_only": [],
+ "evidence_references": [
+  {
+   "file": "apps/react-vite/src/app/routes/app/dashboard.tsx",
+   "line": 8,
+   "source": "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute",
+   "target": "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout",
+   "text": "<ContentLayout title=\"Dashboard\">"
+  },
+  {
+   "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+   "line": 59,
+   "source": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute",
+   "target": "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout",
+   "text": "<ContentLayout title={discussion.title}>"
+  },
+  {
+   "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+   "line": 28,
+   "source": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+   "target": "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout",
+   "text": "<ContentLayout title=\"Discussions\">"
+  },
+  {
+   "file": "apps/react-vite/src/app/routes/app/profile.tsx",
+   "line": 24,
+   "source": "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute",
+   "target": "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout",
+   "text": "<ContentLayout title=\"Profile\">"
+  },
+  {
+   "file": "apps/react-vite/src/app/routes/app/users.tsx",
+   "line": 19,
+   "source": "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute",
+   "target": "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout",
+   "text": "<ContentLayout title=\"Users\">"
+  }
+ ],
+ "expected": {
+  "callers": [
+   {
+    "file": "apps/react-vite/src/app/routes/app/dashboard.tsx",
+    "relation": "CALLS",
+    "symbol": "DashboardRoute"
+   },
+   {
+    "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+    "relation": "CALLS",
+    "symbol": "DiscussionRoute"
+   },
+   {
+    "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+    "relation": "CALLS",
+    "symbol": "DiscussionsRoute"
+   },
+   {
+    "file": "apps/react-vite/src/app/routes/app/profile.tsx",
+    "relation": "CALLS",
+    "symbol": "ProfileRoute"
+   },
+   {
+    "file": "apps/react-vite/src/app/routes/app/users.tsx",
+    "relation": "CALLS",
+    "symbol": "UsersRoute"
+   }
+  ]
+ },
+ "graph_scope": {
+  "description": "production files listed in the manifest; tests, vendored and generated files are not part of the answer",
+  "files": 104,
+  "manifest": "benchmarks/manifests/bulletproof-react.json",
+  "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e"
+ },
+ "ground_truth_file": "benchmarks/ground_truth/bulletproof-react.yaml",
+ "ground_truth_sha256": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259",
+ "headline": true,
+ "language": "typescript",
+ "note_callsite_positions": "IBWD stores no call-site positions; answers name definitions only, and the grader does not read line numbers.",
+ "permitted_relations": [
+  "CALLS"
+ ],
+ "question": "Which functions and methods in the production code call `ContentLayout` (defined in apps/react-vite/src/components/layouts/content-layout.tsx)? List each caller with its file. Answer with the top-level function, method or class that CONTAINS the call: a call inside a nested function, callback or lambda belongs to its enclosing top-level function or method; a statement directly in a class body belongs to the class. Name each item by the file (repository-relative, forward slashes) and the symbol as `name`, `Class.method` or `Class`. Calls into external packages are not part of the answer. Only direct calls count: passing a function as a value without calling it is not a call.",
+ "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+ "repository": "bulletproof-react",
+ "rollup_callers": [],
+ "stratum": "Q1",
+ "target": {
+  "file": "apps/react-vite/src/components/layouts/content-layout.tsx",
+  "symbol": "ContentLayout"
+ },
+ "task_id": "bulletproof-react-q1",
+ "valid_symbols_file": "benchmarks/experiment/symbols/bulletproof-react.json",
+ "valid_symbols_sha256": "2007215fda82c3c9c5bb1d6862777e5704c0cdb63f1cef0943633411e48442ad"
+}
