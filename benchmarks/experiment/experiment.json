@@ -15,5 +15,16 @@
  "conditions": [
   "baseline",
   "ibwd"
- ]
+ ],
+ "layout": {
+  "workspace_root": "/Users/ishraklatif/ibwd_ab_ws",
+  "deny": [
+   "/Users/ishraklatif/Documents",
+   "/private/tmp/claude-501"
+  ]
+ },
+ "pilot_rule": {
+  "stratum": "Q1",
+  "rule": "alphabetically first headline repository of each language, its Q1 task, both conditions, repeat 1"
+ }
 }
