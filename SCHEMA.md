@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS nodes (
 | `name`           | TEXT    | No       | All                             | Local, non-unique display name (file/directory basename, or symbol identifier). |
 | `qualified_name` | TEXT    | Yes      | Symbol nodes only               | Globally unique identifier in the form `{file_path}::{Outer.Inner}`. `NULL` for `File`/`Directory` nodes. |
 | `file_path`      | TEXT    | Yes      | File, Directory, Symbol         | Repo-relative path. For a `File`/`Directory` node this *is* the entity; for a symbol node it identifies the containing file. |
-| `kind`           | TEXT    | Yes      | File nodes only                 | Content classification: `source`, `test`, `doc`, `config`, `other`. |
+| `kind`           | TEXT    | Yes      | File nodes only                 | Content classification: `source`, `test`, `doc`, `config`, `vendor`, `generated`, `other`. Only `source` files get symbols and edges. |
 | `start_line`     | INTEGER | Yes      | Symbol nodes only               | 1-indexed line where the definition begins. |
 | `end_line`       | INTEGER | Yes      | Symbol nodes only               | 1-indexed line where the definition ends. |
 | `content_hash`   | TEXT    | Yes      | File, Symbol                    | Hash of source content, used to detect no-op rescans without re-parsing. |

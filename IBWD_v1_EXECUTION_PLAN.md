@@ -15,7 +15,7 @@ The original plan built the MCP server last (after scanning, parsing, git, and e
 |---|---|---|---|---|
 | 1 | File/dir index | `ibwd_scan`, `ibwd_find_files` | "which files are tests / configs / X" | fewer tool calls than Glob |
 | 2 | Symbol index | `ibwd_find_symbol`, `ibwd_list_symbols` | "where is X defined" | fewer tokens than Grep, esp. common names |
-| 3 | Call graph | `ibwd_callers`, `ibwd_dependents` | "what calls / imports X" | ≥3x fewer tokens than manual grep-trace |
+| 3 | Call graph | `ibwd_callers`, `ibwd_dependents`, `ibwd_trace_path` | "what calls / imports X" | ≥3x fewer tokens than manual grep-trace |
 | 4 | Impact analysis | `ibwd_impact`, `ibwd_tests_for` | "what breaks if I change X" | ≥3–5x fewer tokens, equal/better correctness |
 | 5 | Semantic search | `ibwd_search` | "where is `<vague concept>` implemented" | higher hit-rate than grep on non-exact queries |
 | 6 | Semantic understanding | `ibwd_explain` | "what is X responsible for" | matches manual-read accuracy, far fewer tokens |
@@ -62,15 +62,15 @@ uv init --python 3.11
 **Sprint goal (user story):** *As Claude Code, I can ask IBWD which files exist and how they're categorized, so I don't burn multiple `Glob` calls exploring the tree by hand.*
 
 ### Build tasks
-- [ ] Scaffold the repo layout (Appendix A) with `pyproject.toml` (deps: `click`, `gitpython`, `pathspec`, `xxhash`, `mcp`, `httpx`, `pytest` — add `tree-sitter*`/`sqlite-vec` in later sprints as needed)
-- [ ] `graph/schema.sql` + `graph/database.py`: create `.ibwd/graph.db` with the `nodes`/`edges` tables (Appendix B)
-- [ ] `scanner/filesystem.py`: walk the repo respecting `.gitignore` (via `pathspec`), classify each file (source / test / doc / config) by path heuristics, hash contents with `xxhash.xxh3_64`
-- [ ] Insert `File`/`Directory` nodes + `CONTAINS` edges (`confidence=1.0`, `source_type=static_analysis`)
-- [ ] `.ibwd/manifest.json`: `path -> content_hash`, so re-scans are incremental
-- [ ] `cli.py`: `ibwd scan` — incremental scan, prints a summary
-- [ ] **`mcp/server.py` — ship this now, not later.** Expose two tools: `ibwd_scan()` (triggers a rescan, returns the summary) and `ibwd_find_files(kind: str | None, name_pattern: str | None)` (returns categorized file list with path + kind, filtered)
-- [ ] Register the server: `claude mcp add ibwd -- uv run python -m ibwd.mcp.server`
-- [ ] Add the first block to `CLAUDE.md` (Appendix C): "for file discovery/categorization, prefer `ibwd_find_files` over repeated `Glob` calls"
+- [x] Scaffold the repo layout (Appendix A) with `pyproject.toml` (deps: `click`, `gitpython`, `pathspec`, `xxhash`, `mcp`, `httpx`, `pytest` — add `tree-sitter*`/`sqlite-vec` in later sprints as needed)
+- [x] `graph/schema.sql` + `graph/database.py`: create `.ibwd/graph.db` with the `nodes`/`edges` tables (Appendix B)
+- [x] `scanner/filesystem.py`: walk the repo respecting `.gitignore` (via `pathspec`), classify each file (source / test / doc / config) by path heuristics, hash contents with `xxhash.xxh3_64`
+- [x] Insert `File`/`Directory` nodes + `CONTAINS` edges (`confidence=1.0`, `source_type=static_analysis`)
+- [x] `.ibwd/manifest.json`: `path -> content_hash`, so re-scans are incremental
+- [x] `cli.py`: `ibwd scan` — incremental scan, prints a summary
+- [x] **`mcp/server.py` — ship this now, not later.** Expose two tools: `ibwd_scan()` (triggers a rescan, returns the summary) and `ibwd_find_files(kind: str | None, name_pattern: str | None)` (returns categorized file list with path + kind, filtered)
+- [x] Register the server: `claude mcp add ibwd -- uv run python -m ibwd.mcp.server`
+- [x] Add the first block to `CLAUDE.md` (Appendix C): "for file discovery/categorization, prefer `ibwd_find_files` over repeated `Glob` calls"
 
 ### Claude Code prompt
 ```
@@ -95,10 +95,10 @@ Run the generic protocol (Appendix D) with these 3 tasks:
 Compare: baseline (`Read`,`Glob`,`Grep` only) vs. with `ibwd_find_files` available. Log tool-call count and tokens to `benchmarks/sprint_1_results.csv`.
 
 ### Definition of done
-- [ ] `claude mcp list` shows `ibwd` connected
-- [ ] `ibwd scan` on this repo completes with correct counts; a second run with no changes reports 0 changed
-- [ ] All 3 demo tasks answered correctly via `ibwd_find_files` with fewer tool calls than the Glob-only baseline
-- [ ] `benchmarks/sprint_1_results.csv` exists with the logged comparison
+- [x] `claude mcp list` shows `ibwd` connected
+- [x] `ibwd scan` on this repo completes with correct counts; a second run with no changes reports 0 changed
+- [x] All 3 demo tasks answered correctly via `ibwd_find_files` with fewer tool calls than the Glob-only baseline
+- [x] `benchmarks/sprint_1_results.csv` exists with the logged comparison
 
 ---
 
@@ -107,11 +107,11 @@ Compare: baseline (`Read`,`Glob`,`Grep` only) vs. with `ibwd_find_files` availab
 **Sprint goal:** *As Claude Code, I can ask exactly where a class/function/method is defined, so I don't grep for a common name and wade through false positives.*
 
 ### Build tasks
-- [ ] Add `tree-sitter`, `tree-sitter-python`, `tree-sitter-javascript`, `tree-sitter-typescript` deps
-- [ ] `scanner/python.py`, `scanner/javascript.py`: tree-sitter tag queries (Aider's Apache-2.0 `.scm` queries are a good starting point) extracting `Class`/`Function`/`Method` nodes with exact `start_line`/`end_line`, and `DEFINES` edges
-- [ ] Only reparse files whose content hash changed since the last scan
-- [ ] New MCP tools: `ibwd_find_symbol(name)` → exact/fuzzy matches with `file:line`; `ibwd_list_symbols(file)` → all symbols defined in a file
-- [ ] Extend `CLAUDE.md`: "for 'where is X defined', prefer `ibwd_find_symbol` over `Grep` for a symbol name"
+- [x] Add `tree-sitter`, `tree-sitter-python`, `tree-sitter-javascript`, `tree-sitter-typescript` deps
+- [x] `scanner/python.py`, `scanner/javascript.py`: tree-sitter tag queries (Aider's Apache-2.0 `.scm` queries are a good starting point) extracting `Class`/`Function`/`Method` nodes with exact `start_line`/`end_line`, and `DEFINES` edges
+- [x] Only reparse files whose content hash changed since the last scan
+- [x] New MCP tools: `ibwd_find_symbol(name)` → exact/fuzzy matches with `file:line`; `ibwd_list_symbols(file)` → all symbols defined in a file
+- [x] Extend `CLAUDE.md`: "for 'where is X defined', prefer `ibwd_find_symbol` over `Grep` for a symbol name"
 
 ### Claude Code prompt
 ```
@@ -135,9 +135,9 @@ covering a class, a function, and a method with the same name in two files
 Baseline: `Grep` only. Compare: token count (grep on a common name returns many hits Claude has to read through) and tool calls.
 
 ### Definition of done
-- [ ] Symbol extraction produces correct node/edge counts on a small known fixture
-- [ ] Every symbol node has a verifiable `file:line`
-- [ ] All 3 demo tasks: `ibwd_find_symbol` wins on tokens and/or precision vs. Grep baseline, logged to `benchmarks/sprint_2_results.csv`
+- [x] Symbol extraction produces correct node/edge counts on a small known fixture
+- [x] Every symbol node has a verifiable `file:line`
+- [x] All 3 demo tasks: `ibwd_find_symbol` wins on tokens and/or precision vs. Grep baseline, logged to `benchmarks/sprint_2_results.csv` *(2/3 clean, 1 partial — see SPRINT_2.md)*
 
 ---
 
@@ -146,10 +146,10 @@ Baseline: `Grep` only. Compare: token count (grep on a common name returns many 
 **Sprint goal:** *As Claude Code, I can ask what calls or imports a given symbol, so I don't manually trace call chains through Grep.*
 
 ### Build tasks
-- [ ] Extend tree-sitter extraction: `IMPORTS` edges (file→file, resolved where possible) and `INHERITS` edges (class→class)
-- [ ] `CALLS` edge resolution cascade (try in order, stop at first match): (1) import-map match `conf=0.95`, (2) same-module match `conf=0.90`, (3) unique-name-in-repo match `conf=0.75`, (4) suffix match `conf=0.55`, (5) fuzzy match `conf=0.35`
-- [ ] New MCP tools: `ibwd_callers(symbol, depth=1)`, `ibwd_dependents(symbol, depth=1)` (a "dependent" = something this symbol imports/calls) — use recursive CTEs (Appendix B) for depth > 1
-- [ ] Extend `CLAUDE.md`: "for call-graph / dependency questions, prefer `ibwd_callers`/`ibwd_dependents` over manual Grep-tracing"
+- [x] Extend tree-sitter extraction: `IMPORTS` edges (file→file, resolved where possible) and `INHERITS` edges (class→class)
+- [x] `CALLS` edge resolution cascade (try in order, stop at first match): (1) import-map match `conf=0.95`, (2) same-module match `conf=0.90`, (3) unique-name-in-repo match `conf=0.75`, (4) suffix match `conf=0.55`, (5) fuzzy match `conf=0.35`
+- [x] New MCP tools: `ibwd_callers(symbol, depth=1)`, `ibwd_dependents(symbol, depth=1)` (a "dependent" = something this symbol imports/calls) — use recursive CTEs (Appendix B) for depth > 1
+- [x] Extend `CLAUDE.md`: "for call-graph / dependency questions, prefer `ibwd_callers`/`ibwd_dependents` over manual Grep-tracing"
 
 ### Claude Code prompt
 ```
@@ -175,9 +175,11 @@ depth=2 on a fixture with a 3-hop call chain.
 Baseline: `Grep` only (manually tracing calls is exactly what grep-heavy agents do today — this is where the token savings should be largest). **Target ≥3x fewer tokens.**
 
 ### Definition of done
-- [ ] `CALLS` edges always populated with `confidence` + `source_type`
-- [ ] Depth-2 traversal returns correct indirect callers on a known fixture
-- [ ] All 3 demo tasks: ≥3x token reduction vs. baseline, logged to `benchmarks/sprint_3_results.csv` — **if this doesn't hit ≥3x, stop and debug the resolution cascade before Sprint 4**
+> **Status (Sept 2026):** built; gate item below is *open*. See `SPRINT_3.md` (write-up, deviations) and `KNOWN_LIMITATIONS.md`.
+
+- [x] `CALLS` edges always populated with `confidence` + `source_type`
+- [x] Depth-2 traversal returns correct indirect callers on a known fixture
+- [ ] All 3 demo tasks: ≥3x token reduction vs. baseline, logged to `benchmarks/sprint_3_results.csv` — **if this doesn't hit ≥3x, stop and debug the resolution cascade before Sprint 4** **— NOT MET: q2 measured 2.3x (5 repeats: 2.07–2.49x); see SPRINT_3.md. Multi-repo validation pending.**
 
 ---
 
@@ -466,7 +468,7 @@ CREATE TABLE IF NOT EXISTS edges (
     id            INTEGER PRIMARY KEY,
     source_id     INTEGER NOT NULL REFERENCES nodes(id),
     target_id     INTEGER NOT NULL REFERENCES nodes(id),
-    relation      TEXT NOT NULL,   -- CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS, TOUCHED, TESTED_BY, RELATES_TO, ...
+    relation      TEXT NOT NULL,   -- CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS, REFERENCES, TOUCHED, TESTED_BY, RELATES_TO, ...
     confidence    REAL NOT NULL DEFAULT 1.0,
     source_type   TEXT NOT NULL DEFAULT 'static_analysis',  -- static_analysis | llm_inference
     created_at    TEXT DEFAULT (datetime('now'))
@@ -499,6 +501,8 @@ CREATE TABLE IF NOT EXISTS summaries (
 -- )
 -- SELECT DISTINCT id, depth FROM callers ORDER BY depth;
 ```
+
+> **Added after Sprint 3:** a `file_refs(file_path, content_hash, version, refs_json)` cache table and a `REFERENCES` edge relation; File `kind` also takes `vendor` / `generated`. See `SCHEMA.md`.
 
 ## Appendix C — CLAUDE.md (built incrementally, shown as the Sprint 8 final version)
 

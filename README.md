@@ -2,7 +2,7 @@
 
 **IBWD** builds a persistent, deterministically-derived structural + semantic graph of a codebase and exposes it to Claude Code as an MCP server — so the agent can answer "where is X defined," "what calls X," and "what breaks if I change X" from a sub-millisecond graph query instead of repeated `Glob`/`Grep`/`Read` exploration.
 
-> **Status:** pre-implementation. The repo currently contains only the research/plan documents and a bare scaffold (`src/ibwd/`, `pyproject.toml`). Nothing has been built yet — this README describes the target design from those planning documents.
+> **Status:** Sprints 1–3 are built (file index, symbol index, call graph with `ibwd_trace_path`), with an MCP server and tests. The Sprint 3 benchmark gate is **open**: the ≥3x token target was met on 2 of 3 tasks on IBWD's own repo (2.3x on the third) and awaits multi-repository validation. Sprints 4–8 (impact analysis, semantic search, summaries) are still planned; parts of this README below describe that target design. Known gaps are tracked in [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md); per-sprint write-ups are `SPRINT_1.md`–`SPRINT_3.md`.
 
 ## Core hypothesis
 
@@ -144,19 +144,22 @@ ibwd/
 ├── CLAUDE.md                          # built incrementally across sprints
 ├── pyproject.toml
 ├── .claude/commands/                  # thin slash-command wrappers (graphify, graph, impact)
+├── KNOWN_LIMITATIONS.md               # what the graph can't see, and why
+├── SPRINT_1.md / SPRINT_2.md / SPRINT_3.md   # per-sprint write-ups
 ├── src/ibwd/
 │   ├── cli.py
-│   ├── scanner/        # filesystem walk, tree-sitter extraction (python.py, javascript.py)
-│   ├── graph/           # schema.sql, database.py, queries.py
-│   ├── ai/              # ollama client, embeddings, summarizer, hallucination grader
-│   ├── git/             # commit/PR history ingestion
-│   ├── retrieval/       # traversal, ranking (PageRank), context builder
-│   └── mcp/             # server.py — the MCP tool surface, shipped Sprint 1
+│   ├── scan.py          # orchestrates scan -> symbols -> edges
+│   ├── scanner/         # filesystem.py, symbols.py, python.py, javascript.py, references.py, valuerefs.py
+│   ├── graph/           # schema.sql, database.py, queries.py, manifest.py, resolution.py, modules.py
+│   ├── retrieval/       # traversal.py (callers/dependents, path finding); ranking + context builder planned
+│   ├── mcp/             # server.py — the MCP tool surface, shipped Sprint 1
+│   ├── ai/              # (planned, Sprint 5–6) ollama client, embeddings, summarizer, hallucination grader
+│   └── git/             # (planned, Sprint 4) commit/PR history ingestion
 ├── tests/
 └── benchmarks/          # harness.py, tasks.yaml, per-sprint results, RESULTS.md
 ```
 
-## Getting started (once implementation begins)
+## Getting started
 
 ```bash
 python3 --version          # need 3.11+
