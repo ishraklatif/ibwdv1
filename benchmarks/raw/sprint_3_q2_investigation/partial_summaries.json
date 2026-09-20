@@ -1,0 +1,344 @@
+[
+  {
+    "task_id": "sprint3_q2",
+    "condition": "baseline",
+    "run": 1,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 4,
+    "tokens_out": 1067,
+    "cache_creation_input_tokens": 35434,
+    "cache_read_input_tokens": 29248,
+    "cost_usd": 0.1582636,
+    "result_text": "`run_scan` directly calls these eight functions defined in `src/`:\n\n| Function | Defined in | Call site in `scan.py` |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | line 24 |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | line 25 |\n| `connect` | `src/ibwd/graph/database.py:13` | line 27 |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | line 29 |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | line 39 |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | line 42 |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | line 43 |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | line 56, only if a source file changed or was removed, or the edges are stale |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | line 69 |\n\nThat is nine rows, not eight.\n\n`run_scan` also calls a few things that aren't functions defined in `src/`:\n- **Standard library:** `asdict`, `Path.cwd`, `Path(...)`, and `conn.execute`, `conn.commit` and `conn.close`.\n- **Class:** `ScanSummary` appears only as a type annotation, not a call. `summary.total` is a property, accessed as an attribute rather than called.\n- **Constants:** `DEFAULT_MANIFEST_PATH`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS` and `EXTENSION_DIALECTS`.\n\nI read `scan.py` directly and matched the names against a grep of `def` lines in `src/`. The IBWD MCP tools weren't available in this session, so I didn't use the call graph."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "ibwd",
+    "run": 1,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 515,
+    "cache_creation_input_tokens": 33384,
+    "cache_read_input_tokens": 32608,
+    "cost_usd": 0.1452156,
+    "result_text": "`run_scan` (src/ibwd/scan.py) directly calls nine functions defined in src/. All nine edges have 0.95 confidence, meaning they were resolved through imports.\n\n| Function | Defined in |\n|---|---|\n| `connect` | src/ibwd/graph/database.py:13 |\n| `get_node_by_path` | src/ibwd/graph/database.py:135 |\n| `load_manifest` | src/ibwd/graph/manifest.py:35 |\n| `save_manifest` | src/ibwd/graph/manifest.py:50 |\n| `sync_files` | src/ibwd/graph/queries.py:48 |\n| `sync_symbols` | src/ibwd/graph/queries.py:101 |\n| `rebuild_reference_edges` | src/ibwd/graph/resolution.py:250 |\n| `scan_files` | src/ibwd/scanner/filesystem.py:88 |\n| `extract_symbols` | src/ibwd/scanner/symbols.py:30 |\n\nThis comes from the IBWD call graph. I didn't read `scan.py` itself. The graph skips calls into external packages, so the list only covers functions defined inside this repo."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "baseline",
+    "run": 2,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 4,
+    "tokens_out": 1271,
+    "cache_creation_input_tokens": 5817,
+    "cache_read_input_tokens": 58496,
+    "cost_usd": 0.047685200000000004,
+    "result_text": "`run_scan` (`src/ibwd/scan.py:16`) directly calls nine functions defined in `src/`:\n\n| Function | Defined in | Called at |\n|---|---|---|\n| `scan_files` | `scanner/filesystem.py:88` | `scan.py:24` |\n| `load_manifest` | `graph/manifest.py:35` | `scan.py:25` |\n| `connect` | `graph/database.py:13` | `scan.py:27` |\n| `sync_files` | `graph/queries.py:48` | `scan.py:29` |\n| `get_node_by_path` | `graph/database.py:135` | `scan.py:39` |\n| `extract_symbols` | `scanner/symbols.py:30` | `scan.py:42` |\n| `sync_symbols` | `graph/queries.py:101` | `scan.py:43` |\n| `rebuild_reference_edges` | `graph/resolution.py:250` | `scan.py:56` (only if source changed, a source file was removed, or the edge build version is stale) |\n| `save_manifest` | `graph/manifest.py:50` | `scan.py:69` |\n\nNot counted as calls to repo functions:\n- **`summary.total`** (`scan.py:73`): this looks like a property on `ScanSummary` (`graph/queries.py:25`). It is attribute access, not a call. I didn't check whether it is decorated with `@property`.\n- **External calls**: `asdict`, `Path.cwd`, `conn.execute`, `.fetchone` and `.fetchall` come from the stdlib or sqlite3, not from `src/`.\n- **Imported names that aren't functions**: `DEFAULT_MANIFEST_PATH`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS` and `EXTENSION_DIALECTS` are constants, and `ScanSummary` is a class used only as a type annotation.\n\nThe IBWD MCP tools weren't available in this session, so I read the file and grepped the `def` lines in `src/` instead of using `ibwd_dependents`. I matched call sites to definitions by name and did not resolve imports."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "ibwd",
+    "run": 2,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 510,
+    "cache_creation_input_tokens": 661,
+    "cache_read_input_tokens": 65337,
+    "cost_usd": 0.020819400000000002,
+    "result_text": "`run_scan` (src/ibwd/scan.py) directly calls nine functions defined in src/. The IBWD call graph reports all of them at 0.95 confidence, meaning the calls were resolved through imports. I haven't opened the source to check them.\n\n| Function | Defined in |\n|---|---|\n| `connect` | src/ibwd/graph/database.py:13 |\n| `get_node_by_path` | src/ibwd/graph/database.py:135 |\n| `load_manifest` | src/ibwd/graph/manifest.py:35 |\n| `save_manifest` | src/ibwd/graph/manifest.py:50 |\n| `sync_files` | src/ibwd/graph/queries.py:48 |\n| `sync_symbols` | src/ibwd/graph/queries.py:101 |\n| `rebuild_reference_edges` | src/ibwd/graph/resolution.py:250 |\n| `scan_files` | src/ibwd/scanner/filesystem.py:88 |\n| `extract_symbols` | src/ibwd/scanner/symbols.py:30 |\n\nThe call graph skips calls into external packages, so this list only covers functions defined in this repo."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "baseline",
+    "run": 3,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 4,
+    "tokens_out": 1118,
+    "cache_creation_input_tokens": 6210,
+    "cache_read_input_tokens": 58496,
+    "cost_usd": 0.0477272,
+    "result_text": "`run_scan` directly calls 8 functions defined in `src/`. I read `src/ibwd/scan.py` and cross-checked the names against the `def` list for `src/`. The IBWD MCP tools weren't available in this session, so I didn't use the call-graph query.\n\n| Function | Defined in | Call site in `scan.py` |\n|---|---|---|\n| `scan_files` | `scanner/filesystem.py:88` | line 24 |\n| `load_manifest` | `graph/manifest.py:35` | line 25 |\n| `connect` | `graph/database.py:13` | line 27 |\n| `sync_files` | `graph/queries.py:48` | line 29 |\n| `get_node_by_path` | `graph/database.py:135` | line 39 |\n| `extract_symbols` | `scanner/symbols.py:30` | line 42 |\n| `sync_symbols` | `graph/queries.py:101` | line 43 |\n| `rebuild_reference_edges` | `graph/resolution.py:250` | line 56 |\n| `save_manifest` | `graph/manifest.py:50` | line 69 |\n\nThat table has 9 rows, so the count of 8 above was wrong: it's **9** functions.\n\nOther names in `run_scan` that you might expect on the list, but that aren't functions defined in `src/`:\n- **Not functions:** `ScanSummary` is a dataclass, and it is only used as a type annotation. `ScanSummary.total` is a property on that dataclass, read as `summary.total` on line 73 rather than called. `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS`, `EXTENSION_DIALECTS` and `DEFAULT_MANIFEST_PATH` are constants.\n- **External or stdlib calls:** `asdict`, `Path.cwd()`, `Path(...)`, `conn.execute`, `conn.commit` and `conn.close`.\n\nThe list covers direct calls only. The functions above call further helpers internally, for example `scan_files` probably calls `classify_file` and `hash_file`, but I didn't trace those."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "ibwd",
+    "run": 3,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 524,
+    "cache_creation_input_tokens": 33386,
+    "cache_read_input_tokens": 32610,
+    "cost_usd": 0.145314,
+    "result_text": "`run_scan` (src/ibwd/scan.py) directly calls nine functions defined in `src/`. The call graph reports each with 0.95 confidence, meaning the calls were resolved through imports.\n\n| Function | Defined in |\n|---|---|\n| `connect` | `src/ibwd/graph/database.py:13` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` |\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` |\n\nI took this from the call graph and didn't read `scan.py` itself. The graph skips calls into external packages, so this list only covers functions defined in this repo."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "baseline",
+    "run": 4,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 6,
+    "tokens_out": 1231,
+    "cache_creation_input_tokens": 2546,
+    "cache_read_input_tokens": 89372,
+    "cost_usd": 0.0403804,
+    "result_text": "`run_scan` directly calls nine functions defined in `src/`. I read `scan.py` and confirmed each definition with a grep. The IBWD MCP tools aren't available in this session, so I didn't use the call graph.\n\n| Function | Defined in | Called at |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | `scan.py:24` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | `scan.py:25` |\n| `connect` | `src/ibwd/graph/database.py:13` | `scan.py:27` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | `scan.py:29` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | `scan.py:39` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | `scan.py:42` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | `scan.py:43` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | `scan.py:56` (only if source files changed, source files were removed, or the edge build version is stale) |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | `scan.py:69` |\n\nThe other calls in `run_scan` don't count:\n- **Standard library and builtins:** `Path.cwd`, `asdict`, `set`, `any`, `dict`, `\",\".join` and the `conn.execute`, `conn.commit` and `conn.close` methods.\n- **Constants:** `DEFAULT_MANIFEST_PATH`, `EXTENSION_DIALECTS`, `EDGE_BUILD_VERSION` and `REFERENCE_RELATIONS` are imported but are values, not functions.\n- **Types:** `ScanSummary` is only used as a type annotation."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "ibwd",
+    "run": 4,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 515,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 65998,
+    "cost_usd": 0.0183576,
+    "result_text": "`run_scan` directly calls nine functions defined in `src/`. Each edge has 0.95 confidence, which is the import-resolved level. I took this from the IBWD call graph and did not read `scan.py` to check it.\n\n| Function | Defined in |\n|---|---|\n| `connect` | `src/ibwd/graph/database.py:13` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` |\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` |\n\nThe graph only covers calls into other functions in this repo. Calls into external packages and the standard library don't appear."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "baseline",
+    "run": 5,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Read",
+      "Grep"
+    ],
+    "real_tool_call_count": 2,
+    "tokens_in": 4,
+    "tokens_out": 1172,
+    "cache_creation_input_tokens": 6184,
+    "cache_read_input_tokens": 58496,
+    "cost_usd": 0.0481632,
+    "result_text": "`run_scan` directly calls eight functions defined in `src/`. I read `src/ibwd/scan.py` and cross-checked each call against the function definitions under `src/`.\n\n| Function | Defined in | Called at |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | `scan.py:24` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | `scan.py:25` |\n| `connect` | `src/ibwd/graph/database.py:13` | `scan.py:27` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | `scan.py:29` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | `scan.py:39` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | `scan.py:42` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | `scan.py:43` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | `scan.py:56`, only if source files changed, a source file was removed, or the edge build version is stale |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | `scan.py:69` |\n\nThat is nine rows, so \"eight\" above is a miscount: the correct total is nine functions.\n\n- **Not counted as functions:** `ScanSummary` is a dataclass used only as a type annotation. `asdict` comes from the standard library.\n- **Not counted as repo functions:** `Path(...)` and the `conn.execute(...)` / `conn.close()` / `conn.commit()` calls are methods on stdlib or sqlite objects. `summary.total` is a property, not a call.\n- **Constants, not calls:** `DEFAULT_MANIFEST_PATH`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS` and `EXTENSION_DIALECTS` are constants that `run_scan` reads.\n\nThe IBWD MCP tools weren't available in this session, so I used Read and Grep instead of `ibwd_dependents`. I did not run `ibwd_dependents`, so the list doesn't carry confidence scores."
+  },
+  {
+    "task_id": "sprint3_q2",
+    "condition": "ibwd",
+    "run": 5,
+    "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 523,
+    "cache_creation_input_tokens": 663,
+    "cache_read_input_tokens": 65341,
+    "cost_usd": 0.020958200000000003,
+    "result_text": "`run_scan` (src/ibwd/scan.py) directly calls nine functions defined in `src/`. The graph reports each call with 0.95 confidence, meaning it was resolved through an import.\n\n| Function | Defined in |\n|---|---|\n| `connect` | `src/ibwd/graph/database.py:13` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` |\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` |\n\nI took this from the call graph and did not open `scan.py` to check it. The graph only lists calls into this repo's own code, so calls to external packages don't appear."
+  },
+  {
+    "task_id": "sprint3_q2b",
+    "condition": "baseline",
+    "run": 1,
+    "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    "all_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_call_count": 4,
+    "tokens_in": 8,
+    "tokens_out": 1806,
+    "cache_creation_input_tokens": 9478,
+    "cache_read_input_tokens": 115666,
+    "cost_usd": 0.0791212,
+    "result_text": "`rebuild_reference_edges` (`src/ibwd/graph/resolution.py:250`) directly calls these functions and classes defined in `src/`:\n\n**Functions**\n- `language_of` (`src/ibwd/graph/modules.py:22`) checks whether each source file has a supported language.\n- `extract_references` (`src/ibwd/scanner/references.py:69`) parses each file into its imports, calls and bases.\n- `_resolve_imports` (`src/ibwd/graph/resolution.py:208`) resolves a file's imports into bindings. It also emits the `IMPORTS` edges through the lambda callback passed to it.\n- `resolve_ref` (`src/ibwd/graph/resolution.py:113`) resolves each call and each base class. It is called once for `CALLS` and once for `INHERITS`.\n- `upsert_edge` (`src/ibwd/graph/database.py:114`) writes each edge to the DB.\n\n**Classes**\n- `Sym` (`src/ibwd/graph/resolution.py:47`) is constructed once per Class, Function or Method node.\n- `SymbolIndex` (`src/ibwd/graph/resolution.py:80`) is constructed from the list of `Sym` objects. The function also calls its method `SymbolIndex.innermost` (line 95) to find the enclosing symbol for each call and base class.\n- `ModuleResolver` (`src/ibwd/graph/modules.py:29`) is constructed from the source file paths.\n\nThe nested closure `add_edge` is defined inside the function and called by it, and by the lambda passed to `_resolve_imports`. It isn't a module-level symbol.\n\nThe IBWD MCP tools weren't available in this session, so I read the function body and confirmed each definition site with Grep instead. I didn't run a call-graph query."
+  },
+  {
+    "task_id": "sprint3_q2b",
+    "condition": "ibwd",
+    "run": 1,
+    "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents"
+    ],
+    "real_tool_call_count": 1,
+    "tokens_in": 4,
+    "tokens_out": 636,
+    "cache_creation_input_tokens": 6683,
+    "cache_read_input_tokens": 59349,
+    "cost_usd": 0.044969800000000004,
+    "result_text": "According to the IBWD call graph, `rebuild_reference_edges` directly calls these nine symbols in `src/`:\n\n**In `src/ibwd/graph/resolution.py` (same file)**\n- `Sym` (class, line 46), confidence 0.9\n- `SymbolIndex` (class, line 80), confidence 0.9\n- `resolve_ref` (function, line 113), confidence 0.9\n- `_resolve_imports` (function, line 208), confidence 0.9\n- `innermost` (method, line 95), confidence 0.75\n\n**In other modules**\n- `upsert_edge` (function, `src/ibwd/graph/database.py:114`), confidence 0.95\n- `language_of` (function, `src/ibwd/graph/modules.py:22`), confidence 0.95\n- `ModuleResolver` (class, `src/ibwd/graph/modules.py:29`), confidence 0.95\n- `extract_references` (function, `src/ibwd/scanner/references.py:69`), confidence 0.95\n\n`innermost` has the lowest confidence. It is a method, most likely on `SymbolIndex`, so the edge may come from a call like `index.innermost(...)`, where the receiver type is inferred. I haven't read the source, so I'd check that one edge first if it matters.\n\nCalls into external packages aren't in this list, because the graph skips them."
+  },
+  {
+    "task_id": "sprint3_q2b",
+    "condition": "baseline",
+    "run": 2,
+    "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    "all_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_call_count": 4,
+    "tokens_in": 10,
+    "tokens_out": 1740,
+    "cache_creation_input_tokens": 3998,
+    "cache_read_input_tokens": 152505,
+    "cost_usd": 0.063913,
+    "result_text": "`rebuild_reference_edges` (`src/ibwd/graph/resolution.py:250`) directly calls seven functions and classes that are defined in `src/`. I found these by reading the function body and then locating each definition. I didn't use the IBWD tools because they weren't available in this session.\n\n| Called | Defined in | Where it's called |\n|---|---|---|\n| `language_of` | `src/ibwd/graph/modules.py:22` | line 259, filters files |\n| `Sym(...)` (class) | `src/ibwd/graph/resolution.py:47` | line 270, builds the symbol list |\n| `SymbolIndex(...)` (class) | `src/ibwd/graph/resolution.py:80` | line 273 |\n| `ModuleResolver(...)` (class) | `src/ibwd/graph/modules.py:29` | line 274 |\n| `extract_references` | `src/ibwd/scanner/references.py:69` | line 285 |\n| `_resolve_imports` | `src/ibwd/graph/resolution.py:208` | line 291 |\n| `resolve_ref` | `src/ibwd/graph/resolution.py:113` | lines 301 and 317, for calls and base classes |\n| `upsert_edge` | `src/ibwd/graph/database.py:114` | line 333, writes edges |\n\nIt also calls the method `SymbolIndex.innermost` (`resolution.py:95`) on the `index` instance, at lines 300 and 314.\n\nTwo more calls don't count as repo code:\n- **Nested helper:** `add_edge` is a closure defined inside the function. It is called directly at line 311 and 327, and through a lambda passed to `_resolve_imports` at line 296.\n- **Standard library:** `conn.execute`, `dict.fromkeys` and `conn.commit` are not repo code.\n\n`_resolve_imports` is called directly and `resolve_ref` is called from inside it too. I only traced direct calls, so I didn't check what `_resolve_imports` calls."
+  },
+  {
+    "task_id": "sprint3_q2b",
+    "condition": "ibwd",
+    "run": 2,
+    "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents",
+      "Grep",
+      "Read"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents",
+      "Grep",
+      "Read"
+    ],
+    "real_tool_call_count": 3,
+    "tokens_in": 8,
+    "tokens_out": 1263,
+    "cache_creation_input_tokens": 8915,
+    "cache_read_input_tokens": 127878,
+    "cost_usd": 0.0738816,
+    "result_text": "`rebuild_reference_edges` directly calls nine functions and classes defined in `src/`. I checked each against the function body (`resolution.py:250-338`), and the graph's list matches the source.\n\n| Symbol | Kind | Defined in | Where it's called |\n|---|---|---|---|\n| `language_of` | function | `src/ibwd/graph/modules.py:22` | filtering source files (line 259) |\n| `Sym` | class | `src/ibwd/graph/resolution.py:46` | building the symbol list (line 270) |\n| `SymbolIndex` | class | `src/ibwd/graph/resolution.py:80` | `SymbolIndex(syms)` (line 273) |\n| `ModuleResolver` | class | `src/ibwd/graph/modules.py:29` | `ModuleResolver(file_ids)` (line 274) |\n| `extract_references` | function | `src/ibwd/scanner/references.py:69` | parsing each file (line 285) |\n| `_resolve_imports` | function | `src/ibwd/graph/resolution.py:208` | resolving imports and IMPORTS edges (line 291) |\n| `SymbolIndex.innermost` | method | `src/ibwd/graph/resolution.py:95` | finding the owning symbol for calls and base classes (lines 300, 314) |\n| `resolve_ref` | function | `src/ibwd/graph/resolution.py:113` | resolving calls and base classes (lines 301, 317) |\n| `upsert_edge` | function | `src/ibwd/graph/database.py:114` | writing the final edges (line 333) |\n\nThe nested helper `add_edge` and the lambda passed to `_resolve_imports` are local to the function, so they aren't in the list. `add_edge` is called from the loop bodies and from that lambda. The other calls are to built-ins, `sqlite3` and `dict`, and to `FileReferences`, which is a type annotation only."
+  },
+  {
+    "task_id": "sprint3_q2b",
+    "condition": "baseline",
+    "run": 3,
+    "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    "all_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_calls": [
+      "Grep",
+      "Read",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "real_tool_call_count": 5,
+    "tokens_in": 8,
+    "tokens_out": 1717,
+    "cache_creation_input_tokens": 3737,
+    "cache_read_input_tokens": 120036,
+    "cost_usd": 0.0561412,
+    "result_text": "`rebuild_reference_edges` (`src/ibwd/graph/resolution.py:250`) directly calls these functions and classes defined in `src/`. I read the function body and checked where each name is defined. The IBWD MCP tools aren't available in this session, so I used Grep and Read.\n\n**In `src/ibwd/graph/resolution.py`**\n- `Sym` (class, line 47) is constructed once per Class, Function or Method node.\n- `SymbolIndex` (class, line 80) is built from those symbols. The function also calls its `.innermost()` method (line 95) for calls and for base classes.\n- `resolve_ref` (function, line 113) resolves each call and each base class.\n- `_resolve_imports` (function, line 208) builds the import bindings for each file.\n\n**In other `src/` modules**\n- `language_of` (`src/ibwd/graph/modules.py:22`) filters the source files.\n- `ModuleResolver` (class, `src/ibwd/graph/modules.py:29`) is constructed from the file ids.\n- `extract_references` (`src/ibwd/scanner/references.py:69`) parses each file. It returns a `FileReferences` object, which the function only reads and never constructs.\n- `upsert_edge` (`src/ibwd/graph/database.py:114`) writes each edge.\n\n**Nested helper**\n- `add_edge` is defined inside the function (line 278). It is a closure, not a module-level symbol. It is called directly and from the lambda passed to `_resolve_imports`.\n\nEverything else is not from `src/`. That covers the stdlib and `sqlite3` calls (`conn.execute`, `conn.commit`, `dict.fromkeys`, `.get`) and the module constants `REFERENCE_RELATIONS`, `EDGE_BUILD_VERSION` and `_CLASS_ONLY`, which are data, not callables."
+  },
+  {
+    "task_id": "sprint3_q2b",
+    "condition": "ibwd",
+    "run": 3,
+    "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    "all_tool_calls": [
+      "mcp__ibwd__ibwd_dependents",
+      "Grep",
+      "Read"
+    ],
+    "real_tool_calls": [
+      "mcp__ibwd__ibwd_dependents",
+      "Grep",
+      "Read"
+    ],
+    "real_tool_call_count": 3,
+    "tokens_in": 8,
+    "tokens_out": 1132,
+    "cache_creation_input_tokens": 2854,
+    "cache_read_input_tokens": 133832,
+    "cost_usd": 0.049518400000000004,
+    "result_text": "`rebuild_reference_edges` directly calls nine functions and classes defined in `src/`. I checked the list from the call graph against the function body (`resolution.py:250-338`), and every entry is called there.\n\n| Symbol | Kind | Defined in | Called at |\n|---|---|---|---|\n| `language_of` | function | `src/ibwd/graph/modules.py:22` | line 259 |\n| `Sym` | class | `src/ibwd/graph/resolution.py:46` | line 270 |\n| `SymbolIndex` | class | `src/ibwd/graph/resolution.py:80` | line 273 |\n| `ModuleResolver` | class | `src/ibwd/graph/modules.py:29` | line 274 |\n| `extract_references` | function | `src/ibwd/scanner/references.py:69` | line 285 |\n| `_resolve_imports` | function | `src/ibwd/graph/resolution.py:208` | line 291 |\n| `SymbolIndex.innermost` | method | `src/ibwd/graph/resolution.py:95` | lines 300 and 314 |\n| `resolve_ref` | function | `src/ibwd/graph/resolution.py:113` | lines 301 and 317 |\n| `upsert_edge` | function | `src/ibwd/graph/database.py:114` | line 333 |\n\n`rebuild_reference_edges` also defines a nested helper, `add_edge`, and calls it directly (line 296 via a lambda, lines 311 and 327). It isn't defined at module level, so it isn't in the graph. The function also calls `conn.execute`, `dict.fromkeys` and `.commit()`, which are stdlib or sqlite3 rather than repo code."
+  }
+]

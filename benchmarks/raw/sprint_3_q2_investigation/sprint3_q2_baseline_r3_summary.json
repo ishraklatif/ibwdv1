@@ -1,0 +1,21 @@
+{
+  "task_id": "sprint3_q2",
+  "condition": "baseline",
+  "run": 3,
+  "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+  "all_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 4,
+  "tokens_out": 1118,
+  "cache_creation_input_tokens": 6210,
+  "cache_read_input_tokens": 58496,
+  "cost_usd": 0.0477272,
+  "result_text": "`run_scan` directly calls 8 functions defined in `src/`. I read `src/ibwd/scan.py` and cross-checked the names against the `def` list for `src/`. The IBWD MCP tools weren't available in this session, so I didn't use the call-graph query.\n\n| Function | Defined in | Call site in `scan.py` |\n|---|---|---|\n| `scan_files` | `scanner/filesystem.py:88` | line 24 |\n| `load_manifest` | `graph/manifest.py:35` | line 25 |\n| `connect` | `graph/database.py:13` | line 27 |\n| `sync_files` | `graph/queries.py:48` | line 29 |\n| `get_node_by_path` | `graph/database.py:135` | line 39 |\n| `extract_symbols` | `scanner/symbols.py:30` | line 42 |\n| `sync_symbols` | `graph/queries.py:101` | line 43 |\n| `rebuild_reference_edges` | `graph/resolution.py:250` | line 56 |\n| `save_manifest` | `graph/manifest.py:50` | line 69 |\n\nThat table has 9 rows, so the count of 8 above was wrong: it's **9** functions.\n\nOther names in `run_scan` that you might expect on the list, but that aren't functions defined in `src/`:\n- **Not functions:** `ScanSummary` is a dataclass, and it is only used as a type annotation. `ScanSummary.total` is a property on that dataclass, read as `summary.total` on line 73 rather than called. `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS`, `EXTENSION_DIALECTS` and `DEFAULT_MANIFEST_PATH` are constants.\n- **External or stdlib calls:** `asdict`, `Path.cwd()`, `Path(...)`, `conn.execute`, `conn.commit` and `conn.close`.\n\nThe list covers direct calls only. The functions above call further helpers internally, for example `scan_files` probably calls `classify_file` and `hash_file`, but I didn't trace those."
+}

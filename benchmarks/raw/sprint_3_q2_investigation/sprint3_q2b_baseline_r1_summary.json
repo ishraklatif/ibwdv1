@@ -1,0 +1,25 @@
+{
+  "task_id": "sprint3_q2b",
+  "condition": "baseline",
+  "run": 1,
+  "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+  "all_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 4,
+  "tokens_in": 8,
+  "tokens_out": 1806,
+  "cache_creation_input_tokens": 9478,
+  "cache_read_input_tokens": 115666,
+  "cost_usd": 0.0791212,
+  "result_text": "`rebuild_reference_edges` (`src/ibwd/graph/resolution.py:250`) directly calls these functions and classes defined in `src/`:\n\n**Functions**\n- `language_of` (`src/ibwd/graph/modules.py:22`) checks whether each source file has a supported language.\n- `extract_references` (`src/ibwd/scanner/references.py:69`) parses each file into its imports, calls and bases.\n- `_resolve_imports` (`src/ibwd/graph/resolution.py:208`) resolves a file's imports into bindings. It also emits the `IMPORTS` edges through the lambda callback passed to it.\n- `resolve_ref` (`src/ibwd/graph/resolution.py:113`) resolves each call and each base class. It is called once for `CALLS` and once for `INHERITS`.\n- `upsert_edge` (`src/ibwd/graph/database.py:114`) writes each edge to the DB.\n\n**Classes**\n- `Sym` (`src/ibwd/graph/resolution.py:47`) is constructed once per Class, Function or Method node.\n- `SymbolIndex` (`src/ibwd/graph/resolution.py:80`) is constructed from the list of `Sym` objects. The function also calls its method `SymbolIndex.innermost` (line 95) to find the enclosing symbol for each call and base class.\n- `ModuleResolver` (`src/ibwd/graph/modules.py:29`) is constructed from the source file paths.\n\nThe nested closure `add_edge` is defined inside the function and called by it, and by the lambda passed to `_resolve_imports`. It isn't a module-level symbol.\n\nThe IBWD MCP tools weren't available in this session, so I read the function body and confirmed each definition site with Grep instead. I didn't run a call-graph query."
+}

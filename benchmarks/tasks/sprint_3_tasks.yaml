@@ -35,3 +35,21 @@ tasks:
     question: "Is there a call chain from `upsert_edge` to `ibwd_scan`? If so, trace it."
     expected:
       - "No path (a true negative: upsert_edge is a leaf; nothing in its call chain reaches ibwd_scan)"
+
+  # Supplementary -- Sprint 3 gate investigation only; not part of the gate.
+  # Pre-registered rule: the gate verdict rests on q2 alone (median output-token
+  # ratio over repeats >= 3x). q2b only explains *why* q2 came out as it did.
+  # Ground truth (ast): nested helper `add_edge` is a closure IBWD does not index
+  # (Sprint 2 scope cut), so mentioning it as a nested helper is acceptable.
+  - id: sprint3_q2b
+    question: "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?"
+    expected:
+      - ModuleResolver
+      - Sym
+      - SymbolIndex
+      - _resolve_imports
+      - extract_references
+      - innermost
+      - language_of
+      - resolve_ref
+      - upsert_edge

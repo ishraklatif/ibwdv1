@@ -1,0 +1,19 @@
+{
+  "task_id": "sprint3_q2b",
+  "condition": "ibwd",
+  "run": 1,
+  "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_dependents"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_dependents"
+  ],
+  "real_tool_call_count": 1,
+  "tokens_in": 4,
+  "tokens_out": 636,
+  "cache_creation_input_tokens": 6683,
+  "cache_read_input_tokens": 59349,
+  "cost_usd": 0.044969800000000004,
+  "result_text": "According to the IBWD call graph, `rebuild_reference_edges` directly calls these nine symbols in `src/`:\n\n**In `src/ibwd/graph/resolution.py` (same file)**\n- `Sym` (class, line 46), confidence 0.9\n- `SymbolIndex` (class, line 80), confidence 0.9\n- `resolve_ref` (function, line 113), confidence 0.9\n- `_resolve_imports` (function, line 208), confidence 0.9\n- `innermost` (method, line 95), confidence 0.75\n\n**In other modules**\n- `upsert_edge` (function, `src/ibwd/graph/database.py:114`), confidence 0.95\n- `language_of` (function, `src/ibwd/graph/modules.py:22`), confidence 0.95\n- `ModuleResolver` (class, `src/ibwd/graph/modules.py:29`), confidence 0.95\n- `extract_references` (function, `src/ibwd/scanner/references.py:69`), confidence 0.95\n\n`innermost` has the lowest confidence. It is a method, most likely on `SymbolIndex`, so the edge may come from a call like `index.innermost(...)`, where the receiver type is inferred. I haven't read the source, so I'd check that one edge first if it matters.\n\nCalls into external packages aren't in this list, because the graph skips them."
+}

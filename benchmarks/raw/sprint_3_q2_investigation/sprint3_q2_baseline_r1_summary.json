@@ -1,0 +1,21 @@
+{
+  "task_id": "sprint3_q2",
+  "condition": "baseline",
+  "run": 1,
+  "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+  "all_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 4,
+  "tokens_out": 1067,
+  "cache_creation_input_tokens": 35434,
+  "cache_read_input_tokens": 29248,
+  "cost_usd": 0.1582636,
+  "result_text": "`run_scan` directly calls these eight functions defined in `src/`:\n\n| Function | Defined in | Call site in `scan.py` |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | line 24 |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | line 25 |\n| `connect` | `src/ibwd/graph/database.py:13` | line 27 |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | line 29 |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | line 39 |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | line 42 |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | line 43 |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | line 56, only if a source file changed or was removed, or the edges are stale |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | line 69 |\n\nThat is nine rows, not eight.\n\n`run_scan` also calls a few things that aren't functions defined in `src/`:\n- **Standard library:** `asdict`, `Path.cwd`, `Path(...)`, and `conn.execute`, `conn.commit` and `conn.close`.\n- **Class:** `ScanSummary` appears only as a type annotation, not a call. `summary.total` is a property, accessed as an attribute rather than called.\n- **Constants:** `DEFAULT_MANIFEST_PATH`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS` and `EXTENSION_DIALECTS`.\n\nI read `scan.py` directly and matched the names against a grep of `def` lines in `src/`. The IBWD MCP tools weren't available in this session, so I didn't use the call graph."
+}

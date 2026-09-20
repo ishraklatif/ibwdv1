@@ -1,0 +1,23 @@
+{
+  "task_id": "sprint3_q2b",
+  "condition": "ibwd",
+  "run": 2,
+  "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_dependents",
+    "Grep",
+    "Read"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_dependents",
+    "Grep",
+    "Read"
+  ],
+  "real_tool_call_count": 3,
+  "tokens_in": 8,
+  "tokens_out": 1263,
+  "cache_creation_input_tokens": 8915,
+  "cache_read_input_tokens": 127878,
+  "cost_usd": 0.0738816,
+  "result_text": "`rebuild_reference_edges` directly calls nine functions and classes defined in `src/`. I checked each against the function body (`resolution.py:250-338`), and the graph's list matches the source.\n\n| Symbol | Kind | Defined in | Where it's called |\n|---|---|---|---|\n| `language_of` | function | `src/ibwd/graph/modules.py:22` | filtering source files (line 259) |\n| `Sym` | class | `src/ibwd/graph/resolution.py:46` | building the symbol list (line 270) |\n| `SymbolIndex` | class | `src/ibwd/graph/resolution.py:80` | `SymbolIndex(syms)` (line 273) |\n| `ModuleResolver` | class | `src/ibwd/graph/modules.py:29` | `ModuleResolver(file_ids)` (line 274) |\n| `extract_references` | function | `src/ibwd/scanner/references.py:69` | parsing each file (line 285) |\n| `_resolve_imports` | function | `src/ibwd/graph/resolution.py:208` | resolving imports and IMPORTS edges (line 291) |\n| `SymbolIndex.innermost` | method | `src/ibwd/graph/resolution.py:95` | finding the owning symbol for calls and base classes (lines 300, 314) |\n| `resolve_ref` | function | `src/ibwd/graph/resolution.py:113` | resolving calls and base classes (lines 301, 317) |\n| `upsert_edge` | function | `src/ibwd/graph/database.py:114` | writing the final edges (line 333) |\n\nThe nested helper `add_edge` and the lambda passed to `_resolve_imports` are local to the function, so they aren't in the list. `add_edge` is called from the loop bodies and from that lambda. The other calls are to built-ins, `sqlite3` and `dict`, and to `FileReferences`, which is a type annotation only."
+}

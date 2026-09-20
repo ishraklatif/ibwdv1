@@ -1,0 +1,23 @@
+{
+  "task_id": "sprint3_q2b",
+  "condition": "ibwd",
+  "run": 3,
+  "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+  "all_tool_calls": [
+    "mcp__ibwd__ibwd_dependents",
+    "Grep",
+    "Read"
+  ],
+  "real_tool_calls": [
+    "mcp__ibwd__ibwd_dependents",
+    "Grep",
+    "Read"
+  ],
+  "real_tool_call_count": 3,
+  "tokens_in": 8,
+  "tokens_out": 1132,
+  "cache_creation_input_tokens": 2854,
+  "cache_read_input_tokens": 133832,
+  "cost_usd": 0.049518400000000004,
+  "result_text": "`rebuild_reference_edges` directly calls nine functions and classes defined in `src/`. I checked the list from the call graph against the function body (`resolution.py:250-338`), and every entry is called there.\n\n| Symbol | Kind | Defined in | Called at |\n|---|---|---|---|\n| `language_of` | function | `src/ibwd/graph/modules.py:22` | line 259 |\n| `Sym` | class | `src/ibwd/graph/resolution.py:46` | line 270 |\n| `SymbolIndex` | class | `src/ibwd/graph/resolution.py:80` | line 273 |\n| `ModuleResolver` | class | `src/ibwd/graph/modules.py:29` | line 274 |\n| `extract_references` | function | `src/ibwd/scanner/references.py:69` | line 285 |\n| `_resolve_imports` | function | `src/ibwd/graph/resolution.py:208` | line 291 |\n| `SymbolIndex.innermost` | method | `src/ibwd/graph/resolution.py:95` | lines 300 and 314 |\n| `resolve_ref` | function | `src/ibwd/graph/resolution.py:113` | lines 301 and 317 |\n| `upsert_edge` | function | `src/ibwd/graph/database.py:114` | line 333 |\n\n`rebuild_reference_edges` also defines a nested helper, `add_edge`, and calls it directly (line 296 via a lambda, lines 311 and 327). It isn't defined at module level, so it isn't in the graph. The function also calls `conn.execute`, `dict.fromkeys` and `.commit()`, which are stdlib or sqlite3 rather than repo code."
+}

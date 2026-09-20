@@ -1,0 +1,21 @@
+{
+  "task_id": "sprint3_q2",
+  "condition": "baseline",
+  "run": 5,
+  "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+  "all_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 4,
+  "tokens_out": 1172,
+  "cache_creation_input_tokens": 6184,
+  "cache_read_input_tokens": 58496,
+  "cost_usd": 0.0481632,
+  "result_text": "`run_scan` directly calls eight functions defined in `src/`. I read `src/ibwd/scan.py` and cross-checked each call against the function definitions under `src/`.\n\n| Function | Defined in | Called at |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | `scan.py:24` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | `scan.py:25` |\n| `connect` | `src/ibwd/graph/database.py:13` | `scan.py:27` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | `scan.py:29` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | `scan.py:39` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | `scan.py:42` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | `scan.py:43` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | `scan.py:56`, only if source files changed, a source file was removed, or the edge build version is stale |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | `scan.py:69` |\n\nThat is nine rows, so \"eight\" above is a miscount: the correct total is nine functions.\n\n- **Not counted as functions:** `ScanSummary` is a dataclass used only as a type annotation. `asdict` comes from the standard library.\n- **Not counted as repo functions:** `Path(...)` and the `conn.execute(...)` / `conn.close()` / `conn.commit()` calls are methods on stdlib or sqlite objects. `summary.total` is a property, not a call.\n- **Constants, not calls:** `DEFAULT_MANIFEST_PATH`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS` and `EXTENSION_DIALECTS` are constants that `run_scan` reads.\n\nThe IBWD MCP tools weren't available in this session, so I used Read and Grep instead of `ibwd_dependents`. I did not run `ibwd_dependents`, so the list doesn't carry confidence scores."
+}

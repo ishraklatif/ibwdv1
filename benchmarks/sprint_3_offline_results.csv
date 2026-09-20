@@ -1,5 +1,5 @@
 task,ibwd_calls,ibwd_chars,ibwd_tokens_est,baseline_calls,baseline_chars,baseline_tokens_est,token_ratio,correct,note
-q1 callers of upsert_edge,1,176,44,2,2972,743,16.89,True,"truth=['_ensure_directory_chain', 'rebuild_reference_edges', 'sync_files', 'sync_symbols']"
-q2 dependents of run_scan,1,161,40,2,3474,868,21.7,True,"truth=['connect', 'extract_symbols', 'get_node_by_path', 'load_manifest', 'rebuild_reference_edges', 'save_manifest', 'scan_files', 'sync_files', 'sync_symbols']"
-q3 trace ibwd_scan->upsert_edge,1,758,190,6,3014,754,3.97,True,ibwd_scan -> run_scan -> sync_files -> upsert_edge (every hop verified against ast: True)
-q4 no path upsert_edge->ibwd_scan,1,47,12,1,784,196,16.33,True,true negative
+q1 callers of upsert_edge,1,176,44,2,3034,758,17.23,True,"truth=['_ensure_directory_chain', 'rebuild_reference_edges', 'sync_files', 'sync_symbols']"
+q2 dependents of run_scan,1,161,40,2,4376,1094,27.35,True,"truth=['connect', 'extract_symbols', 'get_node_by_path', 'is_ts_config', 'load_manifest', 'rebuild_reference_edges', 'save_manifest', 'scan_files', 'sync_files', 'sync_symbols']"
+q3 trace ibwd_scan->upsert_edge,1,758,190,6,3066,766,4.03,True,ibwd_scan -> run_scan -> sync_files -> upsert_edge (every hop verified against ast: True)
+q4 no path upsert_edge->ibwd_scan,1,421,105,1,784,196,1.87,True,true negative

@@ -47,6 +47,12 @@ TASKS = [
         "id": "sprint3_q2",
         "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
     },
+    # Supplementary (Sprint 3 gate investigation, NOT part of the gate): same shape as q2
+    # on a larger function, to test whether q2's low ratio is specific to a small function.
+    {
+        "id": "sprint3_q2b",
+        "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+    },
     {"id": "sprint3_q3", "question": "Trace the call chain from `ibwd_scan` to `upsert_edge` if one exists."},
     {
         "id": "sprint3_q4",
@@ -71,7 +77,7 @@ REAL_TOOLS = {
 }
 
 
-def run_condition(task_id: str, question: str, condition: str) -> dict:
+def run_condition(task_id: str, question: str, condition: str, run: int = 0, tag: str = "") -> dict:
     allowed = IBWD_ALLOWED if condition == "ibwd" else BASELINE_ALLOWED
     cmd = [
         "claude", "-p", question,
@@ -89,7 +95,7 @@ def run_condition(task_id: str, question: str, condition: str) -> dict:
     cwd = TARGET_REPO if condition == "ibwd" else BASELINE_REPO
     proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=300)
 
-    raw_path = RAW_DIR / f"{task_id}_{condition}.jsonl"
+    raw_path = RAW_DIR / f"{task_id}_{condition}{tag}.jsonl"
     raw_path.write_text(proc.stdout)
     if proc.returncode != 0:
         print(f"    !! exit {proc.returncode}: {proc.stderr[:500]}", file=sys.stderr)
@@ -119,6 +125,7 @@ def run_condition(task_id: str, question: str, condition: str) -> dict:
     summary = {
         "task_id": task_id,
         "condition": condition,
+        "run": run,
         "question": question,
         "all_tool_calls": tool_calls,
         "real_tool_calls": real_calls,
@@ -130,19 +137,29 @@ def run_condition(task_id: str, question: str, condition: str) -> dict:
         "cost_usd": cost,
         "result_text": result_text,
     }
-    (RAW_DIR / f"{task_id}_{condition}_summary.json").write_text(json.dumps(summary, indent=2))
+    (RAW_DIR / f"{task_id}_{condition}{tag}_summary.json").write_text(json.dumps(summary, indent=2))
     return summary
 
 
 def main() -> None:
     # IBWD_BENCH_TASKS="sprint3_q4,sprint3_q1" runs just those tasks (saves money on re-runs).
     only = {t for t in os.environ.get("IBWD_BENCH_TASKS", "").split(",") if t}
+    # IBWD_BENCH_REPEATS=5 repeats each task/condition pair (files get an _rN suffix).
+    repeats = int(os.environ.get("IBWD_BENCH_REPEATS", "1"))
+    tasks_by_repeat = {t["id"]: repeats for t in TASKS}
+    for spec in os.environ.get("IBWD_BENCH_REPEATS_BY_TASK", "").split(","):  # e.g. "sprint3_q2b=3"
+        if "=" in spec:
+            tid, n = spec.split("=")
+            tasks_by_repeat[tid] = int(n)
     results = []
     for task in TASKS:
         if only and task["id"] not in only:
             continue
-        for condition in ("baseline", "ibwd"):
-            results.append(run_condition(task["id"], task["question"], condition))
+        n = tasks_by_repeat[task["id"]]
+        for run in range(n):
+            for condition in ("baseline", "ibwd"):
+                tag = f"_r{run + 1}" if n > 1 else ""
+                results.append(run_condition(task["id"], task["question"], condition, run + 1, tag))
 
     print("\n=== Sprint 3 demo — raw results ===")
     for r in results:

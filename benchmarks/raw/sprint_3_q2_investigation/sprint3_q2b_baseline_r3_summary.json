@@ -1,0 +1,27 @@
+{
+  "task_id": "sprint3_q2b",
+  "condition": "baseline",
+  "run": 3,
+  "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+  "all_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 5,
+  "tokens_in": 8,
+  "tokens_out": 1717,
+  "cache_creation_input_tokens": 3737,
+  "cache_read_input_tokens": 120036,
+  "cost_usd": 0.0561412,
+  "result_text": "`rebuild_reference_edges` (`src/ibwd/graph/resolution.py:250`) directly calls these functions and classes defined in `src/`. I read the function body and checked where each name is defined. The IBWD MCP tools aren't available in this session, so I used Grep and Read.\n\n**In `src/ibwd/graph/resolution.py`**\n- `Sym` (class, line 47) is constructed once per Class, Function or Method node.\n- `SymbolIndex` (class, line 80) is built from those symbols. The function also calls its `.innermost()` method (line 95) for calls and for base classes.\n- `resolve_ref` (function, line 113) resolves each call and each base class.\n- `_resolve_imports` (function, line 208) builds the import bindings for each file.\n\n**In other `src/` modules**\n- `language_of` (`src/ibwd/graph/modules.py:22`) filters the source files.\n- `ModuleResolver` (class, `src/ibwd/graph/modules.py:29`) is constructed from the file ids.\n- `extract_references` (`src/ibwd/scanner/references.py:69`) parses each file. It returns a `FileReferences` object, which the function only reads and never constructs.\n- `upsert_edge` (`src/ibwd/graph/database.py:114`) writes each edge.\n\n**Nested helper**\n- `add_edge` is defined inside the function (line 278). It is a closure, not a module-level symbol. It is called directly and from the lambda passed to `_resolve_imports`.\n\nEverything else is not from `src/`. That covers the stdlib and `sqlite3` calls (`conn.execute`, `conn.commit`, `dict.fromkeys`, `.get`) and the module constants `REFERENCE_RELATIONS`, `EDGE_BUILD_VERSION` and `_CLASS_ONLY`, which are data, not callables."
+}

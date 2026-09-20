@@ -1,0 +1,17 @@
+task,run,condition,tokens_in,tokens_out,cache_creation_tokens,cache_read_tokens,tool_calls,cost_usd,correct
+sprint3_q2,1,baseline,4,1067,35434,29248,2,0.1583,y
+sprint3_q2,1,ibwd,4,515,33384,32608,1,0.1452,y
+sprint3_q2,2,baseline,4,1271,5817,58496,2,0.0477,y
+sprint3_q2,2,ibwd,4,510,661,65337,1,0.0208,y
+sprint3_q2,3,baseline,4,1118,6210,58496,2,0.0477,y
+sprint3_q2,3,ibwd,4,524,33386,32610,1,0.1453,y
+sprint3_q2,4,baseline,6,1231,2546,89372,2,0.0404,y
+sprint3_q2,4,ibwd,4,515,0,65998,1,0.0184,y
+sprint3_q2,5,baseline,4,1172,6184,58496,2,0.0482,y
+sprint3_q2,5,ibwd,4,523,663,65341,1,0.021,y
+sprint3_q2b,1,baseline,8,1806,9478,115666,4,0.0791,y
+sprint3_q2b,1,ibwd,4,636,6683,59349,1,0.045,y
+sprint3_q2b,2,baseline,10,1740,3998,152505,4,0.0639,y
+sprint3_q2b,2,ibwd,8,1263,8915,127878,3,0.0739,y
+sprint3_q2b,3,baseline,8,1717,3737,120036,5,0.0561,y
+sprint3_q2b,3,ibwd,8,1132,2854,133832,3,0.0495,y

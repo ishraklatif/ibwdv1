@@ -1,0 +1,21 @@
+{
+  "task_id": "sprint3_q2",
+  "condition": "baseline",
+  "run": 4,
+  "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+  "all_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 6,
+  "tokens_out": 1231,
+  "cache_creation_input_tokens": 2546,
+  "cache_read_input_tokens": 89372,
+  "cost_usd": 0.0403804,
+  "result_text": "`run_scan` directly calls nine functions defined in `src/`. I read `scan.py` and confirmed each definition with a grep. The IBWD MCP tools aren't available in this session, so I didn't use the call graph.\n\n| Function | Defined in | Called at |\n|---|---|---|\n| `scan_files` | `src/ibwd/scanner/filesystem.py:88` | `scan.py:24` |\n| `load_manifest` | `src/ibwd/graph/manifest.py:35` | `scan.py:25` |\n| `connect` | `src/ibwd/graph/database.py:13` | `scan.py:27` |\n| `sync_files` | `src/ibwd/graph/queries.py:48` | `scan.py:29` |\n| `get_node_by_path` | `src/ibwd/graph/database.py:135` | `scan.py:39` |\n| `extract_symbols` | `src/ibwd/scanner/symbols.py:30` | `scan.py:42` |\n| `sync_symbols` | `src/ibwd/graph/queries.py:101` | `scan.py:43` |\n| `rebuild_reference_edges` | `src/ibwd/graph/resolution.py:250` | `scan.py:56` (only if source files changed, source files were removed, or the edge build version is stale) |\n| `save_manifest` | `src/ibwd/graph/manifest.py:50` | `scan.py:69` |\n\nThe other calls in `run_scan` don't count:\n- **Standard library and builtins:** `Path.cwd`, `asdict`, `set`, `any`, `dict`, `\",\".join` and the `conn.execute`, `conn.commit` and `conn.close` methods.\n- **Constants:** `DEFAULT_MANIFEST_PATH`, `EXTENSION_DIALECTS`, `EDGE_BUILD_VERSION` and `REFERENCE_RELATIONS` are imported but are values, not functions.\n- **Types:** `ScanSummary` is only used as a type annotation."
+}

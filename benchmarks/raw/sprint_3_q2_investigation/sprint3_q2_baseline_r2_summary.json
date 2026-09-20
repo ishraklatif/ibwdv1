@@ -1,0 +1,21 @@
+{
+  "task_id": "sprint3_q2",
+  "condition": "baseline",
+  "run": 2,
+  "question": "Which functions defined in this repo's src/ does `run_scan` (src/ibwd/scan.py) directly call?",
+  "all_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Read",
+    "Grep"
+  ],
+  "real_tool_call_count": 2,
+  "tokens_in": 4,
+  "tokens_out": 1271,
+  "cache_creation_input_tokens": 5817,
+  "cache_read_input_tokens": 58496,
+  "cost_usd": 0.047685200000000004,
+  "result_text": "`run_scan` (`src/ibwd/scan.py:16`) directly calls nine functions defined in `src/`:\n\n| Function | Defined in | Called at |\n|---|---|---|\n| `scan_files` | `scanner/filesystem.py:88` | `scan.py:24` |\n| `load_manifest` | `graph/manifest.py:35` | `scan.py:25` |\n| `connect` | `graph/database.py:13` | `scan.py:27` |\n| `sync_files` | `graph/queries.py:48` | `scan.py:29` |\n| `get_node_by_path` | `graph/database.py:135` | `scan.py:39` |\n| `extract_symbols` | `scanner/symbols.py:30` | `scan.py:42` |\n| `sync_symbols` | `graph/queries.py:101` | `scan.py:43` |\n| `rebuild_reference_edges` | `graph/resolution.py:250` | `scan.py:56` (only if source changed, a source file was removed, or the edge build version is stale) |\n| `save_manifest` | `graph/manifest.py:50` | `scan.py:69` |\n\nNot counted as calls to repo functions:\n- **`summary.total`** (`scan.py:73`): this looks like a property on `ScanSummary` (`graph/queries.py:25`). It is attribute access, not a call. I didn't check whether it is decorated with `@property`.\n- **External calls**: `asdict`, `Path.cwd`, `conn.execute`, `.fetchone` and `.fetchall` come from the stdlib or sqlite3, not from `src/`.\n- **Imported names that aren't functions**: `DEFAULT_MANIFEST_PATH`, `EDGE_BUILD_VERSION`, `REFERENCE_RELATIONS` and `EXTENSION_DIALECTS` are constants, and `ScanSummary` is a class used only as a type annotation.\n\nThe IBWD MCP tools weren't available in this session, so I read the file and grepped the `def` lines in `src/` instead of using `ibwd_dependents`. I matched call sites to definitions by name and did not resolve imports."
+}

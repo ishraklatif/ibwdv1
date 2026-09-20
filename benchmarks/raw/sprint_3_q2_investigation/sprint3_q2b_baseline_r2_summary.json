@@ -1,0 +1,25 @@
+{
+  "task_id": "sprint3_q2b",
+  "condition": "baseline",
+  "run": 2,
+  "question": "Which functions and classes defined in this repo's src/ does `rebuild_reference_edges` (src/ibwd/graph/resolution.py) directly call?",
+  "all_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_calls": [
+    "Grep",
+    "Read",
+    "Grep",
+    "Grep"
+  ],
+  "real_tool_call_count": 4,
+  "tokens_in": 10,
+  "tokens_out": 1740,
+  "cache_creation_input_tokens": 3998,
+  "cache_read_input_tokens": 152505,
+  "cost_usd": 0.063913,
+  "result_text": "`rebuild_reference_edges` (`src/ibwd/graph/resolution.py:250`) directly calls seven functions and classes that are defined in `src/`. I found these by reading the function body and then locating each definition. I didn't use the IBWD tools because they weren't available in this session.\n\n| Called | Defined in | Where it's called |\n|---|---|---|\n| `language_of` | `src/ibwd/graph/modules.py:22` | line 259, filters files |\n| `Sym(...)` (class) | `src/ibwd/graph/resolution.py:47` | line 270, builds the symbol list |\n| `SymbolIndex(...)` (class) | `src/ibwd/graph/resolution.py:80` | line 273 |\n| `ModuleResolver(...)` (class) | `src/ibwd/graph/modules.py:29` | line 274 |\n| `extract_references` | `src/ibwd/scanner/references.py:69` | line 285 |\n| `_resolve_imports` | `src/ibwd/graph/resolution.py:208` | line 291 |\n| `resolve_ref` | `src/ibwd/graph/resolution.py:113` | lines 301 and 317, for calls and base classes |\n| `upsert_edge` | `src/ibwd/graph/database.py:114` | line 333, writes edges |\n\nIt also calls the method `SymbolIndex.innermost` (`resolution.py:95`) on the `index` instance, at lines 300 and 314.\n\nTwo more calls don't count as repo code:\n- **Nested helper:** `add_edge` is a closure defined inside the function. It is called directly at line 311 and 327, and through a lambda passed to `_resolve_imports` at line 296.\n- **Standard library:** `conn.execute`, `dict.fromkeys` and `conn.commit` are not repo code.\n\n`_resolve_imports` is called directly and `resolve_ref` is called from inside it too. I only traced direct calls, so I didn't check what `_resolve_imports` calls."
+}
