@@ -5,6 +5,7 @@
     run_sprint3_ab.py schedule                  print the deterministic schedule
     run_sprint3_ab.py mock RUN_DIR              run the whole schedule against synthetic transcripts (no network, no model)
     run_sprint3_ab.py prepare                   build the isolated checkouts and the release runtime outside the repository
+    run_sprint3_ab.py inventory                 what the model is actually given (CLI init event, MCP schemas, live call), no model call
     run_sprint3_ab.py isolation                 prove the filesystem boundary with sentinel files through the real sandbox mechanism
     run_sprint3_ab.py pilot RUN_DIR             4 paid sessions (needs --i-authorise-spending)
     run_sprint3_ab.py run RUN_DIR               the frozen schedule, resumable (needs --i-authorise-spending)
@@ -102,7 +103,7 @@ def preflight(cfg, tasks, strict=True) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["preflight", "schedule", "mock", "prepare", "isolation", "pilot", "run", "summarize"])
+    ap.add_argument("cmd", choices=["preflight", "schedule", "mock", "prepare", "isolation", "inventory", "pilot", "run", "summarize"])
     ap.add_argument("paths", nargs="*")
     ap.add_argument("--config", type=Path, default=None)
     ap.add_argument("--limit", type=int, default=None)
@@ -128,7 +129,7 @@ def main() -> int:
         from summarize_sprint3_ab import main as smain
         sys.argv = ["summarize", a.paths[0], a.paths[1]] + (["--"] if False else []) + ([str(a.config)] if a.config else [])
         return smain()
-    if a.cmd in ("prepare", "isolation"):
+    if a.cmd in ("prepare", "isolation", "inventory"):
         import ab_prepare
         return getattr(ab_prepare, a.cmd)(cfg, tasks, layout(cfg))
     if not a.i_authorise_spending:

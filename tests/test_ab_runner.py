@@ -177,3 +177,20 @@ def test_summarizer_reproduces_a_hand_calculated_fixture():
     assert [round(r["paired_ratio"], 6) for r in out["headline"]["tasks"]] == [10.0, 5.0, 10.0, 8.0]      # secondary; the headline is NOT their average
     assert out["headline"]["ratio"] != pytest.approx(sum([10.0, 5.0, 10.0, 8.0]) / 4)
     assert out["verdict"] == "GO" and out["headline"]["baseline"]["cost_usd_all_attempts"] == pytest.approx(1.2)
+
+
+@pytest.mark.skipif(not Path("/usr/bin/sandbox-exec").exists(), reason="macOS sandbox-exec required")
+def test_sandbox_profile_denies_sentinels_outside_the_workspace_and_allows_the_workspace(tmp_path):
+    import subprocess
+    from ab.execute import sandbox_profile
+    secret, own, other = tmp_path / "secret", tmp_path / "ws" / "own", tmp_path / "ws" / "other"
+    for d in (secret, own, other):
+        d.mkdir(parents=True)
+    for f in (secret / "s.txt", own / "o.txt", other / "x.txt"):
+        f.write_text("VALUE-" + f.parent.name)
+    profile = sandbox_profile(deny=[str(secret), str(tmp_path / "ws")], allow_rw=[str(own)], allow_ro=[])
+    read = lambda p: subprocess.run(["sandbox-exec", "-p", profile, "/bin/cat", str(p)], capture_output=True, text=True)
+    assert read(own / "o.txt").stdout == "VALUE-own"                          # its own workspace works
+    for denied in (secret / "s.txt", other / "x.txt"):                       # another workspace and a sensitive tree do not
+        r = read(denied)
+        assert r.returncode != 0 and "VALUE" not in r.stdout

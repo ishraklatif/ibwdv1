@@ -20,7 +20,7 @@
   "workspace_root": "/Users/ishraklatif/ibwd_ab_ws",
   "deny": [
    "/Users/ishraklatif/Documents",
-   "/private/tmp/claude-501"
+   "/private/tmp/claude-501/-Users-ishraklatif-Documents-claude-agent-ibwd"
   ]
  },
  "pilot_rule": {

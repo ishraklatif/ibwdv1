@@ -1,0 +1,65 @@
+{
+ "cli_init": {
+  "baseline": {
+   "advertised": [
+    "Glob",
+    "Grep",
+    "Read"
+   ],
+   "expected": [
+    "Glob",
+    "Grep",
+    "Read"
+   ],
+   "exact_match": true,
+   "mcp_servers": []
+  },
+  "ibwd": {
+   "advertised": [
+    "Glob",
+    "Grep",
+    "Read",
+    "mcp__ibwd__ibwd_callers",
+    "mcp__ibwd__ibwd_dependents",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_trace_path"
+   ],
+   "expected": [
+    "Glob",
+    "Grep",
+    "Read",
+    "mcp__ibwd__ibwd_callers",
+    "mcp__ibwd__ibwd_dependents",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_trace_path"
+   ],
+   "exact_match": true,
+   "mcp_servers": [
+    {
+     "name": "ibwd",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ]
+  }
+ },
+ "mcp_server": {
+  "server_tools": [
+   "ibwd_callers",
+   "ibwd_dependents",
+   "ibwd_find_files",
+   "ibwd_find_symbol",
+   "ibwd_list_symbols",
+   "ibwd_scan",
+   "ibwd_trace_path"
+  ],
+  "include_candidates_defaults": {
+   "ibwd_callers": false,
+   "ibwd_dependents": false,
+   "ibwd_trace_path": false
+  },
+  "live_empty_call_has_scope": true,
+  "live_call_returns_resolved_only": true
+ },
+ "pass": true
+}

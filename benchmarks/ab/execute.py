@@ -86,10 +86,7 @@ class RealExecutor:
     def __call__(self, session: dict, prompt: str) -> ProcessResult:
         ws = self.prepare_workspace(session)
         try:
-            cfg_path = None
-            if session["condition"] == "ibwd":
-                cfg_path = str(ws.parent / (ws.name + ".mcp.json"))
-                Path(cfg_path).write_text(json.dumps(mcp_config(str(Path(self.layout["release"]) / "bin" / "python"))))
+            cfg_path = str(Path(self.layout["release"]) / "mcp_config.json") if session["condition"] == "ibwd" else None   # read-only, outside the workspace
             cmd = ["sandbox-exec", "-p", self.profile_for(session["condition"], ws)] + build_command(self.cfg, session["condition"], prompt, cfg_path)
             t0 = time.monotonic()
             try:
@@ -101,5 +98,3 @@ class RealExecutor:
                 return ProcessResult(out, err, None, time.monotonic() - t0, timed_out=True)
         finally:
             shutil.rmtree(ws, ignore_errors=True)
-            if session["condition"] == "ibwd":
-                Path(str(ws) + ".mcp.json").unlink(missing_ok=True)
