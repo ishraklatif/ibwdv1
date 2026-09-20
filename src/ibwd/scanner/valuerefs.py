@@ -392,6 +392,8 @@ def _js_is_value_use(node: Node) -> bool:
         return False
     if t in ("assignment_expression", "augmented_assignment_expression") and f == "left":
         return False
+    if t == "export_statement" and f == "value":  # `export default handler`: the file uses it as its default export
+        return True
     if t in ("update_expression", "namespace_import", "import_clause", "import_specifier", "class_heritage", "extends_clause", "export_statement"):
         return False
     if t == "for_in_statement" and f == "left":
@@ -400,8 +402,10 @@ def _js_is_value_use(node: Node) -> bool:
         return False
     if t == "arrow_function" and f == "parameter":
         return False
-    if t == "member_expression":  # the object of a chain: the whole chain is emitted from its top
-        return False
+    if t == "member_expression":
+        # the head of a chain (`Pagination.displayName = ...`, `Cls.CONST`): a use of that class/function namespace. The
+        # `.prop` part is never a value on its own, and the whole chain is emitted separately from its top.
+        return f == "object"
     return True
 
 
@@ -453,6 +457,9 @@ def javascript_value_refs(root: Node) -> list[CallRef]:
                 prop = node.child_by_field_name("property")
                 if receiver != UNKNOWN_RECEIVER and prop is not None:
                     out.append(CallRef(_text(prop), receiver, node.start_point.row + 1))
+                    head = receiver.split(".")[0]
+                    if head != "this" and not any(head in scope for scope in scopes):
+                        out.append(CallRef(head, None, node.start_point.row + 1))   # the class/function used as a namespace
                 continue
         for child in reversed(node.children):
             stack.append((child, scopes))

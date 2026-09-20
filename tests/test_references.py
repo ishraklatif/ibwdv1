@@ -178,7 +178,8 @@ def test_javascript_calls_tags_bindings_and_shadowed_names_are_not_value_uses():
         "export default A;\n"
     )
     names = {n for n, _ in values}
-    assert names.isdisjoint({"helper", "Card", "param", "destructured", "local", "imp", "A"})
+    assert names.isdisjoint({"helper", "Card", "param", "destructured", "local", "imp"})
+    assert ("A", None) in values          # `export default A;`: the file uses A as its default export
 
 
 def test_starred_single_element_list_call_is_a_call_not_a_value():
@@ -236,3 +237,21 @@ def test_typeof_in_a_type_position_is_not_a_value_use():
     )
     assert ("getOptions", None) in values  # the genuine runtime value use (register(getOptions))
     assert sum(1 for v in values if v == ("getOptions", None)) == 1  # ...and only that one
+
+
+def test_javascript_member_chain_head_and_default_export_are_uses():
+    values = _js_values("function A() {}\nA.displayName = 'A';\nexport default A;\nconst x = Cls.CONST;\nLogger.log(1);\n")
+    assert ("A", None) in values and ("Cls", None) in values and ("Logger", None) in values
+
+
+def test_definitions_inside_an_iife_initialiser_are_indexed():
+    from ibwd.scanner.symbols import extract_symbols_from_source
+
+    source = (
+        b"export const createThing = /* @__PURE__ */ (() => {\n"
+        b"  function createThing(x) {\n    return helper(x)\n  }\n"
+        b"  return createThing\n})()\n"
+        b"const wrapped = ((y) => y) as Fn\n"
+    )
+    names = {s.name for s in extract_symbols_from_source(source, "a.ts", "typescript")}
+    assert names == {"createThing", "wrapped"}

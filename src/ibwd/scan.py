@@ -27,6 +27,7 @@ def run_scan(repo_root: Path | None = None) -> dict:
 
     conn = connect(repo_root / ".ibwd" / "graph.db")
     try:
+        previous_kinds = {row[0]: row[1] for row in conn.execute("SELECT file_path, kind FROM nodes WHERE node_type = 'File'")}
         summary: ScanSummary = sync_files(conn, scanned, previous_manifest)
 
         # Only reparse source files whose content actually changed since the
@@ -35,8 +36,8 @@ def run_scan(repo_root: Path | None = None) -> dict:
         for scanned_file in scanned:
             if scanned_file.kind != "source":
                 continue
-            if previous_manifest.get(scanned_file.path) == scanned_file.content_hash:
-                continue
+            if previous_manifest.get(scanned_file.path) == scanned_file.content_hash and previous_kinds.get(scanned_file.path) == "source":
+                continue                  # unchanged, and it was already indexed as source (a reclassified file has no symbols yet)
             file_row = get_node_by_path(conn, "File", scanned_file.path)
             if file_row is None:
                 continue

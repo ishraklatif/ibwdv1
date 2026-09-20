@@ -110,3 +110,24 @@ def test_incremental_rescan_equals_a_fresh_scan(tmp_path: Path, mutate):
     conn = connect(inc / ".ibwd" / "graph.db")
     dangling = conn.execute("SELECT COUNT(*) FROM edges e LEFT JOIN nodes s ON s.id = e.source_id LEFT JOIN nodes t ON t.id = e.target_id WHERE s.id IS NULL OR t.id IS NULL").fetchone()[0]
     assert dangling == 0                            # no stale/dangling edges after the rescan
+
+
+def test_a_file_reclassified_from_generated_to_source_gets_indexed_without_a_content_change(tmp_path):
+    import ibwd.scanner.filesystem as fs
+    from ibwd.graph.database import connect
+    from ibwd.scan import run_scan
+
+    (tmp_path / "a.py").write_text("def helper():\n    return 1\n")
+    real = fs.looks_generated
+    fs.looks_generated = lambda data: True
+    try:
+        run_scan(tmp_path)
+        conn = connect(tmp_path / ".ibwd" / "graph.db")
+        assert conn.execute("SELECT COUNT(*) FROM nodes WHERE name = 'helper'").fetchone()[0] == 0
+        conn.close()
+    finally:
+        fs.looks_generated = real
+    run_scan(tmp_path)                                            # same bytes, now classified as source
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    assert conn.execute("SELECT COUNT(*) FROM nodes WHERE name = 'helper'").fetchone()[0] == 1
+    conn.close()

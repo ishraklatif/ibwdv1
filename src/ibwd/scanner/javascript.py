@@ -32,6 +32,16 @@ def _text(node: Node) -> str:
     return node.text.decode("utf-8")
 
 
+_WRAPPERS = ("parenthesized_expression", "as_expression", "satisfies_expression", "non_null_expression", "type_assertion")
+
+
+def _unwrap(node: Node | None) -> Node | None:
+    """`(() => {})`, `(() => {}) as T`, `(fn) satisfies T`, `fn!`: the function underneath."""
+    while node is not None and node.type in _WRAPPERS and node.named_children:
+        node = node.named_children[-1] if node.type == "type_assertion" else node.named_children[0]
+    return node
+
+
 def extract_javascript_symbols(source: bytes, file_path: str, dialect: str = "javascript") -> list[SymbolInfo]:
     parser = Parser(_LANGUAGES[dialect])
     tree = parser.parse(source)
@@ -83,12 +93,16 @@ def extract_javascript_symbols(source: bytes, file_path: str, dialect: str = "ja
                 continue
 
             if child.type == "variable_declarator":
-                value = child.child_by_field_name("value")
+                value = _unwrap(child.child_by_field_name("value"))
                 if value is not None and value.type in _FUNCTION_VALUE_TYPES:
                     name_node = child.child_by_field_name("name")
                     if name_node:
                         kind = "Method" if class_stack else "Function"
                         add(child, _text(name_node), kind, class_stack)
+                else:
+                    # `export const createAsyncThunk = (() => { function createAsyncThunk() {} ... })()`: definitions inside a
+                    # non-function initialiser (an IIFE, a wrapper call) are still definitions
+                    visit(child, class_stack)
                 continue
 
             visit(child, class_stack)
