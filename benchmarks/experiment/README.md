@@ -17,4 +17,4 @@ isolation and tool inventory verified, configuration frozen (`experiment.json`, 
 Commands: `preflight` (prints planned sessions and spending controls, starts nothing), `mock RUN_DIR`, `pilot RUN_DIR --i-authorise-spending`,
 `run RUN_DIR --i-authorise-spending` (resumable), `summarize RUN_DIR OUT_DIR`.
 Pilot rule (fixed before any result): the alphabetically first headline repository of each language, its Q1 task, both conditions, repeat 1
-(Scrapy and Redux Toolkit Q1), 4 sessions outside the 120-session dataset.
+(scrapy-q1 and bulletproof-react-q1), 4 sessions outside the 120-session dataset.
