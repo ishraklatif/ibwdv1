@@ -92,11 +92,7 @@ def _py_locals(fn: Node) -> set[str]:
             name = node.child_by_field_name("name")
             if name is not None:
                 names.add(_text(name))
-        elif t in ("import_statement", "import_from_statement"):
-            for alias in node.children_by_field_name("name"):
-                target = alias.child_by_field_name("alias") if alias.type == "aliased_import" else alias
-                if target is not None:
-                    names.add(_text(target).split(".")[0])
+        # (function-local imports are NOT locals here: they bind to a repo symbol, resolved through the import bindings)
         stack.extend(node.children)
     return names
 
@@ -275,6 +271,13 @@ def python_value_refs(root: Node) -> list[CallRef]:
             if obj is not None and attr is not None and obj.type == "identifier":
                 out.append(CallRef(_text(attr), _text(obj), node.start_point.row + 1))
         if t == "attribute" and _py_is_value_use_attribute(node):
+            obj0 = node.child_by_field_name("object")
+            attr0 = node.child_by_field_name("attribute")
+            if obj0 is not None and attr0 is not None and obj0.type == "call":
+                fn0 = obj0.child_by_field_name("function")
+                if fn0 is not None and fn0.type == "identifier" and _text(fn0) == "super":
+                    out.append(CallRef(_text(attr0), "super", node.start_point.row + 1))    # `func = super().method`
+                    continue
             if _is_simple_dotted(node, "attribute", "object", ("identifier",)):
                 receiver = clean_receiver(_text(node.child_by_field_name("object")))
                 attr = node.child_by_field_name("attribute")

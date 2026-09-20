@@ -40,3 +40,8 @@ def test_head_of_an_attribute_chain_is_a_use_of_a_class_or_function_namespace():
 def test_a_property_read_at_the_start_of_a_longer_chain_is_a_use():
     refs = _refs("def f(self):\n    self.client.delete(1)\n    return self.a.b\n")
     assert ("client", "self") in refs and ("a", "self") in refs and ("b", "self.a") in refs
+
+
+def test_function_local_imports_do_not_hide_value_uses_and_super_attributes_are_uses():
+    refs = _refs("def f(app):\n    from mod import handler\n    app.connect('x', handler)\n    return super().method\n")
+    assert ("handler", None) in refs and ("method", "super") in refs
