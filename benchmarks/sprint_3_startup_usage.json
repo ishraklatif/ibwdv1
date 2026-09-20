@@ -1,0 +1,38 @@
+{
+ "measured_on": "2026-09-20",
+ "purpose": "Startup (fixed) token usage of the two actual benchmark configurations, trivial prompt, empty working directory",
+ "claude_cli": "2.1.278 (/Users/ishraklatif/.nvm/versions/node/v24.21.0/bin/claude)",
+ "model_observed": "claude-sonnet-5",
+ "prompt": "Reply with exactly the single word: OK",
+ "note": "T = input + cache_creation + cache_read + output, all four taken from the final result.usage. Cache split varies with cache state; the total T does not.",
+ "configurations": {
+  "baseline (Read,Glob,Grep; empty MCP)": {
+   "input": 2,
+   "cache_creation": 1756,
+   "cache_read": 4560,
+   "output": 4,
+   "T_total": 6322,
+   "cost_usd": 0.00798
+  },
+  "IBWD, all 7 server tools advertised": {
+   "input": 2,
+   "cache_creation": 9061,
+   "cache_read": 0,
+   "output": 4,
+   "T_total": 9067,
+   "cost_usd": 0.036288
+  },
+  "IBWD, exactly the 4 Sprint-3 graph tools": {
+   "input": 2,
+   "cache_creation": 8356,
+   "cache_read": 0,
+   "output": 4,
+   "T_total": 8362,
+   "cost_usd": 0.033468000000000005
+  }
+ },
+ "ibwd_schema_cost_tokens": {
+  "4_graph_tools": 2040,
+  "all_7_server_tools": 2745
+ }
+}

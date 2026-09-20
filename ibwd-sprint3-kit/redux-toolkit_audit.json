@@ -1,0 +1,637 @@
+{
+  "repo": "redux-toolkit",
+  "url": "https://github.com/reduxjs/redux-toolkit.git",
+  "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+  "roots": [
+    "packages/toolkit/src",
+    "packages/rtk-codemods/src",
+    "packages/rtk-query-codegen-openapi/src",
+    "packages/rtk-query-graphql-request-base-query/src"
+  ],
+  "commit_count": 4483,
+  "nonmerge_commits": 3483,
+  "shallow": false,
+  "clean": true,
+  "last_commit": "2026-09-19T00:16:01-04:00",
+  "age_days": 0,
+  "active_180_days": true,
+  "counts": {
+    "other": 385,
+    "excluded": 304,
+    "test": 121,
+    "outside_roots": 56,
+    "production": 118
+  },
+  "production_files": [
+    "packages/rtk-query-codegen-openapi/src/bin/cli.ts",
+    "packages/rtk-query-codegen-openapi/src/codegen.ts",
+    "packages/rtk-query-codegen-openapi/src/generate.ts",
+    "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+    "packages/rtk-query-codegen-openapi/src/index.ts",
+    "packages/rtk-query-codegen-openapi/src/types.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/factory.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/getOperationDefinitions.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/getV3Doc.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/index.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/isQuery.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/isValidUrl.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/messages.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/prettier.ts",
+    "packages/rtk-query-codegen-openapi/src/utils/removeUndefined.ts",
+    "packages/rtk-query-graphql-request-base-query/src/GraphqlBaseQueryTypes.ts",
+    "packages/rtk-query-graphql-request-base-query/src/index.ts",
+    "packages/toolkit/src/actionCreatorInvariantMiddleware.ts",
+    "packages/toolkit/src/autoBatchEnhancer.ts",
+    "packages/toolkit/src/combineSlices.ts",
+    "packages/toolkit/src/configureStore.ts",
+    "packages/toolkit/src/createAction.ts",
+    "packages/toolkit/src/createAsyncThunk.ts",
+    "packages/toolkit/src/createDraftSafeSelector.ts",
+    "packages/toolkit/src/createReducer.ts",
+    "packages/toolkit/src/createSlice.ts",
+    "packages/toolkit/src/devtoolsExtension.ts",
+    "packages/toolkit/src/dynamicMiddleware/index.ts",
+    "packages/toolkit/src/dynamicMiddleware/react/index.ts",
+    "packages/toolkit/src/dynamicMiddleware/types.ts",
+    "packages/toolkit/src/entities/create_adapter.ts",
+    "packages/toolkit/src/entities/entity_state.ts",
+    "packages/toolkit/src/entities/index.ts",
+    "packages/toolkit/src/entities/models.ts",
+    "packages/toolkit/src/entities/sorted_state_adapter.ts",
+    "packages/toolkit/src/entities/state_adapter.ts",
+    "packages/toolkit/src/entities/state_selectors.ts",
+    "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+    "packages/toolkit/src/entities/utils.ts",
+    "packages/toolkit/src/formatProdErrorMessage.ts",
+    "packages/toolkit/src/getDefaultEnhancers.ts",
+    "packages/toolkit/src/getDefaultMiddleware.ts",
+    "packages/toolkit/src/immerImports.ts",
+    "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+    "packages/toolkit/src/index.ts",
+    "packages/toolkit/src/listenerMiddleware/exceptions.ts",
+    "packages/toolkit/src/listenerMiddleware/index.ts",
+    "packages/toolkit/src/listenerMiddleware/task.ts",
+    "packages/toolkit/src/listenerMiddleware/types.ts",
+    "packages/toolkit/src/listenerMiddleware/utils.ts",
+    "packages/toolkit/src/mapBuilders.ts",
+    "packages/toolkit/src/matchers.ts",
+    "packages/toolkit/src/nanoid.ts",
+    "packages/toolkit/src/query/HandledError.ts",
+    "packages/toolkit/src/query/apiTypes.ts",
+    "packages/toolkit/src/query/baseQueryTypes.ts",
+    "packages/toolkit/src/query/core/apiState.ts",
+    "packages/toolkit/src/query/core/buildInitiate.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/cacheCollection.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/devMiddleware.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/index.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/polling.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/types.ts",
+    "packages/toolkit/src/query/core/buildMiddleware/windowEventHandling.ts",
+    "packages/toolkit/src/query/core/buildSelectors.ts",
+    "packages/toolkit/src/query/core/buildSlice.ts",
+    "packages/toolkit/src/query/core/buildThunks.ts",
+    "packages/toolkit/src/query/core/index.ts",
+    "packages/toolkit/src/query/core/module.ts",
+    "packages/toolkit/src/query/core/rtkImports.ts",
+    "packages/toolkit/src/query/core/setupListeners.ts",
+    "packages/toolkit/src/query/createApi.ts",
+    "packages/toolkit/src/query/defaultSerializeQueryArgs.ts",
+    "packages/toolkit/src/query/endpointDefinitions.ts",
+    "packages/toolkit/src/query/fakeBaseQuery.ts",
+    "packages/toolkit/src/query/fetchBaseQuery.ts",
+    "packages/toolkit/src/query/index.ts",
+    "packages/toolkit/src/query/react/ApiProvider.tsx",
+    "packages/toolkit/src/query/react/buildHooks.ts",
+    "packages/toolkit/src/query/react/constants.ts",
+    "packages/toolkit/src/query/react/index.ts",
+    "packages/toolkit/src/query/react/module.ts",
+    "packages/toolkit/src/query/react/namedHooks.ts",
+    "packages/toolkit/src/query/react/reactImports.ts",
+    "packages/toolkit/src/query/react/reactReduxImports.ts",
+    "packages/toolkit/src/query/react/rtkqImports.ts",
+    "packages/toolkit/src/query/react/useSerializedStableValue.ts",
+    "packages/toolkit/src/query/react/useShallowStableValue.ts",
+    "packages/toolkit/src/query/retry.ts",
+    "packages/toolkit/src/query/standardSchema.ts",
+    "packages/toolkit/src/query/tsHelpers.ts",
+    "packages/toolkit/src/query/utils/capitalize.ts",
+    "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts",
+    "packages/toolkit/src/query/utils/countObjectKeys.ts",
+    "packages/toolkit/src/query/utils/filterMap.ts",
+    "packages/toolkit/src/query/utils/getCurrent.ts",
+    "packages/toolkit/src/query/utils/getOrInsert.ts",
+    "packages/toolkit/src/query/utils/immerImports.ts",
+    "packages/toolkit/src/query/utils/index.ts",
+    "packages/toolkit/src/query/utils/isAbsoluteUrl.ts",
+    "packages/toolkit/src/query/utils/isDocumentVisible.ts",
+    "packages/toolkit/src/query/utils/isNotNullish.ts",
+    "packages/toolkit/src/query/utils/isOnline.ts",
+    "packages/toolkit/src/query/utils/isValidUrl.ts",
+    "packages/toolkit/src/query/utils/joinUrls.ts",
+    "packages/toolkit/src/query/utils/signals.ts",
+    "packages/toolkit/src/react/index.ts",
+    "packages/toolkit/src/reduxImports.ts",
+    "packages/toolkit/src/reselectImports.ts",
+    "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+    "packages/toolkit/src/tsHelpers.ts",
+    "packages/toolkit/src/uncheckedindexed.ts",
+    "packages/toolkit/src/utils.ts"
+  ],
+  "test_files": [
+    "examples/action-listener/counter/src/services/counter/tests/listener.test.ts",
+    "examples/publish-ci/expo/src/Main.test.tsx",
+    "examples/publish-ci/expo/src/features/counter/counterSlice.test.ts",
+    "examples/publish-ci/next/tests/playwright/rtkq.test.ts",
+    "examples/publish-ci/react-native/App.test.tsx",
+    "examples/publish-ci/react-native/src/features/counter/counterSlice.test.ts",
+    "examples/publish-ci/vite/tests/playwright/rtkq.test.ts",
+    "examples/query/react/basic/src/App.test.tsx",
+    "examples/query/react/basic/src/test/server/index.ts",
+    "examples/query/react/basic/src/test/server/serverHandlers.ts",
+    "examples/query/react/basic/src/test/test-utils.tsx",
+    "packages/rtk-codemods/transforms/createReducerBuilder/createReducerBuilder.test.ts",
+    "packages/rtk-codemods/transforms/createSliceBuilder/createSliceBuilder.test.ts",
+    "packages/rtk-codemods/transforms/createSliceReducerBuilder/createSliceReducerBuilder.test.ts",
+    "packages/rtk-query-codegen-openapi/test/cli.test.ts",
+    "packages/rtk-query-codegen-openapi/test/config.example.enum.ts",
+    "packages/rtk-query-codegen-openapi/test/config.example.js",
+    "packages/rtk-query-codegen-openapi/test/config.example.ts",
+    "packages/rtk-query-codegen-openapi/test/fixtures/customBaseQuery.ts",
+    "packages/rtk-query-codegen-openapi/test/fixtures/customBaseQueryWithoutDefault.ts",
+    "packages/rtk-query-codegen-openapi/test/fixtures/emptyApi.ts",
+    "packages/rtk-query-codegen-openapi/test/fixtures/generated.ts",
+    "packages/rtk-query-codegen-openapi/test/fixtures/petstore.yaml.mock.ts",
+    "packages/rtk-query-codegen-openapi/test/generateEndpoints.test-d.ts",
+    "packages/rtk-query-codegen-openapi/test/generateEndpoints.test.ts",
+    "packages/rtk-query-codegen-openapi/test/mocks/server.ts",
+    "packages/rtk-query-codegen-openapi/test/vitest.setup.ts",
+    "packages/rtk-query-graphql-request-base-query/src/index.test.ts",
+    "packages/toolkit/src/dynamicMiddleware/tests/index.test-d.ts",
+    "packages/toolkit/src/dynamicMiddleware/tests/index.test.ts",
+    "packages/toolkit/src/dynamicMiddleware/tests/react.test-d.ts",
+    "packages/toolkit/src/dynamicMiddleware/tests/react.test.tsx",
+    "packages/toolkit/src/entities/tests/entity_slice_enhancer.test.ts",
+    "packages/toolkit/src/entities/tests/entity_state.test.ts",
+    "packages/toolkit/src/entities/tests/fixtures/book.ts",
+    "packages/toolkit/src/entities/tests/sorted_state_adapter.test.ts",
+    "packages/toolkit/src/entities/tests/state_adapter.test.ts",
+    "packages/toolkit/src/entities/tests/state_selectors.test.ts",
+    "packages/toolkit/src/entities/tests/unsorted_state_adapter.test.ts",
+    "packages/toolkit/src/entities/tests/utils.spec.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/effectScenarios.test.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/fork.test.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/listenerMiddleware.test-d.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/listenerMiddleware.test.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/listenerMiddleware.withTypes.test-d.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/listenerMiddleware.withTypes.test.ts",
+    "packages/toolkit/src/listenerMiddleware/tests/useCases.test.ts",
+    "packages/toolkit/src/query/tests/apiProvider.test.tsx",
+    "packages/toolkit/src/query/tests/baseQueryTypes.test-d.ts",
+    "packages/toolkit/src/query/tests/buildCreateApi.test.tsx",
+    "packages/toolkit/src/query/tests/buildHooks.test-d.tsx",
+    "packages/toolkit/src/query/tests/buildHooks.test.tsx",
+    "packages/toolkit/src/query/tests/buildInitiate.test.tsx",
+    "packages/toolkit/src/query/tests/buildMiddleware.test-d.ts",
+    "packages/toolkit/src/query/tests/buildMiddleware.test.tsx",
+    "packages/toolkit/src/query/tests/buildSelector.test-d.ts",
+    "packages/toolkit/src/query/tests/buildSlice.test.ts",
+    "packages/toolkit/src/query/tests/buildThunks.test.tsx",
+    "packages/toolkit/src/query/tests/cacheCollection.test.ts",
+    "packages/toolkit/src/query/tests/cacheLifecycle.test-d.ts",
+    "packages/toolkit/src/query/tests/cacheLifecycle.test.ts",
+    "packages/toolkit/src/query/tests/cleanup.test.tsx",
+    "packages/toolkit/src/query/tests/copyWithStructuralSharing.test.ts",
+    "packages/toolkit/src/query/tests/createApi.test-d.ts",
+    "packages/toolkit/src/query/tests/createApi.test.ts",
+    "packages/toolkit/src/query/tests/defaultSerializeQueryArgs.test.ts",
+    "packages/toolkit/src/query/tests/devWarnings.test.tsx",
+    "packages/toolkit/src/query/tests/errorHandling.test-d.tsx",
+    "packages/toolkit/src/query/tests/errorHandling.test.tsx",
+    "packages/toolkit/src/query/tests/fakeBaseQuery.test.tsx",
+    "packages/toolkit/src/query/tests/fetchBaseQuery.test.tsx",
+    "packages/toolkit/src/query/tests/infiniteQueries.test-d.ts",
+    "packages/toolkit/src/query/tests/infiniteQueries.test.ts",
+    "packages/toolkit/src/query/tests/injectEndpoints.test.tsx",
+    "packages/toolkit/src/query/tests/invalidation.test.tsx",
+    "packages/toolkit/src/query/tests/matchers.test-d.tsx",
+    "packages/toolkit/src/query/tests/matchers.test.tsx",
+    "packages/toolkit/src/query/tests/mocks/handlers.ts",
+    "packages/toolkit/src/query/tests/mocks/server.ts",
+    "packages/toolkit/src/query/tests/optimisticUpdates.test.tsx",
+    "packages/toolkit/src/query/tests/optimisticUpserts.test.tsx",
+    "packages/toolkit/src/query/tests/polling.test.tsx",
+    "packages/toolkit/src/query/tests/queryFn.test.tsx",
+    "packages/toolkit/src/query/tests/queryLifecycle.test-d.tsx",
+    "packages/toolkit/src/query/tests/queryLifecycle.test.tsx",
+    "packages/toolkit/src/query/tests/raceConditions.test.ts",
+    "packages/toolkit/src/query/tests/refetchingBehaviors.test.tsx",
+    "packages/toolkit/src/query/tests/retry.test-d.ts",
+    "packages/toolkit/src/query/tests/retry.test.ts",
+    "packages/toolkit/src/query/tests/unionTypes.test-d.ts",
+    "packages/toolkit/src/query/tests/useMutation-fixedCacheKey.test.tsx",
+    "packages/toolkit/src/query/tests/utils.test.ts",
+    "packages/toolkit/src/tests/Tuple.test-d.ts",
+    "packages/toolkit/src/tests/actionCreatorInvariantMiddleware.test.ts",
+    "packages/toolkit/src/tests/autoBatchEnhancer.test.ts",
+    "packages/toolkit/src/tests/combineSlices.test-d.ts",
+    "packages/toolkit/src/tests/combineSlices.test.ts",
+    "packages/toolkit/src/tests/combinedTest.test.ts",
+    "packages/toolkit/src/tests/configureStore.test-d.ts",
+    "packages/toolkit/src/tests/configureStore.test.ts",
+    "packages/toolkit/src/tests/createAction.test-d.tsx",
+    "packages/toolkit/src/tests/createAction.test.ts",
+    "packages/toolkit/src/tests/createAsyncThunk.test-d.ts",
+    "packages/toolkit/src/tests/createAsyncThunk.test.ts",
+    "packages/toolkit/src/tests/createDraftSafeSelector.test.ts",
+    "packages/toolkit/src/tests/createDraftSafeSelector.withTypes.test.ts",
+    "packages/toolkit/src/tests/createEntityAdapter.test-d.ts",
+    "packages/toolkit/src/tests/createReducer.test-d.ts",
+    "packages/toolkit/src/tests/createReducer.test.ts",
+    "packages/toolkit/src/tests/createSlice.test-d.ts",
+    "packages/toolkit/src/tests/createSlice.test.ts",
+    "packages/toolkit/src/tests/getDefaultEnhancers.test-d.ts",
+    "packages/toolkit/src/tests/getDefaultMiddleware.test-d.ts",
+    "packages/toolkit/src/tests/getDefaultMiddleware.test.ts",
+    "packages/toolkit/src/tests/immutableStateInvariantMiddleware.test.ts",
+    "packages/toolkit/src/tests/mapBuilders.test-d.ts",
+    "packages/toolkit/src/tests/matchers.test-d.ts",
+    "packages/toolkit/src/tests/matchers.test.ts",
+    "packages/toolkit/src/tests/serializableStateInvariantMiddleware.test.ts",
+    "packages/toolkit/src/tests/utils/CustomMatchers.d.ts",
+    "packages/toolkit/src/tests/utils/helpers.tsx"
+  ],
+  "symlinks": [
+    ".github/README.md",
+    "skills/redux-toolkit",
+    "skills/rtk-query-codegen-openapi"
+  ],
+  "artifact_suspects": [
+    "packages/rtk-query-codegen-openapi/test/config.example.js"
+  ],
+  "generated_header_suspects": [],
+  "long_line_review": [],
+  "license_files": {
+    "LICENSE": "49784961ec6c4941437b7a2c54d8977d0528076a9e7c73dd40f7d0942b8f106d"
+  },
+  "cloc": {
+    "header": {
+      "cloc_url": "github.com/AlDanial/cloc",
+      "cloc_version": "2.06",
+      "elapsed_seconds": 0.0995621681213379,
+      "n_files": 118,
+      "n_lines": 22955,
+      "files_per_second": 1185.18913585923,
+      "lines_per_second": 230559.462827531
+    },
+    "TypeScript": {
+      "nFiles": 118,
+      "blank": 1844,
+      "comment": 5461,
+      "code": 15650
+    },
+    "SUM": {
+      "blank": 1844,
+      "comment": 5461,
+      "code": 15650,
+      "nFiles": 118
+    }
+  },
+  "semantic_structure": {
+    "complete_oracle": false,
+    "invalid_evidence": [],
+    "q1_candidates": [
+      {
+        "id": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+        "file": "packages/toolkit/src/utils.ts",
+        "line": 103,
+        "name": "getOrInsertComputed"
+      },
+      {
+        "id": "packages/toolkit/src/createAction.ts:265:createAction",
+        "file": "packages/toolkit/src/createAction.ts",
+        "line": 265,
+        "name": "createAction"
+      },
+      {
+        "id": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+        "file": "packages/toolkit/src/entities/utils.ts",
+        "line": 30,
+        "name": "ensureEntitiesArray"
+      },
+      {
+        "id": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+        "file": "packages/toolkit/src/entities/utils.ts",
+        "line": 10,
+        "name": "selectIdValue"
+      },
+      {
+        "id": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+        "file": "packages/toolkit/src/entities/state_adapter.ts",
+        "line": 25,
+        "name": "createStateOperator"
+      },
+      {
+        "id": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+        "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+        "line": 1292,
+        "name": "isQueryDefinition"
+      },
+      {
+        "id": "packages/toolkit/src/query/utils/getOrInsert.ts:31:getOrInsertComputed",
+        "file": "packages/toolkit/src/query/utils/getOrInsert.ts",
+        "line": 31,
+        "name": "getOrInsertComputed"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+        "file": "packages/toolkit/src/query/core/buildSlice.ts",
+        "line": 135,
+        "name": "getMutationCacheKey"
+      },
+      {
+        "id": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+        "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+        "line": 1304,
+        "name": "isInfiniteQueryDefinition"
+      }
+    ],
+    "q2_candidates": [
+      {
+        "id": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+        "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+        "line": 224,
+        "name": "generateApi"
+      },
+      {
+        "id": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+        "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+        "line": 25,
+        "name": "createBinding"
+      },
+      {
+        "id": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+        "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+        "line": 19,
+        "name": "generateEndpoints"
+      },
+      {
+        "id": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+        "file": "packages/toolkit/src/createSlice.ts",
+        "line": 570,
+        "name": "buildCreateSlice"
+      },
+      {
+        "id": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+        "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+        "line": 35,
+        "name": "createDynamicMiddleware"
+      },
+      {
+        "id": "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+        "file": "packages/toolkit/src/entities/create_adapter.ts",
+        "line": 22,
+        "name": "createEntityAdapter"
+      },
+      {
+        "id": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+        "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+        "line": 52,
+        "name": "createSortedStateAdapter"
+      },
+      {
+        "id": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+        "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+        "line": 19,
+        "name": "createUnsortedStateAdapter"
+      },
+      {
+        "id": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+        "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+        "line": 53,
+        "name": "buildGetDefaultMiddleware"
+      },
+      {
+        "id": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+        "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+        "line": 82,
+        "name": "createFork"
+      },
+      {
+        "id": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+        "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+        "line": 128,
+        "name": "createTakePattern"
+      },
+      {
+        "id": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+        "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+        "line": 330,
+        "name": "createListenerMiddleware"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+        "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+        "line": 276,
+        "name": "buildInitiate"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts:23:buildInvalidationByTagsHandler",
+        "file": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts",
+        "line": 23,
+        "name": "buildInvalidationByTagsHandler"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+        "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+        "line": 169,
+        "name": "buildSelectors"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+        "file": "packages/toolkit/src/query/core/buildSlice.ts",
+        "line": 159,
+        "name": "buildSlice"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+        "file": "packages/toolkit/src/query/core/buildThunks.ts",
+        "line": 331,
+        "name": "buildThunks"
+      },
+      {
+        "id": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+        "file": "packages/toolkit/src/query/core/module.ts",
+        "line": 513,
+        "name": "coreModule"
+      },
+      {
+        "id": "packages/toolkit/src/query/createApi.ts:347:buildCreateApi",
+        "file": "packages/toolkit/src/query/createApi.ts",
+        "line": 347,
+        "name": "buildCreateApi"
+      },
+      {
+        "id": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+        "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+        "line": 200,
+        "name": "fetchBaseQuery"
+      },
+      {
+        "id": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+        "file": "packages/toolkit/src/query/react/buildHooks.ts",
+        "line": 1511,
+        "name": "buildHooks"
+      },
+      {
+        "id": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+        "file": "packages/toolkit/src/query/react/module.ts",
+        "line": 157,
+        "name": "reactHooksModule"
+      }
+    ],
+    "q3_chains": [
+      [
+        "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+        "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:85:generateReactHooks",
+        "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides"
+      ],
+      [
+        "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:125:patternMatches"
+      ],
+      [
+        "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:85:generateReactHooks",
+        "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches"
+      ],
+      [
+        "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+        "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+        "packages/rtk-query-codegen-openapi/src/codegen.ts:113:generateEndpointDefinition",
+        "packages/rtk-query-codegen-openapi/src/codegen.ts:7:generateObjectProperties"
+      ],
+      [
+        "packages/toolkit/src/configureStore.ts:121:configureStore",
+        "packages/toolkit/src/getDefaultEnhancers.ts:16:buildGetDefaultEnhancers",
+        "packages/toolkit/src/autoBatchEnhancer.ts:67:autoBatchEnhancer",
+        "packages/toolkit/src/autoBatchEnhancer.ts:12:createQueueWithTimer"
+      ],
+      [
+        "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+        "packages/toolkit/src/matchers.ts:56:isAllOf",
+        "packages/toolkit/src/matchers.ts:22:matches",
+        "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction"
+      ],
+      [
+        "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+        "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+        "packages/toolkit/src/entities/sorted_state_adapter.ts:40:insert",
+        "packages/toolkit/src/entities/sorted_state_adapter.ts:19:findInsertIndex"
+      ],
+      [
+        "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+        "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+        "packages/toolkit/src/entities/state_adapter.ts:11:createSingleArgumentStateOperator",
+        "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator"
+      ],
+      [
+        "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+        "packages/toolkit/src/entities/state_adapter.ts:11:createSingleArgumentStateOperator",
+        "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+        "packages/toolkit/src/createAction.ts:310:isFSA"
+      ],
+      [
+        "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+        "packages/toolkit/src/serializableStateInvariantMiddleware.ts:188:createSerializableStateInvariantMiddleware",
+        "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+        "packages/toolkit/src/serializableStateInvariantMiddleware.ts:106:isNestedFrozen"
+      ],
+      [
+        "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+        "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+        "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+        "packages/toolkit/src/listenerMiddleware/utils.ts:13:noop"
+      ],
+      [
+        "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+        "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+        "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+        "packages/toolkit/src/listenerMiddleware/utils.ts:13:noop"
+      ],
+      [
+        "packages/toolkit/src/listenerMiddleware/task.ts:95:createDelay",
+        "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+        "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+        "packages/toolkit/src/listenerMiddleware/utils.ts:13:noop"
+      ],
+      [
+        "packages/toolkit/src/matchers.ts:128:isPending",
+        "packages/toolkit/src/matchers.ts:39:isAnyOf",
+        "packages/toolkit/src/matchers.ts:22:matches",
+        "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction"
+      ],
+      [
+        "packages/toolkit/src/matchers.ts:180:isRejected",
+        "packages/toolkit/src/matchers.ts:39:isAnyOf",
+        "packages/toolkit/src/matchers.ts:22:matches",
+        "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction"
+      ],
+      [
+        "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+        "packages/toolkit/src/matchers.ts:56:isAllOf",
+        "packages/toolkit/src/matchers.ts:22:matches",
+        "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction"
+      ],
+      [
+        "packages/toolkit/src/matchers.ts:293:isFulfilled",
+        "packages/toolkit/src/matchers.ts:39:isAnyOf",
+        "packages/toolkit/src/matchers.ts:22:matches",
+        "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction"
+      ],
+      [
+        "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+        "packages/toolkit/src/matchers.ts:39:isAnyOf",
+        "packages/toolkit/src/matchers.ts:22:matches",
+        "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction"
+      ],
+      [
+        "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts:23:buildInvalidationByTagsHandler",
+        "packages/toolkit/src/query/core/buildThunks.ts:1123:calculateProvidedByThunk",
+        "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+        "packages/toolkit/src/query/endpointDefinitions.ts:1552:isFunction"
+      ],
+      [
+        "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+        "packages/toolkit/src/query/core/buildThunks.ts:1123:calculateProvidedByThunk",
+        "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+        "packages/toolkit/src/query/endpointDefinitions.ts:1552:isFunction"
+      ]
+    ],
+    "three_q1": true,
+    "three_q2": true,
+    "three_hop_chain": true,
+    "note": "Q3 has exactly three edges; does not assert unique or shortest path. Evidence must be independently reviewed."
+  },
+  "checks_requiring_review": [
+    "permissive license/SPDX from license text",
+    "artifact-suspect adjudication",
+    "manual file:line evidence",
+    "oracle completeness and version",
+    "mostly static resolvable calls",
+    "true-negative candidate (no safety proof)",
+    "test command and runtime coverage"
+  ],
+  "cloc_trailing_output": "",
+  "size_pass": true,
+  "history_pass": true,
+  "admission": "UNVERIFIED"
+}

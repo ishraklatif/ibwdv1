@@ -1,0 +1,13 @@
+{
+  "python_compile": "pass",
+  "typescript_reference_alias_call_value_fixture": "pass",
+  "jedi_reference_fixture": "pass",
+  "python_runtime_edge_fixture": "pass",
+  "graph_precision_recall_fixture": "pass",
+  "unknown_admission_blocks": "pass",
+  "real_repo_ibwd_benchmark": "not_run",
+  "real_repo_test_suites": "not_run",
+  "typescript_api": "5.9.3",
+  "jedi_smoke": "0.19.2",
+  "pytest_smoke": "8.3.5"
+}

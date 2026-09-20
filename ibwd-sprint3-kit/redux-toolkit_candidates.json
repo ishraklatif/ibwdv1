@@ -1,0 +1,4196 @@
+{
+  "oracle": "partial TypeScript checker without repo dependencies/config; candidates only",
+  "version": "5.9.3",
+  "complete": false,
+  "symbols": [
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/bin/cli.ts:15:findLoader",
+      "file": "packages/rtk-query-codegen-openapi/src/bin/cli.ts",
+      "line": 15,
+      "name": "findLoader"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/bin/cli.ts:67:run",
+      "file": "packages/rtk-query-codegen-openapi/src/bin/cli.ts",
+      "line": 67,
+      "name": "run"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/codegen.ts:7:generateObjectProperties",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 7,
+      "name": "generateObjectProperties"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/codegen.ts:13:generateImportNode",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 13,
+      "name": "generateImportNode"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/codegen.ts:32:generateCreateApiCall",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 32,
+      "name": "generateCreateApiCall"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/codegen.ts:113:generateEndpointDefinition",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 113,
+      "name": "generateEndpointDefinition"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/codegen.ts:178:generateTagTypes",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 178,
+      "name": "generateTagTypes"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:38:supportDeepObjects",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 38,
+      "name": "supportDeepObjects"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:66:defaultIsDataResponse",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 66,
+      "name": "defaultIsDataResponse"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:98:resolveOperationName",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 98,
+      "name": "resolveOperationName"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:121:getTags",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 121,
+      "name": "getTags"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:125:patternMatches",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 125,
+      "name": "patternMatches"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 135,
+      "name": "operationMatches"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:144:argumentMatches",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 144,
+      "name": "argumentMatches"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:153:withQueryComment",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 153,
+      "name": "withQueryComment"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:166:getPatternFromProperty",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 166,
+      "name": "getPatternFromProperty"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:177:generateRegexConstantsForType",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 177,
+      "name": "generateRegexConstantsForType"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 216,
+      "name": "getOverrides"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 224,
+      "name": "generateApi"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:710:accessProperty",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 710,
+      "name": "accessProperty"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generate.ts:716:generatePathExpression",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 716,
+      "name": "generatePathExpression"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 25,
+      "name": "createBinding"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 43,
+      "name": "getReactHookName"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:85:generateReactHooks",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 85,
+      "name": "generateReactHooks"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 19,
+      "name": "generateEndpoints"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/index.ts:40:parseConfig",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 40,
+      "name": "parseConfig"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/index.ts:62:enforceOazapftsTsVersion",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 62,
+      "name": "enforceOazapftsTsVersion"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts:1:capitalize",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts",
+      "line": 1,
+      "name": "capitalize"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/factory.ts:6:createImportSpecifier",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/factory.ts",
+      "line": 6,
+      "name": "createImportSpecifier"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/factory.ts:14:createExportSpecifier",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/factory.ts",
+      "line": 14,
+      "name": "createExportSpecifier"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/getOperationDefinitions.ts:5:getOperationDefinitions",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/getOperationDefinitions.ts",
+      "line": 5,
+      "name": "getOperationDefinitions"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/getV3Doc.ts:6:getV3Doc",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/getV3Doc.ts",
+      "line": 6,
+      "name": "getV3Doc"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/isQuery.ts:3:isQuery",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/isQuery.ts",
+      "line": 3,
+      "name": "isQuery"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/isValidUrl.ts:1:isValidUrl",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/isValidUrl.ts",
+      "line": 1,
+      "name": "isValidUrl"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/prettier.ts:23:prettify",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/prettier.ts",
+      "line": 23,
+      "name": "prettify"
+    },
+    {
+      "id": "packages/rtk-query-codegen-openapi/src/utils/removeUndefined.ts:1:removeUndefined",
+      "file": "packages/rtk-query-codegen-openapi/src/utils/removeUndefined.ts",
+      "line": 1,
+      "name": "removeUndefined"
+    },
+    {
+      "id": "packages/rtk-query-graphql-request-base-query/src/index.ts:13:graphqlRequestBaseQuery",
+      "file": "packages/rtk-query-graphql-request-base-query/src/index.ts",
+      "line": 13,
+      "name": "graphqlRequestBaseQuery"
+    },
+    {
+      "id": "packages/rtk-query-graphql-request-base-query/src/index.ts:78:stripUndefined",
+      "file": "packages/rtk-query-graphql-request-base-query/src/index.ts",
+      "line": 78,
+      "name": "stripUndefined"
+    },
+    {
+      "id": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts:12:getMessage",
+      "file": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts",
+      "line": 12,
+      "name": "getMessage"
+    },
+    {
+      "id": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts:21:createActionCreatorInvariantMiddleware",
+      "file": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts",
+      "line": 21,
+      "name": "createActionCreatorInvariantMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/autoBatchEnhancer.ts:6:prepareAutoBatched",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 6,
+      "name": "prepareAutoBatched"
+    },
+    {
+      "id": "packages/toolkit/src/autoBatchEnhancer.ts:12:createQueueWithTimer",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 12,
+      "name": "createQueueWithTimer"
+    },
+    {
+      "id": "packages/toolkit/src/autoBatchEnhancer.ts:18:createRafWithFallbackTimer",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 18,
+      "name": "createRafWithFallbackTimer"
+    },
+    {
+      "id": "packages/toolkit/src/autoBatchEnhancer.ts:67:autoBatchEnhancer",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 67,
+      "name": "autoBatchEnhancer"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:339:isSliceLike",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 339,
+      "name": "isSliceLike"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:345:getReducers",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 345,
+      "name": "getReducers"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:354:isStateProxy",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 354,
+      "name": "isStateProxy"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:356:createStateProxy",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 356,
+      "name": "createStateProxy"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:395:original",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 395,
+      "name": "original"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:403:noopReducer",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 403,
+      "name": "noopReducer"
+    },
+    {
+      "id": "packages/toolkit/src/combineSlices.ts:405:combineSlices",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 405,
+      "name": "combineSlices"
+    },
+    {
+      "id": "packages/toolkit/src/configureStore.ts:121:configureStore",
+      "file": "packages/toolkit/src/configureStore.ts",
+      "line": 121,
+      "name": "configureStore"
+    },
+    {
+      "id": "packages/toolkit/src/createAction.ts:265:createAction",
+      "file": "packages/toolkit/src/createAction.ts",
+      "line": 265,
+      "name": "createAction"
+    },
+    {
+      "id": "packages/toolkit/src/createAction.ts:296:isActionCreator",
+      "file": "packages/toolkit/src/createAction.ts",
+      "line": 296,
+      "name": "isActionCreator"
+    },
+    {
+      "id": "packages/toolkit/src/createAction.ts:310:isFSA",
+      "file": "packages/toolkit/src/createAction.ts",
+      "line": 310,
+      "name": "isFSA"
+    },
+    {
+      "id": "packages/toolkit/src/createAction.ts:319:isValidKey",
+      "file": "packages/toolkit/src/createAction.ts",
+      "line": 319,
+      "name": "isValidKey"
+    },
+    {
+      "id": "packages/toolkit/src/createAsyncThunk.ts:94:miniSerializeError",
+      "file": "packages/toolkit/src/createAsyncThunk.ts",
+      "line": 94,
+      "name": "miniSerializeError"
+    },
+    {
+      "id": "packages/toolkit/src/createAsyncThunk.ts:781:unwrapResult",
+      "file": "packages/toolkit/src/createAsyncThunk.ts",
+      "line": 781,
+      "name": "unwrapResult"
+    },
+    {
+      "id": "packages/toolkit/src/createAsyncThunk.ts:797:isThenable",
+      "file": "packages/toolkit/src/createAsyncThunk.ts",
+      "line": 797,
+      "name": "isThenable"
+    },
+    {
+      "id": "packages/toolkit/src/createDraftSafeSelector.ts:4:createDraftSafeSelectorCreator",
+      "file": "packages/toolkit/src/createDraftSafeSelector.ts",
+      "line": 4,
+      "name": "createDraftSafeSelectorCreator"
+    },
+    {
+      "id": "packages/toolkit/src/createReducer.ts:68:isStateFunction",
+      "file": "packages/toolkit/src/createReducer.ts",
+      "line": 68,
+      "name": "isStateFunction"
+    },
+    {
+      "id": "packages/toolkit/src/createReducer.ts:136:createReducer",
+      "file": "packages/toolkit/src/createReducer.ts",
+      "line": 136,
+      "name": "createReducer"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:560:getType",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 560,
+      "name": "getType"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 570,
+      "name": "buildCreateSlice"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:825:wrapSelector",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 825,
+      "name": "wrapSelector"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:957:buildReducerCreators",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 957,
+      "name": "buildReducerCreators"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:995:handleNormalReducerDefinition",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 995,
+      "name": "handleNormalReducerDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:1029:isAsyncThunkSliceReducerDefinition",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1029,
+      "name": "isAsyncThunkSliceReducerDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:1035:isCaseReducerWithPrepareDefinition",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1035,
+      "name": "isCaseReducerWithPrepareDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:1043:handleThunkCaseReducerDefinition",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1043,
+      "name": "handleThunkCaseReducerDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/createSlice.ts:1081:noop",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1081,
+      "name": "noop"
+    },
+    {
+      "id": "packages/toolkit/src/dynamicMiddleware/index.ts:20:createMiddlewareEntry",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 20,
+      "name": "createMiddlewareEntry"
+    },
+    {
+      "id": "packages/toolkit/src/dynamicMiddleware/index.ts:31:matchInstance",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 31,
+      "name": "matchInstance"
+    },
+    {
+      "id": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 35,
+      "name": "createDynamicMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/dynamicMiddleware/react/index.ts:63:createDynamicMiddleware",
+      "file": "packages/toolkit/src/dynamicMiddleware/react/index.ts",
+      "line": 63,
+      "name": "createDynamicMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+      "file": "packages/toolkit/src/entities/create_adapter.ts",
+      "line": 22,
+      "name": "createEntityAdapter"
+    },
+    {
+      "id": "packages/toolkit/src/entities/entity_state.ts:8:getInitialEntityState",
+      "file": "packages/toolkit/src/entities/entity_state.ts",
+      "line": 8,
+      "name": "getInitialEntityState"
+    },
+    {
+      "id": "packages/toolkit/src/entities/entity_state.ts:18:createInitialStateFactory",
+      "file": "packages/toolkit/src/entities/entity_state.ts",
+      "line": 18,
+      "name": "createInitialStateFactory"
+    },
+    {
+      "id": "packages/toolkit/src/entities/sorted_state_adapter.ts:19:findInsertIndex",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 19,
+      "name": "findInsertIndex"
+    },
+    {
+      "id": "packages/toolkit/src/entities/sorted_state_adapter.ts:40:insert",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 40,
+      "name": "insert"
+    },
+    {
+      "id": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 52,
+      "name": "createSortedStateAdapter"
+    },
+    {
+      "id": "packages/toolkit/src/entities/state_adapter.ts:11:createSingleArgumentStateOperator",
+      "file": "packages/toolkit/src/entities/state_adapter.ts",
+      "line": 11,
+      "name": "createSingleArgumentStateOperator"
+    },
+    {
+      "id": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "file": "packages/toolkit/src/entities/state_adapter.ts",
+      "line": 25,
+      "name": "createStateOperator"
+    },
+    {
+      "id": "packages/toolkit/src/entities/state_selectors.ts:11:createSelectorsFactory",
+      "file": "packages/toolkit/src/entities/state_selectors.ts",
+      "line": 11,
+      "name": "createSelectorsFactory"
+    },
+    {
+      "id": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 19,
+      "name": "createUnsortedStateAdapter"
+    },
+    {
+      "id": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 10,
+      "name": "selectIdValue"
+    },
+    {
+      "id": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 30,
+      "name": "ensureEntitiesArray"
+    },
+    {
+      "id": "packages/toolkit/src/entities/utils.ts:40:getCurrent",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 40,
+      "name": "getCurrent"
+    },
+    {
+      "id": "packages/toolkit/src/entities/utils.ts:44:splitAddedUpdatedEntities",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 44,
+      "name": "splitAddedUpdatedEntities"
+    },
+    {
+      "id": "packages/toolkit/src/formatProdErrorMessage.ts:8:formatProdErrorMessage",
+      "file": "packages/toolkit/src/formatProdErrorMessage.ts",
+      "line": 8,
+      "name": "formatProdErrorMessage"
+    },
+    {
+      "id": "packages/toolkit/src/getDefaultEnhancers.ts:16:buildGetDefaultEnhancers",
+      "file": "packages/toolkit/src/getDefaultEnhancers.ts",
+      "line": 16,
+      "name": "buildGetDefaultEnhancers"
+    },
+    {
+      "id": "packages/toolkit/src/getDefaultMiddleware.ts:16:isBoolean",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 16,
+      "name": "isBoolean"
+    },
+    {
+      "id": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 53,
+      "name": "buildGetDefaultMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:12:isImmutableDefault",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 12,
+      "name": "isImmutableDefault"
+    },
+    {
+      "id": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:16:trackForMutations",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 16,
+      "name": "trackForMutations"
+    },
+    {
+      "id": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:34:trackProperties",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 34,
+      "name": "trackProperties"
+    },
+    {
+      "id": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:85:detectMutations",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 85,
+      "name": "detectMutations"
+    },
+    {
+      "id": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:195:createImmutableStateInvariantMiddleware",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 195,
+      "name": "createImmutableStateInvariantMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 82,
+      "name": "createFork"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 128,
+      "name": "createTakePattern"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:192:getListenerEntryPropsFrom",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 192,
+      "name": "getListenerEntryPropsFrom"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:237:findListenerEntry",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 237,
+      "name": "findListenerEntry"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:253:cancelActiveListeners",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 253,
+      "name": "cancelActiveListeners"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:261:createClearListenerMiddleware",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 261,
+      "name": "createClearListenerMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:280:safelyNotifyError",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 280,
+      "name": "safelyNotifyError"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:323:defaultErrorHandler",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 323,
+      "name": "defaultErrorHandler"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 330,
+      "name": "createListenerMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 11,
+      "name": "validateActive"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 22,
+      "name": "raceWithSignal"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/task.ts:50:runTask",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 50,
+      "name": "runTask"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 78,
+      "name": "createPause"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/task.ts:95:createDelay",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 95,
+      "name": "createDelay"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/utils.ts:4:assertFunction",
+      "file": "packages/toolkit/src/listenerMiddleware/utils.ts",
+      "line": 4,
+      "name": "assertFunction"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/utils.ts:13:noop",
+      "file": "packages/toolkit/src/listenerMiddleware/utils.ts",
+      "line": 13,
+      "name": "noop"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/utils.ts:15:catchRejection",
+      "file": "packages/toolkit/src/listenerMiddleware/utils.ts",
+      "line": 15,
+      "name": "catchRejection"
+    },
+    {
+      "id": "packages/toolkit/src/listenerMiddleware/utils.ts:24:addAbortSignalListener",
+      "file": "packages/toolkit/src/listenerMiddleware/utils.ts",
+      "line": 24,
+      "name": "addAbortSignalListener"
+    },
+    {
+      "id": "packages/toolkit/src/mapBuilders.ts:193:executeReducerBuilderCallback",
+      "file": "packages/toolkit/src/mapBuilders.ts",
+      "line": 193,
+      "name": "executeReducerBuilderCallback"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:22:matches",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 22,
+      "name": "matches"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:39:isAnyOf",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 39,
+      "name": "isAnyOf"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:56:isAllOf",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 56,
+      "name": "isAllOf"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:70:hasExpectedRequestMetadata",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 70,
+      "name": "hasExpectedRequestMetadata"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:83:isAsyncThunkArray",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 83,
+      "name": "isAsyncThunkArray"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:128:isPending",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 128,
+      "name": "isPending"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 180,
+      "name": "isRejected"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 237,
+      "name": "isRejectedWithValue"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:293:isFulfilled",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 293,
+      "name": "isFulfilled"
+    },
+    {
+      "id": "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 352,
+      "name": "isAsyncThunkAction"
+    },
+    {
+      "id": "packages/toolkit/src/nanoid.ts:11:nanoid",
+      "file": "packages/toolkit/src/nanoid.ts",
+      "line": 11,
+      "name": "nanoid"
+    },
+    {
+      "id": "packages/toolkit/src/query/apiTypes.ts:55:getEndpointDefinition",
+      "file": "packages/toolkit/src/query/apiTypes.ts",
+      "line": 55,
+      "name": "getEndpointDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/apiState.ts:128:getRequestStatusFlags",
+      "file": "packages/toolkit/src/query/core/apiState.ts",
+      "line": 128,
+      "name": "getRequestStatusFlags"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildInitiate.ts:66:isUpsertQuery",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 66,
+      "name": "isUpsertQuery"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 276,
+      "name": "buildInitiate"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts:9:buildBatchedActionsHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts",
+      "line": 9,
+      "name": "buildBatchedActionsHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/cacheCollection.ts:55:buildCacheCollectionHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/cacheCollection.ts",
+      "line": 55,
+      "name": "buildCacheCollectionHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts:192:buildCacheLifecycleHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts",
+      "line": 192,
+      "name": "buildCacheLifecycleHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/devMiddleware.ts:3:buildDevCheckHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/devMiddleware.ts",
+      "line": 3,
+      "name": "buildDevCheckHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/index.ts:43:buildMiddleware",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/index.ts",
+      "line": 43,
+      "name": "buildMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts:23:buildInvalidationByTagsHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts",
+      "line": 23,
+      "name": "buildInvalidationByTagsHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/polling.ts:17:buildPollingHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/polling.ts",
+      "line": 17,
+      "name": "buildPollingHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts:427:buildQueryLifecycleHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts",
+      "line": 427,
+      "name": "buildQueryLifecycleHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildMiddleware/windowEventHandling.ts:10:buildWindowEventHandler",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/windowEventHandling.ts",
+      "line": 10,
+      "name": "buildWindowEventHandler"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 169,
+      "name": "buildSelectors"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildSlice.ts:114:updateQuerySubstateIfExists",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 114,
+      "name": "updateQuerySubstateIfExists"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 135,
+      "name": "getMutationCacheKey"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildSlice.ts:144:updateMutationSubstateIfExists",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 144,
+      "name": "updateMutationSubstateIfExists"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 159,
+      "name": "buildSlice"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildThunks.ts:202:defaultTransformResponse",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 202,
+      "name": "defaultTransformResponse"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildThunks.ts:325:addShouldAutoBatch",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 325,
+      "name": "addShouldAutoBatch"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 331,
+      "name": "buildThunks"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildThunks.ts:1094:getNextPageParam",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 1094,
+      "name": "getNextPageParam"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildThunks.ts:1109:getPreviousPageParam",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 1109,
+      "name": "getPreviousPageParam"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/buildThunks.ts:1123:calculateProvidedByThunk",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 1123,
+      "name": "calculateProvidedByThunk"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 513,
+      "name": "coreModule"
+    },
+    {
+      "id": "packages/toolkit/src/query/core/setupListeners.ts:53:setupListeners",
+      "file": "packages/toolkit/src/query/core/setupListeners.ts",
+      "line": 53,
+      "name": "setupListeners"
+    },
+    {
+      "id": "packages/toolkit/src/query/createApi.ts:347:buildCreateApi",
+      "file": "packages/toolkit/src/query/createApi.ts",
+      "line": 347,
+      "name": "buildCreateApi"
+    },
+    {
+      "id": "packages/toolkit/src/query/defaultSerializeQueryArgs.ts:9:defaultSerializeQueryArgs",
+      "file": "packages/toolkit/src/query/defaultSerializeQueryArgs.ts",
+      "line": 9,
+      "name": "defaultSerializeQueryArgs"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1292,
+      "name": "isQueryDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1298:isMutationDefinition",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1298,
+      "name": "isMutationDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1304,
+      "name": "isInfiniteQueryDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1310,
+      "name": "isAnyQueryDefinition"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1524,
+      "name": "calculateProvidedBy"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1552:isFunction",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1552,
+      "name": "isFunction"
+    },
+    {
+      "id": "packages/toolkit/src/query/endpointDefinitions.ts:1556:expandTagDescription",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1556,
+      "name": "expandTagDescription"
+    },
+    {
+      "id": "packages/toolkit/src/query/fakeBaseQuery.ts:10:fakeBaseQuery",
+      "file": "packages/toolkit/src/query/fakeBaseQuery.ts",
+      "line": 10,
+      "name": "fakeBaseQuery"
+    },
+    {
+      "id": "packages/toolkit/src/query/fetchBaseQuery.ts:41:defaultFetchFn",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 41,
+      "name": "defaultFetchFn"
+    },
+    {
+      "id": "packages/toolkit/src/query/fetchBaseQuery.ts:43:defaultValidateStatus",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 43,
+      "name": "defaultValidateStatus"
+    },
+    {
+      "id": "packages/toolkit/src/query/fetchBaseQuery.ts:46:defaultIsJsonContentType",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 46,
+      "name": "defaultIsJsonContentType"
+    },
+    {
+      "id": "packages/toolkit/src/query/fetchBaseQuery.ts:98:stripUndefined",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 98,
+      "name": "stripUndefined"
+    },
+    {
+      "id": "packages/toolkit/src/query/fetchBaseQuery.ts:110:isJsonifiable",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 110,
+      "name": "isJsonifiable"
+    },
+    {
+      "id": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 200,
+      "name": "fetchBaseQuery"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/ApiProvider.tsx:34:ApiProvider",
+      "file": "packages/toolkit/src/query/react/ApiProvider.tsx",
+      "line": 34,
+      "name": "ApiProvider"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/buildHooks.ts:64:canUseDOM",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 64,
+      "name": "canUseDOM"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/buildHooks.ts:75:isRunningInReactNative",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 75,
+      "name": "isRunningInReactNative"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/buildHooks.ts:80:getUseIsomorphicLayoutEffect",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 80,
+      "name": "getUseIsomorphicLayoutEffect"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/buildHooks.ts:1463:noPendingQueryStateSelector",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1463,
+      "name": "noPendingQueryStateSelector"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/buildHooks.ts:1480:pick",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1480,
+      "name": "pick"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1511,
+      "name": "buildHooks"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 157,
+      "name": "reactHooksModule"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/useSerializedStableValue.ts:4:useStableQueryArgs",
+      "file": "packages/toolkit/src/query/react/useSerializedStableValue.ts",
+      "line": 4,
+      "name": "useStableQueryArgs"
+    },
+    {
+      "id": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "file": "packages/toolkit/src/query/react/useShallowStableValue.ts",
+      "line": 4,
+      "name": "useShallowStableValue"
+    },
+    {
+      "id": "packages/toolkit/src/query/retry.ts:26:defaultBackoff",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 26,
+      "name": "defaultBackoff"
+    },
+    {
+      "id": "packages/toolkit/src/query/retry.ts:93:fail",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 93,
+      "name": "fail"
+    },
+    {
+      "id": "packages/toolkit/src/query/retry.ts:106:failIfAborted",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 106,
+      "name": "failIfAborted"
+    },
+    {
+      "id": "packages/toolkit/src/query/retry.ts:118:retryWithBackoff",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 118,
+      "name": "retryWithBackoff"
+    },
+    {
+      "id": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "file": "packages/toolkit/src/query/standardSchema.ts",
+      "line": 16,
+      "name": "shouldSkip"
+    },
+    {
+      "id": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "file": "packages/toolkit/src/query/standardSchema.ts",
+      "line": 24,
+      "name": "parseWithSchema"
+    },
+    {
+      "id": "packages/toolkit/src/query/tsHelpers.ts:5:assertCast",
+      "file": "packages/toolkit/src/query/tsHelpers.ts",
+      "line": 5,
+      "name": "assertCast"
+    },
+    {
+      "id": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "file": "packages/toolkit/src/query/tsHelpers.ts",
+      "line": 7,
+      "name": "safeAssign"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/capitalize.ts:1:capitalize",
+      "file": "packages/toolkit/src/query/utils/capitalize.ts",
+      "line": 1,
+      "name": "capitalize"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts:7:copyWithStructuralSharing",
+      "file": "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts",
+      "line": 7,
+      "name": "copyWithStructuralSharing"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/countObjectKeys.ts:6:countObjectKeys",
+      "file": "packages/toolkit/src/query/utils/countObjectKeys.ts",
+      "line": 6,
+      "name": "countObjectKeys"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/filterMap.ts:14:filterMap",
+      "file": "packages/toolkit/src/query/utils/filterMap.ts",
+      "line": 14,
+      "name": "filterMap"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/getCurrent.ts:4:getCurrent",
+      "file": "packages/toolkit/src/query/utils/getCurrent.ts",
+      "line": 4,
+      "name": "getCurrent"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/getOrInsert.ts:11:getOrInsert",
+      "file": "packages/toolkit/src/query/utils/getOrInsert.ts",
+      "line": 11,
+      "name": "getOrInsert"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/getOrInsert.ts:31:getOrInsertComputed",
+      "file": "packages/toolkit/src/query/utils/getOrInsert.ts",
+      "line": 31,
+      "name": "getOrInsertComputed"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/getOrInsert.ts:41:createNewMap",
+      "file": "packages/toolkit/src/query/utils/getOrInsert.ts",
+      "line": 41,
+      "name": "createNewMap"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/isAbsoluteUrl.ts:12:isAbsoluteUrl",
+      "file": "packages/toolkit/src/query/utils/isAbsoluteUrl.ts",
+      "line": 12,
+      "name": "isAbsoluteUrl"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/isDocumentVisible.ts:5:isDocumentVisible",
+      "file": "packages/toolkit/src/query/utils/isDocumentVisible.ts",
+      "line": 5,
+      "name": "isDocumentVisible"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/isNotNullish.ts:1:isNotNullish",
+      "file": "packages/toolkit/src/query/utils/isNotNullish.ts",
+      "line": 1,
+      "name": "isNotNullish"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/isNotNullish.ts:5:filterNullishValues",
+      "file": "packages/toolkit/src/query/utils/isNotNullish.ts",
+      "line": 5,
+      "name": "filterNullishValues"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/isOnline.ts:5:isOnline",
+      "file": "packages/toolkit/src/query/utils/isOnline.ts",
+      "line": 5,
+      "name": "isOnline"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/isValidUrl.ts:1:isValidUrl",
+      "file": "packages/toolkit/src/query/utils/isValidUrl.ts",
+      "line": 1,
+      "name": "isValidUrl"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/joinUrls.ts:3:withoutTrailingSlash",
+      "file": "packages/toolkit/src/query/utils/joinUrls.ts",
+      "line": 3,
+      "name": "withoutTrailingSlash"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/joinUrls.ts:4:withoutLeadingSlash",
+      "file": "packages/toolkit/src/query/utils/joinUrls.ts",
+      "line": 4,
+      "name": "withoutLeadingSlash"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/joinUrls.ts:6:joinUrls",
+      "file": "packages/toolkit/src/query/utils/joinUrls.ts",
+      "line": 6,
+      "name": "joinUrls"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/signals.ts:2:timeoutSignal",
+      "file": "packages/toolkit/src/query/utils/signals.ts",
+      "line": 2,
+      "name": "timeoutSignal"
+    },
+    {
+      "id": "packages/toolkit/src/query/utils/signals.ts:18:anySignal",
+      "file": "packages/toolkit/src/query/utils/signals.ts",
+      "line": 18,
+      "name": "anySignal"
+    },
+    {
+      "id": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:14:isPlain",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 14,
+      "name": "isPlain"
+    },
+    {
+      "id": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 36,
+      "name": "findNonSerializableValue"
+    },
+    {
+      "id": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:106:isNestedFrozen",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 106,
+      "name": "isNestedFrozen"
+    },
+    {
+      "id": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:188:createSerializableStateInvariantMiddleware",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 188,
+      "name": "createSerializableStateInvariantMiddleware"
+    },
+    {
+      "id": "packages/toolkit/src/tsHelpers.ts:4:safeAssign",
+      "file": "packages/toolkit/src/tsHelpers.ts",
+      "line": 4,
+      "name": "safeAssign"
+    },
+    {
+      "id": "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction",
+      "file": "packages/toolkit/src/tsHelpers.ts",
+      "line": 177,
+      "name": "hasMatchFunction"
+    },
+    {
+      "id": "packages/toolkit/src/tsHelpers.ts:209:asSafePromise",
+      "file": "packages/toolkit/src/tsHelpers.ts",
+      "line": 209,
+      "name": "asSafePromise"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:3:getTimeMeasureUtils",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 3,
+      "name": "getTimeMeasureUtils"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:25:delay",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 25,
+      "name": "delay"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:39:[Symbol.species]",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 39,
+      "name": "[Symbol.species]"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:52:concat",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 52,
+      "name": "concat"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:65:prepend",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 65,
+      "name": "prepend"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:73:freezeDraftable",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 73,
+      "name": "freezeDraftable"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:83:getOrInsert",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 83,
+      "name": "getOrInsert"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 103,
+      "name": "getOrInsertComputed"
+    },
+    {
+      "id": "packages/toolkit/src/utils.ts:113:promiseWithResolvers",
+      "file": "packages/toolkit/src/utils.ts",
+      "line": 113,
+      "name": "promiseWithResolvers"
+    }
+  ],
+  "edges": [
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/codegen.ts:32:generateCreateApiCall",
+      "target": "packages/rtk-query-codegen-openapi/src/codegen.ts:7:generateObjectProperties",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 42,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/codegen.ts:113:generateEndpointDefinition",
+      "target": "packages/rtk-query-codegen-openapi/src/codegen.ts:7:generateObjectProperties",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/codegen.ts",
+      "line": 134,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:125:patternMatches",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 136,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:98:resolveOperationName",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 139,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:144:argumentMatches",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:125:patternMatches",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 145,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:177:generateRegexConstantsForType",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:166:getPatternFromProperty",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 188,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 221,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/getV3Doc.ts:6:getV3Doc",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 255,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/getOperationDefinitions.ts:5:getOperationDefinitions",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 266,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:135:operationMatches",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 267,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/codegen.ts:13:generateImportNode",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 313,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/codegen.ts:178:generateTagTypes",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 314,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/codegen.ts:32:generateCreateApiCall",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 315,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 321,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:177:generateRegexConstantsForType",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 347,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:85:generateReactHooks",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 355,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:121:getTags",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 377,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:98:resolveOperationName",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 398,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:121:getTags",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 399,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/isQuery.ts:3:isQuery",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 400,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 434,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:38:supportDeepObjects",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 446,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:144:argumentMatches",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 447,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 520,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:153:withQueryComment",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 524,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:153:withQueryComment",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 536,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/codegen.ts:113:generateEndpointDefinition",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 561,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 562,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:710:accessProperty",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 611,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:716:generatePathExpression",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 648,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generate.ts:716:generatePathExpression",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:710:accessProperty",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+      "line": 738,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:98:resolveOperationName",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/isQuery.ts:3:isQuery",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 37,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:216:getOverrides",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 50,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/isQuery.ts:3:isQuery",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 59,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "target": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 63,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "target": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 69,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "target": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 70,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "target": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:25:createBinding",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 74,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:85:generateReactHooks",
+      "target": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts:43:getReactHookName",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+      "line": 101,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/isValidUrl.ts:1:isValidUrl",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 22,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+      "target": "packages/rtk-query-codegen-openapi/src/index.ts:62:enforceOazapftsTsVersion",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 26,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+      "target": "packages/rtk-query-codegen-openapi/src/generate.ts:224:generateApi",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 27,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/prettier.ts:23:prettify",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 33,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-codegen-openapi/src/index.ts:19:generateEndpoints",
+      "target": "packages/rtk-query-codegen-openapi/src/utils/prettier.ts:23:prettify",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-codegen-openapi/src/index.ts",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/rtk-query-graphql-request-base-query/src/index.ts:13:graphqlRequestBaseQuery",
+      "target": "packages/rtk-query-graphql-request-base-query/src/index.ts:78:stripUndefined",
+      "relation": "CALLS",
+      "file": "packages/rtk-query-graphql-request-base-query/src/index.ts",
+      "line": 33,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts:21:createActionCreatorInvariantMiddleware",
+      "target": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts:12:getMessage",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts",
+      "line": 30,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/autoBatchEnhancer.ts:67:autoBatchEnhancer",
+      "target": "packages/toolkit/src/autoBatchEnhancer.ts:18:createRafWithFallbackTimer",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 84,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/autoBatchEnhancer.ts:67:autoBatchEnhancer",
+      "target": "packages/toolkit/src/autoBatchEnhancer.ts:12:createQueueWithTimer",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 85,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/autoBatchEnhancer.ts:67:autoBatchEnhancer",
+      "target": "packages/toolkit/src/autoBatchEnhancer.ts:12:createQueueWithTimer",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/autoBatchEnhancer.ts",
+      "line": 88,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/combineSlices.ts:345:getReducers",
+      "target": "packages/toolkit/src/combineSlices.ts:339:isSliceLike",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 347,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/combineSlices.ts:356:createStateProxy",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 362,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/combineSlices.ts:356:createStateProxy",
+      "target": "packages/toolkit/src/nanoid.ts:11:nanoid",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 376,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/combineSlices.ts:395:original",
+      "target": "packages/toolkit/src/combineSlices.ts:354:isStateProxy",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 396,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/combineSlices.ts:405:combineSlices",
+      "target": "packages/toolkit/src/combineSlices.ts:345:getReducers",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 413,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/combineSlices.ts:405:combineSlices",
+      "target": "packages/toolkit/src/combineSlices.ts:356:createStateProxy",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/combineSlices.ts",
+      "line": 473,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/configureStore.ts:121:configureStore",
+      "target": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/configureStore.ts",
+      "line": 130,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/configureStore.ts:121:configureStore",
+      "target": "packages/toolkit/src/getDefaultEnhancers.ts:16:buildGetDefaultEnhancers",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/configureStore.ts",
+      "line": 209,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createAction.ts:296:isActionCreator",
+      "target": "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createAction.ts",
+      "line": 303,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createReducer.ts:136:createReducer",
+      "target": "packages/toolkit/src/mapBuilders.ts:193:executeReducerBuilderCallback",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createReducer.ts",
+      "line": 149,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createReducer.ts:136:createReducer",
+      "target": "packages/toolkit/src/createReducer.ts:68:isStateFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createReducer.ts",
+      "line": 153,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createReducer.ts:136:createReducer",
+      "target": "packages/toolkit/src/utils.ts:73:freezeDraftable",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createReducer.ts",
+      "line": 154,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createReducer.ts:136:createReducer",
+      "target": "packages/toolkit/src/utils.ts:73:freezeDraftable",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createReducer.ts",
+      "line": 156,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createSlice.ts:957:buildReducerCreators",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 605,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createSlice.ts:560:getType",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 658,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createSlice.ts:1029:isAsyncThunkSliceReducerDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 661,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createSlice.ts:1043:handleThunkCaseReducerDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 662,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createSlice.ts:995:handleNormalReducerDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 669,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/mapBuilders.ts:193:executeReducerBuilderCallback",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 691,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createReducer.ts:136:createReducer",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 699,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 752,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 769,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 775,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/createSlice.ts:825:wrapSelector",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 780,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:570:buildCreateSlice",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 784,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:995:handleNormalReducerDefinition",
+      "target": "packages/toolkit/src/createSlice.ts:1035:isCaseReducerWithPrepareDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1007,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:995:handleNormalReducerDefinition",
+      "target": "packages/toolkit/src/createAction.ts:265:createAction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1024,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/createSlice.ts:995:handleNormalReducerDefinition",
+      "target": "packages/toolkit/src/createAction.ts:265:createAction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/createSlice.ts",
+      "line": 1025,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "target": "packages/toolkit/src/nanoid.ts:11:nanoid",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 39,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "target": "packages/toolkit/src/createAction.ts:265:createAction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 47,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 65,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "target": "packages/toolkit/src/utils.ts:103:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 76,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "target": "packages/toolkit/src/matchers.ts:56:isAllOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 81,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/dynamicMiddleware/index.ts:35:createDynamicMiddleware",
+      "target": "packages/toolkit/src/dynamicMiddleware/index.ts:31:matchInstance",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/dynamicMiddleware/index.ts",
+      "line": 81,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+      "target": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/create_adapter.ts",
+      "line": 35,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+      "target": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/create_adapter.ts",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+      "target": "packages/toolkit/src/entities/entity_state.ts:18:createInitialStateFactory",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/create_adapter.ts",
+      "line": 37,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/create_adapter.ts:22:createEntityAdapter",
+      "target": "packages/toolkit/src/entities/state_selectors.ts:11:createSelectorsFactory",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/create_adapter.ts",
+      "line": 38,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/entity_state.ts:18:createInitialStateFactory",
+      "target": "packages/toolkit/src/entities/entity_state.ts:8:getInitialEntityState",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/entity_state.ts",
+      "line": 33,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:40:insert",
+      "target": "packages/toolkit/src/entities/sorted_state_adapter.ts:19:findInsertIndex",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 45,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 59,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 70,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:40:getCurrent",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 72,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 75,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 95,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 103,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 112,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:44:splitAddedUpdatedEntities",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 185,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:40:getCurrent",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 219,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:40:getCurrent",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 220,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/sorted_state_adapter.ts:40:insert",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 244,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 267,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 268,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 269,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 270,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 271,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 272,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 273,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 274,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/sorted_state_adapter.ts:52:createSortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/sorted_state_adapter.ts",
+      "line": 275,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/state_adapter.ts:11:createSingleArgumentStateOperator",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/state_adapter.ts",
+      "line": 14,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "target": "packages/toolkit/src/createAction.ts:310:isFSA",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/state_adapter.ts",
+      "line": 35,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 25,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 39,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 47,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 58,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 68,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 114,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 166,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/utils.ts:44:splitAddedUpdatedEntities",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 180,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:11:createSingleArgumentStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 191,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 192,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 193,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 194,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 195,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 196,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 197,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 198,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 199,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 200,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 201,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/unsorted_state_adapter.ts:19:createUnsortedStateAdapter",
+      "target": "packages/toolkit/src/entities/state_adapter.ts:25:createStateOperator",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/unsorted_state_adapter.ts",
+      "line": 202,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/utils.ts:44:splitAddedUpdatedEntities",
+      "target": "packages/toolkit/src/entities/utils.ts:30:ensureEntitiesArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 49,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/utils.ts:44:splitAddedUpdatedEntities",
+      "target": "packages/toolkit/src/entities/utils.ts:40:getCurrent",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 51,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/entities/utils.ts:44:splitAddedUpdatedEntities",
+      "target": "packages/toolkit/src/entities/utils.ts:10:selectIdValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/entities/utils.ts",
+      "line": 59,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultEnhancers.ts:16:buildGetDefaultEnhancers",
+      "target": "packages/toolkit/src/autoBatchEnhancer.ts:67:autoBatchEnhancer",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultEnhancers.ts",
+      "line": 25,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/getDefaultMiddleware.ts:16:isBoolean",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 65,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/getDefaultMiddleware.ts:16:isBoolean",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 77,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:195:createImmutableStateInvariantMiddleware",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 82,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/getDefaultMiddleware.ts:16:isBoolean",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 91,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:188:createSerializableStateInvariantMiddleware",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 96,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/getDefaultMiddleware.ts:16:isBoolean",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 102,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/getDefaultMiddleware.ts:53:buildGetDefaultMiddleware",
+      "target": "packages/toolkit/src/actionCreatorInvariantMiddleware.ts:21:createActionCreatorInvariantMiddleware",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/getDefaultMiddleware.ts",
+      "line": 107,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:16:trackForMutations",
+      "target": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:34:trackProperties",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 21,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:16:trackForMutations",
+      "target": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:85:detectMutations",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 24,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:34:trackProperties",
+      "target": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:34:trackProperties",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 71,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:85:detectMutations",
+      "target": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:85:detectMutations",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 144,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/immutableStateInvariantMiddleware.ts:195:createImmutableStateInvariantMiddleware",
+      "target": "packages/toolkit/src/utils.ts:3:getTimeMeasureUtils",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/immutableStateInvariantMiddleware.ts",
+      "line": 256,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:24:addAbortSignalListener",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 87,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:4:assertFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 95,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:50:runTask",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 100,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 102,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 103,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 105,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:95:createDelay",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 106,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 109,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 120,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 143,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 178,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 180,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:15:catchRejection",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 189,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:192:getListenerEntryPropsFrom",
+      "target": "packages/toolkit/src/createAction.ts:265:createAction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 196,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:192:getListenerEntryPropsFrom",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:4:assertFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 210,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:237:findListenerEntry",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:192:getListenerEntryPropsFrom",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 241,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:261:createClearListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:253:cancelActiveListeners",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 267,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:4:assertFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 361,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:253:cancelActiveListeners",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 370,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:237:findListenerEntry",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 377,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:237:findListenerEntry",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 390,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:253:cancelActiveListeners",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 395,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:128:createTakePattern",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 413,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:95:createDelay",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 433,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 434,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:82:createFork",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 437,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 455,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:280:safelyNotifyError",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 462,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:261:createClearListenerMiddleware",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 475,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/index.ts:330:createListenerMiddleware",
+      "target": "packages/toolkit/src/listenerMiddleware/index.ts:280:safelyNotifyError",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/index.ts",
+      "line": 536,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:24:addAbortSignalListener",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 35,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:13:noop",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "target": "packages/toolkit/src/listenerMiddleware/utils.ts:15:catchRejection",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 80,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:22:raceWithSignal",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 81,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:11:validateActive",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 82,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/listenerMiddleware/task.ts:95:createDelay",
+      "target": "packages/toolkit/src/listenerMiddleware/task.ts:78:createPause",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/listenerMiddleware/task.ts",
+      "line": 96,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:22:matches",
+      "target": "packages/toolkit/src/tsHelpers.ts:177:hasMatchFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 23,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:39:isAnyOf",
+      "target": "packages/toolkit/src/matchers.ts:22:matches",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 43,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:56:isAllOf",
+      "target": "packages/toolkit/src/matchers.ts:22:matches",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 60,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:128:isPending",
+      "target": "packages/toolkit/src/matchers.ts:70:hasExpectedRequestMetadata",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 132,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:128:isPending",
+      "target": "packages/toolkit/src/matchers.ts:83:isAsyncThunkArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 135,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:128:isPending",
+      "target": "packages/toolkit/src/matchers.ts:128:isPending",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 136,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:128:isPending",
+      "target": "packages/toolkit/src/matchers.ts:39:isAnyOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 139,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "target": "packages/toolkit/src/matchers.ts:70:hasExpectedRequestMetadata",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 184,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "target": "packages/toolkit/src/matchers.ts:83:isAsyncThunkArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 187,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "target": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 188,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "target": "packages/toolkit/src/matchers.ts:39:isAnyOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 191,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "target": "packages/toolkit/src/matchers.ts:56:isAllOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 245,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "target": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 245,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "target": "packages/toolkit/src/matchers.ts:83:isAsyncThunkArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 248,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "target": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 249,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "target": "packages/toolkit/src/matchers.ts:56:isAllOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 252,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:237:isRejectedWithValue",
+      "target": "packages/toolkit/src/matchers.ts:180:isRejected",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 252,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:293:isFulfilled",
+      "target": "packages/toolkit/src/matchers.ts:70:hasExpectedRequestMetadata",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 297,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:293:isFulfilled",
+      "target": "packages/toolkit/src/matchers.ts:83:isAsyncThunkArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 300,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:293:isFulfilled",
+      "target": "packages/toolkit/src/matchers.ts:293:isFulfilled",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 301,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:293:isFulfilled",
+      "target": "packages/toolkit/src/matchers.ts:39:isAnyOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 304,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+      "target": "packages/toolkit/src/matchers.ts:70:hasExpectedRequestMetadata",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 357,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+      "target": "packages/toolkit/src/matchers.ts:83:isAsyncThunkArray",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 360,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+      "target": "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 361,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/matchers.ts:352:isAsyncThunkAction",
+      "target": "packages/toolkit/src/matchers.ts:39:isAnyOf",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/matchers.ts",
+      "line": 364,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "target": "packages/toolkit/src/query/apiTypes.ts:55:getEndpointDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 315,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "target": "packages/toolkit/src/query/utils/isNotNullish.ts:5:filterNullishValues",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 345,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "target": "packages/toolkit/src/query/utils/isNotNullish.ts:5:filterNullishValues",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 350,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 415,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "target": "packages/toolkit/src/tsHelpers.ts:209:asSafePromise",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildInitiate.ts",
+      "line": 560,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts:9:buildBatchedActionsHandler",
+      "target": "packages/toolkit/src/query/utils/getOrInsert.ts:31:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts",
+      "line": 51,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts:9:buildBatchedActionsHandler",
+      "target": "packages/toolkit/src/query/utils/getOrInsert.ts:31:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts",
+      "line": 71,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts:192:buildCacheLifecycleHandler",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts",
+      "line": 312,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts:192:buildCacheLifecycleHandler",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts",
+      "line": 348,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts:192:buildCacheLifecycleHandler",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/cacheLifecycle.ts",
+      "line": 357,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/index.ts:43:buildMiddleware",
+      "target": "packages/toolkit/src/query/core/buildMiddleware/batchActions.ts:9:buildBatchedActionsHandler",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/index.ts",
+      "line": 92,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/index.ts:43:buildMiddleware",
+      "target": "packages/toolkit/src/query/core/buildMiddleware/windowEventHandling.ts:10:buildWindowEventHandler",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/index.ts",
+      "line": 93,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts:23:buildInvalidationByTagsHandler",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1123:calculateProvidedByThunk",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts",
+      "line": 65,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts:23:buildInvalidationByTagsHandler",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts",
+      "line": 77,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts:23:buildInvalidationByTagsHandler",
+      "target": "packages/toolkit/src/query/utils/getOrInsert.ts:31:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/invalidationByTags.ts",
+      "line": 120,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts:427:buildQueryLifecycleHandler",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts",
+      "line": 466,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts:427:buildQueryLifecycleHandler",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildMiddleware/queryLifecycle.ts",
+      "line": 475,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/core/apiState.ts:128:getRequestStatusFlags",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 202,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/core/apiState.ts:128:getRequestStatusFlags",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 282,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 319,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/utils/filterMap.ts:14:filterMap",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 345,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/utils/filterMap.ts:14:filterMap",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 382,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1094:getNextPageParam",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 402,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1109:getPreviousPageParam",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSelectors.ts",
+      "line": 411,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:144:updateMutationSubstateIfExists",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 151,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:114:updateQuerySubstateIfExists",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 202,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 218,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:114:updateQuerySubstateIfExists",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 234,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts:7:copyWithStructuralSharing",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 269,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:114:updateQuerySubstateIfExists",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 368,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildInitiate.ts:66:isUpsertQuery",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 380,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildInitiate.ts:66:isUpsertQuery",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 384,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:114:updateQuerySubstateIfExists",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 390,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 426,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:135:getMutationCacheKey",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 441,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:144:updateMutationSubstateIfExists",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 452,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:144:updateMutationSubstateIfExists",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 462,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/utils/getCurrent.ts:4:getCurrent",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 597,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/utils/getCurrent.ts:4:getCurrent",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 606,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1123:calculateProvidedByThunk",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 620,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/utils/isOnline.ts:5:isOnline",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 679,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "target": "packages/toolkit/src/query/utils/isDocumentVisible.ts:5:isDocumentVisible",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildSlice.ts",
+      "line": 680,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 383,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 576,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 577,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 649,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 651,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 665,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 666,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1094:getNextPageParam",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 719,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1094:getNextPageParam",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 753,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 775,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 778,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:325:addShouldAutoBatch",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 789,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 809,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 811,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 819,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 820,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:16:shouldSkip",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 829,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/standardSchema.ts:24:parseWithSchema",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 831,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:325:addShouldAutoBatch",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 841,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:325:addShouldAutoBatch",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 862,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:325:addShouldAutoBatch",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 917,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 919,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildInitiate.ts:66:isUpsertQuery",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 942,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 957,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 974,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:1094:getNextPageParam",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 982,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:325:addShouldAutoBatch",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 1009,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/buildThunks.ts:1123:calculateProvidedByThunk",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/buildThunks.ts",
+      "line": 1133,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:5:assertCast",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 537,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/core/buildSelectors.ts:169:buildSelectors",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 565,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 579,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/core/buildThunks.ts:331:buildThunks",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 590,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/core/buildSlice.ts:159:buildSlice",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 603,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 621,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 629,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/utils/getOrInsert.ts:31:getOrInsertComputed",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 634,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/core/buildInitiate.ts:276:buildInitiate",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 652,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 662,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/core/buildMiddleware/index.ts:43:buildMiddleware",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 669,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 681,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 683,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 697,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 698,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1298:isMutationDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 708,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 709,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 719,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/core/module.ts:513:coreModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/core/module.ts",
+      "line": 720,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/createApi.ts:347:buildCreateApi",
+      "target": "packages/toolkit/src/query/defaultSerializeQueryArgs.ts:9:defaultSerializeQueryArgs",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/createApi.ts",
+      "line": 382,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/createApi.ts:347:buildCreateApi",
+      "target": "packages/toolkit/src/query/apiTypes.ts:55:getEndpointDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/createApi.ts",
+      "line": 425,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/createApi.ts:347:buildCreateApi",
+      "target": "packages/toolkit/src/query/apiTypes.ts:55:getEndpointDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/createApi.ts",
+      "line": 428,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/createApi.ts:347:buildCreateApi",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/createApi.ts",
+      "line": 478,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1315,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/endpointDefinitions.ts:1310:isAnyQueryDefinition",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1315,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1552:isFunction",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1534,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "target": "packages/toolkit/src/query/utils/filterMap.ts:14:filterMap",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1544,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/endpointDefinitions.ts:1524:calculateProvidedBy",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1556:expandTagDescription",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/endpointDefinitions.ts",
+      "line": 1545,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "target": "packages/toolkit/src/query/utils/signals.ts:18:anySignal",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 240,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "target": "packages/toolkit/src/query/utils/signals.ts:2:timeoutSignal",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 240,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "target": "packages/toolkit/src/query/fetchBaseQuery.ts:98:stripUndefined",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 245,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "target": "packages/toolkit/src/query/fetchBaseQuery.ts:110:isJsonifiable",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 257,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "target": "packages/toolkit/src/query/fetchBaseQuery.ts:98:stripUndefined",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 291,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/fetchBaseQuery.ts:200:fetchBaseQuery",
+      "target": "packages/toolkit/src/query/utils/joinUrls.ts:6:joinUrls",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/fetchBaseQuery.ts",
+      "line": 295,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1673,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useSerializedStableValue.ts:4:useStableQueryArgs",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1732,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1733,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1742,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1747,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1797,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useSerializedStableValue.ts:4:useStableQueryArgs",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1844,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 1967,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/buildHooks.ts:1480:pick",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 2073,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useShallowStableValue.ts:4:useShallowStableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 2107,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/useSerializedStableValue.ts:4:useStableQueryArgs",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 2133,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/buildHooks.ts:1480:pick",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 2194,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "target": "packages/toolkit/src/query/react/buildHooks.ts:1480:pick",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/buildHooks.ts",
+      "line": 2274,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/utils/countObjectKeys.ts:6:countObjectKeys",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 173,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/react/buildHooks.ts:1511:buildHooks",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 215,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 226,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 227,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1292:isQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 231,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 239,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 246,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 247,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1298:isMutationDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 250,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 252,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 255,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/endpointDefinitions.ts:1304:isInfiniteQueryDefinition",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 257,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/tsHelpers.ts:7:safeAssign",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 263,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/react/module.ts:157:reactHooksModule",
+      "target": "packages/toolkit/src/query/utils/capitalize.ts:1:capitalize",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/react/module.ts",
+      "line": 268,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/retry.ts:106:failIfAborted",
+      "target": "packages/toolkit/src/query/retry.ts:93:fail",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 108,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/retry.ts:118:retryWithBackoff",
+      "target": "packages/toolkit/src/query/retry.ts:106:failIfAborted",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 147,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/retry.ts:118:retryWithBackoff",
+      "target": "packages/toolkit/src/query/retry.ts:106:failIfAborted",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 187,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/retry.ts:118:retryWithBackoff",
+      "target": "packages/toolkit/src/query/retry.ts:26:defaultBackoff",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 190,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/retry.ts:118:retryWithBackoff",
+      "target": "packages/toolkit/src/query/retry.ts:106:failIfAborted",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/retry.ts",
+      "line": 193,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts:7:copyWithStructuralSharing",
+      "target": "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts:7:copyWithStructuralSharing",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/utils/copyWithStructuralSharing.ts",
+      "line": 23,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/utils/joinUrls.ts:6:joinUrls",
+      "target": "packages/toolkit/src/query/utils/isAbsoluteUrl.ts:12:isAbsoluteUrl",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/utils/joinUrls.ts",
+      "line": 17,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/utils/joinUrls.ts:6:joinUrls",
+      "target": "packages/toolkit/src/query/utils/joinUrls.ts:3:withoutTrailingSlash",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/utils/joinUrls.ts",
+      "line": 22,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/query/utils/joinUrls.ts:6:joinUrls",
+      "target": "packages/toolkit/src/query/utils/joinUrls.ts:4:withoutLeadingSlash",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/query/utils/joinUrls.ts",
+      "line": 23,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+      "target": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 86,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+      "target": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:106:isNestedFrozen",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 101,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:106:isNestedFrozen",
+      "target": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:106:isNestedFrozen",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 112,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:188:createSerializableStateInvariantMiddleware",
+      "target": "packages/toolkit/src/utils.ts:3:getTimeMeasureUtils",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 216,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:188:createSerializableStateInvariantMiddleware",
+      "target": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 229,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:188:createSerializableStateInvariantMiddleware",
+      "target": "packages/toolkit/src/serializableStateInvariantMiddleware.ts:36:findNonSerializableValue",
+      "relation": "CALLS",
+      "file": "packages/toolkit/src/serializableStateInvariantMiddleware.ts",
+      "line": 257,
+      "status": "partial_compiler_candidate"
+    }
+  ],
+  "diagnostic_count": 208
+}

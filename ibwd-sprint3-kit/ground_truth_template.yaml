@@ -1,0 +1,20 @@
+# Template only. No benchmark task has been certified by this file.
+repo: null
+repo_sha: null
+ibwd_sha: null
+oracle:
+  name: null
+  version: null
+  dependency_lock_sha256: null
+  config_paths: []
+  completeness: unverified
+scope:
+  roots: []
+  tests: excluded_from_primary_included_in_diagnostics
+  relation: CALLS
+  nested_functions: roll_up_to_enclosing_symbol_with_origin_retained
+tasks: []
+# Each task needs id, question, type, stratum, relation, source symbol,
+# expected callsite file:line:column + target definition file:line,
+# source blob SHA, independently_reviewed_by, reviewed_at, limitations.
+# Q3 additionally needs all ordered hops and a relation policy.

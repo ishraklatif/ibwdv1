@@ -1,0 +1,362 @@
+[
+  {
+    "repo": "sphinx",
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "file": "sphinx/_cli/util/colour.py",
+    "line": 22,
+    "symbol": "terminal_supports_colour",
+    "source_sha256": "e44a40e47cab2794a27d9581a5a25797a2300070aa781a76f3e7663ddbf0b98a",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "sphinx",
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "file": "sphinx/_cli/__init__.py",
+    "line": 234,
+    "symbol": "_parse_command",
+    "source_sha256": "9c04947494ca9bb77566d1501a43d098c8710930099ff9aac2ac7c315937e763",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "sphinx",
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "file": "sphinx/application.py",
+    "line": 165,
+    "symbol": "Sphinx.__init__",
+    "source_sha256": "7b45746c74cbdfb5d3905e36a18b3b00a68e93d5c20eff91e253cec88fe3db24",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "sphinx",
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "file": "sphinx/config.py",
+    "line": 339,
+    "symbol": "Config.read",
+    "source_sha256": "bbb01cb060191b291e39d324d71eb29d1c0f6db5d5837d359bb3e085c021e1d0",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "sphinx",
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "file": "sphinx/config.py",
+    "line": 565,
+    "symbol": "_read_conf_py",
+    "source_sha256": "bbb01cb060191b291e39d324d71eb29d1c0f6db5d5837d359bb3e085c021e1d0",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "sphinx",
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "file": "sphinx/config.py",
+    "line": 585,
+    "symbol": "eval_config_file",
+    "source_sha256": "bbb01cb060191b291e39d324d71eb29d1c0f6db5d5837d359bb3e085c021e1d0",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "scrapy",
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "file": "scrapy/utils/conf.py",
+    "line": 20,
+    "symbol": "build_component_list",
+    "source_sha256": "92f790469e813e9d1335af45d307118642a8728a6b6edc9fa6f391c6b6665ed3",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "scrapy",
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "file": "scrapy/addons.py",
+    "line": 25,
+    "symbol": "AddonManager.load_settings",
+    "source_sha256": "01b7db0aadf4a4f3e30bc7ea6b91e2172091b8be864b2faff726bd4b1c97e6af",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "scrapy",
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "file": "scrapy/cmdline.py",
+    "line": 169,
+    "symbol": "execute",
+    "source_sha256": "7a2e7af2f77a8c90a9eb0ecb6272d1d3ec22b0275c17f8c36cc1fcbfcd351ef6",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "scrapy",
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "file": "scrapy/utils/project.py",
+    "line": 112,
+    "symbol": "get_project_settings",
+    "source_sha256": "ee111a6f4521b1a9c1ebbdf0764c6e85503f2c6486e403658f70babf188ec022",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "scrapy",
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "file": "scrapy/utils/conf.py",
+    "line": 89,
+    "symbol": "init_env",
+    "source_sha256": "92f790469e813e9d1335af45d307118642a8728a6b6edc9fa6f391c6b6665ed3",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "scrapy",
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "file": "scrapy/utils/conf.py",
+    "line": 106,
+    "symbol": "get_config",
+    "source_sha256": "92f790469e813e9d1335af45d307118642a8728a6b6edc9fa6f391c6b6665ed3",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "redux-toolkit",
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "file": "packages/toolkit/src/utils.ts",
+    "line": 103,
+    "symbol": "getOrInsertComputed",
+    "source_sha256": "7a2b3956120981086fdd8d2f8e889df64412e3f2d2ddf167f9de13de2209f5ab",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "redux-toolkit",
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+    "line": 224,
+    "symbol": "generateApi",
+    "source_sha256": "a41823b5f59a0bcca35b9d9c4eb7cb0eb961b8750670e24efdd28deb36b5e32e",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "redux-toolkit",
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+    "line": 224,
+    "symbol": "generateApi",
+    "source_sha256": "a41823b5f59a0bcca35b9d9c4eb7cb0eb961b8750670e24efdd28deb36b5e32e",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "redux-toolkit",
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+    "line": 85,
+    "symbol": "generateReactHooks",
+    "source_sha256": "8ae0dfbdb269ea2aaf1e0aeba5548958516c3b5edddeadb44f94ff6f048f1dde",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "redux-toolkit",
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "file": "packages/rtk-query-codegen-openapi/src/generators/react-hooks.ts",
+    "line": 43,
+    "symbol": "getReactHookName",
+    "source_sha256": "8ae0dfbdb269ea2aaf1e0aeba5548958516c3b5edddeadb44f94ff6f048f1dde",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "redux-toolkit",
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "file": "packages/rtk-query-codegen-openapi/src/generate.ts",
+    "line": 216,
+    "symbol": "getOverrides",
+    "source_sha256": "a41823b5f59a0bcca35b9d9c4eb7cb0eb961b8750670e24efdd28deb36b5e32e",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "bulletproof-react",
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+    "line": 15,
+    "symbol": "getDiscussionQueryOptions",
+    "source_sha256": "581321951f0e3f3fae051ab61508f5073b5a683c8fbdbc81dfef86721708e7ec",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "bulletproof-react",
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+    "line": 19,
+    "symbol": "DiscussionsList",
+    "source_sha256": "e4a73a590e5a166096fb9e8309227235fd57a753ce3c4c68fce3303b52048039",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "bulletproof-react",
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+    "line": 38,
+    "symbol": "DiscussionRoute",
+    "source_sha256": "679a07cafc632a1c5d9313f06bc58de89986fb08806fbf3862debb3185e17126",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "bulletproof-react",
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+    "line": 27,
+    "symbol": "useDiscussion",
+    "source_sha256": "581321951f0e3f3fae051ab61508f5073b5a683c8fbdbc81dfef86721708e7ec",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "bulletproof-react",
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+    "line": 15,
+    "symbol": "getDiscussionQueryOptions",
+    "source_sha256": "581321951f0e3f3fae051ab61508f5073b5a683c8fbdbc81dfef86721708e7ec",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "bulletproof-react",
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+    "line": 7,
+    "symbol": "getDiscussion",
+    "source_sha256": "581321951f0e3f3fae051ab61508f5073b5a683c8fbdbc81dfef86721708e7ec",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "celery",
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "file": "celery/concurrency/__init__.py",
+    "line": 41,
+    "symbol": "get_implementation",
+    "source_sha256": "0a2bc82338cb5871097fd11dd101524c23b135a5a9ba71434f30b68f3c37c84d",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "celery",
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "file": "celery/app/amqp.py",
+    "line": 327,
+    "symbol": "AMQP.as_task_v2",
+    "source_sha256": "1e4f1eea6d65fda7a8415d7f27e2d1494ad016399f1a412b1a1a67bd3a607a3c",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "celery",
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "file": "celery/app/amqp.py",
+    "line": 327,
+    "symbol": "AMQP.as_task_v2",
+    "source_sha256": "1e4f1eea6d65fda7a8415d7f27e2d1494ad016399f1a412b1a1a67bd3a607a3c",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "celery",
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "file": "celery/utils/saferepr.py",
+    "line": 66,
+    "symbol": "saferepr",
+    "source_sha256": "ff90de422e54baf3cb54424fa4f4be130b47a084a01d8c5e28ed0dc10e0618bd",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "celery",
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "file": "celery/utils/saferepr.py",
+    "line": 158,
+    "symbol": "_saferepr",
+    "source_sha256": "ff90de422e54baf3cb54424fa4f4be130b47a084a01d8c5e28ed0dc10e0618bd",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "celery",
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "file": "celery/utils/saferepr.py",
+    "line": 107,
+    "symbol": "_safetext",
+    "source_sha256": "ff90de422e54baf3cb54424fa4f4be130b47a084a01d8c5e28ed0dc10e0618bd",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "typedoc",
+    "repo_sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "file": "src/lib/converter/utilities/symbols.ts",
+    "line": 3,
+    "symbol": "resolveAliasedSymbol",
+    "source_sha256": "1addcfacfb63da93b73caa179f784da65594faed2634167434d8d9b3b697a5ef",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "typedoc",
+    "repo_sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "file": "src/frontend/typedoc/Navigation.ts",
+    "line": 29,
+    "symbol": "buildNav",
+    "source_sha256": "8e6fe787e818de205f300bbcefcf2275ea571a8b83d2ab848d21c1e13b80a7e1",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "typedoc",
+    "repo_sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "file": "src/frontend/typedoc/Navigation.ts",
+    "line": 21,
+    "symbol": "initNav",
+    "source_sha256": "8e6fe787e818de205f300bbcefcf2275ea571a8b83d2ab848d21c1e13b80a7e1",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "typedoc",
+    "repo_sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "file": "src/frontend/typedoc/Navigation.ts",
+    "line": 29,
+    "symbol": "buildNav",
+    "source_sha256": "8e6fe787e818de205f300bbcefcf2275ea571a8b83d2ab848d21c1e13b80a7e1",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "typedoc",
+    "repo_sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "file": "src/frontend/typedoc/Application.ts",
+    "line": 140,
+    "symbol": "showPage",
+    "source_sha256": "ad9b1ac00d8a84e29a6fd15127993012ba9ace92b82ed59da7ef66c3a14cbe3b",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  },
+  {
+    "repo": "typedoc",
+    "repo_sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "file": "src/frontend/typedoc/Application.ts",
+    "line": 148,
+    "symbol": "scrollToHash",
+    "source_sha256": "ad9b1ac00d8a84e29a6fd15127993012ba9ace92b82ed59da7ef66c3a14cbe3b",
+    "definition_location_checked": true,
+    "semantic_ground_truth_verified": false
+  }
+]

@@ -61,6 +61,7 @@ TASKS = [
 ]
 
 BASELINE_ALLOWED = "Read,Glob,Grep"
+BUILTIN_TOOLS = "Read,Glob,Grep"
 IBWD_ALLOWED = (
     "Read,Glob,Grep,"
     "mcp__ibwd__ibwd_find_files,mcp__ibwd__ibwd_scan,"
@@ -81,6 +82,7 @@ def run_condition(task_id: str, question: str, condition: str, run: int = 0, tag
     allowed = IBWD_ALLOWED if condition == "ibwd" else BASELINE_ALLOWED
     cmd = [
         "claude", "-p", question,
+        "--tools", BUILTIN_TOOLS,  # limits built-in tool *schemas* too (~-79% fixed startup tokens vs allowedTools alone)
         "--allowedTools", allowed,
         "--disallowedTools", COMMON_DISALLOWED,
         "--strict-mcp-config",

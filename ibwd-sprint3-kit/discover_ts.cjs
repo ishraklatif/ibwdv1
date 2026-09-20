@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+// Partial compiler-based candidate discovery; dependency-free config is NOT a final oracle.
+const ts=require('typescript'),fs=require('fs'),path=require('path');
+const [rootArg,auditArg]=process.argv.slice(2),root=path.resolve(rootArg),audit=JSON.parse(fs.readFileSync(auditArg));
+let files=audit.production_files.filter(f=>/\.[jt]sx?$/.test(f)).map(f=>path.join(root,f));
+let options={allowJs:true,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ESNext,module:ts.ModuleKind.NodeNext,moduleResolution:ts.ModuleResolutionKind.NodeNext,skipLibCheck:true,noEmit:true};
+if(process.argv[4]){const cfg=path.resolve(root,process.argv[4]);const read=ts.readConfigFile(cfg,ts.sys.readFile);const parsed=ts.parseJsonConfigFileContent(read.config,ts.sys,path.dirname(cfg));options={...parsed.options,noEmit:true};const included=new Set(parsed.fileNames.map(f=>path.resolve(f)));files=files.filter(f=>included.has(path.resolve(f))); }
+const program=ts.createProgram(files,options);
+const checker=program.getTypeChecker(),symbols=[],nodeIds=new Map(),edges=[];
+function named(n){if(n.name)return n.name.getText();if(n.parent&&ts.isVariableDeclaration(n.parent))return n.parent.name.getText();return null;}
+for(const f of files){const sf=program.getSourceFile(f);function visit(n){if(ts.isFunctionLike(n)&&n.body){let outer=n.parent,nested=false;while(outer){if(ts.isFunctionLike(outer))nested=true;outer=outer.parent;}const name=named(n);if(name&&!nested){const line=sf.getLineAndCharacterOfPosition(n.getStart()).line+1,file=path.relative(root,f),id=`${file}:${line}:${name}`;symbols.push({id,file,line,name});nodeIds.set(n,id);}}ts.forEachChild(n,visit);}if(sf)visit(sf);}
+for(const [body,source]of nodeIds){const sf=body.getSourceFile();function visit(n){if(ts.isCallExpression(n)){const sig=checker.getResolvedSignature(n),decl=sig&&sig.declaration;let target=decl&&nodeIds.get(decl);if(!target){let s=checker.getSymbolAtLocation(ts.isPropertyAccessExpression(n.expression)?n.expression.name:n.expression);if(s&&(s.flags&ts.SymbolFlags.Alias))s=checker.getAliasedSymbol(s);for(const d of s?.declarations||[]){target=nodeIds.get(d)||nodeIds.get(d.initializer);if(target)break;}}if(target)edges.push({source,target,relation:'CALLS',file:path.relative(root,sf.fileName),line:sf.getLineAndCharacterOfPosition(n.getStart()).line+1,status:'partial_compiler_candidate'});}ts.forEachChild(n,visit);}visit(body);}
+console.log(JSON.stringify({oracle:'partial TypeScript checker without repo dependencies/config; candidates only',version:ts.version,complete:false,symbols,edges,diagnostic_count:ts.getPreEmitDiagnostics(program).length},null,2));

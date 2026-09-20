@@ -1,0 +1,19 @@
+{
+  "repo_sha": null,
+  "public_github": null,
+  "permissive_license": null,
+  "production_classification_reviewed": null,
+  "no_committed_dependencies_or_generated_code": null,
+  "conventional_test_names": null,
+  "test_scope_separable": null,
+  "oracle_available": null,
+  "oracle_complete_for_scope": null,
+  "all_task_evidence_opened": null,
+  "widely_used_function_verified": null,
+  "no_static_use_candidate_reviewed": null,
+  "hierarchy_or_role_verified": null,
+  "static_resolved_fraction": null,
+  "negative_control": false,
+  "timing_benchmark_recorded": null,
+  "notes": "Fill only from evidence, not to force admission. No-static-use does not mean safe to delete."
+}

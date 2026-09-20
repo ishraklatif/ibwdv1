@@ -1,0 +1,56 @@
+[
+  {
+    "repo": "sphinx",
+    "url": "https://github.com/sphinx-doc/sphinx.git",
+    "sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "roots": [
+      "sphinx"
+    ]
+  },
+  {
+    "repo": "scrapy",
+    "url": "https://github.com/scrapy/scrapy.git",
+    "sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "roots": [
+      "scrapy"
+    ]
+  },
+  {
+    "repo": "redux-toolkit",
+    "url": "https://github.com/reduxjs/redux-toolkit.git",
+    "sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "roots": [
+      "packages/toolkit/src",
+      "packages/rtk-codemods/src",
+      "packages/rtk-query-codegen-openapi/src",
+      "packages/rtk-query-graphql-request-base-query/src"
+    ]
+  },
+  {
+    "repo": "bulletproof-react",
+    "url": "https://github.com/alan2207/bulletproof-react.git",
+    "sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "roots": [
+      "apps/react-vite/src",
+      "apps/nextjs-app/src",
+      "apps/nextjs-pages/src"
+    ]
+  },
+  {
+    "repo": "celery",
+    "url": "https://github.com/celery/celery.git",
+    "sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "roots": [
+      "celery"
+    ]
+  },
+  {
+    "repo": "typedoc",
+    "url": "https://github.com/TypeStrong/typedoc.git",
+    "sha": "6d8c856bbb46b089371952981f113c3e318818fd",
+    "roots": [
+      "src/lib",
+      "src/frontend"
+    ]
+  }
+]

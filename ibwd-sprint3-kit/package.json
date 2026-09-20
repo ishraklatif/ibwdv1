@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cloc": "^2.6.0-cloc",
+    "typescript": "^5.9.3"
+  }
+}

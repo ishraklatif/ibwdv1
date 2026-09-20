@@ -1,0 +1,1594 @@
+{
+  "oracle": "partial TypeScript checker without repo dependencies/config; candidates only",
+  "version": "5.9.3",
+  "complete": false,
+  "symbols": [
+    {
+      "id": "apps/react-vite/src/app/index.tsx:4:App",
+      "file": "apps/react-vite/src/app/index.tsx",
+      "line": 4,
+      "name": "App"
+    },
+    {
+      "id": "apps/react-vite/src/app/provider.tsx:17:AppProvider",
+      "file": "apps/react-vite/src/app/provider.tsx",
+      "line": 17,
+      "name": "AppProvider"
+    },
+    {
+      "id": "apps/react-vite/src/app/router.tsx:14:convert",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 14,
+      "name": "convert"
+    },
+    {
+      "id": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 24,
+      "name": "createAppRouter"
+    },
+    {
+      "id": "apps/react-vite/src/app/router.tsx:82:AppRouter",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 82,
+      "name": "AppRouter"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/dashboard.tsx:5:DashboardRoute",
+      "file": "apps/react-vite/src/app/routes/app/dashboard.tsx",
+      "line": 5,
+      "name": "DashboardRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx:16:clientLoader",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+      "line": 16,
+      "name": "clientLoader"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx:38:DiscussionRoute",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+      "line": 38,
+      "name": "DiscussionRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx:11:clientLoader",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+      "line": 11,
+      "name": "clientLoader"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx:25:DiscussionsRoute",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+      "line": 25,
+      "name": "DiscussionsRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/profile.tsx:9:Entry",
+      "file": "apps/react-vite/src/app/routes/app/profile.tsx",
+      "line": 9,
+      "name": "Entry"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/profile.tsx:18:ProfileRoute",
+      "file": "apps/react-vite/src/app/routes/app/profile.tsx",
+      "line": 18,
+      "name": "ProfileRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/root.tsx:5:ErrorBoundary",
+      "file": "apps/react-vite/src/app/routes/app/root.tsx",
+      "line": 5,
+      "name": "ErrorBoundary"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/root.tsx:9:AppRoot",
+      "file": "apps/react-vite/src/app/routes/app/root.tsx",
+      "line": 9,
+      "name": "AppRoot"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/users.tsx:8:clientLoader",
+      "file": "apps/react-vite/src/app/routes/app/users.tsx",
+      "line": 8,
+      "name": "clientLoader"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/app/users.tsx:17:UsersRoute",
+      "file": "apps/react-vite/src/app/routes/app/users.tsx",
+      "line": 17,
+      "name": "UsersRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/auth/login.tsx:7:LoginRoute",
+      "file": "apps/react-vite/src/app/routes/auth/login.tsx",
+      "line": 7,
+      "name": "LoginRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/auth/register.tsx:9:RegisterRoute",
+      "file": "apps/react-vite/src/app/routes/auth/register.tsx",
+      "line": 9,
+      "name": "RegisterRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/landing.tsx:9:LandingRoute",
+      "file": "apps/react-vite/src/app/routes/landing.tsx",
+      "line": 9,
+      "name": "LandingRoute"
+    },
+    {
+      "id": "apps/react-vite/src/app/routes/not-found.tsx:4:NotFoundRoute",
+      "file": "apps/react-vite/src/app/routes/not-found.tsx",
+      "line": 4,
+      "name": "NotFoundRoute"
+    },
+    {
+      "id": "apps/react-vite/src/components/errors/main.tsx:3:MainErrorFallback",
+      "file": "apps/react-vite/src/components/errors/main.tsx",
+      "line": 3,
+      "name": "MainErrorFallback"
+    },
+    {
+      "id": "apps/react-vite/src/components/layouts/auth-layout.tsx:16:AuthLayout",
+      "file": "apps/react-vite/src/components/layouts/auth-layout.tsx",
+      "line": 16,
+      "name": "AuthLayout"
+    },
+    {
+      "id": "apps/react-vite/src/components/layouts/content-layout.tsx:10:ContentLayout",
+      "file": "apps/react-vite/src/components/layouts/content-layout.tsx",
+      "line": 10,
+      "name": "ContentLayout"
+    },
+    {
+      "id": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:28:Logo",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 28,
+      "name": "Logo"
+    },
+    {
+      "id": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:39:Progress",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 39,
+      "name": "Progress"
+    },
+    {
+      "id": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 79,
+      "name": "DashboardLayout"
+    },
+    {
+      "id": "apps/react-vite/src/components/seo/head.tsx:10:Head",
+      "file": "apps/react-vite/src/components/seo/head.tsx",
+      "line": 10,
+      "name": "Head"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx:27:ConfirmationDialog",
+      "file": "apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx",
+      "line": 27,
+      "name": "ConfirmationDialog"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/dialog/dialog.tsx:54:DialogHeader",
+      "file": "apps/react-vite/src/components/ui/dialog/dialog.tsx",
+      "line": 54,
+      "name": "DialogHeader"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/dialog/dialog.tsx:68:DialogFooter",
+      "file": "apps/react-vite/src/components/ui/dialog/dialog.tsx",
+      "line": 68,
+      "name": "DialogFooter"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/drawer/drawer.tsx:76:DrawerHeader",
+      "file": "apps/react-vite/src/components/ui/drawer/drawer.tsx",
+      "line": 76,
+      "name": "DrawerHeader"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/drawer/drawer.tsx:90:DrawerFooter",
+      "file": "apps/react-vite/src/components/ui/drawer/drawer.tsx",
+      "line": 90,
+      "name": "DrawerFooter"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/dropdown/dropdown.tsx:174:DropdownMenuShortcut",
+      "file": "apps/react-vite/src/components/ui/dropdown/dropdown.tsx",
+      "line": 174,
+      "name": "DropdownMenuShortcut"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/error.tsx:5:Error",
+      "file": "apps/react-vite/src/components/ui/form/error.tsx",
+      "line": 5,
+      "name": "Error"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/field-wrapper.tsx:19:FieldWrapper",
+      "file": "apps/react-vite/src/components/ui/form/field-wrapper.tsx",
+      "line": 19,
+      "name": "FieldWrapper"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/form-drawer.tsx:24:FormDrawer",
+      "file": "apps/react-vite/src/components/ui/form/form-drawer.tsx",
+      "line": 24,
+      "name": "FormDrawer"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/form.tsx:34:FormField",
+      "file": "apps/react-vite/src/components/ui/form/form.tsx",
+      "line": 34,
+      "name": "FormField"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/form.tsx:47:useFormField",
+      "file": "apps/react-vite/src/components/ui/form/form.tsx",
+      "line": 47,
+      "name": "useFormField"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/form.tsx:182:Form",
+      "file": "apps/react-vite/src/components/ui/form/form.tsx",
+      "line": 182,
+      "name": "Form"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/form/select.tsx:20:Select",
+      "file": "apps/react-vite/src/components/ui/form/select.tsx",
+      "line": 20,
+      "name": "Select"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/link/link.tsx:5:Link",
+      "file": "apps/react-vite/src/components/ui/link/link.tsx",
+      "line": 5,
+      "name": "Link"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/md-preview/md-preview.tsx:10:MDPreview",
+      "file": "apps/react-vite/src/components/ui/md-preview/md-preview.tsx",
+      "line": 10,
+      "name": "MDPreview"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/notifications/notification.tsx:22:Notification",
+      "file": "apps/react-vite/src/components/ui/notifications/notification.tsx",
+      "line": 22,
+      "name": "Notification"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/notifications/notifications.tsx:4:Notifications",
+      "file": "apps/react-vite/src/components/ui/notifications/notifications.tsx",
+      "line": 4,
+      "name": "Notifications"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/spinner/spinner.tsx:21:Spinner",
+      "file": "apps/react-vite/src/components/ui/spinner/spinner.tsx",
+      "line": 21,
+      "name": "Spinner"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/pagination.tsx:13:Pagination",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 13,
+      "name": "Pagination"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/pagination.tsx:48:PaginationLink",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 48,
+      "name": "PaginationLink"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/pagination.tsx:73:PaginationPrevious",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 73,
+      "name": "PaginationPrevious"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/pagination.tsx:89:PaginationNext",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 89,
+      "name": "PaginationNext"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/pagination.tsx:105:PaginationEllipsis",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 105,
+      "name": "PaginationEllipsis"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/pagination.tsx:136:TablePagination",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 136,
+      "name": "TablePagination"
+    },
+    {
+      "id": "apps/react-vite/src/components/ui/table/table.tsx:138:Table",
+      "file": "apps/react-vite/src/components/ui/table/table.tsx",
+      "line": 138,
+      "name": "Table"
+    },
+    {
+      "id": "apps/react-vite/src/config/env.ts:3:createEnv",
+      "file": "apps/react-vite/src/config/env.ts",
+      "line": 3,
+      "name": "createEnv"
+    },
+    {
+      "id": "apps/react-vite/src/features/auth/components/login-form.tsx:12:LoginForm",
+      "file": "apps/react-vite/src/features/auth/components/login-form.tsx",
+      "line": 12,
+      "name": "LoginForm"
+    },
+    {
+      "id": "apps/react-vite/src/features/auth/components/register-form.tsx:17:RegisterForm",
+      "file": "apps/react-vite/src/features/auth/components/register-form.tsx",
+      "line": 17,
+      "name": "RegisterForm"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/create-comment.ts:17:createComment",
+      "file": "apps/react-vite/src/features/comments/api/create-comment.ts",
+      "line": 17,
+      "name": "createComment"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/create-comment.ts:30:useCreateComment",
+      "file": "apps/react-vite/src/features/comments/api/create-comment.ts",
+      "line": 30,
+      "name": "useCreateComment"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/delete-comment.ts:8:deleteComment",
+      "file": "apps/react-vite/src/features/comments/api/delete-comment.ts",
+      "line": 8,
+      "name": "deleteComment"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/delete-comment.ts:17:useDeleteComment",
+      "file": "apps/react-vite/src/features/comments/api/delete-comment.ts",
+      "line": 17,
+      "name": "useDeleteComment"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/get-comments.ts:7:getComments",
+      "file": "apps/react-vite/src/features/comments/api/get-comments.ts",
+      "line": 7,
+      "name": "getComments"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "file": "apps/react-vite/src/features/comments/api/get-comments.ts",
+      "line": 22,
+      "name": "getInfiniteCommentsQueryOptions"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/api/get-comments.ts:43:useInfiniteComments",
+      "file": "apps/react-vite/src/features/comments/api/get-comments.ts",
+      "line": 43,
+      "name": "useInfiniteComments"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/components/comments-list.tsx:19:CommentsList",
+      "file": "apps/react-vite/src/features/comments/components/comments-list.tsx",
+      "line": 19,
+      "name": "CommentsList"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/components/comments.tsx:8:Comments",
+      "file": "apps/react-vite/src/features/comments/components/comments.tsx",
+      "line": 8,
+      "name": "Comments"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/components/create-comment.tsx:16:CreateComment",
+      "file": "apps/react-vite/src/features/comments/components/create-comment.tsx",
+      "line": 16,
+      "name": "CreateComment"
+    },
+    {
+      "id": "apps/react-vite/src/features/comments/components/delete-comment.tsx:14:DeleteComment",
+      "file": "apps/react-vite/src/features/comments/components/delete-comment.tsx",
+      "line": 14,
+      "name": "DeleteComment"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/create-discussion.ts:17:createDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/create-discussion.ts",
+      "line": 17,
+      "name": "createDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/create-discussion.ts:29:useCreateDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/create-discussion.ts",
+      "line": 29,
+      "name": "useCreateDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/delete-discussion.ts:8:deleteDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/delete-discussion.ts",
+      "line": 8,
+      "name": "deleteDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/delete-discussion.ts:20:useDeleteDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/delete-discussion.ts",
+      "line": 20,
+      "name": "useDeleteDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/get-discussion.ts:7:getDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+      "line": 7,
+      "name": "getDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/get-discussion.ts:15:getDiscussionQueryOptions",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+      "line": 15,
+      "name": "getDiscussionQueryOptions"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/get-discussion.ts:27:useDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+      "line": 27,
+      "name": "useDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/get-discussions.ts:7:getDiscussions",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussions.ts",
+      "line": 7,
+      "name": "getDiscussions"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/get-discussions.ts:20:getDiscussionsQueryOptions",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussions.ts",
+      "line": 20,
+      "name": "getDiscussionsQueryOptions"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/get-discussions.ts:34:useDiscussions",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussions.ts",
+      "line": 34,
+      "name": "useDiscussions"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/update-discussion.ts:17:updateDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/update-discussion.ts",
+      "line": 17,
+      "name": "updateDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/api/update-discussion.ts:31:useUpdateDiscussion",
+      "file": "apps/react-vite/src/features/discussions/api/update-discussion.ts",
+      "line": 31,
+      "name": "useUpdateDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/components/create-discussion.tsx:13:CreateDiscussion",
+      "file": "apps/react-vite/src/features/discussions/components/create-discussion.tsx",
+      "line": 13,
+      "name": "CreateDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx:14:DeleteDiscussion",
+      "file": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx",
+      "line": 14,
+      "name": "DeleteDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/components/discussion-view.tsx:8:DiscussionView",
+      "file": "apps/react-vite/src/features/discussions/components/discussion-view.tsx",
+      "line": 8,
+      "name": "DiscussionView"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/components/discussions-list.tsx:19:DiscussionsList",
+      "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+      "line": 19,
+      "name": "DiscussionsList"
+    },
+    {
+      "id": "apps/react-vite/src/features/discussions/components/update-discussion.tsx:18:UpdateDiscussion",
+      "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+      "line": 18,
+      "name": "UpdateDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/features/teams/api/get-teams.ts:7:getTeams",
+      "file": "apps/react-vite/src/features/teams/api/get-teams.ts",
+      "line": 7,
+      "name": "getTeams"
+    },
+    {
+      "id": "apps/react-vite/src/features/teams/api/get-teams.ts:11:getTeamsQueryOptions",
+      "file": "apps/react-vite/src/features/teams/api/get-teams.ts",
+      "line": 11,
+      "name": "getTeamsQueryOptions"
+    },
+    {
+      "id": "apps/react-vite/src/features/teams/api/get-teams.ts:22:useTeams",
+      "file": "apps/react-vite/src/features/teams/api/get-teams.ts",
+      "line": 22,
+      "name": "useTeams"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/delete-user.ts:12:deleteUser",
+      "file": "apps/react-vite/src/features/users/api/delete-user.ts",
+      "line": 12,
+      "name": "deleteUser"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/delete-user.ts:20:useDeleteUser",
+      "file": "apps/react-vite/src/features/users/api/delete-user.ts",
+      "line": 20,
+      "name": "useDeleteUser"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/get-users.ts:7:getUsers",
+      "file": "apps/react-vite/src/features/users/api/get-users.ts",
+      "line": 7,
+      "name": "getUsers"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/get-users.ts:11:getUsersQueryOptions",
+      "file": "apps/react-vite/src/features/users/api/get-users.ts",
+      "line": 11,
+      "name": "getUsersQueryOptions"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/get-users.ts:22:useUsers",
+      "file": "apps/react-vite/src/features/users/api/get-users.ts",
+      "line": 22,
+      "name": "useUsers"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/update-profile.ts:17:updateProfile",
+      "file": "apps/react-vite/src/features/users/api/update-profile.ts",
+      "line": 17,
+      "name": "updateProfile"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/api/update-profile.ts:25:useUpdateProfile",
+      "file": "apps/react-vite/src/features/users/api/update-profile.ts",
+      "line": 25,
+      "name": "useUpdateProfile"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/components/delete-user.tsx:12:DeleteUser",
+      "file": "apps/react-vite/src/features/users/components/delete-user.tsx",
+      "line": 12,
+      "name": "DeleteUser"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/components/update-profile.tsx:13:UpdateProfile",
+      "file": "apps/react-vite/src/features/users/components/update-profile.tsx",
+      "line": 13,
+      "name": "UpdateProfile"
+    },
+    {
+      "id": "apps/react-vite/src/features/users/components/users-list.tsx:9:UsersList",
+      "file": "apps/react-vite/src/features/users/components/users-list.tsx",
+      "line": 9,
+      "name": "UsersList"
+    },
+    {
+      "id": "apps/react-vite/src/hooks/use-disclosure.ts:3:useDisclosure",
+      "file": "apps/react-vite/src/hooks/use-disclosure.ts",
+      "line": 3,
+      "name": "useDisclosure"
+    },
+    {
+      "id": "apps/react-vite/src/lib/api-client.ts:7:authRequestInterceptor",
+      "file": "apps/react-vite/src/lib/api-client.ts",
+      "line": 7,
+      "name": "authRequestInterceptor"
+    },
+    {
+      "id": "apps/react-vite/src/lib/auth.tsx:13:getUser",
+      "file": "apps/react-vite/src/lib/auth.tsx",
+      "line": 13,
+      "name": "getUser"
+    },
+    {
+      "id": "apps/react-vite/src/lib/auth.tsx:19:logout",
+      "file": "apps/react-vite/src/lib/auth.tsx",
+      "line": 19,
+      "name": "logout"
+    },
+    {
+      "id": "apps/react-vite/src/lib/auth.tsx:29:loginWithEmailAndPassword",
+      "file": "apps/react-vite/src/lib/auth.tsx",
+      "line": 29,
+      "name": "loginWithEmailAndPassword"
+    },
+    {
+      "id": "apps/react-vite/src/lib/auth.tsx:56:registerWithEmailAndPassword",
+      "file": "apps/react-vite/src/lib/auth.tsx",
+      "line": 56,
+      "name": "registerWithEmailAndPassword"
+    },
+    {
+      "id": "apps/react-vite/src/lib/auth.tsx:78:ProtectedRoute",
+      "file": "apps/react-vite/src/lib/auth.tsx",
+      "line": 78,
+      "name": "ProtectedRoute"
+    },
+    {
+      "id": "apps/react-vite/src/lib/authorization.tsx:28:useAuthorization",
+      "file": "apps/react-vite/src/lib/authorization.tsx",
+      "line": 28,
+      "name": "useAuthorization"
+    },
+    {
+      "id": "apps/react-vite/src/lib/authorization.tsx:63:Authorization",
+      "file": "apps/react-vite/src/lib/authorization.tsx",
+      "line": 63,
+      "name": "Authorization"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:11:generateUser",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 11,
+      "name": "generateUser"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:24:createUser",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 24,
+      "name": "createUser"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:30:generateTeam",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 30,
+      "name": "generateTeam"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:37:createTeam",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 37,
+      "name": "createTeam"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:43:generateDiscussion",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 43,
+      "name": "generateDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:50:createDiscussion",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 50,
+      "name": "createDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:61:generateComment",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 61,
+      "name": "generateComment"
+    },
+    {
+      "id": "apps/react-vite/src/testing/data-generators.ts:67:createComment",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 67,
+      "name": "createComment"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/db.ts:45:loadDb",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 45,
+      "name": "loadDb"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/db.ts:69:storeDb",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 69,
+      "name": "storeDb"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/db.ts:80:persistDb",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 80,
+      "name": "persistDb"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/db.ts:87:initializeDb",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 87,
+      "name": "initializeDb"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/db.ts:99:resetDb",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 99,
+      "name": "resetDb"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/index.ts:3:enableMocking",
+      "file": "apps/react-vite/src/testing/mocks/index.ts",
+      "line": 3,
+      "name": "enableMocking"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:6:encode",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 6,
+      "name": "encode"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:14:decode",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 14,
+      "name": "decode"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:22:hash",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 22,
+      "name": "hash"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:32:networkDelay",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 32,
+      "name": "networkDelay"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:39:omit",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 39,
+      "name": "omit"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:50:sanitizeUser",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 50,
+      "name": "sanitizeUser"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:53:authenticate",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 53,
+      "name": "authenticate"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:80:requireAuth",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 80,
+      "name": "requireAuth"
+    },
+    {
+      "id": "apps/react-vite/src/testing/mocks/utils.ts:106:requireAdmin",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 106,
+      "name": "requireAdmin"
+    },
+    {
+      "id": "apps/react-vite/src/testing/test-utils.tsx:19:createUser",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 19,
+      "name": "createUser"
+    },
+    {
+      "id": "apps/react-vite/src/testing/test-utils.tsx:25:createDiscussion",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 25,
+      "name": "createDiscussion"
+    },
+    {
+      "id": "apps/react-vite/src/testing/test-utils.tsx:31:loginAsUser",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 31,
+      "name": "loginAsUser"
+    },
+    {
+      "id": "apps/react-vite/src/testing/test-utils.tsx:37:waitForLoadingToFinish",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 37,
+      "name": "waitForLoadingToFinish"
+    },
+    {
+      "id": "apps/react-vite/src/testing/test-utils.tsx:46:initializeUser",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 46,
+      "name": "initializeUser"
+    },
+    {
+      "id": "apps/react-vite/src/testing/test-utils.tsx:57:renderApp",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 57,
+      "name": "renderApp"
+    },
+    {
+      "id": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "file": "apps/react-vite/src/utils/cn.ts",
+      "line": 4,
+      "name": "cn"
+    },
+    {
+      "id": "apps/react-vite/src/utils/format.ts:3:formatDate",
+      "file": "apps/react-vite/src/utils/format.ts",
+      "line": 3,
+      "name": "formatDate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 28,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 32,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 51,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 58,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 63,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 67,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 72,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:14:convert",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 78,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/router.tsx:82:AppRouter",
+      "target": "apps/react-vite/src/app/router.tsx:24:createAppRouter",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/router.tsx",
+      "line": 85,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx:16:clientLoader",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:15:getDiscussionQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+      "line": 20,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx:16:clientLoader",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+      "line": 21,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx:38:DiscussionRoute",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:27:useDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+      "line": 41,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx:11:clientLoader",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussions.ts:20:getDiscussionsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+      "line": 17,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx:25:DiscussionsRoute",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+      "line": 37,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/app/users.tsx:8:clientLoader",
+      "target": "apps/react-vite/src/features/users/api/get-users.ts:11:getUsersQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/app/users.tsx",
+      "line": 9,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/app/routes/auth/register.tsx:9:RegisterRoute",
+      "target": "apps/react-vite/src/features/teams/api/get-teams.ts:22:useTeams",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/app/routes/auth/register.tsx",
+      "line": 15,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/lib/authorization.tsx:28:useAuthorization",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 84,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 108,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 116,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 151,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 159,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 185,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/layouts/dashboard-layout.tsx:79:DashboardLayout",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+      "line": 191,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx:27:ConfirmationDialog",
+      "target": "apps/react-vite/src/hooks/use-disclosure.ts:3:useDisclosure",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx",
+      "line": 36,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/dialog/dialog.tsx:54:DialogHeader",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/dialog/dialog.tsx",
+      "line": 59,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/dialog/dialog.tsx:68:DialogFooter",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/dialog/dialog.tsx",
+      "line": 73,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/drawer/drawer.tsx:76:DrawerHeader",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/drawer/drawer.tsx",
+      "line": 81,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/drawer/drawer.tsx:90:DrawerFooter",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/drawer/drawer.tsx",
+      "line": 95,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/dropdown/dropdown.tsx:174:DropdownMenuShortcut",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/dropdown/dropdown.tsx",
+      "line": 180,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/form/form-drawer.tsx:24:FormDrawer",
+      "target": "apps/react-vite/src/hooks/use-disclosure.ts:3:useDisclosure",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/form/form-drawer.tsx",
+      "line": 31,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/form/form.tsx:182:Form",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/form/form.tsx",
+      "line": 197,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/form/select.tsx:20:Select",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/form/select.tsx",
+      "line": 26,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/link/link.tsx:5:Link",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/link/link.tsx",
+      "line": 8,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/spinner/spinner.tsx:21:Spinner",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/spinner/spinner.tsx",
+      "line": 38,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/table/pagination.tsx:13:Pagination",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 17,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/table/pagination.tsx:48:PaginationLink",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 59,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/table/pagination.tsx:73:PaginationPrevious",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 80,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/table/pagination.tsx:89:PaginationNext",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 96,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/components/ui/table/pagination.tsx:105:PaginationEllipsis",
+      "target": "apps/react-vite/src/utils/cn.ts:4:cn",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/components/ui/table/pagination.tsx",
+      "line": 111,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/api/create-comment.ts:30:useCreateComment",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/api/create-comment.ts",
+      "line": 41,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/api/delete-comment.ts:17:useDeleteComment",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/api/delete-comment.ts",
+      "line": 28,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:7:getComments",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/api/get-comments.ts",
+      "line": 26,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/api/get-comments.ts:43:useInfiniteComments",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:22:getInfiniteCommentsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/api/get-comments.ts",
+      "line": 45,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/components/comments-list.tsx:19:CommentsList",
+      "target": "apps/react-vite/src/features/comments/api/get-comments.ts:43:useInfiniteComments",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/components/comments-list.tsx",
+      "line": 21,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/components/comments-list.tsx:19:CommentsList",
+      "target": "apps/react-vite/src/utils/format.ts:3:formatDate",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/components/comments-list.tsx",
+      "line": 63,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/components/create-comment.tsx:16:CreateComment",
+      "target": "apps/react-vite/src/features/comments/api/create-comment.ts:30:useCreateComment",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/components/create-comment.tsx",
+      "line": 18,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/comments/components/delete-comment.tsx:14:DeleteComment",
+      "target": "apps/react-vite/src/features/comments/api/delete-comment.ts:17:useDeleteComment",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/comments/components/delete-comment.tsx",
+      "line": 16,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/create-discussion.ts:29:useCreateDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussions.ts:20:getDiscussionsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/create-discussion.ts",
+      "line": 39,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/delete-discussion.ts:20:useDeleteDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussions.ts:20:getDiscussionsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/delete-discussion.ts",
+      "line": 30,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/get-discussion.ts:15:getDiscussionQueryOptions",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:7:getDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+      "line": 18,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/get-discussion.ts:27:useDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:15:getDiscussionQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+      "line": 32,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/get-discussions.ts:20:getDiscussionsQueryOptions",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussions.ts:7:getDiscussions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussions.ts",
+      "line": 25,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/get-discussions.ts:34:useDiscussions",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussions.ts:20:getDiscussionsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/get-discussions.ts",
+      "line": 39,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/api/update-discussion.ts:31:useUpdateDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:15:getDiscussionQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/api/update-discussion.ts",
+      "line": 41,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/create-discussion.tsx:13:CreateDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/create-discussion.ts:29:useCreateDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/create-discussion.tsx",
+      "line": 15,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx:14:DeleteDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/delete-discussion.ts:20:useDeleteDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/delete-discussion.tsx",
+      "line": 16,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/discussion-view.tsx:8:DiscussionView",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:27:useDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/discussion-view.tsx",
+      "line": 9,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/discussion-view.tsx:8:DiscussionView",
+      "target": "apps/react-vite/src/utils/format.ts:3:formatDate",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/discussion-view.tsx",
+      "line": 28,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/discussions-list.tsx:19:DiscussionsList",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussions.ts:34:useDiscussions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+      "line": 24,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/discussions-list.tsx:19:DiscussionsList",
+      "target": "apps/react-vite/src/utils/format.ts:3:formatDate",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+      "line": 54,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/discussions-list.tsx:19:DiscussionsList",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:15:getDiscussionQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+      "line": 65,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx:18:UpdateDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/get-discussion.ts:27:useDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+      "line": 20,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/discussions/components/update-discussion.tsx:18:UpdateDiscussion",
+      "target": "apps/react-vite/src/features/discussions/api/update-discussion.ts:31:useUpdateDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+      "line": 21,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/teams/api/get-teams.ts:11:getTeamsQueryOptions",
+      "target": "apps/react-vite/src/features/teams/api/get-teams.ts:7:getTeams",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/teams/api/get-teams.ts",
+      "line": 14,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/teams/api/get-teams.ts:22:useTeams",
+      "target": "apps/react-vite/src/features/teams/api/get-teams.ts:11:getTeamsQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/teams/api/get-teams.ts",
+      "line": 24,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/users/api/delete-user.ts:20:useDeleteUser",
+      "target": "apps/react-vite/src/features/users/api/get-users.ts:11:getUsersQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/users/api/delete-user.ts",
+      "line": 30,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/users/api/get-users.ts:22:useUsers",
+      "target": "apps/react-vite/src/features/users/api/get-users.ts:11:getUsersQueryOptions",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/users/api/get-users.ts",
+      "line": 24,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/users/components/delete-user.tsx:12:DeleteUser",
+      "target": "apps/react-vite/src/features/users/api/delete-user.ts:20:useDeleteUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/users/components/delete-user.tsx",
+      "line": 15,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/users/components/update-profile.tsx:13:UpdateProfile",
+      "target": "apps/react-vite/src/features/users/api/update-profile.ts:25:useUpdateProfile",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/users/components/update-profile.tsx",
+      "line": 16,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/users/components/users-list.tsx:9:UsersList",
+      "target": "apps/react-vite/src/features/users/api/get-users.ts:22:useUsers",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/users/components/users-list.tsx",
+      "line": 10,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/features/users/components/users-list.tsx:9:UsersList",
+      "target": "apps/react-vite/src/utils/format.ts:3:formatDate",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/features/users/components/users-list.tsx",
+      "line": 48,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/lib/authorization.tsx:63:Authorization",
+      "target": "apps/react-vite/src/lib/authorization.tsx:28:useAuthorization",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/lib/authorization.tsx",
+      "line": 69,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/data-generators.ts:24:createUser",
+      "target": "apps/react-vite/src/testing/data-generators.ts:11:generateUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 27,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/data-generators.ts:37:createTeam",
+      "target": "apps/react-vite/src/testing/data-generators.ts:30:generateTeam",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 40,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/data-generators.ts:50:createDiscussion",
+      "target": "apps/react-vite/src/testing/data-generators.ts:43:generateDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 58,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/data-generators.ts:67:createComment",
+      "target": "apps/react-vite/src/testing/data-generators.ts:61:generateComment",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/data-generators.ts",
+      "line": 75,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/db.ts:80:persistDb",
+      "target": "apps/react-vite/src/testing/mocks/db.ts:45:loadDb",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 82,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/db.ts:80:persistDb",
+      "target": "apps/react-vite/src/testing/mocks/db.ts:69:storeDb",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 84,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/db.ts:87:initializeDb",
+      "target": "apps/react-vite/src/testing/mocks/db.ts:45:loadDb",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/db.ts",
+      "line": 88,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/index.ts:3:enableMocking",
+      "target": "apps/react-vite/src/testing/mocks/db.ts:87:initializeDb",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/index.ts",
+      "line": 7,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/utils.ts:50:sanitizeUser",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:39:omit",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 51,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/utils.ts:53:authenticate",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:22:hash",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 68,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/utils.ts:53:authenticate",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:50:sanitizeUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 69,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/utils.ts:53:authenticate",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:6:encode",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 70,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/utils.ts:80:requireAuth",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:14:decode",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 86,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/mocks/utils.ts:80:requireAuth",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:50:sanitizeUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/mocks/utils.ts",
+      "line": 100,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:19:createUser",
+      "target": "apps/react-vite/src/testing/data-generators.ts:24:createUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 20,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:19:createUser",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:22:hash",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 21,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:25:createDiscussion",
+      "target": "apps/react-vite/src/testing/data-generators.ts:50:createDiscussion",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 26,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:31:loginAsUser",
+      "target": "apps/react-vite/src/testing/mocks/utils.ts:53:authenticate",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 32,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:46:initializeUser",
+      "target": "apps/react-vite/src/testing/test-utils.tsx:19:createUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 48,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:46:initializeUser",
+      "target": "apps/react-vite/src/testing/test-utils.tsx:31:loginAsUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 49,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:46:initializeUser",
+      "target": "apps/react-vite/src/testing/test-utils.tsx:31:loginAsUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 51,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:57:renderApp",
+      "target": "apps/react-vite/src/testing/test-utils.tsx:46:initializeUser",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 62,
+      "status": "partial_compiler_candidate"
+    },
+    {
+      "source": "apps/react-vite/src/testing/test-utils.tsx:57:renderApp",
+      "target": "apps/react-vite/src/testing/test-utils.tsx:37:waitForLoadingToFinish",
+      "relation": "CALLS",
+      "file": "apps/react-vite/src/testing/test-utils.tsx",
+      "line": 91,
+      "status": "partial_compiler_candidate"
+    }
+  ],
+  "diagnostic_count": 700
+}

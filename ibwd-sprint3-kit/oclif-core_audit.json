@@ -1,0 +1,656 @@
+{
+  "repo": "oclif-core",
+  "url": "https://github.com/oclif/core.git",
+  "repo_sha": "c4a1e077d39593202e1aa3640b96aaad06841f90",
+  "roots": [
+    "src"
+  ],
+  "commit_count": 2045,
+  "nonmerge_commits": 1553,
+  "shallow": false,
+  "clean": true,
+  "last_commit": "2026-08-31T20:18:51Z",
+  "age_days": 19,
+  "active_180_days": true,
+  "counts": {
+    "other": 80,
+    "production": 80,
+    "test": 105
+  },
+  "production_files": [
+    "src/args.ts",
+    "src/cache.ts",
+    "src/command.ts",
+    "src/config/config.ts",
+    "src/config/index.ts",
+    "src/config/plugin-loader.ts",
+    "src/config/plugin.ts",
+    "src/config/ts-path.ts",
+    "src/config/util.ts",
+    "src/constraints.ts",
+    "src/errors/error.ts",
+    "src/errors/errors/cli.ts",
+    "src/errors/errors/exit.ts",
+    "src/errors/errors/module-load.ts",
+    "src/errors/errors/pretty-print.ts",
+    "src/errors/exit.ts",
+    "src/errors/handle.ts",
+    "src/errors/index.ts",
+    "src/errors/warn.ts",
+    "src/execute.ts",
+    "src/flags.ts",
+    "src/flush.ts",
+    "src/help/command.ts",
+    "src/help/docopts.ts",
+    "src/help/formatter.ts",
+    "src/help/index.ts",
+    "src/help/root.ts",
+    "src/help/util.ts",
+    "src/index.ts",
+    "src/interfaces/alphabet.ts",
+    "src/interfaces/args.ts",
+    "src/interfaces/config.ts",
+    "src/interfaces/errors.ts",
+    "src/interfaces/flags.ts",
+    "src/interfaces/help.ts",
+    "src/interfaces/hooks.ts",
+    "src/interfaces/index.ts",
+    "src/interfaces/logger.ts",
+    "src/interfaces/manifest.ts",
+    "src/interfaces/parser.ts",
+    "src/interfaces/pjson.ts",
+    "src/interfaces/plugin.ts",
+    "src/interfaces/s3-manifest.ts",
+    "src/interfaces/theme.ts",
+    "src/interfaces/topic.ts",
+    "src/interfaces/ts-config.ts",
+    "src/logger.ts",
+    "src/main.ts",
+    "src/module-loader.ts",
+    "src/parser/errors.ts",
+    "src/parser/help.ts",
+    "src/parser/index.ts",
+    "src/parser/parse.ts",
+    "src/parser/validate.ts",
+    "src/performance.ts",
+    "src/screen.ts",
+    "src/settings.ts",
+    "src/symbols.ts",
+    "src/util/aggregate-flags.ts",
+    "src/util/cache-command.ts",
+    "src/util/cache-default-value.ts",
+    "src/util/determine-priority.ts",
+    "src/util/ensure-arg-object.ts",
+    "src/util/find-root.ts",
+    "src/util/fs.ts",
+    "src/util/ids.ts",
+    "src/util/os.ts",
+    "src/util/read-pjson.ts",
+    "src/util/read-tsconfig.ts",
+    "src/util/util.ts",
+    "src/ux/action/base.ts",
+    "src/ux/action/simple.ts",
+    "src/ux/action/spinner.ts",
+    "src/ux/action/types.ts",
+    "src/ux/colorize-json.ts",
+    "src/ux/index.ts",
+    "src/ux/list.ts",
+    "src/ux/supports-color.ts",
+    "src/ux/theme.ts",
+    "src/ux/write.ts"
+  ],
+  "test_files": [
+    "test/command/command.test.ts",
+    "test/command/explicit-command-strategy.test.ts",
+    "test/command/fixtures/bundled-cli/src/commands/foo/bar.ts",
+    "test/command/fixtures/bundled-cli/src/commands/foo/baz.ts",
+    "test/command/fixtures/bundled-cli/src/hooks/init.ts",
+    "test/command/fixtures/bundled-cli/src/index.ts",
+    "test/command/fixtures/esm/src/commands/foo/bar/fail.js",
+    "test/command/fixtures/esm/src/commands/foo/bar/succeed.js",
+    "test/command/fixtures/esm/src/commands/foo/baz.js",
+    "test/command/fixtures/single-cmd-cli/src/index.ts",
+    "test/command/fixtures/typescript/src/commands/foo/bar/fail.ts",
+    "test/command/fixtures/typescript/src/commands/foo/bar/succeed.ts",
+    "test/command/fixtures/typescript/src/commands/foo/baz.ts",
+    "test/command/helpers/test-help-in-lib/lib/test-help-plugin.js",
+    "test/command/helpers/test-help-in-src/src/test-help-plugin.ts",
+    "test/command/main-esm.test.ts",
+    "test/command/main.test.ts",
+    "test/command/single-command-cli.test.ts",
+    "test/config/config.flexible.test.ts",
+    "test/config/config.shell.test.ts",
+    "test/config/config.test.ts",
+    "test/config/esm.test.ts",
+    "test/config/fixtures/esm/src/commands/foo/bar/baz.js",
+    "test/config/fixtures/esm/src/commands/foo/bar/fail.js",
+    "test/config/fixtures/esm/src/commands/foo/bar/test-result.js",
+    "test/config/fixtures/esm/src/hooks/init.js",
+    "test/config/fixtures/esm/src/hooks/postrun.js",
+    "test/config/fixtures/esm/src/hooks/prerun.js",
+    "test/config/fixtures/help/src/commands/foo/bar/baz.js",
+    "test/config/fixtures/mixed-cjs-esm/src/commands/foo/bar/test-result.js",
+    "test/config/fixtures/mixed-cjs-esm/src/hooks/init.js",
+    "test/config/fixtures/mixed-esm-cjs/src/commands/foo/bar/baz.js",
+    "test/config/fixtures/mixed-esm-cjs/src/commands/foo/bar/test-result.js",
+    "test/config/fixtures/mixed-esm-cjs/src/hooks/init.js",
+    "test/config/fixtures/mixed-esm-cjs/src/hooks/postrun.js",
+    "test/config/fixtures/typescript/src/commands/foo/bar/baz.ts",
+    "test/config/fixtures/typescript/src/commands/foo/bar/fail.ts",
+    "test/config/fixtures/typescript/src/commands/foo/bar/test-result.ts",
+    "test/config/fixtures/typescript/src/hooks/finally.ts",
+    "test/config/fixtures/typescript/src/hooks/init.ts",
+    "test/config/fixtures/typescript/src/hooks/postrun.ts",
+    "test/config/fixtures/typescript/src/hooks/prerun.ts",
+    "test/config/fixtures/wildcard/src/commands/foo.ts",
+    "test/config/help.config.test.ts",
+    "test/config/mixed-cjs-esm.test.ts",
+    "test/config/mixed-esm-cjs.test.ts",
+    "test/config/ts-path.test.ts",
+    "test/config/typescript.test.ts",
+    "test/config/util.test.ts",
+    "test/config/wildcard-plugins.test.ts",
+    "test/errors/error.test.ts",
+    "test/errors/handle.test.ts",
+    "test/errors/pretty-print.test.ts",
+    "test/errors/warn.test.ts",
+    "test/help/_test-help-class-identifier.ts",
+    "test/help/_test-help-class.ts",
+    "test/help/docopts.test.ts",
+    "test/help/fixtures/fixtures.ts",
+    "test/help/format-command-with-options.test.ts",
+    "test/help/format-command.test.ts",
+    "test/help/format-commands.test.ts",
+    "test/help/format-root.test.ts",
+    "test/help/format-topic.test.ts",
+    "test/help/format-topics.test.ts",
+    "test/help/help-test-utils.ts",
+    "test/help/show-customized-help.test.ts",
+    "test/help/show-help.test.ts",
+    "test/help/util.test.ts",
+    "test/helpers/init.js",
+    "test/integration/interop-plugins-matrix.ts",
+    "test/integration/interop.ts",
+    "test/integration/sf.integration.ts",
+    "test/integration/tsconfig.integration.ts",
+    "test/integration/util.ts",
+    "test/interfaces/args.test-types.ts",
+    "test/interfaces/flags.test-types.ts",
+    "test/logger.test.ts",
+    "test/module-loader/fixtures/cjs/success.js",
+    "test/module-loader/fixtures/esm/errors/bad_reference.js",
+    "test/module-loader/fixtures/esm/index/js/index.js",
+    "test/module-loader/fixtures/esm/success.js",
+    "test/module-loader/module-loader.test.ts",
+    "test/parser/error-codes.test.ts",
+    "test/parser/fixtures/preparse-plugin/src/commands/test.ts",
+    "test/parser/fixtures/preparse-plugin/src/hooks/preparse.ts",
+    "test/parser/fixtures/test-plugin/src/commands/invalid.ts",
+    "test/parser/fixtures/test-plugin/src/commands/test.ts",
+    "test/parser/flag-constraints.test.ts",
+    "test/parser/help.test.ts",
+    "test/parser/parse.test.ts",
+    "test/parser/preparse.test.ts",
+    "test/parser/validate.test.ts",
+    "test/perf/parser.perf.ts",
+    "test/util/cache-command.test.ts",
+    "test/util/cache-default-value.test.ts",
+    "test/util/determine-priority.test.ts",
+    "test/util/ensure-arg-object.ts",
+    "test/util/fs.test.ts",
+    "test/util/os.test.ts",
+    "test/util/util.test.ts",
+    "test/ux/action/simple.test.ts",
+    "test/ux/action/spinner.test.ts",
+    "test/ux/colorize-json.test.ts",
+    "test/ux/theme.test.ts",
+    "test/ux/write.test.ts"
+  ],
+  "symlinks": [],
+  "artifact_suspects": [],
+  "generated_header_suspects": [],
+  "long_line_review": [],
+  "license_files": {
+    "LICENSE": "a9de3c39f8286ab8fe4a82da6e6272b402704876116b6307b10d67c4a189a87b"
+  },
+  "cloc": {
+    "header": {
+      "cloc_url": "github.com/AlDanial/cloc",
+      "cloc_version": "2.06",
+      "elapsed_seconds": 0.0440530776977539,
+      "n_files": 80,
+      "n_lines": 10603,
+      "files_per_second": 1815.99116749291,
+      "lines_per_second": 240686.929361592
+    },
+    "TypeScript": {
+      "nFiles": 80,
+      "blank": 1296,
+      "comment": 1820,
+      "code": 7487
+    },
+    "SUM": {
+      "blank": 1296,
+      "comment": 1820,
+      "code": 7487,
+      "nFiles": 80
+    }
+  },
+  "semantic_structure": {
+    "complete_oracle": false,
+    "invalid_evidence": [],
+    "q1_candidates": [
+      {
+        "id": "src/cache.ts:29:getInstance",
+        "file": "src/cache.ts",
+        "line": 29,
+        "name": "getInstance"
+      },
+      {
+        "id": "src/util/util.ts:54:isProd",
+        "file": "src/util/util.ts",
+        "line": 54,
+        "name": "isProd"
+      },
+      {
+        "id": "src/ux/theme.ts:16:colorize",
+        "file": "src/ux/theme.ts",
+        "line": 16,
+        "name": "colorize"
+      },
+      {
+        "id": "src/errors/error.ts:9:error",
+        "file": "src/errors/error.ts",
+        "line": 9,
+        "name": "error"
+      },
+      {
+        "id": "src/ux/write.ts:2:stdout",
+        "file": "src/ux/write.ts",
+        "line": 2,
+        "name": "stdout"
+      },
+      {
+        "id": "src/ux/write.ts:14:stderr",
+        "file": "src/ux/write.ts",
+        "line": 14,
+        "name": "stderr"
+      },
+      {
+        "id": "src/config/config.ts:464:runHook",
+        "file": "src/config/config.ts",
+        "line": 464,
+        "name": "runHook"
+      },
+      {
+        "id": "src/util/ids.ts:7:toConfiguredId",
+        "file": "src/util/ids.ts",
+        "line": 7,
+        "name": "toConfiguredId"
+      },
+      {
+        "id": "src/performance.ts:268:mark",
+        "file": "src/performance.ts",
+        "line": 268,
+        "name": "mark"
+      },
+      {
+        "id": "src/performance.ts:57:addDetails",
+        "file": "src/performance.ts",
+        "line": 57,
+        "name": "addDetails"
+      },
+      {
+        "id": "src/performance.ts:65:stop",
+        "file": "src/performance.ts",
+        "line": 65,
+        "name": "stop"
+      },
+      {
+        "id": "src/util/util.ts:11:compact",
+        "file": "src/util/util.ts",
+        "line": 11,
+        "name": "compact"
+      },
+      {
+        "id": "src/util/fs.ts:69:readJson",
+        "file": "src/util/fs.ts",
+        "line": 69,
+        "name": "readJson"
+      },
+      {
+        "id": "src/config/ts-path.ts:286:tsPath",
+        "file": "src/config/ts-path.ts",
+        "line": 286,
+        "name": "tsPath"
+      },
+      {
+        "id": "src/cache.ts:41:get",
+        "file": "src/cache.ts",
+        "line": 41,
+        "name": "get"
+      },
+      {
+        "id": "src/errors/errors/pretty-print.ts:39:prettyPrint",
+        "file": "src/errors/errors/pretty-print.ts",
+        "line": 39,
+        "name": "prettyPrint"
+      },
+      {
+        "id": "src/logger.ts:33:getLogger",
+        "file": "src/logger.ts",
+        "line": 33,
+        "name": "getLogger"
+      },
+      {
+        "id": "src/help/formatter.ts:221:wrap",
+        "file": "src/help/formatter.ts",
+        "line": 221,
+        "name": "wrap"
+      },
+      {
+        "id": "src/util/util.ts:45:sortBy",
+        "file": "src/util/util.ts",
+        "line": 45,
+        "name": "sortBy"
+      },
+      {
+        "id": "src/util/ensure-arg-object.ts:11:ensureArgObject",
+        "file": "src/util/ensure-arg-object.ts",
+        "line": 11,
+        "name": "ensureArgObject"
+      },
+      {
+        "id": "src/help/formatter.ts:154:section",
+        "file": "src/help/formatter.ts",
+        "line": 154,
+        "name": "section"
+      },
+      {
+        "id": "src/ux/action/base.ts:143:_write",
+        "file": "src/ux/action/base.ts",
+        "line": 143,
+        "name": "_write"
+      }
+    ],
+    "q2_candidates": [
+      {
+        "id": "src/command.ts:272:parse",
+        "file": "src/command.ts",
+        "line": 272,
+        "name": "parse"
+      },
+      {
+        "id": "src/command.ts:324:warnIfCommandDeprecated",
+        "file": "src/command.ts",
+        "line": 324,
+        "name": "warnIfCommandDeprecated"
+      },
+      {
+        "id": "src/command.ts:339:warnIfFlagDeprecated",
+        "file": "src/command.ts",
+        "line": 339,
+        "name": "warnIfFlagDeprecated"
+      },
+      {
+        "id": "src/config/config.ts:272:load",
+        "file": "src/config/config.ts",
+        "line": 272,
+        "name": "load"
+      },
+      {
+        "id": "src/config/config.ts:349:loadPluginsAndCommands",
+        "file": "src/config/config.ts",
+        "line": 349,
+        "name": "loadPluginsAndCommands"
+      },
+      {
+        "id": "src/config/config.ts:403:runCommand",
+        "file": "src/config/config.ts",
+        "line": 403,
+        "name": "runCommand"
+      },
+      {
+        "id": "src/config/config.ts:716:loadCommands",
+        "file": "src/config/config.ts",
+        "line": 716,
+        "name": "loadCommands"
+      },
+      {
+        "id": "src/config/config.ts:784:loadTopics",
+        "file": "src/config/config.ts",
+        "line": 784,
+        "name": "loadTopics"
+      },
+      {
+        "id": "src/config/plugin-loader.ts:62:loadRoot",
+        "file": "src/config/plugin-loader.ts",
+        "line": 62,
+        "name": "loadRoot"
+      },
+      {
+        "id": "src/config/plugin-loader.ts:139:loadPlugins",
+        "file": "src/config/plugin-loader.ts",
+        "line": 139,
+        "name": "loadPlugins"
+      },
+      {
+        "id": "src/config/plugin.ts:136:findCommand",
+        "file": "src/config/plugin.ts",
+        "line": 136,
+        "name": "findCommand"
+      },
+      {
+        "id": "src/config/plugin.ts:186:load",
+        "file": "src/config/plugin.ts",
+        "line": 186,
+        "name": "load"
+      },
+      {
+        "id": "src/config/plugin.ts:240:_manifest",
+        "file": "src/config/plugin.ts",
+        "line": 240,
+        "name": "_manifest"
+      },
+      {
+        "id": "src/config/plugin.ts:334:getCommandIDs",
+        "file": "src/config/plugin.ts",
+        "line": 334,
+        "name": "getCommandIDs"
+      },
+      {
+        "id": "src/config/ts-path.ts:207:determinePath",
+        "file": "src/config/ts-path.ts",
+        "line": 207,
+        "name": "determinePath"
+      },
+      {
+        "id": "src/config/ts-path.ts:286:tsPath",
+        "file": "src/config/ts-path.ts",
+        "line": 286,
+        "name": "tsPath"
+      },
+      {
+        "id": "src/errors/error.ts:9:error",
+        "file": "src/errors/error.ts",
+        "line": 9,
+        "name": "error"
+      },
+      {
+        "id": "src/errors/handle.ts:30:handle",
+        "file": "src/errors/handle.ts",
+        "line": 30,
+        "name": "handle"
+      },
+      {
+        "id": "src/errors/warn.ts:12:warn",
+        "file": "src/errors/warn.ts",
+        "line": 12,
+        "name": "warn"
+      },
+      {
+        "id": "src/help/command.ts:249:generate",
+        "file": "src/help/command.ts",
+        "line": 249,
+        "name": "generate"
+      },
+      {
+        "id": "src/help/command.ts:355:usage",
+        "file": "src/help/command.ts",
+        "line": 355,
+        "name": "usage"
+      },
+      {
+        "id": "src/help/index.ts:145:formatTopic",
+        "file": "src/help/index.ts",
+        "line": 145,
+        "name": "formatTopic"
+      },
+      {
+        "id": "src/help/index.ts:249:showHelp",
+        "file": "src/help/index.ts",
+        "line": 249,
+        "name": "showHelp"
+      },
+      {
+        "id": "src/help/root.ts:16:description",
+        "file": "src/help/root.ts",
+        "line": 16,
+        "name": "description"
+      },
+      {
+        "id": "src/help/root.ts:38:usage",
+        "file": "src/help/root.ts",
+        "line": 38,
+        "name": "usage"
+      },
+      {
+        "id": "src/help/root.ts:50:version",
+        "file": "src/help/root.ts",
+        "line": 50,
+        "name": "version"
+      },
+      {
+        "id": "src/main.ts:31:run",
+        "file": "src/main.ts",
+        "line": 31,
+        "name": "run"
+      }
+    ],
+    "q3_chains": [
+      [
+        "src/command.ts:212:error",
+        "src/errors/error.ts:9:error",
+        "src/errors/errors/cli.ts:15:addOclifExitCode",
+        "src/cache.ts:29:getInstance"
+      ],
+      [
+        "src/command.ts:319:warn",
+        "src/errors/warn.ts:12:warn",
+        "src/errors/errors/cli.ts:15:addOclifExitCode",
+        "src/cache.ts:29:getInstance"
+      ],
+      [
+        "src/config/config.ts:193:findCommand",
+        "src/errors/error.ts:9:error",
+        "src/errors/errors/cli.ts:15:addOclifExitCode",
+        "src/cache.ts:29:getInstance"
+      ],
+      [
+        "src/config/config.ts:403:runCommand",
+        "src/command.ts:138:run",
+        "src/config/config.ts:124:load",
+        "src/logger.ts:84:setLogger"
+      ],
+      [
+        "src/config/plugin.ts:136:findCommand",
+        "src/errors/error.ts:9:error",
+        "src/errors/errors/cli.ts:15:addOclifExitCode",
+        "src/cache.ts:29:getInstance"
+      ],
+      [
+        "src/errors/handle.ts:30:handle",
+        "src/help/index.ts:249:showHelp",
+        "src/errors/error.ts:9:error",
+        "src/errors/errors/cli.ts:15:addOclifExitCode"
+      ],
+      [
+        "src/execute.ts:45:execute",
+        "src/main.ts:31:run",
+        "src/config/config.ts:124:load",
+        "src/logger.ts:84:setLogger"
+      ],
+      [
+        "src/help/index.ts:117:formatCommands",
+        "src/help/formatter.ts:154:section",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/help/index.ts:140:formatRoot",
+        "src/help/root.ts:24:root",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/help/index.ts:145:formatTopic",
+        "src/help/formatter.ts:154:section",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/help/index.ts:167:formatTopics",
+        "src/help/formatter.ts:154:section",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/help/index.ts:249:showHelp",
+        "src/errors/error.ts:9:error",
+        "src/errors/errors/cli.ts:15:addOclifExitCode",
+        "src/cache.ts:29:getInstance"
+      ],
+      [
+        "src/help/root.ts:16:description",
+        "src/help/formatter.ts:154:section",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/help/root.ts:38:usage",
+        "src/help/formatter.ts:154:section",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/help/root.ts:50:version",
+        "src/help/formatter.ts:154:section",
+        "src/ux/theme.ts:16:colorize",
+        "src/ux/supports-color.ts:3:supportsColor"
+      ],
+      [
+        "src/main.ts:31:run",
+        "src/config/config.ts:193:findCommand",
+        "src/errors/error.ts:9:error",
+        "src/errors/errors/cli.ts:15:addOclifExitCode"
+      ]
+    ],
+    "three_q1": true,
+    "three_q2": true,
+    "three_hop_chain": true,
+    "note": "Q3 has exactly three edges; does not assert unique or shortest path. Evidence must be independently reviewed."
+  },
+  "checks_requiring_review": [
+    "permissive license/SPDX from license text",
+    "artifact-suspect adjudication",
+    "manual file:line evidence",
+    "oracle completeness and version",
+    "mostly static resolvable calls",
+    "true-negative candidate (no safety proof)",
+    "test command and runtime coverage"
+  ],
+  "cloc_trailing_output": "",
+  "size_pass": false,
+  "history_pass": true,
+  "admission": "UNVERIFIED"
+}

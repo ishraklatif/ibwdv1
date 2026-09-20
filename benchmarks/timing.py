@@ -79,7 +79,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as tmp:
         if args.repo:
             root = Path(tmp) / "repo"
-            shutil.copytree(args.repo, root, ignore=shutil.ignore_patterns(".git", ".ibwd", "node_modules", ".venv"))
+            shutil.copytree(args.repo, root, symlinks=True, ignore=shutil.ignore_patterns(".git", ".ibwd", "node_modules", ".venv"))
             candidates = sorted(p for p in root.rglob("*") if p.suffix in (".py", ".ts", ".tsx", ".js") and p.is_file())
             if not candidates:
                 print("no source files found")
