@@ -65,7 +65,8 @@ function collectDefs(sf, file) {
         return;
       }
       if ((ts.isMethodDeclaration(child) || ts.isConstructorDeclaration(child) || ts.isGetAccessor(child) || ts.isSetAccessor(child)) && classStack.length && ts.isClassDeclaration(child.parent)) {
-        const name = ts.isConstructorDeclaration(child) ? 'constructor' : (child.name && (ts.isIdentifier(child.name) || ts.isStringLiteral(child.name) || ts.isPrivateIdentifier(child.name)) ? child.name.text : null);
+        // the raw name text, as tree-sitter reports it (`[Symbol.species]`, `'quoted'`, `#private`)
+        const name = ts.isConstructorDeclaration(child) ? 'constructor' : (child.name ? child.name.getText(sf) : null);
         if (name) {
           const qual = [...classStack, name].join('.');
           add(child, qual, 'Method', false);
