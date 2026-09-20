@@ -263,3 +263,25 @@ def test_inherited_edge_is_only_a_candidate_when_an_external_base_precedes_the_d
     assert rows[("app.py::ExternalFirst.__init__", "mixin.py::Mixin.__init__")] == ("candidate", "inherited_uncertain")
     assert rows[("app.py::MixinFirst.go", "mixin.py::Mixin.run")] == ("resolved", "inherited")
     assert rows[("app.py::MixinFirst.__init__", "mixin.py::Mixin.__init__")] == ("resolved", "inherited")
+
+
+def test_inherited_lookup_follows_c3_order_in_a_diamond(tmp_path: Path):
+    _write(tmp_path, {
+        "d.py": (
+            "class Base:\n    def m(self):\n        return 1\n\n"
+            "class Left(Base):\n    pass\n\n"
+            "class Right(Base):\n    def m(self):\n        return 2\n\n"
+            "class Leaf(Left, Right):\n    def m(self):\n        return super().m()\n"
+        ),
+    })
+    run_scan(tmp_path)
+    conn = connect(tmp_path / ".ibwd" / "graph.db")
+    targets = {
+        r[0]
+        for r in conn.execute(
+            "SELECT t.qualified_name FROM edges e JOIN nodes s ON s.id = e.source_id JOIN nodes t ON t.id = e.target_id "
+            "WHERE e.relation = 'CALLS' AND s.qualified_name = 'd.py::Leaf.m' AND e.resolution_status = 'resolved'"
+        )
+    }
+    conn.close()
+    assert targets == {"d.py::Right.m"}          # MRO is Leaf, Left, Right, Base: Right overrides Base, Left has no m

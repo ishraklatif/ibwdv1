@@ -233,45 +233,70 @@ def _unique(cands: list[Sym]) -> Sym | None:
     return cands[0] if len(cands) == 1 else None
 
 
+class _Opaque:
+    """An unresolved (external) base class in a linearization: unknown, and never equal to any other base."""
+
+    __slots__ = ()
+
+
+class ClassHierarchy:
+    """Declared bases per class (in source order; an unresolved external base is None) and their C3 linearization."""
+
+    def __init__(self) -> None:
+        self.bases: dict[int, list[Sym | None]] = defaultdict(list)
+        self._mro: dict[int, list] = {}
+
+    def mro(self, cls: Sym, _visiting: frozenset[int] = frozenset()) -> list:
+        """C3 method resolution order starting at `cls`; external bases appear as `_Opaque` tokens."""
+        cached = self._mro.get(cls.id)
+        if cached is not None:
+            return cached
+        if cls.id in _visiting:  # inheritance cycle: stop here
+            return [cls]
+        visiting = _visiting | {cls.id}
+        parents = [base if base is not None else _Opaque() for base in self.bases.get(cls.id, ())]
+        seqs = [self.mro(p, visiting) if isinstance(p, Sym) else [p] for p in parents]
+        seqs = [list(seq) for seq in [*seqs, parents] if seq]
+        merged: list = [cls]
+        while seqs:
+            head = next((seq[0] for seq in seqs if not any(seq[0] in other[1:] for other in seqs)), None)
+            if head is None:  # an inconsistent hierarchy Python itself would reject: fall back to declaration order
+                head = seqs[0][0]
+            merged.append(head)
+            for seq in seqs:
+                if seq[0] == head:
+                    del seq[0]
+            seqs = [seq for seq in seqs if seq]
+        self._mro[cls.id] = merged
+        return merged
+
+
 def _inherited_method(
     file_path: str,
     class_qualname: str,
     name: str,
     index: SymbolIndex,
-    base_order: dict[int, list[Sym | None]],
+    hierarchy: ClassHierarchy,
     include_self: bool,
 ) -> tuple[Sym, bool] | None:
-    """Search a class's bases depth-first in declaration order (cycle-safe) for a method called `name`.
+    """The first class in the MRO after (or, with include_self, at) this class that defines `name`.
 
-    Returns (method, uncertain). `uncertain` is True when an unresolved (external) base was passed on the way: that base
-    may define the method itself (`class Node(docutils.Element, Mixin)`), so the mixin's method is only a possibility.
+    Returns (method, uncertain). `uncertain` is True when an unresolved (external) base precedes the defining class in the
+    MRO: that base may define the method itself (`class Node(docutils.Element, Mixin)`), so the mixin's method is only a
+    possibility.
     """
     start = index.by_qual.get((file_path, class_qualname))
     if start is None or start.node_type != "Class":
         return None
-    seen = {start.id}
     uncertain = False
-
-    def search(cls: Sym, depth: int) -> Sym | None:
-        nonlocal uncertain
-        if depth > 12:
-            return None
-        if depth or include_self:
-            method = index.by_qual.get((cls.file_path, f"{cls.qualname}.{name}"))
-            if method is not None:
-                return method
-        for base in base_order.get(cls.id, ()):
-            if base is None:
-                uncertain = True
-            elif base.id not in seen:
-                seen.add(base.id)
-                found = search(base, depth + 1)
-                if found is not None:
-                    return found
-        return None
-
-    method = search(start, 0)
-    return (method, uncertain) if method is not None else None
+    for token in hierarchy.mro(start)[0 if include_self else 1:]:
+        if isinstance(token, _Opaque):
+            uncertain = True
+            continue
+        method = index.by_qual.get((token.file_path, f"{token.qualname}.{name}"))
+        if method is not None:
+            return method, uncertain
+    return None
 
 
 def resolve_ref(
@@ -283,7 +308,7 @@ def resolve_ref(
     bindings: dict[str, ResolvedBinding],
     index: SymbolIndex,
     kinds: frozenset[str] = _CALL_KINDS,
-    base_order: dict[int, list[Sym | None]] | None = None,
+    hierarchy: ClassHierarchy | None = None,
     value_mode: bool = False,
 ) -> tuple[Sym, float] | None:
     """Resolve one call/base-class reference through the 5-tier cascade.
@@ -350,8 +375,8 @@ def resolve_ref(
                 sym = index.by_qual.get((file_path, f"{class_qualname}.{name}"))
                 if ok(sym):
                     return sym, CONF_SAME_MODULE
-            if base_order:
-                found = _inherited_method(file_path, class_qualname, name, index, base_order, include_self=False)
+            if hierarchy is not None:
+                found = _inherited_method(file_path, class_qualname, name, index, hierarchy, include_self=False)
                 if found is not None and ok(found[0]):
                     return found[0], (CONF_INHERITED_UNCERTAIN if found[1] else CONF_INHERITED)
     elif receiver != UNKNOWN_RECEIVER and not receiver_is_local:
@@ -582,7 +607,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
     index.ranges = {path: refs.def_ranges for path, refs in parsed.items()}
 
     # Pass 2: inheritance, before any calls, so self.x()/super().x() can walk to base classes
-    base_order: dict[int, list[Sym | None]] = defaultdict(list)   # declared bases in order; None = unresolved (external)
+    hierarchy = ClassHierarchy()
     for path, refs in parsed.items():
         for base in refs.bases:
             cls = index.innermost(path, base.class_line, name=base.class_name, node_type="Class")
@@ -599,9 +624,9 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
             )
             if resolved and resolved[0].id != cls.id:
                 add_edge(cls.id, resolved[0].id, "INHERITS", resolved[1])
-                base_order[cls.id].append(resolved[0])
+                hierarchy.bases[cls.id].append(resolved[0])
             elif not resolved and base.name not in _TRANSPARENT_BASES:
-                base_order[cls.id].append(None)
+                hierarchy.bases[cls.id].append(None)
 
     # Pass 3: calls
     for path, refs in parsed.items():
@@ -615,7 +640,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 owner_qualname=owner.qualname if owner else None,
                 bindings=bindings_by_file[path].at(call.line),
                 index=index,
-                base_order=base_order,
+                hierarchy=hierarchy,
             )
             if resolved:
                 target, conf = resolved
@@ -631,7 +656,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 owner_qualname=owner.qualname if owner else None,
                 bindings=bindings_by_file[path].at(ref.line),
                 index=index,
-                base_order=base_order,
+                hierarchy=hierarchy,
                 value_mode=True,
             )
             if resolved and (owner is None or resolved[0].id != owner.id):
