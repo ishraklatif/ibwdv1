@@ -255,3 +255,18 @@ def test_definitions_inside_an_iife_initialiser_are_indexed():
     )
     names = {s.name for s in extract_symbols_from_source(source, "a.ts", "typescript")}
     assert names == {"createThing", "wrapped"}
+
+
+def test_javascript_dynamic_import_anywhere_and_default_parameter_values_and_overload_signatures():
+    from ibwd.scanner.javascript import extract_javascript_references
+
+    refs = extract_javascript_references(
+        b"export const r = [{ lazy: () => import('./routes/landing').then(convert) }];\n"
+        b"function over(a: string): void;\nfunction over(a: number): void;\nfunction over(a: any) {}\n"
+        b"function withDefault(onError = noop) { return onError }\n",
+        dialect="typescript",
+    )
+    assert ("./routes/landing", 1) in {(i.spec, i.line) for i in refs.imports}
+    values = {(v.name, v.receiver) for v in refs.value_refs}
+    assert ("noop", None) in values
+    assert ("over", None) not in values                      # overload signature names are declarations

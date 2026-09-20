@@ -374,8 +374,10 @@ def _js_is_value_use(node: Node) -> bool:
     if parent is None:
         return False
     t, f = parent.type, _field_of(node)
-    if t in ("function_declaration", "function_expression", "generator_function_declaration", "class_declaration") and f == "name":
-        return False
+    if t in ("function_declaration", "function_expression", "generator_function_declaration", "class_declaration", "function_signature",
+             "method_signature", "abstract_method_signature", "property_signature", "interface_declaration", "type_alias_declaration",
+             "enum_declaration", "abstract_class_declaration") and f == "name":
+        return False        # a declaration's own name (including each overload signature `function f(a): X;`) is not a use
     if t == "call_expression" and f == "function":
         return False
     if t == "new_expression" and f == "constructor":
@@ -384,6 +386,8 @@ def _js_is_value_use(node: Node) -> bool:
         return False
     if t == "variable_declarator" and f == "name":
         return False
+    if t in ("required_parameter", "optional_parameter") and f == "value":
+        return True         # a default value (`onError = noop`) is a use; the parameter's own name/pattern is not
     if t in ("formal_parameters", "required_parameter", "optional_parameter", "rest_pattern", "object_pattern", "array_pattern"):
         return False
     if t == "assignment_pattern" and f == "left":

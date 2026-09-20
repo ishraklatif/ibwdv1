@@ -386,6 +386,10 @@ def extract_javascript_references(source: bytes, dialect: str = "javascript") ->
             _js_require(node, refs)
         elif node.type == "call_expression":
             _js_callee(node.child_by_field_name("function"), line, refs)
+            # `import('./x')` / `require('./x')` anywhere (`lazy: () => import('./x').then(...)`), not only as a declarator's value
+            spec = _dynamic_import_spec(node) or _require_spec(node)
+            if spec is not None and not any(i.spec == spec and i.line == line for i in refs.imports):
+                refs.imports.append(ImportRef(spec, 0, [], line, _js_function_scope(node)))
         elif node.type == "new_expression":
             _js_callee(node.child_by_field_name("constructor"), line, refs)
         elif node.type in ("jsx_opening_element", "jsx_self_closing_element"):
