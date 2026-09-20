@@ -216,8 +216,7 @@ against independent full-repository oracles.
 - **"No static use" is unreliable for methods.** The oracle finds a use for 11.9% (Sphinx), 17.1% (Scrapy), 7.4% (Celery) of the
   symbols IBWD reports as unused, almost all through type-inferred receivers; with candidate hints included the rates fall to 8.1%,
   10.7%, 5.0%. Framework entry points and dynamic dispatch add to it. Check the code before deleting anything.
-- **Runtime behaviour differs from the static graph.** In the real test suites 46–56% of observed production→production edges are
-  absent from IBWD (implicit `__iter__`/`__eq__`/`__getattr__` calls, module-level code executing at import, calls to subclass
+- **Runtime behaviour differs from the static graph.** In the real test suites 48–57% of observed production→production edges are missing from resolved edges plus candidate hints (53–62% from resolved alone; the causes include implicit `__iter__`/`__eq__`/`__getattr__` calls, module-level code executing at import, calls to subclass
   overrides, type-inferred receivers). IBWD does not model these.
 - **Inherited edges behind an external base.** A dunder call (`super().__init__`) resolved on an in-repo base while an external base
   precedes it in the MRO is only a candidate (`inherited_uncertain`); non-dunder inherited calls are resolved even if an external base

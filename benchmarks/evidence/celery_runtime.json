@@ -22,18 +22,30 @@
   "skipped": 41,
   "passed": 31763
  },
+ "test_outcome_note": "Matching outcomes with and without tracing show outcome agreement only: neither complete instrumentation nor fully passing suites.",
  "status": {
   "plain": "exit=1 seconds=150",
   "traced": "exit=1 seconds=282"
  },
  "production_symbols_in_scope": 3144,
  "production_symbols_observed": 2621,
- "observed_production_to_production_edges": 3902,
- "of_which_in_static_resolved": 1763,
- "of_which_only_static_candidate": 206,
- "observed_edges_absent_from_static_graph": 1814,
+ "accounting": {
+  "raw_trace_records": 4472,
+  "raw_observed_calls": 13667960,
+  "raw_distinct_pairs": 3902,
+  "excluded_observations": 119,
+  "unmapped_observations": 0,
+  "normalized_unique_edges": 3783,
+  "resolved_matches": 1763,
+  "candidate_only": 206,
+  "absent": 1814,
+  "check": "resolved_matches + candidate_only + absent == normalized_unique_edges; normalized + excluded + unmapped == raw_distinct_pairs"
+ },
+ "percentages": {
+  "missing_from_default_resolved_graph": 0.534,
+  "missing_from_resolved_plus_candidate_hints": 0.4795
+ },
  "absent_but_in_oracle_graph": 119,
- "absent_and_not_in_oracle_graph": 1695,
  "processes_started": 45,
  "processes_with_trace": 45,
  "uninstrumented_processes": [],
@@ -45,6 +57,723 @@
   "dispatch_to_override_or_same_name_target_present": 113,
   "caller_is_module_level_code": 286
  },
+ "excluded_observations_list": [
+  {
+   "source": "celery/utils/collections.py::ConfigurationView.__getitem__",
+   "target": "celery/utils/collections.py::ConfigurationView.__getitem__",
+   "count": 1121394,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/abstract.py::_AbstractClass._subclasshook_using",
+   "target": "celery/utils/abstract.py::_AbstractClass._subclasshook_using",
+   "count": 103,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/abstract.py::_hasattr",
+   "target": "celery/utils/abstract.py::_hasattr",
+   "count": 269,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/__init__.py::shared_task",
+   "target": "celery/app/__init__.py::shared_task",
+   "count": 22,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/functional.py::first",
+   "target": "celery/utils/functional.py::first",
+   "count": 22541,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/collections.py::ConfigurationView.__contains__",
+   "target": "celery/utils/collections.py::ConfigurationView.__contains__",
+   "count": 12868,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/collections.py::ChainMap.__contains__",
+   "target": "celery/utils/collections.py::ChainMap.__contains__",
+   "count": 12751,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/imports.py::load_extension_class_names",
+   "target": "celery/utils/imports.py::load_extension_class_names",
+   "count": 9,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/collections.py::BufferMap.__init__",
+   "target": "celery/utils/collections.py::BufferMap.__init__",
+   "count": 1700,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/objects.py::getitem_property._path",
+   "target": "celery/utils/objects.py::getitem_property._path",
+   "count": 231915,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group.from_dict",
+   "target": "celery/canvas.py::group.from_dict",
+   "count": 28141,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chain.__or__",
+   "target": "celery/canvas.py::_chain.__or__",
+   "count": 55,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/contrib/testing/app.py::set_trap",
+   "target": "celery/contrib/testing/app.py::set_trap",
+   "count": 4112,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/base.py::Celery.task",
+   "target": "celery/app/base.py::Celery.task",
+   "count": 27907,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/collections.py::ConfigurationView.first",
+   "target": "celery/utils/collections.py::ConfigurationView.first",
+   "count": 3886,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/imports.py::gen_task_name",
+   "target": "celery/utils/imports.py::gen_task_name",
+   "count": 31674,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/functional.py::_argsfromspec",
+   "target": "celery/utils/functional.py::_argsfromspec",
+   "count": 43285,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/annotations.py::prepare",
+   "target": "celery/app/annotations.py::prepare",
+   "count": 7,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/utils.py::bugreport",
+   "target": "celery/app/utils.py::bugreport",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/collections.py::ChainMap._iter",
+   "target": "celery/utils/collections.py::ChainMap._iter",
+   "count": 422,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/utils.py::filter_hidden_settings",
+   "target": "celery/app/utils.py::filter_hidden_settings",
+   "count": 402,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/utils.py::Settings.humanize",
+   "target": "celery/app/utils.py::Settings.humanize",
+   "count": 64,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/base.py::Celery.add_defaults",
+   "target": "celery/app/base.py::Celery.add_defaults",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/utils.py::detect_settings",
+   "target": "celery/app/utils.py::detect_settings",
+   "count": 11,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/annotations.py::get_optional_arg",
+   "target": "celery/utils/annotations.py::get_optional_arg",
+   "count": 73,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/loaders/base.py::BaseLoader.cmdline_config_parser",
+   "target": "celery/loaders/base.py::BaseLoader.cmdline_config_parser",
+   "count": 15,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/platforms.py::pyimplementation",
+   "target": "celery/platforms.py::pyimplementation",
+   "count": 10,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bootsteps.py::Blueprint.claim_steps",
+   "target": "celery/bootsteps.py::Blueprint.claim_steps",
+   "count": 3848,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bootsteps.py::Blueprint._find_last",
+   "target": "celery/bootsteps.py::Blueprint._find_last",
+   "count": 767,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bootsteps.py::Blueprint._firstpass",
+   "target": "celery/bootsteps.py::Blueprint._firstpass",
+   "count": 3848,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/graph.py::DependencyGraph._tarjan72",
+   "target": "celery/utils/graph.py::DependencyGraph._tarjan72",
+   "count": 9041,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bootsteps.py::Blueprint.apply",
+   "target": "celery/bootsteps.py::Blueprint.apply",
+   "count": 3846,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/consumer/consumer.py::Consumer.reset_rate_limits",
+   "target": "celery/worker/consumer/consumer.py::Consumer.reset_rate_limits",
+   "count": 5593,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bootsteps.py::Blueprint.start",
+   "target": "celery/bootsteps.py::Blueprint.start",
+   "count": 130,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/request.py::create_request_cls",
+   "target": "celery/worker/request.py::create_request_cls",
+   "count": 494,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/loops.py::synloop",
+   "target": "celery/worker/loops.py::synloop",
+   "count": 54,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/utils.py::Settings.get_by_parts",
+   "target": "celery/app/utils.py::Settings.get_by_parts",
+   "count": 2937,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/app/trace.py::build_tracer",
+   "count": 804,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/schedules.py::crontab.remaining_delta",
+   "target": "celery/schedules.py::crontab.remaining_delta",
+   "count": 1198,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/beat.py::PersistentScheduler.setup_schedule",
+   "target": "celery/beat.py::PersistentScheduler.setup_schedule",
+   "count": 20,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/builtins.py::add_group_task",
+   "target": "celery/app/builtins.py::add_group_task",
+   "count": 6,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/loaders/base.py::BaseLoader.autodiscover_tasks",
+   "target": "celery/loaders/base.py::BaseLoader.autodiscover_tasks",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/dispatch/signal.py::Signal.connect",
+   "target": "celery/utils/dispatch/signal.py::Signal.connect",
+   "count": 104,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/log.py::Logging._has_handler",
+   "target": "celery/app/log.py::Logging._has_handler",
+   "count": 153,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/log.py::LoggingProxy._safewrap_handlers",
+   "target": "celery/utils/log.py::LoggingProxy._safewrap_handlers",
+   "count": 28,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bin/purge.py::purge",
+   "target": "celery/bin/purge.py::purge",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/routes.py::prepare",
+   "target": "celery/app/routes.py::prepare",
+   "count": 12,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/schedules.py::crontab._delta_to_next",
+   "target": "celery/schedules.py::crontab._delta_to_next",
+   "count": 2324,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/app/utils.py::Settings.table",
+   "target": "celery/app/utils.py::Settings.table",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/apps/multi.py::MultiParser._parse_ns_range",
+   "target": "celery/apps/multi.py::MultiParser._parse_ns_range",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/text.py::simple_format",
+   "target": "celery/utils/text.py::simple_format",
+   "count": 214,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/platforms.py::check_privileges",
+   "target": "celery/platforms.py::check_privileges",
+   "count": 215,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::result_from_tuple",
+   "target": "celery/result.py::result_from_tuple",
+   "count": 97,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group._unroll_tasks",
+   "target": "celery/canvas.py::group._unroll_tasks",
+   "count": 233,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/backends/redis.py::RedisBackend._params_from_url",
+   "target": "celery/backends/redis.py::RedisBackend._params_from_url",
+   "count": 80,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/backends/redis.py::RedisBackend.apply_chord",
+   "target": "celery/backends/redis.py::RedisBackend.apply_chord",
+   "count": 57,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/backends/redis.py::SentinelBackend.as_uri",
+   "target": "celery/backends/redis.py::SentinelBackend.as_uri",
+   "count": 12,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/bin/graph.py::workers",
+   "count": 7,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/text.py::indent",
+   "target": "celery/utils/text.py::indent",
+   "count": 12,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/concurrency/gevent.py::Timer.__init__",
+   "target": "celery/concurrency/gevent.py::Timer.__init__",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/functional.py::fun_accepts_kwargs",
+   "target": "celery/utils/functional.py::fun_accepts_kwargs",
+   "count": 52,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/concurrency/asynpool.py::iterate_file_descriptors_safely",
+   "target": "celery/concurrency/asynpool.py::iterate_file_descriptors_safely",
+   "count": 73,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/concurrency/asynpool.py::AsynPool.get_process_queues",
+   "target": "celery/concurrency/asynpool.py::AsynPool.get_process_queues",
+   "count": 82,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/concurrency/asynpool.py::AsynPool._create_write_handlers",
+   "target": "celery/concurrency/asynpool.py::AsynPool._create_write_handlers",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/contrib/migrate.py::prepare_queues",
+   "target": "celery/contrib/migrate.py::prepare_queues",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/contrib/rdb.py::Rdb.__init__",
+   "target": "celery/contrib/rdb.py::Rdb.__init__",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/events/dumper.py::Dumper.format_task_event",
+   "target": "celery/events/dumper.py::Dumper.format_task_event",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/events/dumper.py::Dumper.on_event",
+   "target": "celery/events/dumper.py::Dumper.on_event",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/events/state.py::Task.info",
+   "target": "celery/events/state.py::Task.info",
+   "count": 31,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/security/certificate.py::Certificate.get_issuer",
+   "target": "celery/security/certificate.py::Certificate.get_issuer",
+   "count": 14251,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/security/serialization.py::SecureSerializer._pack",
+   "target": "celery/security/serialization.py::SecureSerializer._pack",
+   "count": 6090,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::Signature.flatten_links",
+   "target": "celery/canvas.py::Signature.flatten_links",
+   "count": 7,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chain.apply",
+   "target": "celery/canvas.py::_chain.apply",
+   "count": 14,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chain.__repr__",
+   "target": "celery/canvas.py::_chain.__repr__",
+   "count": 12033,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group._freeze_tasks",
+   "target": "celery/canvas.py::group._freeze_tasks",
+   "count": 228,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chord.freeze",
+   "target": "celery/canvas.py::_chord.freeze",
+   "count": 72,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::AsyncResult.as_tuple",
+   "target": "celery/result.py::AsyncResult.as_tuple",
+   "count": 1046,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::GroupResult.as_tuple",
+   "target": "celery/result.py::GroupResult.as_tuple",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chord.link",
+   "target": "celery/canvas.py::_chord.link",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group._prepared",
+   "target": "celery/canvas.py::group._prepared",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group.link_error",
+   "target": "celery/canvas.py::group.link_error",
+   "count": 14,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.ready",
+   "target": "celery/result.py::ResultSet.ready",
+   "count": 22,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chord._descend",
+   "target": "celery/canvas.py::_chord._descend",
+   "count": 491,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chord.__length_hint__",
+   "target": "celery/canvas.py::_chord.__length_hint__",
+   "count": 386,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_merge_dictionaries",
+   "target": "celery/canvas.py::_merge_dictionaries",
+   "count": 11,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::AsyncResult.forget",
+   "target": "celery/result.py::AsyncResult.forget",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::AsyncResult.iterdeps",
+   "target": "celery/result.py::AsyncResult.iterdeps",
+   "count": 7,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.__repr__",
+   "target": "celery/result.py::ResultSet.__repr__",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.update",
+   "target": "celery/result.py::ResultSet.update",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::GroupResult.__repr__",
+   "target": "celery/result.py::GroupResult.__repr__",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.successful",
+   "target": "celery/result.py::ResultSet.successful",
+   "count": 23,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.failed",
+   "target": "celery/result.py::ResultSet.failed",
+   "count": 23,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.waiting",
+   "target": "celery/result.py::ResultSet.waiting",
+   "count": 13,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::ResultSet.completed_count",
+   "target": "celery/result.py::ResultSet.completed_count",
+   "count": 26,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group.stamp",
+   "target": "celery/canvas.py::group.stamp",
+   "count": 475,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chord.stamp",
+   "target": "celery/canvas.py::_chord.stamp",
+   "count": 99,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/functional.py::_regen.__repr__",
+   "target": "celery/utils/functional.py::_regen.__repr__",
+   "count": 1491,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group.__repr__",
+   "target": "celery/canvas.py::group.__repr__",
+   "count": 410,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::group.app",
+   "target": "celery/canvas.py::group.app",
+   "count": 10,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/canvas.py::_chord.apply",
+   "target": "celery/canvas.py::_chord.apply",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/debug.py::humanbytes",
+   "target": "celery/utils/debug.py::humanbytes",
+   "count": 10,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/graph.py::DependencyGraph.__repr__",
+   "target": "celery/utils/graph.py::DependencyGraph.__repr__",
+   "count": 5,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/graph.py::DependencyGraph.valency_of",
+   "target": "celery/utils/graph.py::DependencyGraph.valency_of",
+   "count": 6,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/graph.py::DependencyGraph.repr_node",
+   "target": "celery/utils/graph.py::DependencyGraph.repr_node",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/result.py::GroupResult.__eq__",
+   "target": "celery/result.py::GroupResult.__eq__",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/graph.py::GraphFormatter.attrs",
+   "target": "celery/utils/graph.py::GraphFormatter.attrs",
+   "count": 59,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "count": 14,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/local.py::Proxy.__ne__",
+   "target": "celery/local.py::Proxy.__ne__",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/local.py::Proxy.__eq__",
+   "target": "celery/local.py::Proxy.__eq__",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/platforms.py::_open_fds",
+   "target": "celery/platforms.py::_open_fds",
+   "count": 2307,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/platforms.py::fd_by_path",
+   "target": "celery/platforms.py::fd_by_path",
+   "count": 11008,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/platforms.py::setgroups",
+   "target": "celery/platforms.py::setgroups",
+   "count": 403,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/serialization.py::jsonify",
+   "target": "celery/utils/serialization.py::jsonify",
+   "count": 82,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/sysinfo.py::_load_average",
+   "target": "celery/utils/sysinfo.py::_load_average",
+   "count": 36,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/utils/time.py::delta_resolution",
+   "target": "celery/utils/time.py::delta_resolution",
+   "count": 11,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/consumer/tasks.py::Tasks.start",
+   "target": "celery/worker/consumer/tasks.py::Tasks.start",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/consumer/consumer.py::Consumer.cancel_active_requests",
+   "target": "celery/worker/consumer/consumer.py::Consumer.cancel_active_requests",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/control.py::registered",
+   "target": "celery/worker/control.py::registered",
+   "count": 107,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery._validate_broker_urls",
+   "target": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery._validate_broker_urls",
+   "count": 7,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  }
+ ],
+ "unmapped_observations_list": [],
  "top_absent_edges": [
   {
    "source": "celery/canvas.py::Signature._merge",
@@ -55,14 +784,14 @@
   },
   {
    "source": "celery/utils/collections.py::ConfigurationView.__getitem__",
-   "target": "celery/app/utils.py::_old_key_to_new",
+   "target": "celery/app/utils.py::_new_key_to_old",
    "count": 373798,
    "oracle_basis": null,
    "why": "other"
   },
   {
    "source": "celery/utils/collections.py::ConfigurationView.__getitem__",
-   "target": "celery/app/utils.py::_new_key_to_old",
+   "target": "celery/app/utils.py::_old_key_to_new",
    "count": 373798,
    "oracle_basis": null,
    "why": "other"

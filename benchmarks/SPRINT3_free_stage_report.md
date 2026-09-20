@@ -127,15 +127,20 @@ output directory); dependency freeze recorded in the image. Test results (`junit
 with and without tracing and **agree exactly**. Tracer: `sys.setprofile` per process and thread via `sitecustomize`, flushed before
 `os._exit`, start markers vs trace files to detect uninstrumented processes.
 
-| repo | environment | collected / passed / failed / skipped (both runs) | production symbols observed | observed prod→prod edges | in static resolved | only as candidate | **absent** | uninstrumented processes |
-|---|---|---|---|---|---|---|---|---|
-| sphinx | declared test group; full `tests/` | 2425 / 2388 / 1 / 36 | 3401 / 5498 | 5640 | 2120 | 240 | **3149** | 0 of 14 |
-| scrapy | tox test-requirements; default `--reactor=asyncio`; 2584 unit tests | 2584 / 2521 / 0 / 63 | 1404 / 2048 | 2433 | 991 | 227 | **1171** | 7 of 9 |
-| celery | `t/unit` (eager); worker integration **not** run | 31814 / 31763 / 10 / 41 | 2621 / 3144 | 3902 | 1763 | 206 | **1814** | 0 of 45 |
+Accounting (reproducible from the saved trace files with `benchmarks/tools/runtime_compare.py`; output in `benchmarks/evidence/<repo>_runtime.json`).
+Runtime edges are normalised to unique canonical (caller, callee) pairs and partitioned exactly; **the earlier table left 131 / 44 / 119 pairs
+unaccounted because they were self edges (recursion, or a nested function projected onto its own enclosing symbol); they are now listed as
+excluded observations, and 4 Sphinx pairs with an endpoint outside the static graph as unmapped.**
 
-The failing tests are identical with and without tracing, so tracing does not change outcomes (Sphinx `test_cython`, probably no
+| repo | environment | tests: collected / passed / failed / skipped (identical with and without tracing) | symbols observed | raw distinct pairs | excluded (self) | unmapped | **normalized unique edges** | resolved match | candidate only | absent | **missing from resolved graph** | **missing from resolved + candidates** | uninstrumented processes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| sphinx | declared test group; full `tests/` | 2425 / 2388 / 1 / 36 | 3401 / 5498 | 5640 | 131 | 4 | 5505 | 2120 | 240 | 3145 | **61.5%** | **57.1%** | 0 of 14 |
+| scrapy | tox test-requirements; default `--reactor=asyncio`; 2584 unit tests | 2584 / 2521 / 0 / 63 | 1404 / 2048 | 2433 | 44 | 0 | 2389 | 991 | 227 | 1171 | **58.5%** | **49.0%** | 7 of 9 |
+| celery | `t/unit` (eager); worker integration **not** run | 31814 / 31763 / 10 / 41 | 2621 / 3144 | 3902 | 119 | 0 | 3783 | 1763 | 206 | 1814 | **53.4%** | **48.0%** | 0 of 45 |
+
+Matching test outcomes with and without tracing establish outcome agreement only — not complete instrumentation, and not fully passing suites (1 Sphinx and 10 Celery tests fail in both runs) (Sphinx `test_cython`, probably no
 compiler in the image; 10 Celery unit failures; causes not diagnosed); one Celery test (`test_with_autoscaler_file_descriptor_safety`) was deselected because it exhausts memory in the container.
-**Observed edges absent from the static graph are 46–56%.** Reasons in the output: implicit protocol calls (`__iter__`, `__eq__`,
+**57.1% / 49.0% / 48.0% of the normalized runtime edges are missing from resolved edges plus candidate hints, and 61.5% / 58.5% / 53.4% from the default resolved graph alone.** Reasons in the output: implicit protocol calls (`__iter__`, `__eq__`,
 `__getattr__`), module-level/import-time execution, dispatch to overrides, and instance receivers whose class needs type inference
 (the oracle lists 7–22% of the absent edges as possible targets). These are the dynamic behaviours the static gate already declares out of scope;
 they mean **a runtime-complete call graph is not what IBWD provides**. Uninstrumented: 7 of 9 Scrapy processes (crawler subprocess and

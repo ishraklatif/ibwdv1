@@ -22,29 +22,855 @@
   "skipped": 36,
   "passed": 2388
  },
+ "test_outcome_note": "Matching outcomes with and without tracing show outcome agreement only: neither complete instrumentation nor fully passing suites.",
  "status": {
   "plain": "exit=1 seconds=121",
   "traced": "exit=1 seconds=362"
  },
  "production_symbols_in_scope": 5498,
  "production_symbols_observed": 3401,
- "observed_production_to_production_edges": 5640,
- "of_which_in_static_resolved": 2120,
- "of_which_only_static_candidate": 240,
- "observed_edges_absent_from_static_graph": 3149,
+ "accounting": {
+  "raw_trace_records": 8781,
+  "raw_observed_calls": 19064330,
+  "raw_distinct_pairs": 5640,
+  "excluded_observations": 131,
+  "unmapped_observations": 4,
+  "normalized_unique_edges": 5505,
+  "resolved_matches": 2120,
+  "candidate_only": 240,
+  "absent": 3145,
+  "check": "resolved_matches + candidate_only + absent == normalized_unique_edges; normalized + excluded + unmapped == raw_distinct_pairs"
+ },
+ "percentages": {
+  "missing_from_default_resolved_graph": 0.6149,
+  "missing_from_resolved_plus_candidate_hints": 0.5713
+ },
  "absent_but_in_oracle_graph": 425,
- "absent_and_not_in_oracle_graph": 2724,
  "processes_started": 14,
  "processes_with_trace": 14,
  "uninstrumented_processes": [],
  "uninstrumented_process_count": 0,
  "absent_edge_reasons": {
   "dispatch_to_override_or_same_name_target_present": 291,
-  "implicit_protocol_call_dunder": 493,
-  "other": 1224,
+  "implicit_protocol_call_dunder": 492,
+  "other": 1221,
   "in_oracle_graph_only": 420,
   "caller_is_module_level_code": 721
  },
+ "excluded_observations_list": [
+  {
+   "source": "sphinx/transforms/__init__.py::ExtraTranslatableNodes.apply",
+   "target": "sphinx/transforms/__init__.py::ExtraTranslatableNodes.apply",
+   "count": 844,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/transforms/__init__.py::SphinxSmartQuotes.is_available",
+   "target": "sphinx/transforms/__init__.py::SphinxSmartQuotes.is_available",
+   "count": 1187,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/collectors/toctree.py::TocTreeCollector.process_doc",
+   "target": "sphinx/environment/collectors/toctree.py::TocTreeCollector.process_doc",
+   "count": 2081,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/config.py::is_serializable",
+   "target": "sphinx/config.py::is_serializable",
+   "count": 61503,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/html5.py::HTML5Translator.add_fignumber",
+   "target": "sphinx/writers/html5.py::HTML5Translator.add_fignumber",
+   "count": 1087,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/adapters/toctree.py::_toctree_copy_seq",
+   "target": "sphinx/environment/adapters/toctree.py::_toctree_copy_seq",
+   "count": 116797,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.handle_page",
+   "target": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.handle_page",
+   "count": 11337,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/adapters/toctree.py::global_toctree_for_doc",
+   "target": "sphinx/environment/adapters/toctree.py::global_toctree_for_doc",
+   "count": 2553,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/nodes.py::_deepcopy",
+   "target": "sphinx/util/nodes.py::_deepcopy",
+   "count": 36902,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/adapters/toctree.py::_toctree_add_classes",
+   "target": "sphinx/environment/adapters/toctree.py::_toctree_add_classes",
+   "count": 39467,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/nodes.py",
+   "target": "sphinx/util/nodes.py",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/adapters/toctree.py",
+   "target": "sphinx/environment/adapters/toctree.py",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/docfields.py",
+   "target": "sphinx/util/docfields.py",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/directives/__init__.py",
+   "target": "sphinx/directives/__init__.py",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/display.py",
+   "target": "sphinx/util/display.py",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/_serialise.py::stable_hash",
+   "target": "sphinx/util/_serialise.py::stable_hash",
+   "count": 163666,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/adapters/toctree.py::_entries_from_toctree",
+   "target": "sphinx/environment/adapters/toctree.py::_entries_from_toctree",
+   "count": 54,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator.end_state",
+   "target": "sphinx/writers/text.py::TextTranslator.end_state",
+   "count": 3082,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator.depart_document",
+   "target": "sphinx/writers/text.py::TextTranslator.depart_document",
+   "count": 2161,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/collectors/toctree.py::TocTreeCollector.assign_section_numbers",
+   "target": "sphinx/environment/collectors/toctree.py::TocTreeCollector.assign_section_numbers",
+   "count": 33571,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator.depart_title",
+   "target": "sphinx/writers/text.py::TextTranslator.depart_title",
+   "count": 202,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+   "target": "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+   "count": 156,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_directive_options.py::_AutoDocumenterOptions.__repr__",
+   "target": "sphinx/ext/autodoc/_directive_options.py::_AutoDocumenterOptions.__repr__",
+   "count": 4695,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::Token.match",
+   "target": "sphinx/pycode/parser.py::Token.match",
+   "count": 197260,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::get_lvar_names",
+   "target": "sphinx/pycode/parser.py::get_lvar_names",
+   "count": 296,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::TokenProcessor.fetch_until",
+   "target": "sphinx/pycode/parser.py::TokenProcessor.fetch_until",
+   "count": 1178,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_dynamic/_loader.py::_load_object_by_name",
+   "target": "sphinx/ext/autodoc/_dynamic/_loader.py::_load_object_by_name",
+   "count": 542,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_dynamic/_signatures.py::_get_object_for_signature",
+   "target": "sphinx/ext/autodoc/_dynamic/_signatures.py::_get_object_for_signature",
+   "count": 210,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/inspect.py::is_builtin_class_method",
+   "target": "sphinx/util/inspect.py::is_builtin_class_method",
+   "count": 420,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_dynamic/_member_finder.py::_sort_members",
+   "target": "sphinx/ext/autodoc/_dynamic/_member_finder.py::_sort_members",
+   "count": 304,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/inspect.py::isclassmethod",
+   "target": "sphinx/util/inspect.py::isclassmethod",
+   "count": 660,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/inspect.py::isdescriptor",
+   "target": "sphinx/util/inspect.py::isdescriptor",
+   "count": 1712,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_dynamic/_type_comments.py::_ensure_annotations_from_type_comments",
+   "target": "sphinx/ext/autodoc/_dynamic/_type_comments.py::_ensure_annotations_from_type_comments",
+   "count": 5,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/inspect.py::getdoc",
+   "target": "sphinx/util/inspect.py::getdoc",
+   "count": 64,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/pycode/ast.py::_UnparseVisitor.visit_Subscript",
+   "target": "sphinx/pycode/ast.py::_UnparseVisitor.visit_Subscript",
+   "count": 60,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/__init__.py::Domain.directive",
+   "target": "sphinx/domains/__init__.py::Domain.directive",
+   "count": 302,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/python/_annotations.py::_parse_annotation",
+   "target": "sphinx/domains/python/_annotations.py::_parse_annotation",
+   "count": 296,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/ext/autodoc/_dynamic/_member_finder.py::_is_filtered_inherited_member",
+   "target": "sphinx/ext/autodoc/_dynamic/_member_finder.py::_is_filtered_inherited_member",
+   "count": 352,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/transforms/__init__.py::AutoIndexUpgrader.apply",
+   "target": "sphinx/transforms/__init__.py::AutoIndexUpgrader.apply",
+   "count": 2396,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/directives/code.py::LiteralIncludeReader.lines_filter",
+   "target": "sphinx/directives/code.py::LiteralIncludeReader.lines_filter",
+   "count": 162,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/matching.py::Matcher.match",
+   "target": "sphinx/util/matching.py::Matcher.match",
+   "count": 8397,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/transforms/__init__.py::HandleCodeBlocks.apply",
+   "target": "sphinx/transforms/__init__.py::HandleCodeBlocks.apply",
+   "count": 68,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/transforms/__init__.py::GlossarySorter.apply",
+   "target": "sphinx/transforms/__init__.py::GlossarySorter.apply",
+   "count": 60,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/docfields.py::TypedField.make_field",
+   "target": "sphinx/util/docfields.py::TypedField.make_field",
+   "count": 342,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_ast.py::ASTNestedName.get_id",
+   "target": "sphinx/domains/c/_ast.py::ASTNestedName.get_id",
+   "count": 250,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_ast.py::ASTNestedName._stringify",
+   "target": "sphinx/domains/c/_ast.py::ASTNestedName._stringify",
+   "count": 9802,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_ast.py::ASTDeclaratorNameParam._stringify",
+   "target": "sphinx/domains/c/_ast.py::ASTDeclaratorNameParam._stringify",
+   "count": 62,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_parser.py::DefinitionParser._parse_declarator",
+   "target": "sphinx/domains/c/_parser.py::DefinitionParser._parse_declarator",
+   "count": 13,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTNestedName.get_id",
+   "target": "sphinx/domains/cpp/_ast.py::ASTNestedName.get_id",
+   "count": 5175,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/__init__.py::CPPObject._object_hierarchy_parts",
+   "target": "sphinx/domains/cpp/__init__.py::CPPObject._object_hierarchy_parts",
+   "count": 117,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/cfamily.py::ASTBaseBase.get_display_string",
+   "target": "sphinx/util/cfamily.py::ASTBaseBase.get_display_string",
+   "count": 9116,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/cfamily.py::BaseParser.fail",
+   "target": "sphinx/util/cfamily.py::BaseParser.fail",
+   "count": 642,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_declarator",
+   "target": "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_declarator",
+   "count": 18,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTParametersQualifiers.get_param_id",
+   "target": "sphinx/domains/cpp/_ast.py::ASTParametersQualifiers.get_param_id",
+   "count": 896,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTDeclaratorNameParamQual.get_ptr_suffix_id",
+   "target": "sphinx/domains/cpp/_ast.py::ASTDeclaratorNameParamQual.get_ptr_suffix_id",
+   "count": 1666,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTDeclSpecsSimple.describe_signature",
+   "target": "sphinx/domains/cpp/_ast.py::ASTDeclSpecsSimple.describe_signature",
+   "count": 9,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTParametersQualifiers.describe_signature",
+   "target": "sphinx/domains/cpp/_ast.py::ASTParametersQualifiers.describe_signature",
+   "count": 9,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTDeclaratorNameParamQual._stringify",
+   "target": "sphinx/domains/cpp/_ast.py::ASTDeclaratorNameParamQual._stringify",
+   "count": 137,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_requires_clause",
+   "target": "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_requires_clause",
+   "count": 9,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTTemplateParams.describe_signature_as_introducer",
+   "target": "sphinx/domains/cpp/_ast.py::ASTTemplateParams.describe_signature_as_introducer",
+   "count": 9,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTTemplateArgs._stringify",
+   "target": "sphinx/domains/cpp/_ast.py::ASTTemplateArgs._stringify",
+   "count": 165,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTTemplateParams.get_id",
+   "target": "sphinx/domains/cpp/_ast.py::ASTTemplateParams.get_id",
+   "count": 1272,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTTemplateParams._stringify",
+   "target": "sphinx/domains/cpp/_ast.py::ASTTemplateParams._stringify",
+   "count": 39,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_logical_or_expression",
+   "target": "sphinx/domains/cpp/_parser.py::DefinitionParser._parse_logical_or_expression",
+   "count": 243,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_ast.py::ASTBinOpExpr.describe_signature",
+   "target": "sphinx/domains/cpp/_ast.py::ASTBinOpExpr.describe_signature",
+   "count": 108,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_symbol.py::Symbol.clear_doc",
+   "target": "sphinx/domains/c/_symbol.py::Symbol.clear_doc",
+   "count": 597,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_symbol.py::Symbol.clear_doc",
+   "target": "sphinx/domains/cpp/_symbol.py::Symbol.clear_doc",
+   "count": 756,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/collectors/toctree.py::TocTreeCollector.assign_figure_numbers",
+   "target": "sphinx/environment/collectors/toctree.py::TocTreeCollector.assign_figure_numbers",
+   "count": 853980,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/std/__init__.py::_has_child",
+   "target": "sphinx/domains/std/__init__.py::_has_child",
+   "count": 1404,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/python/__init__.py::PythonModuleIndex.generate",
+   "target": "sphinx/domains/python/__init__.py::PythonModuleIndex.generate",
+   "count": 382,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/environment/__init__.py::_traverse_toctree",
+   "target": "sphinx/environment/__init__.py::_traverse_toctree",
+   "count": 5386,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/search/__init__.py::_feed_visit_nodes",
+   "target": "sphinx/search/__init__.py::_feed_visit_nodes",
+   "count": 29532,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/search/__init__.py::IndexBuilder.feed",
+   "target": "sphinx/search/__init__.py::IndexBuilder.feed",
+   "count": 10200,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.post_process_images",
+   "target": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.post_process_images",
+   "count": 971,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/html/__init__.py::_has_wildcard",
+   "target": "sphinx/builders/html/__init__.py::_has_wildcard",
+   "count": 28,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/tags.py::Tags._eval_node",
+   "target": "sphinx/util/tags.py::Tags._eval_node",
+   "count": 94,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/html5.py::HTML5Translator.visit_desc_optional",
+   "target": "sphinx/writers/html5.py::HTML5Translator.visit_desc_optional",
+   "count": 44,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.write_genindex",
+   "target": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.write_genindex",
+   "count": 21281,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/search/__init__.py::IndexBuilder.get_terms",
+   "target": "sphinx/search/__init__.py::IndexBuilder.get_terms",
+   "count": 85745,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_symbol.py::Symbol.get_all_symbols",
+   "target": "sphinx/domains/c/_symbol.py::Symbol.get_all_symbols",
+   "count": 5325,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_symbol.py::Symbol.get_all_symbols",
+   "target": "sphinx/domains/cpp/_symbol.py::Symbol.get_all_symbols",
+   "count": 11005,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/inventory.py::InventoryFile.dump",
+   "target": "sphinx/util/inventory.py::InventoryFile.dump",
+   "count": 514,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/_serialise.py::_stable_str_prep",
+   "target": "sphinx/util/_serialise.py::_stable_str_prep",
+   "count": 95371,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/nodes.py::inline_all_toctrees",
+   "target": "sphinx/util/nodes.py::inline_all_toctrees",
+   "count": 236,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator.depart_entry",
+   "target": "sphinx/writers/text.py::TextTranslator.depart_entry",
+   "count": 315,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::Table.rewrap",
+   "target": "sphinx/writers/text.py::Table.rewrap",
+   "count": 285,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::Table.__str__",
+   "target": "sphinx/writers/text.py::Table.__str__",
+   "count": 134,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator.visit_acks",
+   "target": "sphinx/writers/text.py::TextTranslator.visit_acks",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator.visit_desc_optional",
+   "target": "sphinx/writers/text.py::TextTranslator.visit_desc_optional",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/transforms/post_transforms/__init__.py::SigElementFallbackTransform.run",
+   "target": "sphinx/transforms/post_transforms/__init__.py::SigElementFallbackTransform.run",
+   "count": 640,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/linkcheck.py::HyperlinkAvailabilityChecker.is_ignored_uri",
+   "target": "sphinx/builders/linkcheck.py::HyperlinkAvailabilityChecker.is_ignored_uri",
+   "count": 98,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/changes.py::ChangesBuilder.write_documents",
+   "target": "sphinx/builders/changes.py::ChangesBuilder.write_documents",
+   "count": 204,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/jinja2glue.py::BuiltinTemplateLoader._newest_template_mtime_name",
+   "target": "sphinx/jinja2glue.py::BuiltinTemplateLoader._newest_template_mtime_name",
+   "count": 4668,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/_epub_base.py::EpubBuilder.get_refnodes",
+   "target": "sphinx/builders/_epub_base.py::EpubBuilder.get_refnodes",
+   "count": 2828,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/_epub_base.py::EpubBuilder.build_toc",
+   "target": "sphinx/builders/_epub_base.py::EpubBuilder.build_toc",
+   "count": 56,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/c/_symbol.py::Symbol.merge_with",
+   "target": "sphinx/domains/c/_symbol.py::Symbol.merge_with",
+   "count": 7,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/domains/cpp/_symbol.py::Symbol.merge_with",
+   "target": "sphinx/domains/cpp/_symbol.py::Symbol.merge_with",
+   "count": 9,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/search/__init__.py::IndexBuilder.load",
+   "target": "sphinx/search/__init__.py::IndexBuilder.load",
+   "count": 420,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/directives/other.py::TocTree.parse_content",
+   "target": "sphinx/directives/other.py::TocTree.parse_content",
+   "count": 27,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/config.py::evaluate_copyright_placeholders",
+   "target": "sphinx/config.py::evaluate_copyright_placeholders",
+   "count": 42,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/config.py::correct_copyright_year",
+   "target": "sphinx/config.py::correct_copyright_year",
+   "count": 28,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/config.py::convert_highlight_options",
+   "target": "sphinx/config.py::convert_highlight_options",
+   "count": 5,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.hypertarget_to",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.hypertarget_to",
+   "count": 1789,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_target",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_target",
+   "count": 53,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_index",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_index",
+   "count": 748,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::Table.get_table_type",
+   "target": "sphinx/writers/latex.py::Table.get_table_type",
+   "count": 54,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_figure",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_figure",
+   "count": 206,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_acks",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_acks",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator._visit_signature_line",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator._visit_signature_line",
+   "count": 113,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_desc_optional",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_desc_optional",
+   "count": 24,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/math.py::wrap_displaymath",
+   "target": "sphinx/util/math.py::wrap_displaymath",
+   "count": 17,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_enumerated_list",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_enumerated_list",
+   "count": 127,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.visit_thebibliography",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.visit_thebibliography",
+   "count": 48,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.generate_indices",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.generate_indices",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/latex.py::LaTeXTranslator.depart_table",
+   "target": "sphinx/writers/latex.py::LaTeXTranslator.depart_table",
+   "count": 48,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/linkcheck.py::HyperlinkAvailabilityCheckWorker._check_uri",
+   "target": "sphinx/builders/linkcheck.py::HyperlinkAvailabilityCheckWorker._check_uri",
+   "count": 63,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/util/requests.py::_Session.get_redirect_target",
+   "target": "sphinx/util/requests.py::_Session.get_redirect_target",
+   "count": 160,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/builders/linkcheck.py::_allowed_redirect",
+   "target": "sphinx/builders/linkcheck.py::_allowed_redirect",
+   "count": 5,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/config.py::check_confval_types",
+   "target": "sphinx/config.py::check_confval_types",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/manpage.py::NestedInlineTransform.apply",
+   "target": "sphinx/writers/manpage.py::NestedInlineTransform.apply",
+   "count": 251,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/manpage.py::ManualPageTranslator.visit_acks",
+   "target": "sphinx/writers/manpage.py::ManualPageTranslator.visit_acks",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/directives/code.py::dedent_lines",
+   "target": "sphinx/directives/code.py::dedent_lines",
+   "count": 10,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/directives/code.py::LiteralInclude.run",
+   "target": "sphinx/directives/code.py::LiteralInclude.run",
+   "count": 10,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::TexinfoTranslator.format_menu_entry",
+   "target": "sphinx/writers/texinfo.py::TexinfoTranslator.format_menu_entry",
+   "count": 355,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::TexinfoTranslator.collect_indices",
+   "target": "sphinx/writers/texinfo.py::TexinfoTranslator.collect_indices",
+   "count": 6,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::TexinfoTranslator.collect_node_names",
+   "target": "sphinx/writers/texinfo.py::TexinfoTranslator.collect_node_names",
+   "count": 350,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::find_subsections",
+   "target": "sphinx/writers/texinfo.py::find_subsections",
+   "count": 10505,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::TexinfoTranslator.collect_footnotes",
+   "target": "sphinx/writers/texinfo.py::TexinfoTranslator.collect_footnotes",
+   "count": 10924,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::TexinfoTranslator.visit_acks",
+   "target": "sphinx/writers/texinfo.py::TexinfoTranslator.visit_acks",
+   "count": 20,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/texinfo.py::smart_capwords",
+   "target": "sphinx/writers/texinfo.py::smart_capwords",
+   "count": 4270,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "sphinx/writers/text.py::TextTranslator._depart_admonition",
+   "target": "sphinx/writers/text.py::TextTranslator._depart_admonition",
+   "count": 20,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  }
+ ],
+ "unmapped_observations_list": [
+  {
+   "source": "sphinx/config.py::Config.__getattr__",
+   "target": "sphinx/config.py::Config.<lambda>",
+   "count": 24386,
+   "reason": "endpoint is not a symbol/file of the static graph (callee)"
+  },
+  {
+   "source": "sphinx/util/display.py::progress_message",
+   "target": "sphinx/util/display.py::progress_message.<generic parameters of __call__>",
+   "count": 1,
+   "reason": "endpoint is not a symbol/file of the static graph (callee)"
+  },
+  {
+   "source": "sphinx/config.py::check_confval_types",
+   "target": "sphinx/config.py::Config.<lambda>",
+   "count": 1536,
+   "reason": "endpoint is not a symbol/file of the static graph (callee)"
+  },
+  {
+   "source": "sphinx/config.py::Config.<lambda>",
+   "target": "sphinx/config.py::Config.__getattr__",
+   "count": 2,
+   "reason": "endpoint is not a symbol/file of the static graph (caller)"
+  }
+ ],
  "top_absent_edges": [
   {
    "source": "sphinx/environment/collectors/toctree.py::TocTreeCollector.assign_figure_numbers",
@@ -180,13 +1006,6 @@
    "why": "other"
   },
   {
-   "source": "sphinx/config.py::Config.__getattr__",
-   "target": "sphinx/config.py::Config.<lambda>",
-   "count": 24386,
-   "oracle_basis": null,
-   "why": "other"
-  },
-  {
    "source": "sphinx/util/inventory.py::InventoryFile.dump",
    "target": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.get_target_uri",
    "count": 23339,
@@ -243,15 +1062,15 @@
    "why": "other"
   },
   {
-   "source": "sphinx/application.py::Sphinx.add_builder",
-   "target": "sphinx/registry.py::SphinxComponentRegistry.add_builder",
+   "source": "sphinx/application.py::Sphinx.add_post_transform",
+   "target": "sphinx/registry.py::SphinxComponentRegistry.add_post_transform",
    "count": 15622,
    "oracle_basis": "type_declared",
    "why": "in_oracle_graph_only"
   },
   {
-   "source": "sphinx/application.py::Sphinx.add_post_transform",
-   "target": "sphinx/registry.py::SphinxComponentRegistry.add_post_transform",
+   "source": "sphinx/application.py::Sphinx.add_builder",
+   "target": "sphinx/registry.py::SphinxComponentRegistry.add_builder",
    "count": 15622,
    "oracle_basis": "type_declared",
    "why": "in_oracle_graph_only"
@@ -325,6 +1144,13 @@
    "count": 8789,
    "oracle_basis": null,
    "why": "other"
+  },
+  {
+   "source": "sphinx/domains/_domains_container.py::_DomainsContainer._from_environment",
+   "target": "sphinx/registry.py::SphinxComponentRegistry.create_domains",
+   "count": 8660,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
   }
  ]
 }

@@ -22,18 +22,30 @@
   "skipped": 63,
   "passed": 2521
  },
+ "test_outcome_note": "Matching outcomes with and without tracing show outcome agreement only: neither complete instrumentation nor fully passing suites.",
  "status": {
   "plain": "exit=0 seconds=41",
   "traced": "exit=0 seconds=162"
  },
  "production_symbols_in_scope": 2048,
  "production_symbols_observed": 1404,
- "observed_production_to_production_edges": 2433,
- "of_which_in_static_resolved": 991,
- "of_which_only_static_candidate": 227,
- "observed_edges_absent_from_static_graph": 1171,
+ "accounting": {
+  "raw_trace_records": 3214,
+  "raw_observed_calls": 4796613,
+  "raw_distinct_pairs": 2433,
+  "excluded_observations": 44,
+  "unmapped_observations": 0,
+  "normalized_unique_edges": 2389,
+  "resolved_matches": 991,
+  "candidate_only": 227,
+  "absent": 1171,
+  "check": "resolved_matches + candidate_only + absent == normalized_unique_edges; normalized + excluded + unmapped == raw_distinct_pairs"
+ },
+ "percentages": {
+  "missing_from_default_resolved_graph": 0.5852,
+  "missing_from_resolved_plus_candidate_hints": 0.4902
+ },
  "absent_but_in_oracle_graph": 256,
- "absent_and_not_in_oracle_graph": 915,
  "processes_started": 9,
  "processes_with_trace": 2,
  "uninstrumented_processes": [
@@ -53,6 +65,273 @@
   "dispatch_to_override_or_same_name_target_present": 32,
   "caller_is_module_level_code": 272
  },
+ "excluded_observations_list": [
+  {
+   "source": "scrapy/item.py::ItemMeta.__new__",
+   "target": "scrapy/item.py::ItemMeta.__new__",
+   "count": 96,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/__init__.py",
+   "target": "scrapy/__init__.py",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/conf.py::closest_scrapy_cfg",
+   "target": "scrapy/utils/conf.py::closest_scrapy_cfg",
+   "count": 54,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/conf.py::arglist_to_dict",
+   "target": "scrapy/utils/conf.py::arglist_to_dict",
+   "count": 6,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/conf.py::build_component_list",
+   "target": "scrapy/utils/conf.py::build_component_list",
+   "count": 8521,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.get_component_priority_dict_with_base",
+   "target": "scrapy/settings/__init__.py::BaseSettings.get_component_priority_dict_with_base",
+   "count": 18063,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/deprecate.py::create_deprecated_class",
+   "target": "scrapy/utils/deprecate.py::create_deprecated_class",
+   "count": 125,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/misc.py::_load_objects",
+   "target": "scrapy/utils/misc.py::_load_objects",
+   "count": 2377,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/squeues.py::_with_mkdir",
+   "target": "scrapy/squeues.py::_with_mkdir",
+   "count": 16,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/squeues.py::_serializable_queue",
+   "target": "scrapy/squeues.py::_serializable_queue",
+   "count": 16,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/squeues.py::_scrapy_serialization_queue",
+   "target": "scrapy/squeues.py::_scrapy_serialization_queue",
+   "count": 70,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/squeues.py::_scrapy_non_serialization_queue",
+   "target": "scrapy/squeues.py::_scrapy_non_serialization_queue",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "target": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "count": 16534,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/asyncgen.py::as_async_generator",
+   "target": "scrapy/utils/asyncgen.py::as_async_generator",
+   "count": 189,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/conf.py::feed_process_params_from_cli",
+   "target": "scrapy/utils/conf.py::feed_process_params_from_cli",
+   "count": 14,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/decorators.py::deprecated",
+   "target": "scrapy/utils/decorators.py::deprecated",
+   "count": 1,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/iterators.py::_body_or_str",
+   "target": "scrapy/utils/iterators.py::_body_or_str",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/log.py::TopLevelFormatter.filter",
+   "target": "scrapy/utils/log.py::TopLevelFormatter.filter",
+   "count": 87620,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/project.py::find_projects",
+   "target": "scrapy/utils/project.py::find_projects",
+   "count": 16,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/python.py::binary_is_text",
+   "target": "scrapy/utils/python.py::binary_is_text",
+   "count": 30898,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/python.py::_looks_like_import_path",
+   "target": "scrapy/utils/python.py::_looks_like_import_path",
+   "count": 385,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/python.py::without_none_values",
+   "target": "scrapy/utils/python.py::without_none_values",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/request.py::fingerprint",
+   "target": "scrapy/utils/request.py::fingerprint",
+   "count": 18,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/request.py::request_to_curl",
+   "target": "scrapy/utils/request.py::request_to_curl",
+   "count": 24,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/url.py::url_is_from_any_domain",
+   "target": "scrapy/utils/url.py::url_is_from_any_domain",
+   "count": 107,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/trackref.py::format_live_refs",
+   "target": "scrapy/utils/trackref.py::format_live_refs",
+   "count": 134,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/url.py::url_has_any_extension",
+   "target": "scrapy/utils/url.py::url_has_any_extension",
+   "count": 6207,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/http/request/form.py::_get_inputs",
+   "target": "scrapy/http/request/form.py::_get_inputs",
+   "count": 246,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/http/request/form.py::_get_clickable",
+   "target": "scrapy/http/request/form.py::_get_clickable",
+   "count": 19,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/spidermiddlewares/base.py::BaseSpiderMiddleware.process_start",
+   "target": "scrapy/spidermiddlewares/base.py::BaseSpiderMiddleware.process_start",
+   "count": 1176,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/linkextractors/__init__.py::_matches",
+   "target": "scrapy/linkextractors/__init__.py::_matches",
+   "count": 24,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/spiders/sitemap.py::SitemapSpider._get_urls_from_sitemapindex",
+   "target": "scrapy/spiders/sitemap.py::SitemapSpider._get_urls_from_sitemapindex",
+   "count": 12,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/downloadermiddlewares/httpcompression.py::HttpCompressionMiddleware._split_encodings",
+   "target": "scrapy/downloadermiddlewares/httpcompression.py::HttpCompressionMiddleware._split_encodings",
+   "count": 118,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/downloadermiddlewares/cookies.py::CookiesMiddleware._debug_set_cookie",
+   "target": "scrapy/downloadermiddlewares/cookies.py::CookiesMiddleware._debug_set_cookie",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/downloadermiddlewares/cookies.py::CookiesMiddleware._debug_cookie",
+   "target": "scrapy/downloadermiddlewares/cookies.py::CookiesMiddleware._debug_cookie",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.maxpriority",
+   "target": "scrapy/settings/__init__.py::BaseSettings.maxpriority",
+   "count": 96,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings._to_dict",
+   "target": "scrapy/settings/__init__.py::BaseSettings._to_dict",
+   "count": 3,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/utils/_ftp.py::ftp_makedirs_cwd",
+   "target": "scrapy/utils/_ftp.py::ftp_makedirs_cwd",
+   "count": 2,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/pqueues.py::ScrapyPriorityQueue.__len__",
+   "target": "scrapy/pqueues.py::ScrapyPriorityQueue.__len__",
+   "count": 403,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/pqueues.py::DownloaderAwarePriorityQueue.__len__",
+   "target": "scrapy/pqueues.py::DownloaderAwarePriorityQueue.__len__",
+   "count": 104,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/extensions/periodic_log.py::PeriodicLog.param_allowed",
+   "target": "scrapy/extensions/periodic_log.py::PeriodicLog.param_allowed",
+   "count": 705,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/extensions/statsmailer.py::StatsMailer.spider_closed",
+   "target": "scrapy/extensions/statsmailer.py::StatsMailer.spider_closed",
+   "count": 6,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/extensions/telnet.py::TelnetConsole.protocol",
+   "target": "scrapy/extensions/telnet.py::TelnetConsole.protocol",
+   "count": 4,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  },
+  {
+   "source": "scrapy/extensions/telnet.py::_get_manhole_class",
+   "target": "scrapy/extensions/telnet.py::_get_manhole_class",
+   "count": 8,
+   "reason": "self edge: recursion, or a nested function projected onto its own enclosing symbol"
+  }
+ ],
+ "unmapped_observations_list": [],
  "top_absent_edges": [
   {
    "source": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
@@ -111,18 +390,18 @@
    "why": "other"
   },
   {
-   "source": "scrapy/crawler.py::Crawler._apply_settings",
-   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
-   "count": 6080,
-   "oracle_basis": null,
-   "why": "implicit_protocol_call_dunder"
-  },
-  {
    "source": "scrapy/extensions/corestats.py::CoreStats.from_crawler",
    "target": "scrapy/signalmanager.py::SignalManager.connect",
    "count": 6080,
    "oracle_basis": "type_declared",
    "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/crawler.py::Crawler._apply_settings",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 6080,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
   },
   {
    "source": "scrapy/http/response/text.py::TextResponse._declared_encoding",
@@ -132,18 +411,18 @@
    "why": "other"
   },
   {
-   "source": "scrapy/utils/decorators.py::_warn_spider_arg",
-   "target": "scrapy/statscollectors.py::StatsCollector.inc_value",
-   "count": 5464,
-   "oracle_basis": null,
-   "why": "other"
-  },
-  {
    "source": "scrapy/statscollectors.py::StatsCollector.inc_value",
    "target": "scrapy/statscollectors.py::StatsCollector.__getattribute__",
    "count": 5464,
    "oracle_basis": null,
    "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "target": "scrapy/statscollectors.py::StatsCollector.inc_value",
+   "count": 5464,
+   "oracle_basis": null,
+   "why": "other"
   },
   {
    "source": "scrapy/crawler.py::Crawler._apply_settings",
@@ -279,13 +558,6 @@
    "why": "other"
   },
   {
-   "source": "scrapy/utils/misc.py::build_from_crawler",
-   "target": "scrapy/extensions/remote_control.py::RemoteControl.from_crawler",
-   "count": 1272,
-   "oracle_basis": null,
-   "why": "other"
-  },
-  {
    "source": "scrapy/extensions/remote_control.py::RemoteControl.from_crawler",
    "target": "scrapy/extensions/remote_control.py::RemoteControl.__init__",
    "count": 1272,
@@ -294,8 +566,8 @@
   },
   {
    "source": "scrapy/utils/misc.py::build_from_crawler",
-   "target": "scrapy/extensions/throttle.py::AutoThrottle.from_crawler",
-   "count": 1253,
+   "target": "scrapy/extensions/remote_control.py::RemoteControl.from_crawler",
+   "count": 1272,
    "oracle_basis": null,
    "why": "other"
   },
@@ -305,6 +577,13 @@
    "count": 1253,
    "oracle_basis": null,
    "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/utils/misc.py::build_from_crawler",
+   "target": "scrapy/extensions/throttle.py::AutoThrottle.from_crawler",
+   "count": 1253,
+   "oracle_basis": null,
+   "why": "other"
   },
   {
    "source": "scrapy/middleware.py::MiddlewareManager.__init__",
