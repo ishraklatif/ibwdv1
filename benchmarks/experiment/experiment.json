@@ -1,0 +1,19 @@
+{
+ "experiment_id": "DRAFT",
+ "status": "draft (not frozen)",
+ "model": "claude-sonnet-5",
+ "effort": null,
+ "effort_note": "flag omitted: CLI default effort, as in the earlier startup-usage measurement",
+ "claude_bin": "claude",
+ "cli_version": "2.1.278",
+ "max_budget_usd_per_session": 1.0,
+ "timeout_s_per_session": 600,
+ "max_infra_retries": 2,
+ "repeats": 3,
+ "seed": "sprint3-ab-v1",
+ "tasks_index": "benchmarks/experiment/tasks_index.json",
+ "conditions": [
+  "baseline",
+  "ibwd"
+ ]
+}
