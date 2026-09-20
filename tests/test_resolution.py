@@ -668,3 +668,157 @@ def test_references_are_returned_by_callers_and_labelled(tmp_path: Path):
         os.chdir(old)
 
     assert [(r["name"], r["relation"]) for r in data] == [("useIt", "REFERENCES")]
+
+
+def test_fuzzy_tier_never_matches_single_word_or_underscore_only_differences(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "defs.py": (
+                "class Warning:\n    pass\n\n"
+                "class Holder:\n"
+                "    def __get__(self):\n        return 1\n"
+                "    def _update(self):\n        return 2\n"
+            ),
+            "use.py": (
+                "def go(logger, d, cache):\n"
+                "    logger.warning('x')\n"   # not the class Warning
+                "    d.get('k')\n"            # not Holder.__get__
+                "    cache.update({})\n"      # not Holder._update
+            ),
+        },
+    )
+    run_scan(tmp_path)
+
+    assert not any(src == "use.py::go" for src, _ in _edges(tmp_path, "CALLS"))
+
+
+def test_builtin_looking_method_names_are_not_matched_by_name_alone(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "registry.py": (
+                "class Registry:\n"
+                "    def items(self):\n        return []\n"
+                "    def get(self, key):\n        return key\n"
+                "    def own(self):\n        return self.items()\n"
+            ),
+            "use.py": (
+                "def go(d, registry):\n"
+                "    d.items()\n"           # a dict: must NOT link to Registry.items
+                "    registry.get('k')\n"   # receiver is named like the class: suffix tier may link
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert ("use.py::go", "registry.py::Registry.items") not in calls
+    assert calls[("use.py::go", "registry.py::Registry.get")] == 0.55  # suffix tier still works
+    assert calls[("registry.py::Registry.own", "registry.py::Registry.items")] == 0.90  # self.items() is unaffected
+
+
+def test_starred_call_resolves_to_a_calls_edge(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "m.py": (
+                "def _ancestors(env, name):\n    return []\n\n"
+                "class TocTree:\n"
+                "    def get(self, name):\n"
+                "        return [*_ancestors(self.env, name)]\n"
+            )
+        },
+    )
+    run_scan(tmp_path)
+
+    assert _edges(tmp_path, "CALLS")[("m.py::TocTree.get", "m.py::_ancestors")] == 0.90
+    assert _edges(tmp_path, "REFERENCES") == {}
+
+
+def test_function_local_import_does_not_shadow_a_module_level_function(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "other.py": "def parse(x):\n    return x\n",
+            "m.py": (
+                "def parse(x):\n"
+                "    from other import parse\n"   # local: only names inside this function
+                "    return parse(x)\n"
+                "\n"
+                "class D:\n"
+                "    def run(self):\n"
+                "        return parse(1)\n"        # outside the function: the module-level `parse` in m.py
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("m.py::D.run", "m.py::parse")] == 0.90
+    assert calls[("m.py::parse", "other.py::parse")] == 0.95  # inside the function the local import wins
+    assert ("m.py::D.run", "other.py::parse") not in calls
+
+
+def test_dynamic_imports_and_lazy_are_followed(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "mocks/db.ts": "export const initializeDb = async () => 1;\n",
+            "mocks/other/db.ts": "export const initializeDb = async () => 2;\n",  # same name elsewhere: name alone is ambiguous
+            "mocks/index.ts": (
+                "export const enable = async () => {\n"
+                "  const { initializeDb } = await import('./db');\n"
+                "  await initializeDb();\n"
+                "};\n"
+            ),
+            "routes/Page.tsx": "export default function Page() { return null; }\n",
+            "routes/App.tsx": (
+                "import { lazy } from 'react';\n"
+                "const Lazy = lazy(() => import('./Page'));\n"
+                "export function App() { return (<Lazy />); }\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("mocks/index.ts::enable", "mocks/db.ts::initializeDb")] == 0.95
+    assert calls[("routes/App.tsx::App", "routes/Page.tsx::Page")] == 0.95
+
+
+def test_imports_through_barrel_files_reach_the_real_definition(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            # two packages define `capitalize`; only the barrel import tells them apart
+            "a/utils/capitalize.ts": "export const capitalize = (s: string) => s;\n",
+            "a/utils/isValid.ts": "export function isValid(s: string) { return !!s; }\n",
+            "a/utils/index.ts": "export * from './capitalize';\nexport { isValid as valid } from './isValid';\n",
+            "a/main.ts": (
+                "import { capitalize } from './utils';\n"
+                "import { valid } from './utils/index';\n"
+                "export function run() { return capitalize('x') && valid('y'); }\n"
+            ),
+            "b/utils/capitalize.ts": "export const capitalize = (s: string) => s.toUpperCase();\n",
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("a/main.ts::run", "a/utils/capitalize.ts::capitalize")] == 0.95
+    assert calls[("a/main.ts::run", "a/utils/isValid.ts::isValid")] == 0.95  # renamed on re-export (valid -> isValid)
+    assert ("a/main.ts::run", "b/utils/capitalize.ts::capitalize") not in calls
+
+
+def test_reexport_cycles_terminate(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "x/a.ts": "export * from './b';\n",
+            "x/b.ts": "export * from './a';\n",
+            "x/use.ts": "import { nothing } from './a';\nexport function f() { return nothing(); }\n",
+        },
+    )
+    run_scan(tmp_path)  # must not hang or recurse forever
+    assert _edges(tmp_path, "CALLS") == {}

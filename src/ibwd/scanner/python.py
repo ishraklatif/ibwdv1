@@ -94,8 +94,19 @@ def _text(node: Node) -> str:
     return node.text.decode("utf-8")
 
 
+def _enclosing_function_scope(node: Node) -> tuple[int, int] | None:
+    """Line range of the function a statement is nested in; None at module/class level."""
+    parent = node.parent
+    while parent is not None:
+        if parent.type == "function_definition":
+            return parent.start_point.row + 1, parent.end_point.row + 1
+        parent = parent.parent
+    return None
+
+
 def _python_import(node: Node, refs: FileReferences) -> None:
     line = node.start_point.row + 1
+    scope = _enclosing_function_scope(node)
     for child in node.children_by_field_name("name"):
         if child.type == "aliased_import":
             module = child.child_by_field_name("name")
@@ -103,11 +114,11 @@ def _python_import(node: Node, refs: FileReferences) -> None:
             if module is None:
                 continue
             local = _text(alias) if alias else _text(module)
-            refs.imports.append(ImportRef(_text(module), 0, [Binding(local)], line))
+            refs.imports.append(ImportRef(_text(module), 0, [Binding(local)], line, scope))
         elif child.type == "dotted_name":
             # `import a.b.c` binds the dotted path itself, so a later
             # `a.b.c.func()` receiver matches this binding verbatim.
-            refs.imports.append(ImportRef(_text(child), 0, [Binding(_text(child))], line))
+            refs.imports.append(ImportRef(_text(child), 0, [Binding(_text(child))], line, scope))
 
 
 def _python_import_from(node: Node, refs: FileReferences) -> None:
@@ -136,7 +147,7 @@ def _python_import_from(node: Node, refs: FileReferences) -> None:
         elif child.type == "dotted_name":
             bindings.append(Binding(_text(child), _text(child)))
     # `from m import *` has no bindings but is still a file->file import.
-    refs.imports.append(ImportRef(spec, level, bindings, node.start_point.row + 1))
+    refs.imports.append(ImportRef(spec, level, bindings, node.start_point.row + 1, _enclosing_function_scope(node)))
 
 
 def _python_call(node: Node, refs: FileReferences) -> None:
@@ -144,6 +155,10 @@ def _python_call(node: Node, refs: FileReferences) -> None:
     if function is None:
         return
     line = node.start_point.row + 1
+    # tree-sitter-python quirk: `[*g(x)]` (a lone starred list element) parses as call(list_splat(g), (x)),
+    # i.e. `(*g)(x)`. Treat the splat's operand as the callee.
+    if function.type == "list_splat" and function.named_child_count == 1:
+        function = function.named_children[0]
     if function.type == "identifier":
         refs.calls.append(CallRef(_text(function), None, line))
     elif function.type == "attribute":
@@ -155,6 +170,8 @@ def _python_call(node: Node, refs: FileReferences) -> None:
 
 def _python_receiver(obj: Node) -> str:
     """`super()` / `super(Cls, self)` -> "super"; otherwise the usual cleaned receiver text."""
+    if obj.type == "list_splat" and obj.named_child_count == 1:  # `[*self.f(x)]` misparsed as (*self).f(x)
+        obj = obj.named_children[0]
     if obj.type == "call":
         function = obj.child_by_field_name("function")
         if function is not None and function.type == "identifier" and _text(function) == "super":

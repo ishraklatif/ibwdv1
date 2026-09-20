@@ -179,3 +179,60 @@ def test_javascript_calls_tags_bindings_and_shadowed_names_are_not_value_uses():
     )
     names = {n for n, _ in values}
     assert names.isdisjoint({"helper", "Card", "param", "destructured", "local", "imp", "A"})
+
+
+def test_starred_single_element_list_call_is_a_call_not_a_value():
+    # tree-sitter-python parses `[*g(x)]` as call(list_splat(g), (x)); the callee must still be `g`
+    refs = extract_python_references(b"def f(x):\n    return [*g(x, 1)]\n")
+    assert {(c.name, c.receiver) for c in refs.calls} == {("g", None)}
+    assert ("g", None) not in {(c.name, c.receiver) for c in refs.value_refs}
+
+    refs = extract_python_references(b"class K:\n    def f(self):\n        return [*self.helper(1)]\n")
+    assert {(c.name, c.receiver) for c in refs.calls} == {("helper", "self")}
+
+
+def test_function_local_imports_carry_their_function_scope():
+    refs = extract_python_references(
+        b"from a import top\n"
+        b"def f():\n"
+        b"    from b import inner\n"
+        b"    return inner()\n"
+    )
+    scopes = {i.spec: i.scope for i in refs.imports}
+    assert scopes["a"] is None
+    assert scopes["b"] == (2, 4)
+
+
+def test_dynamic_import_lazy_and_reexport_extraction():
+    refs = extract_javascript_references(
+        b"export * from './all';\n"
+        b"export { a, b as c } from './named';\n"
+        b"export { default as Zed } from './z';\n"
+        b"const Page = lazy(() => import('./Page'));\n"
+        b"async function f() {\n"
+        b"  const { init } = await import('./db');\n"
+        b"  const ns = await import('./ns');\n"
+        b"}\n",
+        dialect="tsx",
+    )
+    by_spec = {i.spec: i for i in refs.imports}
+
+    assert by_spec["./Page"].bindings == [Binding("Page", "default")] and by_spec["./Page"].scope is None
+    assert by_spec["./db"].bindings == [Binding("init", "init")] and by_spec["./db"].scope is not None  # local to f
+    assert by_spec["./ns"].bindings == [Binding("ns")]
+    assert [(r.spec, r.names) for r in refs.reexports] == [
+        ("./all", None),
+        ("./named", [("a", "a"), ("b", "c")]),
+        ("./z", [("default", "Zed")]),
+    ]
+
+
+def test_typeof_in_a_type_position_is_not_a_value_use():
+    values = _js_values(
+        "export const getOptions = (id: string) => id;\n"
+        "type Options = { queryConfig?: QueryConfig<typeof getOptions> };\n"
+        "function useIt(x: ReturnType<typeof getOptions>) { return x; }\n"
+        "const runtime = register(getOptions);\n"
+    )
+    assert ("getOptions", None) in values  # the genuine runtime value use (register(getOptions))
+    assert sum(1 for v in values if v == ("getOptions", None)) == 1  # ...and only that one

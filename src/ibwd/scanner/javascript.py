@@ -12,6 +12,7 @@ from ibwd.scanner.references import (
     CallRef,
     FileReferences,
     ImportRef,
+    ReExport,
     clean_receiver,
 )
 from ibwd.scanner.symbols import SymbolInfo
@@ -173,11 +174,43 @@ def _js_commonjs_export(node: Node, refs: FileReferences) -> None:
             refs.default_export = name
 
 
+_JS_FUNCTION_NODES = (
+    "function_declaration", "function_expression", "generator_function_declaration",
+    "generator_function", "arrow_function", "method_definition",
+)
+
+
+def _js_function_scope(node: Node) -> tuple[int, int] | None:
+    parent = node.parent
+    while parent is not None:
+        if parent.type in _JS_FUNCTION_NODES:
+            return parent.start_point.row + 1, parent.end_point.row + 1
+        parent = parent.parent
+    return None
+
+
 def _js_reexport(node: Node, refs: FileReferences) -> None:
-    """`export { a } from './m'` / `export * from './m'` — a file->file import with no local bindings."""
+    """`export * from './m'` / `export { a, b as c } from './m'`: a file->file import, and a re-export map
+    so an import of `a` through this barrel can be followed to where `a` is really defined."""
     source = node.child_by_field_name("source")
-    if source is not None:
-        refs.imports.append(ImportRef(_string_value(source), 0, [], node.start_point.row + 1))
+    if source is None:
+        return
+    spec = _string_value(source)
+    refs.imports.append(ImportRef(spec, 0, [], node.start_point.row + 1))
+    names: list[tuple[str, str]] | None = None
+    for child in node.children:
+        if child.type == "export_clause":
+            names = names or []
+            for part in child.children:
+                if part.type != "export_specifier":
+                    continue
+                name = part.child_by_field_name("name")
+                alias = part.child_by_field_name("alias")
+                if name is not None:
+                    names.append((_text(name), _text(alias) if alias else _text(name)))
+        elif child.type == "namespace_export":  # export * as ns from './m' — a namespace object, not names
+            return
+    refs.reexports.append(ReExport(spec, names))
 
 
 def _require_spec(node: Node | None) -> str | None:
@@ -193,10 +226,52 @@ def _require_spec(node: Node | None) -> str | None:
     return _string_value(args.named_children[0])
 
 
+def _dynamic_import_spec(node: Node | None) -> str | None:
+    """The './x' in `import('./x')`, looking through `await`."""
+    if node is not None and node.type == "await_expression" and node.named_child_count:
+        node = node.named_children[0]
+    if node is None or node.type != "call_expression":
+        return None
+    function = node.child_by_field_name("function")
+    args = node.child_by_field_name("arguments")
+    if function is None or function.type != "import":
+        return None
+    if args is None or args.named_child_count == 0 or args.named_children[0].type != "string":
+        return None
+    return _string_value(args.named_children[0])
+
+
+def _lazy_import_spec(node: Node | None) -> str | None:
+    """`lazy(() => import('./X'))` / `React.lazy(() => import('./X'))` -> './X'."""
+    if node is None or node.type != "call_expression":
+        return None
+    function = node.child_by_field_name("function")
+    if function is None or _text(function).split(".")[-1] != "lazy":
+        return None
+    args = node.child_by_field_name("arguments")
+    if args is None or args.named_child_count == 0:
+        return None
+    loader = args.named_children[0]
+    if loader.type not in ("arrow_function", "function_expression"):
+        return None
+    body = loader.child_by_field_name("body")
+    if body is not None and body.type == "statement_block":
+        for stmt in body.named_children:
+            if stmt.type == "return_statement" and stmt.named_child_count:
+                return _dynamic_import_spec(stmt.named_children[0])
+        return None
+    return _dynamic_import_spec(body)
+
+
 def _js_require(node: Node, refs: FileReferences) -> None:
-    """`const x = require('./m')` / `const { a, b: c } = require('./m')`."""
-    spec = _require_spec(node.child_by_field_name("value"))
+    """`const x = require('./m')`, `const { a, b: c } = require('./m')`, `await import('./m')`, `lazy(() => import('./X'))`."""
+    value = node.child_by_field_name("value")
     target = node.child_by_field_name("name")
+    lazy_spec = _lazy_import_spec(value)
+    if lazy_spec is not None and target is not None and target.type == "identifier":
+        refs.imports.append(ImportRef(lazy_spec, 0, [Binding(_text(target), "default")], node.start_point.row + 1, _js_function_scope(node)))
+        return
+    spec = _require_spec(value) or _dynamic_import_spec(value)
     if spec is None or target is None:
         return
     bindings: list[Binding] = []
@@ -211,7 +286,7 @@ def _js_require(node: Node, refs: FileReferences) -> None:
                 value = prop.child_by_field_name("value")
                 if key is not None and value is not None and value.type == "identifier":
                     bindings.append(Binding(_text(value), _text(key)))
-    refs.imports.append(ImportRef(spec, 0, bindings, node.start_point.row + 1))
+    refs.imports.append(ImportRef(spec, 0, bindings, node.start_point.row + 1, _js_function_scope(node)))
 
 
 def _js_callee(function: Node | None, line: int, refs: FileReferences) -> None:

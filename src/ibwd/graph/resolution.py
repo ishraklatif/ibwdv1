@@ -1,4 +1,4 @@
-"""Turn extracted references into IMPORTS / CALLS / INHERITS edges.
+"""Turn extracted references into IMPORTS / CALLS / INHERITS / REFERENCES edges.
 
 CALLS (and INHERITS) resolution is a 5-tier cascade — the first tier that
 yields a match wins, and the tier's confidence is stored on the edge:
@@ -7,7 +7,7 @@ yields a match wins, and the tier's confidence is stored on the edge:
     2. same-module match    0.90   defined in the same file / same class (self.x)
     3. unique-name match    0.75   exactly one symbol of that name in the repo
     4. suffix match         0.55   name matches and the receiver looks like its class/module
-    5. fuzzy match          0.35   name matches ignoring case/underscores, exactly one hit
+    5. fuzzy match          0.35   same multi-word name in another style (fetch_data / fetchData), exactly one hit
 
 Between tiers 2 and 3, `self.x()` / `this.x()` that is not on the calling class is looked up on its
 resolved base classes, and `super().x()` on the bases only (0.85).
@@ -21,6 +21,7 @@ than guessed.
 from __future__ import annotations
 
 import sqlite3
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -38,7 +39,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 7
+EDGE_BUILD_VERSION = 11
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -50,6 +51,30 @@ CONF_FUZZY = 0.35
 CONF_INHERITED = 0.85  # self.x()/super().x() found on a base class (between same-module and unique-name)
 
 _SELF_RECEIVERS = {"self", "cls", "this"}
+
+# Method names that builtins and the standard library define everywhere. `d.items()` or `s.split()` on an
+# unknown receiver is overwhelmingly the builtin, so a repo method that merely shares the name must not
+# win the unique-name / fuzzy tiers (measured on real repos: 100+ false callers each for pop, findall,
+# setdefault, items). The suffix tier (receiver named like the class) can still resolve them.
+_COMMON_METHODS = {
+    "python": frozenset({
+        "keys", "values", "items", "get", "pop", "popitem", "setdefault", "update", "clear", "copy", "fromkeys",
+        "append", "extend", "insert", "remove", "index", "count", "sort", "reverse",
+        "add", "discard", "union", "intersection", "difference", "issubset", "issuperset",
+        "join", "split", "rsplit", "strip", "lstrip", "rstrip", "startswith", "endswith", "replace", "format",
+        "encode", "decode", "lower", "upper", "find", "rfind", "splitlines", "partition", "title", "isdigit",
+        "read", "write", "close", "open", "readline", "readlines", "flush", "seek", "tell",
+        "match", "search", "findall", "finditer", "sub", "subn", "compile", "group", "groups", "fullmatch",
+        "put", "get_nowait", "put_nowait", "acquire", "release", "wait", "notify", "start", "stop", "run",
+    }),
+    "javascript": frozenset({
+        "map", "filter", "reduce", "forEach", "find", "findIndex", "some", "every", "includes", "indexOf",
+        "push", "pop", "shift", "unshift", "slice", "splice", "concat", "join", "split", "replace", "trim",
+        "toString", "keys", "values", "entries", "then", "catch", "finally", "bind", "call", "apply",
+        "has", "get", "set", "add", "delete", "clear", "test", "exec", "match", "startsWith", "endsWith",
+        "toLowerCase", "toUpperCase", "sort", "reverse", "flat", "flatMap", "fill", "assign", "parse", "stringify",
+    }),
+}
 _CALL_KINDS = frozenset({"Function", "Method", "Class"})
 _CLASS_ONLY = frozenset({"Class"})
 
@@ -84,6 +109,23 @@ def _norm(name: str) -> str:
     return name.lower().replace("_", "")
 
 
+_WORD = re.compile(r"[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+")
+
+
+def _name_shape(name: str) -> tuple[tuple[str, ...], int, int] | None:
+    """(lowercase word tokens, leading underscores, trailing underscores), or None if too generic to fuzzy-match.
+
+    `fetch_data` and `fetchData` share the shape (("fetch", "data"), 0, 0). A single-word name (`warning`,
+    `get`, `update`) is never fuzzy-matched — case-only or underscore-only differences there are different
+    symbols (`logger.warning()` is not the class `Warning`; `d.get()` is not `__get__`).
+    """
+    stripped = name.strip("_")
+    tokens = tuple(w.lower() for w in _WORD.findall(stripped))
+    if len(tokens) < 2:
+        return None
+    return tokens, len(name) - len(name.lstrip("_")), len(name) - len(name.rstrip("_"))
+
+
 def _is_dunder(name: str) -> bool:
     return name.startswith("__") and name.endswith("__")
 
@@ -92,16 +134,38 @@ class SymbolIndex:
     def __init__(self, syms: list[Sym]):
         self.by_name: dict[str, list[Sym]] = defaultdict(list)
         self.by_norm: dict[str, list[Sym]] = defaultdict(list)
+        self.by_shape: dict[tuple, list[Sym]] = defaultdict(list)
         self.by_file: dict[str, list[Sym]] = defaultdict(list)
         self.by_qual: dict[tuple[str, str], Sym] = {}
         for sym in syms:
             self.by_name[sym.name].append(sym)
             self.by_norm[_norm(sym.name)].append(sym)
+            shape = _name_shape(sym.name)
+            if shape is not None:
+                self.by_shape[shape].append(sym)
             self.by_file[sym.file_path].append(sym)
             self.by_qual[(sym.file_path, sym.qualname)] = sym
 
     def top_level(self, file_path: str, name: str) -> Sym | None:
         return self.by_qual.get((file_path, name))
+
+    # file -> [(target file, [(imported, exported), ...] or None for `export *`)]; set by the rebuild
+    reexports: dict[str, list[tuple[str, list[tuple[str, str]] | None]]] = {}
+
+    def exported(self, file_path: str, name: str, _seen: frozenset[str] = frozenset()) -> Sym | None:
+        """`name` as importable from `file_path`: defined there, or re-exported (barrel files) from elsewhere."""
+        sym = self.top_level(file_path, name)
+        if sym is not None or file_path in _seen or len(_seen) > 8:
+            return sym
+        seen = _seen | {file_path}
+        for target, names in self.reexports.get(file_path, ()):
+            if names is None:  # export * from './x'
+                found = self.exported(target, name, seen)
+            else:
+                found = next((self.exported(target, imported, seen) for imported, exp in names if exp == name), None)
+            if found is not None:
+                return found
+        return None
 
     def innermost(self, file_path: str, line: int, name: str | None = None, node_type: str | None = None) -> Sym | None:
         best: Sym | None = None
@@ -183,7 +247,7 @@ def resolve_ref(
                 return None
             if binding.file and binding.member is not None:
                 member = name if binding.member == "default" else binding.member
-                sym = index.top_level(binding.file, member) or index.top_level(binding.file, name)
+                sym = index.exported(binding.file, member) or index.exported(binding.file, name)
                 if ok(sym):
                     return sym, CONF_IMPORT_MAP
     else:
@@ -192,13 +256,13 @@ def resolve_ref(
             if binding.external:
                 return None
             if binding.file and binding.member is None:  # mod.func()
-                sym = index.top_level(binding.file, name)
+                sym = index.exported(binding.file, name)
                 if ok(sym):
                     return sym, CONF_IMPORT_MAP
             elif binding.file and binding.member is not None:  # ImportedClass.method()
-                cls = index.top_level(binding.file, binding.member)
+                cls = index.exported(binding.file, binding.member)
                 if cls is not None and cls.node_type == "Class":
-                    sym = index.by_qual.get((binding.file, f"{cls.qualname}.{name}"))
+                    sym = index.by_qual.get((cls.file_path, f"{cls.qualname}.{name}"))
                     if ok(sym):
                         return sym, CONF_IMPORT_MAP
         if root_binding is not None and root_binding.external:
@@ -242,10 +306,19 @@ def resolve_ref(
         # `@mcp.tool()` from linking to an unrelated top-level `def tool()`.
         return not (sym.node_type == "Function" and root_binding is None)
 
+    # A builtin-looking method name on a non-self receiver: don't guess by name alone (tiers 3 and 5).
+    generic_method = (
+        receiver is not None
+        and receiver not in _SELF_RECEIVERS
+        and receiver != "super"
+        and name in _COMMON_METHODS.get(language_of(file_path) or "", ())
+    )
+
     # -- Tier 3: unique name in repo ------------------------------------
-    sym = _unique([s for s in index.by_name.get(name, ()) if eligible(s)])
-    if sym is not None:
-        return sym, CONF_UNIQUE_NAME
+    if not generic_method:
+        sym = _unique([s for s in index.by_name.get(name, ()) if eligible(s)])
+        if sym is not None:
+            return sym, CONF_UNIQUE_NAME
 
     # -- Tier 4: suffix (receiver resembles the class / module name) -----
     if receiver is not None and receiver != UNKNOWN_RECEIVER:
@@ -254,10 +327,12 @@ def resolve_ref(
         if sym is not None:
             return sym, CONF_SUFFIX
 
-    # -- Tier 5: fuzzy (case / underscore-insensitive) -------------------
-    sym = _unique([s for s in index.by_norm.get(_norm(name), ()) if eligible(s) and s.name != name])
-    if sym is not None:
-        return sym, CONF_FUZZY
+    # -- Tier 5: fuzzy (same multi-word name in a different naming style) --
+    shape = None if generic_method else _name_shape(name)
+    if shape is not None:
+        sym = _unique([s for s in index.by_shape.get(shape, ()) if eligible(s) and s.name != name])
+        if sym is not None:
+            return sym, CONF_FUZZY
 
     return None
 
@@ -269,43 +344,70 @@ def _resolve_imports(
     index: SymbolIndex,
     add_import_edge,
     default_exports: dict[str, str] | None = None,
-) -> dict[str, ResolvedBinding]:
-    """Resolve a file's imports: emit IMPORTS edges, return its local-name bindings."""
+) -> tuple[dict[str, ResolvedBinding], list[tuple[tuple[int, int], dict[str, ResolvedBinding]]]]:
+    """Resolve a file's imports: emit IMPORTS edges, return (file-level bindings, function-local bindings).
+
+    A function-local import only binds its names inside that function; treating it as file-wide made it
+    shadow a same-named module-level function everywhere (seen in Sphinx).
+    """
     bindings: dict[str, ResolvedBinding] = {}
+    local: dict[tuple[int, int], dict[str, ResolvedBinding]] = {}
     is_python = language_of(path) == "python"
 
     for imp in imports:
         target, conf = resolver.resolve(imp.spec, imp.level, path)
         if target and target != path:
             add_import_edge(target, conf)
+        into = local.setdefault(imp.scope, {}) if imp.scope else bindings
 
         for binding in imp.bindings:
             if not is_python:
                 member = binding.member
                 if member == "default" and target and default_exports and target in default_exports:
                     member = default_exports[target]  # `import Card from './Bar'` -> whatever Bar exports by default
-                bindings[binding.local] = ResolvedBinding(target, member, external=target is None)
+                into[binding.local] = ResolvedBinding(target, member, external=target is None)
                 continue
 
             if binding.member is None:  # import a.b [as c]
-                bindings[binding.local] = ResolvedBinding(target, None, external=target is None)
+                into[binding.local] = ResolvedBinding(target, None, external=target is None)
                 continue
 
             # from m import n: n may be a symbol in m or a submodule m.n
             sub_spec = f"{imp.spec}.{binding.member}" if imp.spec else binding.member
             sub, sub_conf = resolver.resolve(sub_spec, imp.level, path)
             if target and index.top_level(target, binding.member) is not None:
-                bindings[binding.local] = ResolvedBinding(target, binding.member)
+                into[binding.local] = ResolvedBinding(target, binding.member)
             elif sub:
                 if sub != path:
                     add_import_edge(sub, sub_conf)
-                bindings[binding.local] = ResolvedBinding(sub, None)
+                into[binding.local] = ResolvedBinding(sub, None)
             elif target:
-                bindings[binding.local] = ResolvedBinding(target, binding.member)
+                into[binding.local] = ResolvedBinding(target, binding.member)
             else:
-                bindings[binding.local] = ResolvedBinding(None, binding.member, external=True)
+                into[binding.local] = ResolvedBinding(None, binding.member, external=True)
 
-    return bindings
+    return bindings, sorted(local.items(), key=lambda item: item[0][1] - item[0][0], reverse=True)
+
+
+class _BindingViews:
+    """Effective import bindings at a given line: file-level ones, overridden by any function-local
+    imports whose function contains that line (innermost wins)."""
+
+    def __init__(self, file_level: dict[str, ResolvedBinding], local: list):
+        self.file_level, self.local, self._cache = file_level, local, {}
+
+    def at(self, line: int) -> dict[str, ResolvedBinding]:
+        active = tuple(scope for scope, _ in self.local if scope[0] <= line <= scope[1])
+        if not active:
+            return self.file_level
+        view = self._cache.get(active)
+        if view is None:
+            view = dict(self.file_level)
+            for scope, names in self.local:  # outermost first, so the innermost overrides
+                if scope in active:
+                    view.update(names)
+            self._cache[active] = view
+        return view
 
 
 def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[str, int]:
@@ -371,18 +473,26 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
 
     default_exports = {path: refs.default_export for path, refs in parsed.items() if refs.default_export}
 
+    # Barrel files: `export * from './x'` / `export { a } from './x'`, so imports through them reach the real symbol.
+    index.reexports = {}
+    for path, refs in parsed.items():
+        for reexport in refs.reexports:
+            target, _ = resolver.resolve(reexport.spec, 0, path)
+            if target and target != path:
+                index.reexports.setdefault(path, []).append((target, reexport.names))
+
     # Pass 1: imports (IMPORTS edges + each file's local-name bindings)
-    bindings_by_file: dict[str, dict[str, ResolvedBinding]] = {}
+    bindings_by_file: dict[str, _BindingViews] = {}
     for path, refs in parsed.items():
         file_id = file_ids[path]
-        bindings_by_file[path] = _resolve_imports(
+        bindings_by_file[path] = _BindingViews(*_resolve_imports(
             path,
             refs.imports,
             resolver,
             index,
             lambda target, conf, file_id=file_id: add_edge(file_id, file_ids[target], "IMPORTS", conf),
             default_exports,
-        )
+        ))
 
     # Pass 2: inheritance, before any calls, so self.x()/super().x() can walk to base classes
     bases_of: dict[int, list[Sym]] = defaultdict(list)
@@ -396,7 +506,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 base.receiver,
                 file_path=path,
                 owner_qualname=None,
-                bindings=bindings_by_file[path],
+                bindings=bindings_by_file[path].at(base.class_line),
                 index=index,
                 kinds=_CLASS_ONLY,
             )
@@ -414,7 +524,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 call.receiver,
                 file_path=path,
                 owner_qualname=owner.qualname if owner else None,
-                bindings=bindings_by_file[path],
+                bindings=bindings_by_file[path].at(call.line),
                 index=index,
                 bases_of=bases_of,
             )
@@ -430,7 +540,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
                 ref.receiver,
                 file_path=path,
                 owner_qualname=owner.qualname if owner else None,
-                bindings=bindings_by_file[path],
+                bindings=bindings_by_file[path].at(ref.line),
                 index=index,
                 bases_of=bases_of,
                 value_mode=True,

@@ -110,6 +110,11 @@ def _py_is_value_use(node: Node) -> bool:
         return False
     if t == "call" and f == "function":
         return False
+    if t == "list_splat" and parent.parent is not None and (
+        (parent.parent.type == "call" and _field_of(parent) == "function")
+        or (parent.parent.type == "attribute" and _field_of(parent) == "object")
+    ):
+        return False  # `[*g(x)]` / `[*self.f(x)]` misparsed as (*g)(x) / (*self).f(x): part of a callee, not a value
     if t == "keyword_argument" and f == "name":
         return False
     if t in _PY_PARAM_PARENTS and f != "value":
@@ -187,7 +192,8 @@ _JS_FUNCTION_SCOPES = (
     "function_declaration", "function_expression", "generator_function_declaration",
     "generator_function", "arrow_function", "method_definition",
 )
-_JS_SKIP_SUBTREES = {"import_statement", "export_specifier", "export_clause"}
+# `typeof fn` inside a type (type_query) names the function only as a type, never at runtime.
+_JS_SKIP_SUBTREES = {"import_statement", "export_specifier", "export_clause", "type_query"}
 _JS_PATTERN_LEAVES = ("identifier", "shorthand_property_identifier_pattern")
 
 

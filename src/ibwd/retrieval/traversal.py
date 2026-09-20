@@ -1,4 +1,4 @@
-"""Graph traversal over CALLS / IMPORTS / INHERITS edges.
+"""Graph traversal over CALLS / IMPORTS / INHERITS / REFERENCES edges.
 
 callers_of / dependents_of use recursive CTEs (unweighted BFS-style expansion
 with a depth cap); find_path builds the relevant subgraph in memory with
@@ -94,12 +94,12 @@ def _reach(conn: sqlite3.Connection, node_id: int, depth: int, incoming: bool) -
 
 
 def callers_of(conn: sqlite3.Connection, node_id: int, depth: int = 1) -> list[Reach]:
-    """Everything that calls / imports / subclasses node_id, out to `depth` hops."""
+    """Everything that calls / imports / subclasses / references node_id, out to `depth` hops."""
     return _reach(conn, node_id, depth, incoming=True)
 
 
 def dependents_of(conn: sqlite3.Connection, node_id: int, depth: int = 1) -> list[Reach]:
-    """Everything node_id calls / imports / inherits from, out to `depth` hops."""
+    """Everything node_id calls / imports / inherits from / references, out to `depth` hops."""
     return _reach(conn, node_id, depth, incoming=False)
 
 

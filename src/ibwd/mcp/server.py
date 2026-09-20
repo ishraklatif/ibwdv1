@@ -137,7 +137,7 @@ def _reach_tool(direction, symbol: str, depth: int, file: str | None) -> list[di
 
 @mcp.tool()
 def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None) -> list[dict]:
-    """What calls / imports / subclasses a symbol (or file), out to `depth` hops.
+    """What calls / imports / subclasses / references a symbol (or file), out to `depth` hops.
 
     Prefer this over manually Grep-tracing call sites. `symbol` is a
     class/function/method name (exact match first, then case-insensitive

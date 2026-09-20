@@ -1,7 +1,7 @@
 """Shared reference types (imports / calls / base classes) + language dispatch.
 
 Sprint 3 extracts *unresolved* references per file with tree-sitter; turning
-them into graph edges (IMPORTS / CALLS / INHERITS) is graph/resolution.py's job.
+them into graph edges (IMPORTS / CALLS / INHERITS / REFERENCES) is graph/resolution.py's job.
 """
 
 from __future__ import annotations
@@ -43,6 +43,17 @@ class ImportRef:
     level: int = 0  # Python relative-import depth (0 = absolute)
     bindings: list[Binding] = field(default_factory=list)
     line: int = 0
+    # (start_line, end_line) of the function this import sits in, or None for a file-level import.
+    # A function-local import only binds names inside that function.
+    scope: tuple[int, int] | None = None
+
+
+@dataclass
+class ReExport:
+    """`export * from './x'` (names=None) or `export { a, b as c } from './x'` (names = [(imported, exported)])."""
+
+    spec: str
+    names: list[tuple[str, str]] | None = None
 
 
 @dataclass
@@ -67,6 +78,7 @@ class FileReferences:
     bases: list[BaseRef] = field(default_factory=list)
     # A function used without being called (`useReducer(fn)`, `component={Screen}`): see valuerefs.py.
     value_refs: list[CallRef] = field(default_factory=list)
+    reexports: list[ReExport] = field(default_factory=list)
     # JS/TS: name of the symbol this file exports by default (`export default Foo`), if nameable.
     default_export: str | None = None
 
@@ -79,12 +91,19 @@ def refs_from_json(text: str) -> FileReferences:
     data = json.loads(text)
     return FileReferences(
         imports=[
-            ImportRef(i["spec"], i["level"], [Binding(b["local"], b["member"]) for b in i["bindings"]], i["line"])
+            ImportRef(
+                i["spec"], i["level"], [Binding(b["local"], b["member"]) for b in i["bindings"]], i["line"],
+                tuple(i["scope"]) if i.get("scope") else None,
+            )
             for i in data["imports"]
         ],
         calls=[CallRef(c["name"], c["receiver"], c["line"]) for c in data["calls"]],
         bases=[BaseRef(b["class_name"], b["class_line"], b["name"], b["receiver"]) for b in data["bases"]],
         value_refs=[CallRef(c["name"], c["receiver"], c["line"]) for c in data.get("value_refs", [])],
+        reexports=[
+            ReExport(r["spec"], [tuple(n) for n in r["names"]] if r["names"] is not None else None)
+            for r in data.get("reexports", [])
+        ],
         default_export=data.get("default_export"),
     )
 
