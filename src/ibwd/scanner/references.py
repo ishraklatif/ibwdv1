@@ -79,6 +79,9 @@ class FileReferences:
     # A function used without being called (`useReducer(fn)`, `component={Screen}`): see valuerefs.py.
     value_refs: list[CallRef] = field(default_factory=list)
     reexports: list[ReExport] = field(default_factory=list)
+    # Every definition's (qualname, start_line, end_line), *including* repeated qualnames (property getter/setter pairs,
+    # typing.overload stubs). The graph keeps one node per qualname, so this is what attributes a call to its owner.
+    def_ranges: list[tuple[str, int, int]] = field(default_factory=list)
     # JS/TS: name of the symbol this file exports by default (`export default Foo`), if nameable.
     default_export: str | None = None
 
@@ -104,6 +107,7 @@ def refs_from_json(text: str) -> FileReferences:
             ReExport(r["spec"], [tuple(n) for n in r["names"]] if r["names"] is not None else None)
             for r in data.get("reexports", [])
         ],
+        def_ranges=[(q, a, b) for q, a, b in data.get("def_ranges", [])],
         default_export=data.get("default_export"),
     )
 
@@ -119,11 +123,18 @@ def extract_references(abs_path: Path, file_path: str) -> FileReferences | None:
     except OSError:
         return None
 
+    from ibwd.scanner.symbols import extract_symbols_from_source
+
     if dialect == "python":
         from ibwd.scanner.python import extract_python_references
 
-        return extract_python_references(source)
+        refs = extract_python_references(source)
+    else:
+        from ibwd.scanner.javascript import extract_javascript_references
 
-    from ibwd.scanner.javascript import extract_javascript_references
-
-    return extract_javascript_references(source, dialect=dialect)
+        refs = extract_javascript_references(source, dialect=dialect)
+    refs.def_ranges = [
+        (sym.qualified_name.split("::", 1)[-1], sym.start_line, sym.end_line)
+        for sym in extract_symbols_from_source(source, file_path, dialect)
+    ]
+    return refs

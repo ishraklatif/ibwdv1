@@ -149,9 +149,8 @@ def test_attribute_calls_do_not_link_to_unrelated_module_level_functions(tmp_pat
     assert not any(tgt == "tools.py::tool" for _, tgt in _edges(tmp_path, "CALLS"))
 
 
-def test_module_alias_receiver_may_still_reach_a_function_elsewhere(tmp_path: Path):
-    # `utils` is an internal module alias whose file doesn't define `reexported`
-    # (e.g. it re-exports it), so the unique-name fallback may still link it.
+def test_module_alias_receiver_follows_a_python_reexport(tmp_path: Path):
+    # `utils` re-exports `reexported` from impl, so utils.reexported() resolves through the import map (was: a 0.75 name guess)
     _write(
         tmp_path,
         {
@@ -162,7 +161,7 @@ def test_module_alias_receiver_may_still_reach_a_function_elsewhere(tmp_path: Pa
     )
     run_scan(tmp_path)
 
-    assert _edges(tmp_path, "CALLS")[("main.py::go", "impl.py::reexported")] == 0.75
+    assert _edges(tmp_path, "CALLS")[("main.py::go", "impl.py::reexported")] == 0.95
 
 
 def test_tier5_fuzzy_ignores_case_and_underscores(tmp_path: Path):
@@ -822,3 +821,118 @@ def test_reexport_cycles_terminate(tmp_path: Path):
     )
     run_scan(tmp_path)  # must not hang or recurse forever
     assert _edges(tmp_path, "CALLS") == {}
+
+
+def test_package_module_does_not_resolve_stdlib_imports_to_a_sibling_file(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "pkg/__init__.py": "",
+            "pkg/utils/__init__.py": "",
+            "pkg/utils/asyncio.py": "async def sleep(seconds):\n    return seconds\n",   # a sibling that merely shares a stdlib name
+            "pkg/utils/use.py": "import asyncio\n\nasync def go():\n    await asyncio.sleep(1)\n",
+        },
+    )
+    run_scan(tmp_path)
+
+    assert not any(tgt == "pkg/utils/asyncio.py::sleep" for _, tgt in _edges(tmp_path, "CALLS"))
+    assert ("pkg/utils/use.py", "pkg/utils/asyncio.py") not in _edges(tmp_path, "IMPORTS")
+
+
+def test_script_outside_a_package_still_resolves_sibling_imports(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "tools/helper.py": "def f():\n    return 1\n",
+            "tools/run.py": "import helper\n\ndef go():\n    return helper.f()\n",
+        },
+    )
+    run_scan(tmp_path)
+
+    assert _edges(tmp_path, "CALLS")[("tools/run.py::go", "tools/helper.py::f")] == 0.95
+
+
+def test_logging_method_names_and_external_super_are_not_guessed(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "app.py": (
+                "class Response:\n    def info(self):\n        return 1\n\n"
+                "class Resolver(ExternalBase):\n"
+                "    def getHost(self):\n"
+                "        return super().getHost()\n"   # external base: must not resolve to this same method
+                "    def log(self, logger):\n"
+                "        logger.info('x')\n"           # logging.Logger.info, not Response.info
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert ("app.py::Resolver.log", "app.py::Response.info") not in calls
+    assert ("app.py::Resolver.getHost", "app.py::Resolver.getHost") not in calls
+
+
+def test_generic_base_classes_are_resolved_for_inheritance(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "base.py": "class Directive:\n    def get_location(self):\n        return 1\n",
+            "other.py": "class Other:\n    def get_location(self):\n        return 2\n",  # makes the name ambiguous
+            "obj.py": (
+                "from base import Directive\n\n"
+                "class CObject(Directive[int]):\n"          # subscripted (generic) base
+                "    def run(self):\n"
+                "        return self.get_location()\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+
+    assert _edges(tmp_path, "INHERITS")[("obj.py::CObject", "base.py::Directive")] == 0.95
+    assert _edges(tmp_path, "CALLS")[("obj.py::CObject.run", "base.py::Directive.get_location")] == 0.85
+
+
+def test_python_reexport_through_package_init_is_followed(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "pkg/__init__.py": "from .canvas import chunks\n",
+            "pkg/canvas.py": "class chunks:\n    pass\n",
+            "pkg/other.py": "def chunks():\n    return 1\n",   # a second `chunks`: only the re-export tells them apart
+            "pkg/task.py": (
+                "class Task:\n"
+                "    def make(self):\n"
+                "        from pkg import chunks\n"
+                "        return chunks()\n"
+            ),
+        },
+    )
+    run_scan(tmp_path)
+
+    assert _edges(tmp_path, "CALLS")[("pkg/task.py::Task.make", "pkg/canvas.py::chunks")] == 0.95
+
+
+def test_calls_inside_the_first_definition_of_a_repeated_name_keep_their_owner(tmp_path: Path):
+    _write(
+        tmp_path,
+        {
+            "m.py": (
+                "def _load():\n    return 1\n\n"
+                "def _store(v):\n    return v\n\n"
+                "class Conf:\n"
+                "    @property\n"
+                "    def conf(self):\n"
+                "        return _load()\n"              # first definition of `conf`
+                "\n"
+                "    @conf.setter\n"
+                "    def conf(self, value):\n"
+                "        _store(value)\n"               # second definition, same qualified name
+            ),
+        },
+    )
+    run_scan(tmp_path)
+    calls = _edges(tmp_path, "CALLS")
+
+    assert calls[("m.py::Conf.conf", "m.py::_load")] == 0.90   # was lost: only the last definition's lines were known
+    assert calls[("m.py::Conf.conf", "m.py::_store")] == 0.90

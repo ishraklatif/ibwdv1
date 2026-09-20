@@ -101,11 +101,23 @@ class ModuleResolver:
         return candidate if candidate in self.paths else None
 
     def _python_roots(self, importer_dir: str) -> list[str]:
-        """Absolute-import roots for an importer: repo root, each ancestor dir, then conventional source roots."""
+        """Absolute-import roots for an importer, in priority order.
+
+        A module *inside a package* (its folder has `__init__.py`) resolves absolute imports against sys.path, whose
+        entry is the directory above the top-level package — never its own folder or a parent package. Treating the
+        importer's folder as a root made `import asyncio` inside `pkg/utils/` resolve to a sibling `pkg/utils/asyncio.py`
+        instead of the standard library. Scripts and test files outside any package do have their own folder on sys.path.
+        """
         roots = self._roots_cache.get(importer_dir)
         if roots is None:
             roots = [""]
-            if importer_dir:
+            if importer_dir and f"{importer_dir}/__init__.py" in self.paths:
+                top = importer_dir
+                while top and f"{top}/__init__.py" in self.paths:
+                    top = posixpath.dirname(top)
+                if top:
+                    roots.append(top)  # e.g. `src` for src/pkg/mod.py
+            elif importer_dir:
                 pieces = importer_dir.split("/")
                 roots.extend("/".join(pieces[: n + 1]) for n in range(len(pieces)))
             roots.extend(PYTHON_SOURCE_ROOTS)

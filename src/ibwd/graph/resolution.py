@@ -39,7 +39,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 11
+EDGE_BUILD_VERSION = 13
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -66,6 +66,7 @@ _COMMON_METHODS = {
         "read", "write", "close", "open", "readline", "readlines", "flush", "seek", "tell",
         "match", "search", "findall", "finditer", "sub", "subn", "compile", "group", "groups", "fullmatch",
         "put", "get_nowait", "put_nowait", "acquire", "release", "wait", "notify", "start", "stop", "run",
+        "debug", "info", "warning", "warn", "error", "exception", "critical", "fatal", "log",  # logging.Logger
     }),
     "javascript": frozenset({
         "map", "filter", "reduce", "forEach", "find", "findIndex", "some", "every", "includes", "indexOf",
@@ -151,6 +152,18 @@ class SymbolIndex:
 
     # file -> [(target file, [(imported, exported), ...] or None for `export *`)]; set by the rebuild
     reexports: dict[str, list[tuple[str, list[tuple[str, str]] | None]]] = {}
+    # Python: file -> its module-level import bindings, so `from pkg import name` can follow `pkg/__init__.py`'s own import
+    py_bindings: dict[str, dict] = {}
+    # file -> [(qualname, start, end)] for every definition, including repeated qualnames (property setters, overloads)
+    ranges: dict[str, list[tuple[str, int, int]]] = {}
+
+    def owner_of(self, file_path: str, line: int) -> "Sym | None":
+        """The innermost indexed symbol whose definition contains `line` (every definition counts, not just the last)."""
+        best: tuple[int, str] | None = None
+        for qualname, start, end in self.ranges.get(file_path, ()):
+            if start <= line <= end and (best is None or end - start < best[0]):
+                best = (end - start, qualname)
+        return self.by_qual.get((file_path, best[1])) if best else None
 
     def exported(self, file_path: str, name: str, _seen: frozenset[str] = frozenset()) -> Sym | None:
         """`name` as importable from `file_path`: defined there, or re-exported (barrel files) from elsewhere."""
@@ -165,6 +178,9 @@ class SymbolIndex:
                 found = next((self.exported(target, imported, seen) for imported, exp in names if exp == name), None)
             if found is not None:
                 return found
+        binding = self.py_bindings.get(file_path, {}).get(name)  # Python: `from .canvas import chunks` in __init__.py
+        if binding is not None and binding.file and binding.member and binding.file != file_path:
+            return self.exported(binding.file, binding.member, seen)
         return None
 
     def innermost(self, file_path: str, line: int, name: str | None = None, node_type: str | None = None) -> Sym | None:
@@ -305,6 +321,11 @@ def resolve_ref(
         # (an import alias); otherwise it's a method — this is what keeps
         # `@mcp.tool()` from linking to an unrelated top-level `def tool()`.
         return not (sym.node_type == "Function" and root_binding is None)
+
+    # `super().x()` is decided by the resolved base classes above. If they don't define x (an external base such as
+    # a framework class), guessing by name would land on an unrelated repo symbol — or on the calling method itself.
+    if receiver == "super":
+        return None
 
     # A builtin-looking method name on a non-self receiver: don't guess by name alone (tiers 3 and 5).
     generic_method = (
@@ -494,6 +515,11 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
             default_exports,
         ))
 
+    index.py_bindings = {
+        path: views.file_level for path, views in bindings_by_file.items() if language_of(path) == "python"
+    }
+    index.ranges = {path: refs.def_ranges for path, refs in parsed.items()}
+
     # Pass 2: inheritance, before any calls, so self.x()/super().x() can walk to base classes
     bases_of: dict[int, list[Sym]] = defaultdict(list)
     for path, refs in parsed.items():
@@ -518,7 +544,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
     for path, refs in parsed.items():
         file_id = file_ids[path]
         for call in refs.calls:
-            owner = index.innermost(path, call.line)
+            owner = index.owner_of(path, call.line)
             resolved = resolve_ref(
                 call.name,
                 call.receiver,
@@ -534,7 +560,7 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
 
         # Pass 4: functions used as values -> REFERENCES (never via the loose name tiers)
         for ref in refs.value_refs:
-            owner = index.innermost(path, ref.line)
+            owner = index.owner_of(path, ref.line)
             resolved = resolve_ref(
                 ref.name,
                 ref.receiver,

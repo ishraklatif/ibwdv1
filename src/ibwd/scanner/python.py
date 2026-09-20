@@ -187,6 +187,10 @@ def _python_bases(node: Node, refs: FileReferences) -> None:
     class_name = _text(name_node)
     class_line = node.start_point.row + 1
     for base in supers.children:
+        if base.type == "subscript":  # a generic base: `ObjectDescription[ASTDeclaration]` -> `ObjectDescription`
+            inner = base.child_by_field_name("value")
+            if inner is not None and inner.type in ("identifier", "attribute"):
+                base = inner
         if base.type == "identifier":
             refs.bases.append(BaseRef(class_name, class_line, _text(base), None))
         elif base.type == "attribute":

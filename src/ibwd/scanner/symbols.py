@@ -27,6 +27,17 @@ class SymbolInfo:
     end_line: int
 
 
+def extract_symbols_from_source(source: bytes, file_path: str, dialect: str) -> list[SymbolInfo]:
+    if dialect == "python":
+        from ibwd.scanner.python import extract_python_symbols
+
+        return extract_python_symbols(source, file_path)
+
+    from ibwd.scanner.javascript import extract_javascript_symbols
+
+    return extract_javascript_symbols(source, file_path, dialect=dialect)
+
+
 def extract_symbols(abs_path: Path, file_path: str) -> list[SymbolInfo]:
     """Extract Class/Function/Method symbols from a file, if its language is supported.
 
