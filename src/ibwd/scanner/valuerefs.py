@@ -231,12 +231,14 @@ def _py_is_value_use(node: Node) -> bool:
         return False
     if t in ("for_statement", "for_in_clause") and f == "left":
         return False
-    if t in _PY_PATTERN_TYPES or t == "as_pattern":
+    if t in _PY_PATTERN_TYPES or (t == "as_pattern" and f == "alias"):
         return False
     if t == "named_expression" and f == "name":
         return False
-    if t == "attribute":  # the `.attr` part, or the object (a whole chain is emitted from its top)
-        return False
+    if t == "attribute":
+        # the `.attr` part is never a value on its own; the head of a chain (`Cls` in `Cls.CONST`, `logtool` in `logtool.command`)
+        # is a use of that name — a class or function used as a namespace
+        return f == "object" and _text(node) not in ("self", "cls", "super")
     if t == "argument_list" and parent.parent is not None and parent.parent.type == "class_definition":
         return False  # base classes
     return True
@@ -255,7 +257,12 @@ def python_value_refs(root: Node) -> list[CallRef]:
             key = node.id
             if key not in locals_cache:
                 locals_cache[key] = _py_locals(node)
-            scopes = (*scopes, locals_cache[key])
+            inner = (*scopes, locals_cache[key])
+            for child in reversed(node.children):
+                # `def f(cb=cb)`: the default value is evaluated in the enclosing scope, so it is not shadowed by the parameter
+                signature = child.type in ("parameters", "lambda_parameters", "return_type")
+                stack.append((child, scopes if signature else inner))
+            continue
         if t == "identifier" and _py_is_value_use(node):
             name = _text(node)
             if not any(name in scope for scope in scopes):
@@ -267,6 +274,9 @@ def python_value_refs(root: Node) -> list[CallRef]:
                 attr = node.child_by_field_name("attribute")
                 if receiver != UNKNOWN_RECEIVER and attr is not None:
                     out.append(CallRef(_text(attr), receiver, node.start_point.row + 1))
+                    head = receiver.split(".")[0]
+                    if head not in ("self", "cls", "super") and not any(head in scope for scope in scopes):
+                        out.append(CallRef(head, None, node.start_point.row + 1))   # the class/function used as a namespace
                 continue  # don't visit the chain's inner names
         for child in reversed(node.children):
             stack.append((child, scopes))
