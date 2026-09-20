@@ -52,6 +52,9 @@ EXPECTED_EDGES = {
     ("CALLS", f"{USE}::flat", f"{CORE}::Base.new_method", "type_declared"),         # `self` in a module-level function is just a typed parameter
     ("CALLS", f"{USE}::via_variable", f"{CORE}::Base.new_method", "type_declared"),  # a module-level instance: inferred type, not lexical
     ("CALLS", USE, f"{CORE}::Base", "binding"),                                    # instance = Base() at module level
+    ("REFERENCES", f"{CORE}::Slotted.__init__", f"{CORE}::helper", "binding"),      # self.fn() on a __slots__ name creates NO edge (scip-python reports the class symbol)
+    ("CALLS", f"{CORE}::shadowed_import", f"{CORE}::Prop", "binding"),
+    ("CALLS", f"{CORE}::shadowed_import", f"{CORE}::Prop.read", "type_declared"),  # a comprehension variable named `cls` is not the lexical class
     ("REFERENCES", f"{CORE}::Prop.read", f"{CORE}::Prop.val", "binding"),          # @property: defined as a term, used as `().`
     ("REFERENCES", f"{CORE}::pick", f"{CORE}::helper", "binding"),                 # (a if c else b)(x): the branches are not the callee
     ("REFERENCES", f"{CORE}::pick", f"{CORE}::outer", "binding"),

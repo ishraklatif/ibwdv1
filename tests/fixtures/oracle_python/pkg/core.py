@@ -87,3 +87,20 @@ class Prop:
 
 def pick(flag):
     return (helper if flag else outer)(1)
+
+
+class Slotted:
+    __slots__ = ("fn",)
+
+    def __init__(self):
+        object.__setattr__(self, "fn", helper)
+
+    def go(self):
+        return self.fn()
+
+
+def shadowed_import():
+    import copy as copy_mod  # noqa
+
+    copy = copy_mod.copy(Prop())
+    return [cls.read() for cls in [copy]]
