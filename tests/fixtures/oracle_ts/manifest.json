@@ -1,0 +1,12 @@
+{
+ "repo": "oracle_ts_fixture",
+ "repo_sha": "fixture",
+ "included_files": [
+  "src/core.ts",
+  "src/index.ts",
+  "src/card.tsx",
+  "src/use.tsx"
+ ],
+ "excluded_files": [],
+ "manifest_sha256": "f52a02eddc2770d7cd3b17af7ae6283371a3deca239f38c27826841f5d88314b"
+}
