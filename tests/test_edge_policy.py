@@ -236,7 +236,7 @@ def test_export_carries_status_and_the_oracle_denominator_is_not_narrowed(tmp_pa
     assert resolved_only["actual"] < everything["actual"] and resolved_only["fn"] > everything["fn"]   # recall honestly drops
 
 
-def test_inherited_edge_is_only_a_candidate_when_an_external_base_precedes_the_defining_base(tmp_path: Path):
+def test_inherited_dunder_is_only_a_candidate_when_an_external_base_precedes_the_defining_base(tmp_path: Path):
     _write(tmp_path, {
         "mixin.py": "class Mixin:\n    def __init__(self, *a):\n        self.m = 1\n\n    def run(self):\n        return 1\n",
         "app.py": (
@@ -259,7 +259,7 @@ def test_inherited_edge_is_only_a_candidate_when_an_external_base_precedes_the_d
         )
     }
     conn.close()
-    assert rows[("app.py::ExternalFirst.go", "mixin.py::Mixin.run")] == ("candidate", "inherited_uncertain")
+    assert rows[("app.py::ExternalFirst.go", "mixin.py::Mixin.run")] == ("resolved", "inherited")     # a custom name: not presumed external
     assert rows[("app.py::ExternalFirst.__init__", "mixin.py::Mixin.__init__")] == ("candidate", "inherited_uncertain")
     assert rows[("app.py::MixinFirst.go", "mixin.py::Mixin.run")] == ("resolved", "inherited")
     assert rows[("app.py::MixinFirst.__init__", "mixin.py::Mixin.__init__")] == ("resolved", "inherited")

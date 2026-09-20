@@ -93,6 +93,13 @@ def main() -> int:
                 "unresolved_disagreements": sum(1 for k in fp if adj.get(k, {}).get("verdict") == "unresolved_disagreement"),
                 "unadjudicated_fp": fp_v.get("UNADJUDICATED", 0),
             }
+            tiers = defaultdict(lambda: [0, 0])
+            for k in Br:
+                tiers[B[status][k]][0 if k in Or.keys() else 1] += 1
+            block[status]["by_tier"] = {
+                t: {"ibwd_edges": tp_ + fp_, "TP": tp_, "FP": fp_, "raw_precision": round(tp_ / (tp_ + fp_), 4)}
+                for t, (tp_, fp_) in sorted(tiers.items())
+            }
             if status == "resolved":
                 fn_supported = fn & supported
                 fn_v = Counter(adj.get(k, {}).get("verdict", "UNADJUDICATED") for k in fn_supported)
@@ -117,6 +124,9 @@ def main() -> int:
         r, c = b["resolved"], b["candidate"]
         print(f"{result['repo']:9} {rel:10} oracle {b['oracle_edges']:>5} | resolved TP {r['TP']:>5} FP {r['FP']:>4} FN {r['FN']:>4} rawP {r['raw_precision']} "
               f"suppRecall {r.get('supported_scope_recall')} broader {r.get('broader_semantic_coverage')} | candidates {c['ibwd_edges']:>4} (TP {c['TP']}, rawP {c['raw_precision']})")
+        if rel == "CALLS":
+            print("          tiers:", {t: f"{v['TP']}/{v['ibwd_edges']}={v['raw_precision']}" for t, v in r["by_tier"].items()},
+                  "| candidates:", {t: f"{v['TP']}/{v['ibwd_edges']}={v['raw_precision']}" for t, v in c["by_tier"].items()})
     return 0
 
 
