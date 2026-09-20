@@ -87,7 +87,8 @@ def test_type_positions_are_never_runtime_references(graph):
     type_use = {(o["file"], tuple(o["start"]), o["target_id"]) for o in graph["occurrences"] if o["relation"] == "TYPE_USE"}
     assert type_use == {(USE, (14, 9), f"{CORE}::Child"), (USE, (14, 19), f"{CORE}::Child"),   # def c(x: Child) -> Child
                         (USE, (30, 11), f"{CORE}::Base"), (USE, (42, 9), f"{CORE}::Opts"),
-                        (USE, (53, 12), f"{CORE}::Base"), (USE, (61, 15), f"{CORE}::Base")}
+                        (USE, (53, 12), f"{CORE}::Base"), (USE, (61, 15), f"{CORE}::Base"),
+                        (USE, (72, 13), f"{CORE}::Child"), (USE, (72, 21), f"{CORE}::Base")}   # `type Alias = Child | Base`
     assert not any(e["target"] == f"{CORE}::Opts" for e in graph["edges"])
 
 

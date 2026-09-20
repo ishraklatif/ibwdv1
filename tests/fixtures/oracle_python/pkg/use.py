@@ -67,3 +67,16 @@ instance = Base()
 
 def via_variable():
     return instance.new_method()
+
+
+type Alias = Child | Base
+
+
+class W:
+    def start(self):
+        return 1
+
+    def __init__(self, other):
+        self.start = other
+        x = other  # type: Base
+        return x

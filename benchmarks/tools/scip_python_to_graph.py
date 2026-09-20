@@ -174,6 +174,8 @@ class FileModel:
                     self.callee_ends[self._end(child.func)] = child
             elif isinstance(child, ast.AnnAssign):
                 self._add_annotation(child.annotation)
+            elif type(child).__name__ == "TypeAlias":            # `type X = A | B` (3.12): the value is a type expression
+                self._add_annotation(child.value)
             elif isinstance(child, (ast.Import, ast.ImportFrom)):
                 self.import_lines.update(range(child.lineno, (child.end_lineno or child.lineno) + 1))
                 for alias in child.names:
@@ -333,6 +335,11 @@ def main() -> int:
                     continue
             elif occ.symbol in canon_by_def:
                 target_id = canon_by_def[occ.symbol]
+                stored = model.attribute_ends.get(end)
+                if stored is not None and not isinstance(stored.ctx, ast.Load):
+                    continue      # `self.start = ...` / `del self.x`: a write to an attribute, not a use of the same-named method
+                if "# type:" in text[:start_char]:
+                    continue      # a `# type: Sequence[Signature]` comment: type-only
                 if occ.symbol in colliding and start_char > 0 and text[start_char - 1] != ".":
                     target_id = nested_target[occ.symbol]      # a bare name reaches the nested function, not the method
                 if occ.symbol_roles & WriteAccess:
