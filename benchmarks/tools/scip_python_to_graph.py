@@ -401,11 +401,15 @@ def main() -> int:
     edges: dict[tuple, dict] = {}
     symbol_ids = {s["id"] for s in symbols if not s.get("nested")}   # nested definitions are not indexed symbols
     nested_target_occurrences = []
+    rel_file_of = lambda occ: occ["file"]
     for o in occurrences:
         if o["relation"] == "TYPE_USE":
             continue
         source = o["file"] if o["relation"] == "IMPORTS" else (o["class_id"] if o["relation"] == "INHERITS" else o["projected_owner_id"])
         target = o["target_id"]
+        if source != rel_file_of(o) and source not in symbol_ids:
+            nested_target_occurrences.append({**o, "note": "source is a nested definition (e.g. a class inside a function), not an indexed symbol"})
+            continue
         if target not in symbol_ids:
             nested_target_occurrences.append({**o, "note": "target is a nested definition, not an indexed symbol; never replaced by its enclosing function"})
             continue
