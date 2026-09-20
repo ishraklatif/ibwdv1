@@ -1,13 +1,13 @@
 {
  "status": "Free graph validation reported complete; paid harness validation pending.",
  "result_version": "build-27 development validation (recorded, not to be overwritten; any later graph-behavior change creates a new result version)",
- "ibwd_commit": "8e7255432228a5e0f2d4654a13c03f9ea6c66cc0",
+ "ibwd_commit": "ecd4960e3a78601535f986d3e3fdc44f5332f6b4",
  "edge_build_version": 27,
- "working_tree_clean": false,
- "working_tree_status": "?? benchmarks/tools/preparation_record.py",
+ "working_tree_clean": true,
+ "working_tree_status": "clean",
  "gate_definition": {
   "file": "benchmarks/SPRINT3_gate_definition.md",
-  "sha256": "7f423f7a1cd2689f38f37057844fb3814464a832d589ffb9462545bbc9c04ed9"
+  "sha256": "16b6dacb2036e33ed0c59246c16e3d2a79308113201c782677d2eabc9ad11216"
  },
  "semantic_summary": {
   "file": "benchmarks/sprint_3_semantic_comparison.json",
