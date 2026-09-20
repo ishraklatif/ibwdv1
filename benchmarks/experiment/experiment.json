@@ -1,6 +1,6 @@
 {
- "experiment_id": "DRAFT",
- "status": "draft (not frozen)",
+ "experiment_id": "sprint3-ab-v1",
+ "status": "frozen",
  "model": "claude-sonnet-5",
  "effort": null,
  "effort_note": "flag omitted: CLI default effort, as in the earlier startup-usage measurement",
@@ -26,5 +26,98 @@
  "pilot_rule": {
   "stratum": "Q1",
   "rule": "alphabetically first headline repository of each language, its Q1 task, both conditions, repeat 1"
- }
+ },
+ "frozen_at": "2026-09-20T12:19:23Z",
+ "ibwd_commit": "8fb7ed99c3cec46ae89f32b16fef5387b1c7f593",
+ "edge_build_version": 27,
+ "tool_contract_version": 2,
+ "release_runtime_commit": "ad623932551868e2f3259af2cd2278f2c4653d07",
+ "release_dependency_freeze_sha256": "03f1852c0a8a677eabc8583c5d525d6ffa9d286cedac0fca2431f2830de33238",
+ "gate_definition_sha256": "16b6dacb2036e33ed0c59246c16e3d2a79308113201c782677d2eabc9ad11216",
+ "prompt_template_sha256": "206f05185f559fa9a4c2432cc5a06ebc59e84a1370c1a75c3c45d518fb917c01",
+ "task_specs_index_sha256": "1228b0cc4441104541d5ee4cf9f95376ad751cd99bacb2ed5810873b878549d4",
+ "grader_and_harness_sha256": {
+  "benchmarks/run_sprint3_ab.py": "ae9c7e34282a6dcce1c9255f07d96458128eeb443a34a09cfb6da5b00b14b868",
+  "benchmarks/ab_prepare.py": "e0e9b487382957ca481609dd1318dfba66607b3e7b908415a3be0b60ede5ac35",
+  "benchmarks/grade_sprint3_answers.py": "0e8218a26678f85e58fcb7bb0043d2294e1b77dd330451180fb5166ecccaf97e",
+  "benchmarks/summarize_sprint3_ab.py": "9efcf8c7e401f3a8210fe28626d8e0102012b08fbbe4b48edc7618e7096b97e0",
+  "benchmarks/ab/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "benchmarks/ab/config.py": "563dcdad3b1cdbb3b2674bbf029d6837cae1d0abb6b1fbd0b1d678973026dd1b",
+  "benchmarks/ab/schedule.py": "2167d1bcc9dcb99f1ac4a49c04afceb38cfdd2f05193ff4be95e15834741e6fe",
+  "benchmarks/ab/transcript.py": "87aa535b51b73db8075664fe295fa5b3a27f295869824167885b785bdaa7d40d",
+  "benchmarks/ab/execute.py": "36bdae580317a2f21951eef848432c5e07673195840c0a7c087dd5b94e4bd01a",
+  "benchmarks/ab/store.py": "b21261a8d547dba0b60e9339a26ca7837287415b7938dec34b679fcddedd2517",
+  "benchmarks/ab/run.py": "5593a0aab44f4a9c2614aacf19f19ad1c5382c462a6ef716633c8f5e920ab46b",
+  "benchmarks/ab/mock.py": "ad499fafab09e0490e00a77ca48ef13d880a6b9aa96676171e1d066d8ad07dfc",
+  "benchmarks/tools/build_task_specs.py": "7b6f2cd8a1cd6eb618789fa38406e1b675d1b91227530ba6c212d1e1692b0483"
+ },
+ "graph_inputs": {
+  "sphinx": {
+   "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+   "ibwd_export_sha256": "ad653eb9fe167ef6df883c0b1c60382d2925e258d903fbabbbdc9b888b3f1dc2",
+   "oracle_export_sha256": "52edbc16759ff499bd2f43bab81b69cb807f46be29f968ad377fa01f7076efa2",
+   "manifest_sha256_file": "19a689cfec0ee35031186f7f11e0b81b52c144fcb05daa28d2546b12443059e4",
+   "ground_truth_yaml_sha256": "387dcac825933213517482fe0f3d89ff2ad2757f94f0097f1ba8153cef465f1b"
+  },
+  "scrapy": {
+   "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+   "ibwd_export_sha256": "155a881dde03b052b3770506b5b285ad3495fadd5c05821471243e3c32ef00dc",
+   "oracle_export_sha256": "4f4a05d6b8f22cf3b044da654dccfe75078c3adadf075948668a57ad2546b51c",
+   "manifest_sha256_file": "dc4a68c17fed4cd4be7999e6d29295e1c2a723ab901612d9346c04dbafba78b4",
+   "ground_truth_yaml_sha256": "a0262ff1e90ba2b2cfae7d3da12aae8bf1995b5c6443ee83fd5f0f1bccbc8756"
+  },
+  "celery": {
+   "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+   "ibwd_export_sha256": "0442fd11b1661edbeea2063a32d697012f6f0bb92f2fe639a78128420fd56d53",
+   "oracle_export_sha256": "f32c977b625f5d0c6eb2f9030c99810d7c88a6d659c0caf9a273432e279973d1",
+   "manifest_sha256_file": "14a29b3e62145ad06784adf13abae742bea97d568259be8ae6d540560c9cc141",
+   "ground_truth_yaml_sha256": "d74df536de143f9279f04502780243a2c153bac5373d055d410e4803102b87e3"
+  },
+  "redux-toolkit": {
+   "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+   "ibwd_export_sha256": "a2a3bc888d19c6e4fbf4815569a1f7ec54923fa90f1e9f876d527a7c45144251",
+   "oracle_export_sha256": "f68690f8b16fbaead9eb49824f8178e6aa966b35dc418d5cff0338dfda959f4c",
+   "manifest_sha256_file": "4041c3b50285b057f6eaf5c434a73b93045ce8646e8f3dcc8f983abb8311c9b6",
+   "ground_truth_yaml_sha256": "fea5b56dfc5705677cc0f6d7b3a27f636c2b9ba080aa2796eb0b7cdd34246844"
+  },
+  "bulletproof-react": {
+   "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+   "ibwd_export_sha256": "be1fc53a9992602816458320c407ef710eebabb7078e8b1dd4459d1a1294b536",
+   "oracle_export_sha256": "7f6886f4422ee990c9cb968ee9065b16c0f6f2beea62569119863aad5bf59001",
+   "manifest_sha256_file": "e3bd55de661a083b592db3dc3cc044588d6cf8439e7e01b285a505f54e7f51fd",
+   "ground_truth_yaml_sha256": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259"
+  }
+ },
+ "aggregation": "ratio of weighted medians of T = input+cache_creation+cache_read+output from the final result.usage; hierarchical equal weights (gate \u00a72-3); Celery separate",
+ "grading": "benchmarks/grade_sprint3_answers.py (deterministic; exact ids; Q3 accepts any minimum-cost path)",
+ "retry_policy": "only infrastructure failures (non-zero exit with no model output) are retried, at most max_infra_retries; timeouts, budget exhaustion, missing usage, malformed output are final invalid measurements, retained and counted as failed answers; nothing is silently rerun, dropped or replaced",
+ "conditions_detail": {
+  "baseline": {
+   "tools": [
+    "Read",
+    "Glob",
+    "Grep"
+   ],
+   "mcp": "none"
+  },
+  "ibwd": {
+   "tools": [
+    "Read",
+    "Glob",
+    "Grep",
+    "mcp__ibwd__ibwd_find_symbol",
+    "mcp__ibwd__ibwd_callers",
+    "mcp__ibwd__ibwd_dependents",
+    "mcp__ibwd__ibwd_trace_path"
+   ],
+   "hidden_mcp_tools": [
+    "mcp__ibwd__ibwd_scan",
+    "mcp__ibwd__ibwd_find_files",
+    "mcp__ibwd__ibwd_list_symbols"
+   ],
+   "include_candidates": "off (tool default)",
+   "mcp": "release runtime, stdio"
+  }
+ },
+ "isolation": "macOS sandbox-exec profile per session (benchmarks/ab/execute.py); per-session APFS clone of the checkout; evidence in benchmarks/evidence/isolation_check.json"
 }
