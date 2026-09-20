@@ -62,13 +62,16 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("oracle"); ap.add_argument("ibwd")
     ap.add_argument("--scope", help="audit JSON whose production_files bound the comparison")
+    ap.add_argument("--manifest", help="benchmark manifest whose included_files bound the comparison (preferred over --scope)")
+    ap.add_argument("--status", choices=["resolved", "candidate", "all"], default="all", help="only compare IBWD edges with this resolution_status")
     ap.add_argument("--relation", action="append", help="restrict to these relations (default: all shared)")
     ap.add_argument("--ext", action="append", help="only compare files with these extensions (e.g. .py): the oracle may cover one language")
     ap.add_argument("--max-list", type=int, default=50)
     args = ap.parse_args()
 
     oracle, ibwd = load(args.oracle), load(args.ibwd)
-    scope = set(load(args.scope)["production_files"]) if args.scope else None
+    manifest = load(args.manifest) if args.manifest else None
+    scope = set(manifest["included_files"]) if manifest else (set(load(args.scope)["production_files"]) if args.scope else None)
     mapping = build_mapping(oracle["symbols"], ibwd["symbols"])
     ibwd_file = {s["id"]: s["file"] for s in ibwd["symbols"]}
 
@@ -89,8 +92,9 @@ def main() -> int:
             continue
         if in_scope(a) and in_scope(b):
             O.add((a, b, e["relation"]))
-    B = {(e["source"], e["target"], e["relation"]) for e in ibwd["edges"] if in_scope(e["source"]) and in_scope(e["target"])}
-    tier_of = {(e["source"], e["target"], e["relation"]): e.get("tier") for e in ibwd["edges"]}
+    ibwd_edges = [e for e in ibwd["edges"] if args.status == "all" or e.get("resolution_status", "resolved") == args.status]
+    B = {(e["source"], e["target"], e["relation"]) for e in ibwd_edges if in_scope(e["source"]) and in_scope(e["target"])}
+    tier_of = {(e["source"], e["target"], e["relation"]): e.get("tier") for e in ibwd_edges}
 
     relations = sorted(args.relation or ({r for *_, r in O} | {r for *_, r in B}))
     O = {x for x in O if x[2] in relations}; B = {x for x in B if x[2] in relations}
@@ -103,6 +107,8 @@ def main() -> int:
     uses = {"CALLS", "REFERENCES"}
     oracle_used = {t for (_, t, r) in O if r in uses}; ibwd_used = {t for (_, t, r) in B if r in uses}
     out = {
+        "manifest_sha256": manifest["manifest_sha256"] if manifest else None,
+        "ibwd_status_filter": args.status,
         "oracle_complete": oracle.get("complete", False),
         "oracle_status": oracle.get("status"),
         "granularity": "caller symbol -> target symbol per relation (no callsite positions in IBWD edges)",

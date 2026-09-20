@@ -5,7 +5,7 @@ Usage:
   uv run python benchmarks/timing.py --sizes 200 2000   # custom synthetic sizes
   uv run python benchmarks/timing.py --repo /path/to/repo   # a real repo (copied to a temp dir first)
 
-Each measurement uses the best of --runs repetitions to reduce noise. Real repos are copied so
+Each measurement is the MEDIAN of --runs repetitions (default 5); best-of-N claims are withdrawn. Real repos are copied so
 the scan's .ibwd/ directory and the touched file never land in your checkout.
 """
 
@@ -13,7 +13,9 @@ from __future__ import annotations
 
 import argparse
 import random
+import json
 import shutil
+import statistics
 import sys
 import tempfile
 import time
@@ -22,6 +24,7 @@ from pathlib import Path
 from ibwd.scan import run_scan
 
 TARGET_RATIO = 3.0
+RECORDS: list[dict] = []
 
 
 def make_synthetic_repo(root: Path, n_files: int, seed: int = 1) -> None:
@@ -45,12 +48,13 @@ def make_synthetic_repo(root: Path, n_files: int, seed: int = 1) -> None:
 
 
 def timed(fn, runs: int = 1) -> float:
-    best = float("inf")
+    """Median wall time of `runs` repetitions."""
+    samples = []
     for _ in range(runs):
         start = time.perf_counter()
         fn()
-        best = min(best, time.perf_counter() - start)
-    return best
+        samples.append(time.perf_counter() - start)
+    return statistics.median(samples)
 
 
 def measure(root: Path, touch: Path, label: str, runs: int) -> float:
@@ -64,7 +68,9 @@ def measure(root: Path, touch: Path, label: str, runs: int) -> float:
     one = timed(touch_and_rescan, runs)
     ratio = full / one
     verdict = "PASS" if ratio >= TARGET_RATIO else "FAIL"
-    print(f"{label:22} full {full:6.2f}s | idle rescan {idle:5.2f}s | one-file rescan {one:5.2f}s | {ratio:5.2f}x  {verdict} (>= {TARGET_RATIO}x)")
+    print(f"{label:22} median of {runs}: full {full:6.2f}s | idle rescan {idle:5.2f}s | one-file rescan {one:5.2f}s | {ratio:5.2f}x  {verdict} (>= {TARGET_RATIO}x)")
+    RECORDS.append({"repo": label, "repetitions": runs, "statistic": "median", "full_scan_s": round(full, 4), "idle_rescan_s": round(idle, 4),
+                    "one_file_rescan_s": round(one, 4), "ratio": round(ratio, 2), "passes_3x": ratio >= TARGET_RATIO})
     return ratio
 
 
@@ -72,7 +78,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--sizes", type=int, nargs="*", default=[100, 400, 1200])
     ap.add_argument("--repo", type=Path)
-    ap.add_argument("--runs", type=int, default=3)
+    ap.add_argument("--runs", type=int, default=5)
+    ap.add_argument("--json-out", type=Path, help="append the result records to this JSON file")
     args = ap.parse_args()
 
     ratios: list[float] = []
@@ -90,6 +97,9 @@ def main() -> int:
                 root = Path(tmp) / f"synth{n}"
                 make_synthetic_repo(root, n)
                 ratios.append(measure(root, root / "pkg3" / "mod3.py", f"synthetic {n} files", args.runs))
+    if args.json_out:
+        existing = json.loads(args.json_out.read_text()) if args.json_out.exists() else []
+        args.json_out.write_text(json.dumps(existing + RECORDS, indent=1) + "\n")
     return 0 if all(r >= TARGET_RATIO for r in ratios) else 1
 
 

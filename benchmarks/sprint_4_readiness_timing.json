@@ -1,0 +1,82 @@
+[
+ {
+  "repo": "synthetic 100 files",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 0.0848,
+  "idle_rescan_s": 0.0086,
+  "one_file_rescan_s": 0.0195,
+  "ratio": 4.34,
+  "passes_3x": true
+ },
+ {
+  "repo": "synthetic 400 files",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 0.3645,
+  "idle_rescan_s": 0.0261,
+  "one_file_rescan_s": 0.0624,
+  "ratio": 5.84,
+  "passes_3x": true
+ },
+ {
+  "repo": "synthetic 1200 files",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 1.1428,
+  "idle_rescan_s": 0.0784,
+  "one_file_rescan_s": 0.1879,
+  "ratio": 6.08,
+  "passes_3x": true
+ },
+ {
+  "repo": "scrapy",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 0.8836,
+  "idle_rescan_s": 0.0527,
+  "one_file_rescan_s": 0.052,
+  "ratio": 17.0,
+  "passes_3x": true
+ },
+ {
+  "repo": "celery",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 1.3176,
+  "idle_rescan_s": 0.0686,
+  "one_file_rescan_s": 0.1814,
+  "ratio": 7.26,
+  "passes_3x": true
+ },
+ {
+  "repo": "redux-toolkit",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 1.043,
+  "idle_rescan_s": 0.0959,
+  "one_file_rescan_s": 0.1509,
+  "ratio": 6.91,
+  "passes_3x": true
+ },
+ {
+  "repo": "bulletproof-react",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 0.5012,
+  "idle_rescan_s": 0.0509,
+  "one_file_rescan_s": 0.0865,
+  "ratio": 5.8,
+  "passes_3x": true
+ },
+ {
+  "repo": "sphinx",
+  "repetitions": 5,
+  "statistic": "median",
+  "full_scan_s": 3.5258,
+  "idle_rescan_s": 0.1862,
+  "one_file_rescan_s": 0.1864,
+  "ratio": 18.91,
+  "passes_3x": true
+ }
+]

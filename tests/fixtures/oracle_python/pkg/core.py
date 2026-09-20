@@ -1,0 +1,56 @@
+from typing import Callable, Generic, TypeVar, overload
+
+T = TypeVar("T")
+
+
+def helper():
+    return 1
+
+
+def outer(fn):
+    return fn()
+
+
+class Base:
+    def new_method(self):
+        return 1
+
+
+class Child(Base, Generic[T]):
+    pass
+
+
+def make():
+    def inner():
+        return helper()
+
+    return inner
+
+
+class P:
+    @property
+    def conf(self):
+        return helper()
+
+    @conf.setter
+    def conf(self, value):
+        outer(value)
+
+
+@overload
+def ov(x: int) -> int: ...
+@overload
+def ov(x: str) -> str: ...
+def ov(x):
+    return helper()
+
+
+def default_backoff():
+    return 1
+
+
+class Opts:
+    backoff: Callable = default_backoff
+
+
+label = "héllo→世界"; touched = helper()

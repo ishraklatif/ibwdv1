@@ -11,10 +11,7 @@ Both figures are printed; nothing is removed from the broader denominator.
 import collections, json, re, sys
 from pathlib import Path
 
-cmp_, orc_, repo = json.loads(Path(sys.argv[1]).read_text()), json.loads(Path(sys.argv[2]).read_text()), Path(sys.argv[3])
-site = {(e["source"], e["target"], e["relation"]): (e["file"], e["line"]) for e in orc_["edges"]}
-
-def category(edge):
+def category(edge, site, repo):
     file, line = site[edge]
     lines = (repo / file).read_text(errors="ignore").splitlines()
     text = lines[line - 1] if line - 1 < len(lines) else ""
@@ -27,14 +24,36 @@ def category(edge):
     if receiver.endswith(")"): return "call-result receiver (type-resolved)"
     return "variable receiver (type-resolved local/param)"
 
-o = cmp_["overall"]
-missing = [tuple(m) for m in cmp_["missing"] if m[2] == "CALLS" and tuple(m) in site]
-cats = collections.Counter(category(m) for m in missing)
-unsupported = sum(v for k, v in cats.items() if "type-resolved" in k)
-tp, fn = o["tp"], o["fn"]
-print(f"CALLS  expected={o['expected']} actual={o['actual']} tp={tp} fp={o['fp']} fn={fn}")
-print(f"  precision vs oracle (raw, unadjudicated): {o['precision']}")
-print(f"  broader semantic coverage (recall over ALL oracle edges): {tp}/{tp+fn} = {tp/(tp+fn):.3f}")
-print(f"  supported-scope recall (declared type/data-flow category excluded): {tp}/{tp+fn-unsupported} = {tp/(tp+fn-unsupported):.3f}")
-print("  missing by category:", dict(cats.most_common()))
-print("  tier precision:", {k: (v["predictions"], v["precision"]) for k, v in cmp_["by_tier_precision"].items() if k != "None"})
+
+def summarize(cmp_, orc_, repo, adjudicated=None):
+    """Return the recall bookkeeping. `adjudicated` maps (source, target) -> verdict for individually reviewed misses."""
+    adjudicated = adjudicated or {}
+    site = {(e["source"], e["target"], e["relation"]): (e["file"], e["line"]) for e in orc_["edges"]}
+    o = cmp_["overall"]
+    missing = [tuple(m) for m in cmp_["missing"] if m[2] == "CALLS" and tuple(m) in site]
+    cats = collections.Counter(category(m, site, repo) for m in missing)
+    declared_unsupported = sum(v for k, v in cats.items() if "type-resolved" in k)
+    supported_cat_misses = [m for m in missing if "type-resolved" not in category(m, site, repo)]
+    verdicts = collections.Counter(adjudicated.get((m[0], m[1]), "UNADJUDICATED") for m in supported_cat_misses)
+    oracle_errors = verdicts.get("oracle_error", 0)
+    adj_unsupported = sum(v for k, v in verdicts.items() if k.startswith("unsupported"))
+    tp, fn = o["tp"], o["fn"]
+    broader_den = o["expected"] - oracle_errors
+    supported_den = broader_den - declared_unsupported - adj_unsupported
+    return {
+        "expected_raw": o["expected"], "tp": tp, "fp": o["fp"], "fn": fn, "actual": o["actual"], "precision_raw": o["precision"],
+        "missing_by_category": dict(cats.most_common()),
+        "declared_unsupported_type_resolved": declared_unsupported,
+        "supported_category_misses": len(supported_cat_misses), "supported_category_miss_verdicts": dict(verdicts),
+        "oracle_errors_removed": oracle_errors,
+        "broader_denominator": broader_den, "broader_recall": round(tp / broader_den, 4),
+        "unsupported_adjudicated": adj_unsupported,
+        "supported_denominator": supported_den, "supported_recall": round(tp / supported_den, 4) if supported_den else None,
+        "unadjudicated_supported_misses": verdicts.get("UNADJUDICATED", 0),
+        "tier_precision": {k: v for k, v in cmp_["by_tier_precision"].items() if k != "None"},
+    }
+
+
+if __name__ == "__main__":
+    r = summarize(json.loads(Path(sys.argv[1]).read_text()), json.loads(Path(sys.argv[2]).read_text()), Path(sys.argv[3]))
+    print(json.dumps(r, indent=1))

@@ -1,0 +1,14 @@
+{
+ "repo": "fixture",
+ "repo_sha": "fixture",
+ "scope_rule": "fixture",
+ "source_audit": "-",
+ "source_audit_sha256": "-",
+ "included_files": [
+  "pkg/__init__.py",
+  "pkg/core.py",
+  "pkg/use.py"
+ ],
+ "excluded_files": [],
+ "manifest_sha256": "50d473025652e40d9d9137321e7403d06d7be032d9eca2b26aae84fcecbb4b31"
+}

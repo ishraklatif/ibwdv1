@@ -1,31 +1,40 @@
 #!/usr/bin/env python3
-"""Turn a scip-python index into an oracle graph in the format compare_pairs.py / the kit's verify_repo.py expect.
+"""Build an oracle graph from a scip-python index, classifying every occurrence with Python's own `ast`.
 
-Independent of IBWD's tree-sitter parser: symbol resolution comes from scip-python (Pyright), and caller ranges
-from Python's own `ast`. Output symbol ids use IBWD's canonical form "file::Outer.inner".
+Independent of IBWD's tree-sitter parser: symbol *identity* comes from scip-python (Pyright); the *syntactic role* and the
+*lexical owner* of each occurrence come from `ast`. Nothing is inferred from "the next character".
 
 Usage:
-  scip_python_to_graph.py INDEX.scip REPO_ROOT AUDIT.json OUT.json [--proto-dir DIR]
+  scip_python_to_graph.py INDEX.scip REPO_ROOT MANIFEST.json OUT.json [--proto-dir DIR]
 
-Setup (once, in a venv that has `protobuf` and `grpcio-tools`):
+Setup (once, in a venv with `protobuf` and `grpcio-tools`):
   curl -sLO https://raw.githubusercontent.com/scip-code/scip/main/scip.proto
   python -m grpc_tools.protoc -I. --python_out=<DIR> scip.proto          # writes scip_pb2.py into --proto-dir
-  scip-python index . --project-name NAME --project-version SHA --output OUT.scip   # in the repo, output elsewhere
+  scip-python index . --project-name NAME --project-version SHA --output OUT.scip   # in the repo; output elsewhere
 
-Classification of a reference occurrence (SCIP itself does not distinguish calls from other reads):
-  * on an import line                                   -> IMPORTS  (file -> file that defines the symbol)
-  * next non-space character is "("                     -> CALLS
-  * preceded by "@" (a decorator, not itself called)    -> REFERENCES
-  * otherwise a read of a function/method symbol        -> REFERENCES (value use; annotations excluded)
-Class instantiation `Foo(...)` is a CALLS edge to the class, as in IBWD. Calls made inside nested functions are
-attributed to the outermost enclosing function/method (the same roll-up IBWD documents), and module-level ones to the file.
+Pipeline per reference occurrence:
+  SCIP occurrence -> matching ast node -> resolved symbol identity -> syntactic relation -> original lexical owner
+  -> Sprint 3 owner projection -> canonical pair
+
+Relations (exactly one per occurrence, or dropped):
+  CALLS       the occurrence is the callee of an ast.Call (`f()`, `obj.m()`, `Foo()`, decorator `@f(...)`)
+  REFERENCES  a runtime read of a function/method/class that is not the callee (`outer(f)`, `map(f, xs)`, bare `@f`)
+  INHERITS    the head of a base-class expression (`class C(Base)`, `Base[T]` -> Base)
+  IMPORTS     the module named in an import statement (file -> that module's file)
+  TYPE_USE    inside an annotation or a base's type arguments — never a runtime reference
+resolution_basis:
+  binding        the name is bound lexically: a bare name, `self`/`cls`/`super()`, a module attribute, `Class.method`
+  type_declared  the receiver is an expression whose type had to be inferred (`x.m()`, `self.a.b.m()`, `f().m()`); the target
+                 is the declared type's member — a POSSIBLE target, not proof of the runtime callee
+Positions are converted between SCIP's text encoding and ast's UTF-8 byte offsets, so non-ASCII text before a reference is safe.
+Ownership: `original_owner` is the innermost enclosing def (nested functions keep `outer.<locals>.inner`); `projected_owner` is
+the outermost non-nested def (Sprint 3's enclosing-symbol view). A nested *target* is never replaced by its enclosing function.
 """
 from __future__ import annotations
 
 import argparse
 import ast
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -39,143 +48,311 @@ def load_index(path: str, proto_dir: str):
     return scip_pb2, index
 
 
-def python_symbols(repo: Path, rel: str):
-    """[(start_line, end_line, qualname, kind, def_line)] for functions and classes, via ast (1-based lines)."""
-    try:
-        tree = ast.parse((repo / rel).read_text(encoding="utf-8", errors="replace"))
-    except SyntaxError:
-        return []
-    out: list[tuple[int, int, str, str, int]] = []
-
-    def visit(node, prefix, in_function):
-        for child in ast.iter_child_nodes(node):
-            if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-                qual = ".".join([*prefix, child.name])
-                kind = "Class" if isinstance(child, ast.ClassDef) else ("Method" if prefix and not in_function else "Function")
-                start = min([child.lineno] + [d.lineno for d in child.decorator_list])
-                if not in_function:  # nested functions/classes are not owners; their calls roll up
-                    out.append((start, child.end_lineno or child.lineno, qual, kind, child.lineno))
-                if isinstance(child, ast.ClassDef):
-                    visit(child, [*prefix, child.name], in_function)
-                else:
-                    visit(child, prefix, True)
-            else:
-                visit(child, prefix, in_function)
-
-    visit(tree, [], False)
-    return out
-
-
-_DESCRIPTOR = re.compile(r"`[^`]*`|[^/#.()\[\]:!]+|[/#.():!\[\]]")
-
-
 def descriptor_tail(symbol: str) -> str:
-    """The part of a scip symbol after the package: e.g. "`scrapy.crawler`/Crawler#crawl()." """
     parts = symbol.split(" ", 4)
     return parts[4] if len(parts) == 5 else ""
 
 
+def scip_col_to_char(line: str, col: int, encoding: str) -> int:
+    """SCIP column (UTF-8 bytes or UTF-16 units) -> index into the Python str `line`."""
+    if encoding == "UTF16":
+        units = 0
+        for i, ch in enumerate(line):
+            if units >= col:
+                return i
+            units += 2 if ord(ch) > 0xFFFF else 1
+        return len(line)
+    if encoding == "UTF8":
+        return len(line.encode("utf-8")[:col].decode("utf-8", errors="ignore"))
+    return col  # "CHAR": already a character index
+
+
+def detect_encoding(index, models: dict, declared: str) -> str:
+    """Choose the column encoding by checking which one makes occurrences land on their symbol's own name.
+
+    scip-python declares UTF8 but emits UTF-16 code-unit columns; trusting the declaration corrupts every position that
+    follows non-ASCII text. Candidates are scored on lines that contain non-ASCII characters (where they differ).
+    """
+    scores = {"UTF8": [0, 0], "UTF16": [0, 0], "CHAR": [0, 0]}
+    for doc in index.documents:
+        model = models.get(doc.relative_path)
+        if model is None:
+            continue
+        for occ in doc.occurrences:
+            if occ.symbol.startswith("local ") or occ.range[0] >= len(model.lines) or len(occ.range) != 3:
+                continue
+            text = model.lines[occ.range[0]]
+            if text.isascii():
+                continue
+            tail = descriptor_tail(occ.symbol)
+            name = tail.rstrip(".:#)(").rsplit(".", 1)[-1].rsplit("#", 1)[-1].rsplit("/", 1)[-1].strip("`")
+            if not name.isidentifier():
+                continue
+            for enc in scores:
+                a = scip_col_to_char(text, occ.range[1], enc) if enc != "CHAR" else occ.range[1]
+                b = scip_col_to_char(text, occ.range[2], enc) if enc != "CHAR" else occ.range[2]
+                scores[enc][1] += 1
+                scores[enc][0] += text[a:b] == name
+    best = max(scores, key=lambda e: (scores[e][0] / scores[e][1]) if scores[e][1] else -1)
+    return best if scores[best][1] and scores[best][0] else declared
+
+
+def ast_col_to_char(line: str, byte_col: int) -> int:
+    return len(line.encode("utf-8")[:byte_col].decode("utf-8", errors="ignore"))
+
+
+class FileModel:
+    """Everything `ast` can tell us about one file, in (line, char-column) coordinates (1-based lines)."""
+
+    def __init__(self, text: str):
+        self.lines = text.splitlines()
+        self.defs: list[dict] = []
+        self.callee_ends: dict[tuple[int, int], ast.Call] = {}
+        self.annotation_spans: list[tuple[tuple[int, int], tuple[int, int]]] = []
+        self.base_heads: dict[tuple[int, int], str] = {}
+        self.base_spans: list[tuple[tuple[int, int], tuple[int, int], str]] = []
+        self.import_lines: set[int] = set()
+        self.import_names: set[str] = set()   # names bound by import statements (module aliases, imported classes/functions)
+        self.relative_imports: list[tuple[int, int, int, str]] = []   # (line, level, start_col, dotted module) for `from .x import y`
+        self.decorator_ends: set[tuple[int, int]] = set()
+        self.tree = None
+        try:
+            self.tree = ast.parse(text)
+        except SyntaxError:
+            return
+        self._walk(self.tree, [], False, [])
+
+    def _pos(self, lineno: int, byte_col: int) -> tuple[int, int]:
+        line = self.lines[lineno - 1] if 0 < lineno <= len(self.lines) else ""
+        return lineno, ast_col_to_char(line, byte_col)
+
+    def _span(self, node):
+        return self._pos(node.lineno, node.col_offset), self._pos(node.end_lineno, node.end_col_offset)
+
+    def _end(self, node) -> tuple[int, int]:
+        return self._pos(node.end_lineno, node.end_col_offset)
+
+    def _add_annotation(self, node):
+        if node is not None:
+            self.annotation_spans.append(self._span(node))
+
+    def _walk(self, node, prefix: list[str], in_function: bool, chain: list[str]):
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                is_class = isinstance(child, ast.ClassDef)
+                qual = ".".join([*chain, "<locals>", child.name]) if in_function else ".".join([*prefix, child.name])
+                start = min([child.lineno] + [d.lineno for d in child.decorator_list])
+                self.defs.append({"qualname": qual, "start": start, "end": child.end_lineno or child.lineno, "def_line": child.lineno,
+                                  "kind": "Class" if is_class else ("Method" if prefix and not in_function else "Function"),
+                                  "nested": in_function})
+                for d in child.decorator_list:
+                    self.decorator_ends.add(self._end(d.func if isinstance(d, ast.Call) else d))
+                if is_class:
+                    for base in child.bases:
+                        head = base.value if isinstance(base, ast.Subscript) else base
+                        self.base_heads[self._end(head)] = qual
+                        self.base_spans.append((self._span(base)[0], self._span(base)[1], qual))
+                    self._walk(child, prefix if in_function else [*prefix, child.name], in_function, chain if in_function else chain)
+                else:
+                    a = child.args
+                    for arg in [*a.posonlyargs, *a.args, *a.kwonlyargs, a.vararg, a.kwarg]:
+                        if arg is not None:
+                            self._add_annotation(arg.annotation)
+                    self._add_annotation(child.returns)
+                    new_chain = [*chain, child.name] if in_function else [*prefix, child.name]
+                    self._walk(child, prefix, True, new_chain)
+                continue
+            if isinstance(child, ast.Call):
+                self.callee_ends[self._end(child.func)] = child
+            elif isinstance(child, ast.AnnAssign):
+                self._add_annotation(child.annotation)
+            elif isinstance(child, (ast.Import, ast.ImportFrom)):
+                self.import_lines.update(range(child.lineno, (child.end_lineno or child.lineno) + 1))
+                for alias in child.names:
+                    self.import_names.add(alias.asname or alias.name.split(".")[0])
+                if isinstance(child, ast.ImportFrom) and child.level:
+                    self.relative_imports.append((child.lineno, child.level, child.col_offset, child.module or ""))
+            self._walk(child, prefix, in_function, chain)
+
+    def in_annotation(self, start, end) -> bool:
+        return any(a <= start and end <= b for a, b in self.annotation_spans)
+
+    def owners(self, line: int):
+        """(original owner def or None, projected owner def or None) for a line; classes are not call owners."""
+        containing = [d for d in self.defs if d["start"] <= line <= d["end"] and d["kind"] != "Class"]
+        if not containing:
+            return None, None
+        original = min(containing, key=lambda d: d["end"] - d["start"])
+        outer = [d for d in containing if not d["nested"]]
+        projected = min(outer, key=lambda d: d["end"] - d["start"]) if outer else original
+        return original, projected
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("index"); ap.add_argument("repo"); ap.add_argument("audit"); ap.add_argument("out")
+    ap.add_argument("index"); ap.add_argument("repo"); ap.add_argument("manifest"); ap.add_argument("out")
     ap.add_argument("--proto-dir", default=str(Path(__file__).resolve().parent))
     args = ap.parse_args()
 
     repo = Path(args.repo).resolve()
-    scope = set(json.loads(Path(args.audit).read_text())["production_files"])
+    manifest = json.loads(Path(args.manifest).read_text())
+    scope = set(manifest["included_files"])
     scip, index = load_index(args.index, args.proto_dir)
-    Definition = scip.SymbolRole.Definition
+    Definition, WriteAccess = scip.SymbolRole.Definition, scip.SymbolRole.WriteAccess
+    declared = "UTF16" if "16" in scip.TextEncoding.Name(index.metadata.text_document_encoding).upper() else "UTF8"
 
-    # 1. ast symbols per in-scope file, and the canonical id of each SCIP definition
-    syms_by_file = {f: python_symbols(repo, f) for f in scope if f.endswith(".py")}
-    symbols = []
-    for f, items in syms_by_file.items():
-        for start, end, qual, kind, def_line in items:
-            symbols.append({"id": f"{f}::{qual}", "file": f, "line": def_line, "end_line": end, "name": qual, "kind": kind})
-    for f in sorted(scope):
-        if f.endswith(".py"):
-            symbols.append({"id": f, "file": f, "line": 1, "name": Path(f).name, "kind": "File"})
-    canon_by_def: dict[str, str] = {}  # scip symbol -> canonical id
-    file_of_symbol: dict[str, str] = {}
-    module_file: dict[str, str] = {}   # scip module symbol -> file
+    models = {f: FileModel((repo / f).read_text(encoding="utf-8", errors="replace")) for f in sorted(scope) if f.endswith(".py")}
+    encoding = detect_encoding(index, models, declared)
+    symbols: list[dict] = []
+    for f, m in models.items():
+        for d in m.defs:
+            symbols.append({"id": f"{f}::{d['qualname']}", "file": f, "line": d["def_line"], "end_line": d["end"], "name": d["qualname"],
+                            "kind": d["kind"], "nested": d["nested"]})
+        symbols.append({"id": f, "file": f, "line": 1, "name": Path(f).name, "kind": "File"})
+
+    module_def_file: dict[str, str] = {}   # scip module symbol -> the file that defines it (exact; no name mangling)
+    canon_by_def: dict[str, str] = {}
     for doc in index.documents:
         rel = doc.relative_path
-        by_line = {s[4]: s for s in syms_by_file.get(rel, [])}
-        for occ in doc.occurrences:
-            if not occ.symbol_roles & Definition or occ.symbol.startswith("local "):
-                continue
-            line = occ.range[0] + 1
-            tail = descriptor_tail(occ.symbol)
-            file_of_symbol[occ.symbol] = rel
-            if tail.endswith("()." ) or tail.endswith("#"):
-                hit = by_line.get(line)
-                if hit is not None:
-                    canon_by_def[occ.symbol] = f"{rel}::{hit[2]}"
-        if rel.endswith(".py"):
-            mod = rel[:-3].replace("/", ".").removesuffix(".__init__")
-            module_file[mod] = rel
-
-    # 2. references -> edges
-    edges: dict[tuple, dict] = {}
-    for doc in index.documents:
-        rel = doc.relative_path
-        if rel not in scope or not rel.endswith(".py"):
+        model = models.get(rel)
+        if not model:
             continue
-        lines = (repo / rel).read_text(encoding="utf-8", errors="replace").splitlines()
-        owners = sorted(syms_by_file.get(rel, []), key=lambda s: (s[1] - s[0]))
+        by_line = {}
+        for d in model.defs:
+            by_line.setdefault(d["def_line"], d)
+        for occ in doc.occurrences:
+            if occ.symbol.startswith("local ") or not occ.symbol_roles & Definition:
+                continue
+            tail = descriptor_tail(occ.symbol)
+            if tail.endswith("/__init__:"):
+                module_def_file[occ.symbol] = rel
+            if tail.endswith("().") or tail.endswith("#"):
+                d = by_line.get(occ.range[0] + 1)
+                if d is not None:
+                    canon_by_def[occ.symbol] = f"{rel}::{d['qualname']}"
+
+    occurrences: list[dict] = []
+    for doc in index.documents:
+        rel = doc.relative_path
+        model = models.get(rel)
+        if model is None or model.tree is None:
+            continue
+        # receiver classification: a module/class symbol immediately before `.name` means a lexical (binding) receiver
+        lexical_receivers = {
+            (o.range[0] + 1, scip_col_to_char(model.lines[o.range[0]], o.range[1], encoding))
+            for o in doc.occurrences
+            if o.range[0] < len(model.lines) and (descriptor_tail(o.symbol).endswith(("/__init__:", "#")))
+        }
         for occ in doc.occurrences:
             if occ.symbol_roles & Definition or occ.symbol.startswith("local "):
                 continue
             line = occ.range[0] + 1
-            end_col = occ.range[3] if len(occ.range) == 4 else occ.range[2]
-            text = lines[line - 1] if line - 1 < len(lines) else ""
-            stripped = text.lstrip()
-            after = text[end_col:].lstrip()
-            before = text[: occ.range[1]].rstrip()
-            is_import_line = stripped.startswith(("from ", "import "))
-            target = canon_by_def.get(occ.symbol)
+            text = model.lines[line - 1] if line - 1 < len(model.lines) else ""
+            start_char = scip_col_to_char(text, occ.range[1], encoding)
+            end_line = (occ.range[2] + 1) if len(occ.range) == 4 else line
+            end_text = model.lines[end_line - 1] if end_line - 1 < len(model.lines) else ""
+            end_char = scip_col_to_char(end_text, occ.range[3] if len(occ.range) == 4 else occ.range[2], encoding)
+            start, end = (line, start_char), (end_line, end_char)
             tail = descriptor_tail(occ.symbol)
+            relation = basis = target_id = class_id = None
 
-            if is_import_line:
-                dest = file_of_symbol.get(occ.symbol)
-                if dest is None and tail.endswith("/__init__:"):
-                    mod = tail.strip("`/__init__:").rstrip("/").strip("`")
-                    dest = module_file.get(re.sub(r"[`/]|__init__:", "", tail))
-                if dest and dest != rel and dest in scope:
-                    edges.setdefault((rel, dest, "IMPORTS"), {"source": rel, "target": dest, "relation": "IMPORTS", "file": rel, "line": line})
-                continue
-            if target is None:
-                continue  # external / builtin / local variable
-            # a repeated `def name(` / `class name` (typing.overload stubs, redefinitions) is a definition site, not a use
-            if re.match(r"(async\s+)?def\s+\w+|class\s+\w+", stripped) and occ.range[1] <= len(text) - len(stripped) + len(stripped.split("(")[0]):
-                continue
-            if after.startswith("("):
-                relation = "CALLS"
-            elif before.endswith("@"):
-                relation = "REFERENCES"
-            elif tail.endswith("()."):
-                if before.endswith((":", "->", "|")):  # annotation position
+            if line in model.import_lines:
+                if tail.endswith("/__init__:"):
+                    dest = module_def_file.get(occ.symbol)
+                    if dest and dest != rel and dest in scope:
+                        relation, basis, target_id = "IMPORTS", "path", dest
+                if relation is None:
                     continue
-                relation = "REFERENCES"
+            elif occ.symbol in canon_by_def:
+                target_id = canon_by_def[occ.symbol]
+                if occ.symbol_roles & WriteAccess:
+                    continue
+                if end in model.base_heads:
+                    relation, basis = "INHERITS", "binding"
+                    class_id = f"{rel}::{model.base_heads[end]}"
+                elif any(a <= start and end <= b for a, b, _ in model.base_spans) or model.in_annotation(start, end):
+                    relation = "TYPE_USE"
+                elif end in model.callee_ends:
+                    call = model.callee_ends[end]
+                    relation = "CALLS"
+                    fn = call.func
+                    if isinstance(fn, ast.Name):
+                        basis = "binding"
+                    elif isinstance(fn, ast.Attribute):
+                        obj = fn.value
+                        obj_start = (obj.lineno, ast_col_to_char(model.lines[obj.lineno - 1], obj.col_offset))
+                        if isinstance(obj, ast.Name) and (obj.id in ("self", "cls") or obj_start in lexical_receivers or obj.id in model.import_names):
+                            basis = "binding"      # self/cls, a module alias, or a class name
+                        elif isinstance(obj, ast.Call) and isinstance(obj.func, ast.Name) and obj.func.id == "super":
+                            basis = "binding"
+                        else:
+                            basis = "type_declared"  # a variable, attribute chain or call result whose type was inferred
+                    else:
+                        basis = "type_declared"
+                else:
+                    relation, basis = "REFERENCES", "binding"
             else:
                 continue
-            owner = next((s for s in owners if s[0] <= line <= s[1]), None)
-            source = f"{rel}::{owner[2]}" if owner else rel
-            if source == target and relation != "CALLS":
-                continue
-            edges.setdefault((source, target, relation), {"source": source, "target": target, "relation": relation, "file": rel, "line": line})
+
+            original, projected = model.owners(line)
+            occurrences.append({
+                "file": rel, "start": list(start), "end": list(end), "target_id": target_id,
+                "original_owner_id": f"{rel}::{original['qualname']}" if original else rel,
+                "projected_owner_id": f"{rel}::{projected['qualname']}" if projected else rel,
+                "relation": relation, "resolution_basis": basis, "class_id": class_id,
+            })
+
+    for f, model in models.items():
+        for line, level, col, module in model.relative_imports:
+            base = Path(f).parent
+            for _ in range(level - 1):
+                base = base.parent
+            parts = module.split(".") if module else []
+            candidates = [str(base.joinpath(*parts)) + ".py", str(base.joinpath(*parts) / "__init__.py")] if parts else [str(base / "__init__.py")]
+            dest = next((c.removeprefix("./") for c in candidates if c.removeprefix("./") in scope), None)
+            if dest and dest != f:
+                occurrences.append({"file": f, "start": [line, col], "end": [line, col], "target_id": dest, "original_owner_id": f,
+                                    "projected_owner_id": f, "relation": "IMPORTS", "resolution_basis": "path", "class_id": None})
+
+    edges: dict[tuple, dict] = {}
+    symbol_ids = {s["id"] for s in symbols if not s.get("nested")}   # nested definitions are not indexed symbols
+    nested_target_occurrences = []
+    for o in occurrences:
+        if o["relation"] == "TYPE_USE":
+            continue
+        source = o["file"] if o["relation"] == "IMPORTS" else (o["class_id"] if o["relation"] == "INHERITS" else o["projected_owner_id"])
+        target = o["target_id"]
+        if target not in symbol_ids:
+            nested_target_occurrences.append({**o, "note": "target is a nested definition, not an indexed symbol; never replaced by its enclosing function"})
+            continue
+        if source == target and o["relation"] != "CALLS":
+            continue
+        e = edges.setdefault((source, target, o["relation"]), {"source": source, "target": target, "relation": o["relation"],
+                                                                "basis": set(), "file": o["file"], "line": o["start"][0]})
+        e["basis"].add(o["resolution_basis"])
+    out_edges = []
+    for e in edges.values():
+        e["basis"] = "type_declared" if e["basis"] == {"type_declared"} else "binding"
+        out_edges.append(e)
 
     out = {
-        "oracle": f"scip-python {index.metadata.tool_info.version} (Pyright semantic resolution) + ast owner ranges",
+        "oracle": f"scip-python {index.metadata.tool_info.version} (Pyright) + ast roles/owners",
+        "adapter": "benchmarks/tools/scip_python_to_graph.py",
+        "manifest_sha256": manifest["manifest_sha256"], "repo_sha": manifest["repo_sha"], "text_encoding": encoding, "declared_text_encoding": declared,
         "complete": False,
-        "status": "static semantic oracle; runtime dispatch not covered; REFERENCES classification is heuristic",
+        "status": "static semantic oracle; runtime dispatch not covered; type_declared edges are POSSIBLE targets",
         "symbols": symbols,
-        "edges": sorted(edges.values(), key=lambda e: (e["source"], e["target"], e["relation"])),
+        "edges": sorted(out_edges, key=lambda e: (e["source"], e["target"], e["relation"])),
+        "occurrences": occurrences,
+        "nested_target_occurrences": nested_target_occurrences,
     }
     Path(args.out).write_text(json.dumps(out, indent=1) + "\n")
-    print(f"{len(symbols)} symbols, {len(out['edges'])} edges "
-          f"({sum(e['relation']=='CALLS' for e in out['edges'])} CALLS, {sum(e['relation']=='IMPORTS' for e in out['edges'])} IMPORTS, "
-          f"{sum(e['relation']=='REFERENCES' for e in out['edges'])} REFERENCES)")
+    rel_counts: dict[str, int] = {}
+    for e in out_edges:
+        rel_counts[e["relation"]] = rel_counts.get(e["relation"], 0) + 1
+    basis_counts = {b: sum(1 for e in out_edges if e["basis"] == b and e["relation"] == "CALLS") for b in ("binding", "type_declared")}
+    print(f"{len(symbols)} symbols, {len(occurrences)} occurrences | edges {rel_counts} | CALLS by basis {basis_counts} | "
+          f"nested-target occurrences {len(nested_target_occurrences)}")
     return 0
 
 

@@ -1,0 +1,1418 @@
+{
+ "repo": "bulletproof-react",
+ "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+ "scope_rule": "apps/react-vite/src only; the two other app variants are not independent repositories",
+ "source_audit": "bulletproof-react_audit.json",
+ "source_audit_sha256": "b240a099e9706d0e7229f02ea431568f0c29d445671f6b7049e7dd2b0cb72456",
+ "included_files": [
+  "apps/react-vite/src/app/index.tsx",
+  "apps/react-vite/src/app/provider.tsx",
+  "apps/react-vite/src/app/router.tsx",
+  "apps/react-vite/src/app/routes/app/dashboard.tsx",
+  "apps/react-vite/src/app/routes/app/discussions/discussion.tsx",
+  "apps/react-vite/src/app/routes/app/discussions/discussions.tsx",
+  "apps/react-vite/src/app/routes/app/profile.tsx",
+  "apps/react-vite/src/app/routes/app/root.tsx",
+  "apps/react-vite/src/app/routes/app/users.tsx",
+  "apps/react-vite/src/app/routes/auth/login.tsx",
+  "apps/react-vite/src/app/routes/auth/register.tsx",
+  "apps/react-vite/src/app/routes/landing.tsx",
+  "apps/react-vite/src/app/routes/not-found.tsx",
+  "apps/react-vite/src/components/errors/main.tsx",
+  "apps/react-vite/src/components/layouts/auth-layout.tsx",
+  "apps/react-vite/src/components/layouts/content-layout.tsx",
+  "apps/react-vite/src/components/layouts/dashboard-layout.tsx",
+  "apps/react-vite/src/components/layouts/index.ts",
+  "apps/react-vite/src/components/seo/head.tsx",
+  "apps/react-vite/src/components/seo/index.ts",
+  "apps/react-vite/src/components/ui/button/button.tsx",
+  "apps/react-vite/src/components/ui/button/index.ts",
+  "apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx",
+  "apps/react-vite/src/components/ui/dialog/confirmation-dialog/index.ts",
+  "apps/react-vite/src/components/ui/dialog/dialog.tsx",
+  "apps/react-vite/src/components/ui/dialog/index.ts",
+  "apps/react-vite/src/components/ui/drawer/drawer.tsx",
+  "apps/react-vite/src/components/ui/drawer/index.ts",
+  "apps/react-vite/src/components/ui/dropdown/dropdown.tsx",
+  "apps/react-vite/src/components/ui/dropdown/index.ts",
+  "apps/react-vite/src/components/ui/form/error.tsx",
+  "apps/react-vite/src/components/ui/form/field-wrapper.tsx",
+  "apps/react-vite/src/components/ui/form/form-drawer.tsx",
+  "apps/react-vite/src/components/ui/form/form.tsx",
+  "apps/react-vite/src/components/ui/form/index.ts",
+  "apps/react-vite/src/components/ui/form/input.tsx",
+  "apps/react-vite/src/components/ui/form/label.tsx",
+  "apps/react-vite/src/components/ui/form/select.tsx",
+  "apps/react-vite/src/components/ui/form/switch.tsx",
+  "apps/react-vite/src/components/ui/form/textarea.tsx",
+  "apps/react-vite/src/components/ui/link/index.ts",
+  "apps/react-vite/src/components/ui/link/link.tsx",
+  "apps/react-vite/src/components/ui/md-preview/index.ts",
+  "apps/react-vite/src/components/ui/md-preview/md-preview.tsx",
+  "apps/react-vite/src/components/ui/notifications/index.ts",
+  "apps/react-vite/src/components/ui/notifications/notification.tsx",
+  "apps/react-vite/src/components/ui/notifications/notifications-store.ts",
+  "apps/react-vite/src/components/ui/notifications/notifications.tsx",
+  "apps/react-vite/src/components/ui/spinner/index.ts",
+  "apps/react-vite/src/components/ui/spinner/spinner.tsx",
+  "apps/react-vite/src/components/ui/table/index.ts",
+  "apps/react-vite/src/components/ui/table/pagination.tsx",
+  "apps/react-vite/src/components/ui/table/table.tsx",
+  "apps/react-vite/src/config/env.ts",
+  "apps/react-vite/src/config/paths.ts",
+  "apps/react-vite/src/features/auth/components/login-form.tsx",
+  "apps/react-vite/src/features/auth/components/register-form.tsx",
+  "apps/react-vite/src/features/comments/api/create-comment.ts",
+  "apps/react-vite/src/features/comments/api/delete-comment.ts",
+  "apps/react-vite/src/features/comments/api/get-comments.ts",
+  "apps/react-vite/src/features/comments/components/comments-list.tsx",
+  "apps/react-vite/src/features/comments/components/comments.tsx",
+  "apps/react-vite/src/features/comments/components/create-comment.tsx",
+  "apps/react-vite/src/features/comments/components/delete-comment.tsx",
+  "apps/react-vite/src/features/discussions/api/create-discussion.ts",
+  "apps/react-vite/src/features/discussions/api/delete-discussion.ts",
+  "apps/react-vite/src/features/discussions/api/get-discussion.ts",
+  "apps/react-vite/src/features/discussions/api/get-discussions.ts",
+  "apps/react-vite/src/features/discussions/api/update-discussion.ts",
+  "apps/react-vite/src/features/discussions/components/create-discussion.tsx",
+  "apps/react-vite/src/features/discussions/components/delete-discussion.tsx",
+  "apps/react-vite/src/features/discussions/components/discussion-view.tsx",
+  "apps/react-vite/src/features/discussions/components/discussions-list.tsx",
+  "apps/react-vite/src/features/discussions/components/update-discussion.tsx",
+  "apps/react-vite/src/features/teams/api/get-teams.ts",
+  "apps/react-vite/src/features/users/api/delete-user.ts",
+  "apps/react-vite/src/features/users/api/get-users.ts",
+  "apps/react-vite/src/features/users/api/update-profile.ts",
+  "apps/react-vite/src/features/users/components/delete-user.tsx",
+  "apps/react-vite/src/features/users/components/update-profile.tsx",
+  "apps/react-vite/src/features/users/components/users-list.tsx",
+  "apps/react-vite/src/hooks/use-disclosure.ts",
+  "apps/react-vite/src/lib/api-client.ts",
+  "apps/react-vite/src/lib/auth.tsx",
+  "apps/react-vite/src/lib/authorization.tsx",
+  "apps/react-vite/src/lib/react-query.ts",
+  "apps/react-vite/src/main.tsx",
+  "apps/react-vite/src/testing/data-generators.ts",
+  "apps/react-vite/src/testing/mocks/browser.ts",
+  "apps/react-vite/src/testing/mocks/db.ts",
+  "apps/react-vite/src/testing/mocks/handlers/auth.ts",
+  "apps/react-vite/src/testing/mocks/handlers/comments.ts",
+  "apps/react-vite/src/testing/mocks/handlers/discussions.ts",
+  "apps/react-vite/src/testing/mocks/handlers/index.ts",
+  "apps/react-vite/src/testing/mocks/handlers/teams.ts",
+  "apps/react-vite/src/testing/mocks/handlers/users.ts",
+  "apps/react-vite/src/testing/mocks/index.ts",
+  "apps/react-vite/src/testing/mocks/server.ts",
+  "apps/react-vite/src/testing/mocks/utils.ts",
+  "apps/react-vite/src/testing/setup-tests.ts",
+  "apps/react-vite/src/testing/test-utils.tsx",
+  "apps/react-vite/src/types/api.ts",
+  "apps/react-vite/src/utils/cn.ts",
+  "apps/react-vite/src/utils/format.ts"
+ ],
+ "excluded_files": [
+  {
+   "file": "apps/nextjs-app/src/app/app/_components/dashboard-info.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/_components/dashboard-layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/discussions/[discussionId]/_components/discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/discussions/[discussionId]/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/discussions/_components/discussions.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/discussions/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/profile/_components/profile.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/profile/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/users/_components/admin-guard.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/users/_components/users.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/app/users/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/auth/_components/auth-layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/auth/layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/auth/login/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/auth/register/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/not-found.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/provider.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/app/public/discussions/[discussionId]/page.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/errors/main.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/layouts/content-layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/button/button.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/button/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/dialog/confirmation-dialog/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/dialog/dialog.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/dialog/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/drawer/drawer.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/drawer/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/dropdown/dropdown.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/dropdown/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/error.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/field-wrapper.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/form-drawer.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/form.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/input.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/label.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/select.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/switch.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/form/textarea.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/link/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/link/link.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/md-preview/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/md-preview/md-preview.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/notifications/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/notifications/notification.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/notifications/notifications-store.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/notifications/notifications.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/spinner/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/spinner/spinner.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/table/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/table/pagination.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/components/ui/table/table.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/config/env.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/config/paths.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/auth/components/login-form.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/auth/components/register-form.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/api/create-comment.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/api/delete-comment.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/api/get-comments.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/components/comments-list.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/components/comments.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/components/create-comment.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/comments/components/delete-comment.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/api/create-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/api/delete-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/api/get-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/api/get-discussions.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/api/update-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/components/create-discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/components/delete-discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/components/discussion-view.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/components/discussions-list.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/discussions/components/update-discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/teams/api/get-teams.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/users/api/delete-user.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/users/api/get-users.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/users/api/update-profile.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/users/components/delete-user.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/users/components/update-profile.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/features/users/components/users-list.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/hooks/use-disclosure.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/lib/api-client.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/lib/auth.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/lib/authorization.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/lib/react-query.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/data-generators.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/browser.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/db.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/handlers/auth.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/handlers/comments.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/handlers/discussions.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/handlers/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/handlers/teams.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/handlers/users.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/server.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/mocks/utils.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/setup-tests.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/testing/test-utils.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/types/api.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/utils/auth.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/utils/cn.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-app/src/utils/format.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/app/dashboard.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/app/discussions/discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/app/discussions/discussions.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/app/profile.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/app/users.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/auth/login.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/pages/auth/register.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/app/provider.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/errors/main.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/layouts/auth-layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/layouts/content-layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/layouts/dashboard-layout.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/layouts/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/seo/head.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/seo/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/button/button.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/button/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/dialog/confirmation-dialog/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/dialog/dialog.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/dialog/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/drawer/drawer.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/drawer/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/dropdown/dropdown.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/dropdown/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/error.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/field-wrapper.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/form-drawer.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/form.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/input.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/label.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/select.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/switch.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/form/textarea.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/link/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/link/link.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/md-preview/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/md-preview/md-preview.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/notifications/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/notifications/notification.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/notifications/notifications-store.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/notifications/notifications.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/spinner/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/spinner/spinner.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/table/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/table/pagination.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/components/ui/table/table.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/config/env.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/config/paths.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/auth/components/login-form.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/auth/components/register-form.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/api/create-comment.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/api/delete-comment.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/api/get-comments.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/components/comments-list.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/components/comments.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/components/create-comment.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/comments/components/delete-comment.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/api/create-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/api/delete-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/api/get-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/api/get-discussions.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/api/update-discussion.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/components/create-discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/components/delete-discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/components/discussion-view.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/components/discussions-list.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/discussions/components/update-discussion.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/teams/api/get-teams.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/users/api/delete-user.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/users/api/get-users.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/users/api/update-profile.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/users/components/delete-user.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/users/components/update-profile.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/features/users/components/users-list.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/hooks/use-disclosure.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/lib/api-client.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/lib/auth.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/lib/authorization.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/lib/react-query.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/404.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/_app.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/app/discussions/[discussionId].tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/app/discussions/index.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/app/index.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/app/profile.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/app/users.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/auth/login.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/auth/register.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/index.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/pages/public/discussions/[discussionId].tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/data-generators.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/browser.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/db.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/handlers/auth.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/handlers/comments.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/handlers/discussions.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/handlers/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/handlers/teams.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/handlers/users.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/index.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/server.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/mocks/utils.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/setup-tests.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/testing/test-utils.tsx",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/types/api.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/utils/cn.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  },
+  {
+   "file": "apps/nextjs-pages/src/utils/format.ts",
+   "reason": "duplicate app variant, not an independent repository",
+   "evidence": "the repository ships three near-identical apps (react-vite, nextjs-app, nextjs-pages); only react-vite/src is benchmark scope; the variants are used only for alias-stress diagnostics",
+   "category": "duplicate_variant"
+  }
+ ],
+ "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e"
+}

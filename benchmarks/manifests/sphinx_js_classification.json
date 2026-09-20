@@ -1,0 +1,1187 @@
+{
+ "repo": "sphinx",
+ "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+ "purpose": "classification diagnostic for the JavaScript files inside Sphinx's audit production roots",
+ "ibwd_excluded_as_generated": [
+  "sphinx/search/minified-js/arabic-stemmer.js",
+  "sphinx/search/minified-js/armenian-stemmer.js",
+  "sphinx/search/minified-js/base-stemmer.js",
+  "sphinx/search/minified-js/basque-stemmer.js",
+  "sphinx/search/minified-js/catalan-stemmer.js",
+  "sphinx/search/minified-js/danish-stemmer.js",
+  "sphinx/search/minified-js/dutch-stemmer.js",
+  "sphinx/search/minified-js/dutch_porter-stemmer.js",
+  "sphinx/search/minified-js/english-stemmer.js",
+  "sphinx/search/minified-js/esperanto-stemmer.js",
+  "sphinx/search/minified-js/estonian-stemmer.js",
+  "sphinx/search/minified-js/finnish-stemmer.js",
+  "sphinx/search/minified-js/french-stemmer.js",
+  "sphinx/search/minified-js/german-stemmer.js",
+  "sphinx/search/minified-js/greek-stemmer.js",
+  "sphinx/search/minified-js/hindi-stemmer.js",
+  "sphinx/search/minified-js/hungarian-stemmer.js",
+  "sphinx/search/minified-js/indonesian-stemmer.js",
+  "sphinx/search/minified-js/irish-stemmer.js",
+  "sphinx/search/minified-js/italian-stemmer.js",
+  "sphinx/search/minified-js/lithuanian-stemmer.js",
+  "sphinx/search/minified-js/nepali-stemmer.js",
+  "sphinx/search/minified-js/norwegian-stemmer.js",
+  "sphinx/search/minified-js/porter-stemmer.js",
+  "sphinx/search/minified-js/portuguese-stemmer.js",
+  "sphinx/search/minified-js/romanian-stemmer.js",
+  "sphinx/search/minified-js/russian-stemmer.js",
+  "sphinx/search/minified-js/serbian-stemmer.js",
+  "sphinx/search/minified-js/spanish-stemmer.js",
+  "sphinx/search/minified-js/swedish-stemmer.js",
+  "sphinx/search/minified-js/tamil-stemmer.js",
+  "sphinx/search/minified-js/turkish-stemmer.js",
+  "sphinx/search/minified-js/yiddish-stemmer.js",
+  "sphinx/themes/bizstyle/static/css3-mediaqueries.js"
+ ],
+ "counts": {
+  "generated_translation_catalog": 70,
+  "generated_stemmer_minified": 33,
+  "generated_stemmer_source": 33,
+  "handwritten": 4,
+  "vendored_minified": 1,
+  "vendored_source": 1
+ },
+ "files": [
+  {
+   "file": "sphinx/locale/ar/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 54,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/bg/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/bn/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 94,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ca/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 66,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ca@valencia/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 66,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/cak/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 38,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/cs/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 62,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/cy/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 53,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/da/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 57,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/de/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 56,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/de_DE/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/el/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 138,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/en_DE/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/en_FR/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/en_GB/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 57,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/en_HK/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/eo/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 39,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/es/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 63,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/es_CO/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/et/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 57,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/eu/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 49,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/fa/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 120,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/fi/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 45,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/fr/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 69,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/fr_FR/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/gl/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 62,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/he/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 76,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/hi/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 117,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/hi_IN/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/hr/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 57,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/hu/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 63,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/id/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 56,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/is/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 45,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/it/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 56,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ja/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 80,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ka/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 97,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ko/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 74,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/lt/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 54,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/lv/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 54,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/mk/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 39,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/nb/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/nb_NO/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 56,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ne/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 99,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/nl/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 55,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/no/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/pl/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 60,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/pt/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/pt_BR/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 70,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/pt_PT/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 59,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ro/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 58,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ru/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 135,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/si/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 61,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sk/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 64,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sl/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 50,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sq/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 70,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sr/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 65,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sr@latin/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 40,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sr_RS/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 40,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/sv/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 64,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ta/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 38,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/te/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/tr/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 63,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/uk_UA/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 97,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/ur/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/vi/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 56,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/yue/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/zh_CN/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 71,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/zh_HK/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/zh_TW.Big5/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/locale/zh_TW/LC_MESSAGES/sphinx.js",
+   "classification": "generated_translation_catalog",
+   "avg_line_length": 70,
+   "benchmark_decision": "excluded",
+   "reason": "generated translation catalog",
+   "evidence": "documented provenance: utils/babel_runner.py (line ~223) writes locale/*/LC_MESSAGES/sphinx.js from the .po catalogue; the file has no generated-file header"
+  },
+  {
+   "file": "sphinx/search/minified-js/arabic-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 11165,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 11165 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/armenian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 4289,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 4289 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/base-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 4031,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 4031 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/basque-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 8038,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 8038 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/catalan-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 10066,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 10066 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/danish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 2485,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 2485 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/dutch-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 12580,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 12580 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/dutch_porter-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 4352,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 4352 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/english-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 7732,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 7732 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/esperanto-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 5560,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 5560 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/estonian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 11175,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 11175 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/finnish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 5805,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 5805 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/french-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 10113,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 10113 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/german-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 4457,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 4457 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/greek-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 29469,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 29469 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/hindi-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 3126,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 3126 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/hungarian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 5177,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 5177 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/indonesian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 2538,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 2538 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/irish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 3097,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 3097 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/italian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 7666,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 7666 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/lithuanian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 6071,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 6071 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/nepali-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 3223,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 3223 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/norwegian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 2418,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 2418 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/porter-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 4898,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 4898 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/portuguese-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 6953,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 6953 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/romanian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 7313,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 7313 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/russian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 4665,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 4665 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/serbian-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 54008,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 54008 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/spanish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 7650,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 7650 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/swedish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 2833,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 2833 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/tamil-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 10600,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 10600 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/turkish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 13702,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 13702 chars"
+  },
+  {
+   "file": "sphinx/search/minified-js/yiddish-stemmer.js",
+   "classification": "generated_stemmer_minified",
+   "avg_line_length": 9749,
+   "benchmark_decision": "excluded",
+   "reason": "generated minified stemmer",
+   "evidence": "produced from non-minified-js by utils/generate_snowball.py regenerate_javascript(); measured average line length 9749 chars"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/arabic-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 33,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from arabic.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/armenian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 34,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from armenian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/base-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 26,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// @ts-check'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/basque-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 26,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from basque.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/catalan-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from catalan.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/danish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from danish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/dutch-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 30,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from dutch.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/dutch_porter-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from dutch_porter.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/english-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from english.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/esperanto-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from esperanto.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/estonian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from estonian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/finnish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from finnish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/french-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 32,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from french.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/german-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 32,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from german.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/greek-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 32,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from greek.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/hindi-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from hindi.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/hungarian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 25,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from hungarian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/indonesian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from indonesian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/irish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 25,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from irish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/italian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from italian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/lithuanian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from lithuanian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/nepali-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 33,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from nepali.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/norwegian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 28,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from norwegian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/porter-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 28,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from porter.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/portuguese-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from portuguese.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/romanian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from romanian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/russian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from russian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/serbian-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from serbian.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/spanish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from spanish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/swedish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 27,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from swedish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/tamil-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 31,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from tamil.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/turkish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 32,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from turkish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/search/non-minified-js/yiddish-stemmer.js",
+   "classification": "generated_stemmer_source",
+   "avg_line_length": 37,
+   "benchmark_decision": "excluded",
+   "reason": "generated stemmer source (Snowball output)",
+   "evidence": "source header: '// Generated from yiddish.sbl by Snowball 3.0.1 - https://snowballstem.org/'; produced by utils/generate_snowball.py"
+  },
+  {
+   "file": "sphinx/themes/basic/static/doctools.js",
+   "classification": "handwritten",
+   "avg_line_length": 29,
+   "benchmark_decision": "excluded",
+   "reason": "hand-written JavaScript outside the Python-only benchmark scope",
+   "evidence": "authored in this repository (first line: '/*'); not excluded for length or heuristics"
+  },
+  {
+   "file": "sphinx/themes/basic/static/searchtools.js",
+   "classification": "handwritten",
+   "avg_line_length": 32,
+   "benchmark_decision": "excluded",
+   "reason": "hand-written JavaScript outside the Python-only benchmark scope",
+   "evidence": "authored in this repository (first line: '/*'); not excluded for length or heuristics"
+  },
+  {
+   "file": "sphinx/themes/basic/static/sphinx_highlight.js",
+   "classification": "handwritten",
+   "avg_line_length": 33,
+   "benchmark_decision": "excluded",
+   "reason": "hand-written JavaScript outside the Python-only benchmark scope",
+   "evidence": "authored in this repository (first line: '/* Highlighting utilities for Sphinx HTML documentation. */'); not excluded for length or heuristics"
+  },
+  {
+   "file": "sphinx/themes/bizstyle/static/css3-mediaqueries.js",
+   "classification": "vendored_minified",
+   "avg_line_length": 7470,
+   "benchmark_decision": "excluded",
+   "reason": "vendored third-party library, minified",
+   "evidence": "sibling css3-mediaqueries_src.js header names third-party author Wouter van der Graaf; measured average line length 7470 chars"
+  },
+  {
+   "file": "sphinx/themes/bizstyle/static/css3-mediaqueries_src.js",
+   "classification": "vendored_source",
+   "avg_line_length": 26,
+   "benchmark_decision": "excluded",
+   "reason": "vendored third-party library, readable source",
+   "evidence": "header: 'css3-mediaqueries.js - CSS Helper and CSS3 Media Queries Enabler; author: Wouter van der Graaf'"
+  },
+  {
+   "file": "sphinx/themes/scrolls/static/theme_extras.js",
+   "classification": "handwritten",
+   "avg_line_length": 41,
+   "benchmark_decision": "excluded",
+   "reason": "hand-written JavaScript outside the Python-only benchmark scope",
+   "evidence": "authored in this repository (first line: 'const initialiseThemeExtras = () => {'); not excluded for length or heuristics"
+  }
+ ]
+}

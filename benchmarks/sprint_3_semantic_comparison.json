@@ -1,22 +1,48 @@
 {
+ "generated_at": "2026-09-20T06:19:43+00:00",
  "purpose": "Full-repo semantic comparison of IBWD CALLS edges against scip-python (Pyright) \u2014 Python repositories, pair level",
  "oracle": "scip-python 0.6.6 + ast owner ranges (benchmarks/tools/scip_python_to_graph.py)",
  "granularity": "caller symbol -> target symbol per relation; IBWD stores no callsite positions",
- "note": "precision is RAW vs the oracle (unadjudicated); broader = all oracle edges; supported = declared type/data-flow category excluded (gate definition section 7). Celery is the labelled negative control.",
+ "status_of_data": "DEVELOPMENT data: these repositories were inspected and the resolver was changed in response. Not an untouched generalization test.",
+ "denominator_policy": "broader = all oracle edges minus individually evidenced oracle errors; supported = broader minus the declared type/data-flow category and adjudicated unsupported cases. Nothing is removed for being hard. precision_raw is unadjudicated.",
+ "adjudications_file": "benchmarks/adjudications/sprint_3_adjudications.json",
  "repos": {
   "sphinx": {
-   "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
-   "ibwd_commit": "30755882a6de7ff625a7042d7b64141b8b36ff67",
-   "edge_build_version": 13,
-   "calls": {
-    "expected": 5423,
-    "actual": 4584,
-    "tp": 4488,
-    "fp": 96,
-    "fn": 935,
-    "precision": 0.9791,
-    "recall": 0.8276
+   "provenance": {
+    "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+    "ibwd_commit": "9854df3aa9aa6a3f09fd5cf62954aadcfc5a1611",
+    "ibwd_dirty": false,
+    "edge_build_version": 13,
+    "scope": "source files only; test files, vendored and generated files are not indexed"
    },
+   "role": "headline_candidate",
+   "expected_raw": 5423,
+   "tp": 4488,
+   "fp": 96,
+   "fn": 935,
+   "actual": 4584,
+   "precision_raw": 0.9791,
+   "missing_by_category": {
+    "variable receiver (type-resolved local/param)": 551,
+    "attribute-chain receiver (type-resolved)": 349,
+    "call-result receiver (type-resolved)": 31,
+    "self/cls/this.method": 3,
+    "bare call": 1
+   },
+   "declared_unsupported_type_resolved": 931,
+   "supported_category_misses": 4,
+   "supported_category_miss_verdicts": {
+    "oracle_error": 1,
+    "UNADJUDICATED": 1,
+    "unsupported_type_resolved": 2
+   },
+   "oracle_errors_removed": 1,
+   "broader_denominator": 5422,
+   "broader_recall": 0.8277,
+   "unsupported_adjudicated": 2,
+   "supported_denominator": 4489,
+   "supported_recall": 0.9998,
+   "unadjudicated_supported_misses": 1,
    "tier_precision": {
     "import_map": {
      "predictions": 1643,
@@ -41,18 +67,35 @@
    }
   },
   "scrapy": {
-   "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
-   "ibwd_commit": "30755882a6de7ff625a7042d7b64141b8b36ff67",
-   "edge_build_version": 13,
-   "calls": {
-    "expected": 2188,
-    "actual": 2019,
-    "tp": 1943,
-    "fp": 76,
-    "fn": 245,
-    "precision": 0.9624,
-    "recall": 0.888
+   "provenance": {
+    "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+    "ibwd_commit": "9854df3aa9aa6a3f09fd5cf62954aadcfc5a1611",
+    "ibwd_dirty": false,
+    "edge_build_version": 13,
+    "scope": "source files only; test files, vendored and generated files are not indexed"
    },
+   "role": "headline_candidate",
+   "expected_raw": 2188,
+   "tp": 1943,
+   "fp": 76,
+   "fn": 245,
+   "actual": 2019,
+   "precision_raw": 0.9624,
+   "missing_by_category": {
+    "attribute-chain receiver (type-resolved)": 129,
+    "variable receiver (type-resolved local/param)": 112,
+    "call-result receiver (type-resolved)": 4
+   },
+   "declared_unsupported_type_resolved": 245,
+   "supported_category_misses": 0,
+   "supported_category_miss_verdicts": {},
+   "oracle_errors_removed": 0,
+   "broader_denominator": 2188,
+   "broader_recall": 0.888,
+   "unsupported_adjudicated": 0,
+   "supported_denominator": 1943,
+   "supported_recall": 1.0,
+   "unadjudicated_supported_misses": 0,
    "tier_precision": {
     "fuzzy": {
      "predictions": 3,
@@ -81,18 +124,38 @@
    }
   },
   "celery": {
-   "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
-   "ibwd_commit": "30755882a6de7ff625a7042d7b64141b8b36ff67",
-   "edge_build_version": 13,
-   "calls": {
-    "expected": 2576,
-    "actual": 2917,
-    "tp": 2421,
-    "fp": 496,
-    "fn": 155,
-    "precision": 0.83,
-    "recall": 0.9398
+   "provenance": {
+    "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+    "ibwd_commit": "9854df3aa9aa6a3f09fd5cf62954aadcfc5a1611",
+    "ibwd_dirty": false,
+    "edge_build_version": 13,
+    "scope": "source files only; test files, vendored and generated files are not indexed"
    },
+   "role": "negative_control",
+   "expected_raw": 2576,
+   "tp": 2421,
+   "fp": 496,
+   "fn": 155,
+   "actual": 2917,
+   "precision_raw": 0.83,
+   "missing_by_category": {
+    "variable receiver (type-resolved local/param)": 104,
+    "attribute-chain receiver (type-resolved)": 29,
+    "call-result receiver (type-resolved)": 16,
+    "bare call": 6
+   },
+   "declared_unsupported_type_resolved": 149,
+   "supported_category_misses": 6,
+   "supported_category_miss_verdicts": {
+    "unsupported_dynamic_callable_attribute": 6
+   },
+   "oracle_errors_removed": 0,
+   "broader_denominator": 2576,
+   "broader_recall": 0.9398,
+   "unsupported_adjudicated": 6,
+   "supported_denominator": 2421,
+   "supported_recall": 1.0,
+   "unadjudicated_supported_misses": 0,
    "tier_precision": {
     "fuzzy": {
      "predictions": 2,

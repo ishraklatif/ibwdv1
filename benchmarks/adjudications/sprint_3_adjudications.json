@@ -1,0 +1,26 @@
+{
+  "purpose": "Individual, evidenced adjudications of oracle-vs-IBWD disagreements (CALLS, pair level). Verdicts: oracle_error (edge is wrong; removed from the denominator, listed here), unsupported_* (a real or possible edge outside the declared supported scope; STAYS in the broader denominator), ibwd_defect (fixed or open).",
+  "verdict_policy": {
+    "oracle_error": "removed from every denominator; each one listed with evidence",
+    "unsupported_type_resolved": "kept in the broader denominator; excluded from supported scope by declared category",
+    "unsupported_possible_target": "the oracle's target is a POSSIBLE runtime callee (declared type or local data flow), not a definite one; kept in the broader denominator",
+    "unsupported_dynamic_callable_attribute": "callable stored in an instance/slot attribute; oracle target unverified; kept in the broader denominator (not removed)"
+  },
+  "candidate_oracle_pass": [
+    {"repo": "sphinx", "source": "sphinx/ext/autodoc/directive.py::parse_generated_content", "target": "sphinx/ext/autodoc/directive.py::parse_generated_content", "callsite": "directive.py:120", "verdict": "oracle_error", "evidence": "line 118 imports parse_generated_content inside the function; the call at line 120 targets the imported function, not the enclosing one"},
+    {"repo": "redux-toolkit", "source": "packages/toolkit/src/query/retry.ts::retryWithBackoff", "target": "packages/toolkit/src/query/retry.ts::defaultBackoff", "callsite": "retry.ts:190", "verdict": "unsupported_possible_target", "evidence": "options.backoff is declared 'typeof defaultBackoff' (l.134) with defaultBackoff as the default (l.138); a caller-supplied override has the same type, so the declared type does not prove the runtime callee (REVISED from 'real reference')"},
+    {"repo": "redux-toolkit", "source": "packages/toolkit/src/listenerMiddleware/task.ts::raceWithSignal", "target": "packages/toolkit/src/listenerMiddleware/utils.ts::noop", "callsite": "task.ts:36", "verdict": "unsupported_possible_target", "evidence": "'let cleanup = noop' (l.26) is later reassigned to addAbortSignalListener(...) (l.33); cleanup() may call either (REVISED from 'real reference')"}
+  ],
+  "scip_python_pass_supported_category_misses": [
+    {"repo": "sphinx", "source": "sphinx/builders/changes.py::ChangesBuilder.write_documents", "target": "sphinx/builders/changes.py::ChangesBuilder.hl", "callsite": "changes.py:149", "verdict": "oracle_error", "evidence": "bare hl(...) refers to the nested function defined at line 129; a bare name cannot reach the method at line 175"},
+    {"repo": "sphinx", "source": "sphinx/ext/autodoc/_documenters.py::DocstringSignatureMixin._find_signature", "target": "sphinx/ext/autodoc/_documenters.py::ClassDocumenter.get_doc", "callsite": "_documenters.py:1168", "verdict": "unsupported_type_resolved", "evidence": "self.get_doc() inside a mixin; the oracle resolves through the composed class's dynamic type (mixin MRO)"},
+    {"repo": "sphinx", "source": "sphinx/ext/todo.py::visit_todo_node", "target": "sphinx/writers/html5.py::HTML5Translator.visit_admonition", "callsite": "todo.py:196", "verdict": "unsupported_type_resolved", "evidence": "'self' is an annotated parameter of a module-level function, not a method"},
+    {"repo": "sphinx", "source": "sphinx/ext/todo.py::depart_todo_node", "target": "sphinx/writers/html5.py::HTML5Translator.depart_admonition", "callsite": "todo.py:202", "verdict": "unsupported_type_resolved", "evidence": "'self' is an annotated parameter of a module-level function, not a method"},
+    {"repo": "celery", "source": "celery/utils/threads.py::Local.__delattr__", "target": "celery/utils/threads.py::Local", "callsite": "threads.py:205", "verdict": "unsupported_dynamic_callable_attribute", "evidence": "self.__ident_func__() calls a callable stored in a slot (object.__setattr__(self, '__ident_func__', get_ident), l.177); SCIP's class target is unverified"},
+    {"repo": "celery", "source": "celery/utils/threads.py::Local.__getattr__", "target": "celery/utils/threads.py::Local", "callsite": "threads.py:191", "verdict": "unsupported_dynamic_callable_attribute", "evidence": "same as above"},
+    {"repo": "celery", "source": "celery/utils/threads.py::Local.__release_local__", "target": "celery/utils/threads.py::Local", "callsite": "threads.py:187", "verdict": "unsupported_dynamic_callable_attribute", "evidence": "same as above"},
+    {"repo": "celery", "source": "celery/utils/threads.py::Local.__setattr__", "target": "celery/utils/threads.py::Local", "callsite": "threads.py:196", "verdict": "unsupported_dynamic_callable_attribute", "evidence": "same as above"},
+    {"repo": "celery", "source": "celery/worker/request.py::Request.acknowledge", "target": "celery/worker/request.py::Request", "callsite": "request.py:776", "verdict": "unsupported_dynamic_callable_attribute", "evidence": "self._on_ack(...) calls a callable assigned in __init__ (l.128); SCIP's class target is unverified"},
+    {"repo": "celery", "source": "celery/worker/request.py::Request.reject", "target": "celery/worker/request.py::Request", "callsite": "request.py:781", "verdict": "unsupported_dynamic_callable_attribute", "evidence": "same as above"}
+  ]
+}
