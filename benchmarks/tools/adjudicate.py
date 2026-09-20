@@ -9,7 +9,8 @@ tries a fixed list of *category detectors*. A detector only fires when it can ve
 Record: {repo, repo_sha, source, target, relation, file, line, kind, verdict, category, explanation, evidence}
 Verdicts: ibwd_defect | oracle_error | legitimate_out_of_scope | unresolved_disagreement
 
-Usage: adjudicate.py REPO_DIR MANIFEST RELATIONS.json SCIP_INDEX PROTO_DIR OUT.json   (run with the oracle venv: needs protobuf)
+Usage: adjudicate.py REPO_DIR MANIFEST RELATIONS.json SCIP_INDEX PROTO_DIR OUT.json [--language typescript]
+       (run with the oracle venv: needs protobuf; for TypeScript SCIP_INDEX is ignored, pass any existing path)
 """
 from __future__ import annotations
 
@@ -337,6 +338,31 @@ def d_conditional_binding(ctx, x, repo):
     return None
 
 
+def d_ts_iife_variable_vs_inner_function(ctx, x, repo):
+    """`export const X = (() => { function X() {...}; return X })()`: the checker resolves an import of X to the exported VARIABLE (whose
+    initialiser is a call, so it is not a function definition); IBWD resolves it by name to the same-named function inside the IIFE."""
+    if x["relation"] not in ("CALLS", "REFERENCES") or x["kind"] != "FP_resolved":
+        return None
+    tf, tq = split_id(x["target"])
+    if not tq or "." in tq:
+        return None
+    text = "\n".join(ctx.lines(tf))
+    m = re.search(r"export\s+const\s+" + re.escape(tq) + r"\s*(?::[^=]+)?=\s*(?:/\*.*?\*/\s*)?\(\s*\(\s*\)\s*=>\s*\{", text)
+    inner = re.search(r"function\s+" + re.escape(tq) + r"\b", text)
+    if not (m and inner):
+        return None
+    sf, sq = split_id(x["source"])
+    site = sites(ctx, sf, sq, tq)
+    line_of = lambda pos: text.count("\n", 0, pos) + 1
+    return ("legitimate_out_of_scope", "iife_variable_vs_inner_function",
+            f"`{tq}` is exported as a variable initialised by an IIFE that returns the same-named inner function; the checker's target is the variable, "
+            "IBWD's is the inner function it evaluates to. Correct by data flow through the IIFE's return value, but not proven by symbol identity.",
+            {"exported_variable": f"{tf}:{line_of(m.start())}", "inner_function": f"{tf}:{line_of(inner.start())}",
+             "site": f"{sf}:{site[0][0]}: {site[0][1]}" if site else None}, sf, site[0][0] if site else line_of(m.start()))
+
+
+TS_DETECTORS = [d_ts_iife_variable_vs_inner_function]
+
 DETECTORS = [d_submodule_import, d_builtin_name_collision, d_class_named_like_builtin, d_unreachable_type_checking_else,
              d_type_checking_split_definition, d_isinstance_narrowing, d_class_alias_base, d_missing_scip_occurrence,
              d_implicit_class_names, d_conditional_binding]
@@ -344,16 +370,18 @@ DETECTORS = [d_submodule_import, d_builtin_name_collision, d_class_named_like_bu
 
 def main() -> int:
     repo_dir, manifest_path, rel_path, scip_path, _proto, out_path = sys.argv[1:7]
+    typescript = "--language" in sys.argv and sys.argv[sys.argv.index("--language") + 1] == "typescript"
+    detectors = TS_DETECTORS if typescript else DETECTORS
     repo, manifest = Path(repo_dir), json.loads(Path(manifest_path).read_text())
     relations = json.loads(Path(rel_path).read_text())
-    ctx = Ctx(repo, load(repo, manifest, relations, scip_path))
+    ctx = Ctx(repo, {} if typescript else load(repo, manifest, relations, scip_path))
     records, counts = [], {}
     for x in relations["disagreements"]:
         needs = (x["kind"] == "FP_resolved") or (x["kind"] == "FN" and x.get("in_supported_scope"))
         if not needs:
             continue
         result = None
-        for det in DETECTORS:
+        for det in detectors:
             try:
                 result = det(ctx, x, repo)
             except Exception as exc:  # a detector must never crash the run: the record just stays unresolved
