@@ -33,8 +33,12 @@ def build_mapping(oracle_symbols: list[dict], ibwd_symbols: list[dict]):
     for s in ibwd_symbols:
         if s.get("qualname"):
             by_last[(s["file"], s["qualname"].rsplit(".", 1)[-1])].append(s["id"])
+    ibwd_ids = {s["id"] for s in ibwd_symbols}
     mapping: dict[str, str | None] = {}
     for s in oracle_symbols:
+        if s.get("kind") == "File":  # file nodes (module-level callers, IMPORTS) share the path as their id
+            mapping[s["id"]] = s["id"] if s["id"] in ibwd_ids else None
+            continue
         name = s["name"]
         target = exact.get((s["file"], name))
         if target is None:
@@ -59,6 +63,7 @@ def main() -> int:
     ap.add_argument("oracle"); ap.add_argument("ibwd")
     ap.add_argument("--scope", help="audit JSON whose production_files bound the comparison")
     ap.add_argument("--relation", action="append", help="restrict to these relations (default: all shared)")
+    ap.add_argument("--ext", action="append", help="only compare files with these extensions (e.g. .py): the oracle may cover one language")
     ap.add_argument("--max-list", type=int, default=50)
     args = ap.parse_args()
 
@@ -67,8 +72,13 @@ def main() -> int:
     mapping = build_mapping(oracle["symbols"], ibwd["symbols"])
     ibwd_file = {s["id"]: s["file"] for s in ibwd["symbols"]}
 
+    exts = tuple(args.ext) if args.ext else None
+
     def in_scope(symbol_id: str) -> bool:
-        return scope is None or ibwd_file.get(symbol_id) in scope
+        f = ibwd_file.get(symbol_id)
+        if exts and not (f or "").endswith(exts):
+            return False
+        return scope is None or f in scope
 
     unmapped = sorted(s["id"] for s in oracle["symbols"] if mapping.get(s["id"]) is None and (scope is None or s["file"] in scope))
     O: set[tuple] = set(); dropped = 0

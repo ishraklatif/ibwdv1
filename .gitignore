@@ -9,3 +9,6 @@ build/
 .DS_Store
 
 ibwd-sprint3-kit/node_modules/
+
+# generated from scip.proto (protoc --python_out); see scip_python_to_graph.py docstring
+benchmarks/tools/scip_pb2.py

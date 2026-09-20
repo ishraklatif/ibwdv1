@@ -1,0 +1,124 @@
+{
+ "purpose": "Full-repo semantic comparison of IBWD CALLS edges against scip-python (Pyright) \u2014 Python repositories, pair level",
+ "oracle": "scip-python 0.6.6 + ast owner ranges (benchmarks/tools/scip_python_to_graph.py)",
+ "granularity": "caller symbol -> target symbol per relation; IBWD stores no callsite positions",
+ "note": "precision is RAW vs the oracle (unadjudicated); broader = all oracle edges; supported = declared type/data-flow category excluded (gate definition section 7). Celery is the labelled negative control.",
+ "repos": {
+  "sphinx": {
+   "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+   "ibwd_commit": "30755882a6de7ff625a7042d7b64141b8b36ff67",
+   "edge_build_version": 13,
+   "calls": {
+    "expected": 5423,
+    "actual": 4584,
+    "tp": 4488,
+    "fp": 96,
+    "fn": 935,
+    "precision": 0.9791,
+    "recall": 0.8276
+   },
+   "tier_precision": {
+    "import_map": {
+     "predictions": 1643,
+     "precision": 0.9988
+    },
+    "inherited": {
+     "predictions": 514,
+     "precision": 0.9981
+    },
+    "same_module": {
+     "predictions": 1961,
+     "precision": 0.9959
+    },
+    "suffix": {
+     "predictions": 72,
+     "precision": 0.7639
+    },
+    "unique_name": {
+     "predictions": 394,
+     "precision": 0.8274
+    }
+   }
+  },
+  "scrapy": {
+   "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+   "ibwd_commit": "30755882a6de7ff625a7042d7b64141b8b36ff67",
+   "edge_build_version": 13,
+   "calls": {
+    "expected": 2188,
+    "actual": 2019,
+    "tp": 1943,
+    "fp": 76,
+    "fn": 245,
+    "precision": 0.9624,
+    "recall": 0.888
+   },
+   "tier_precision": {
+    "fuzzy": {
+     "predictions": 3,
+     "precision": 0.0
+    },
+    "import_map": {
+     "predictions": 698,
+     "precision": 1.0
+    },
+    "inherited": {
+     "predictions": 125,
+     "precision": 1.0
+    },
+    "same_module": {
+     "predictions": 824,
+     "precision": 0.9951
+    },
+    "suffix": {
+     "predictions": 99,
+     "precision": 0.6465
+    },
+    "unique_name": {
+     "predictions": 270,
+     "precision": 0.8741
+    }
+   }
+  },
+  "celery": {
+   "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+   "ibwd_commit": "30755882a6de7ff625a7042d7b64141b8b36ff67",
+   "edge_build_version": 13,
+   "calls": {
+    "expected": 2576,
+    "actual": 2917,
+    "tp": 2421,
+    "fp": 496,
+    "fn": 155,
+    "precision": 0.83,
+    "recall": 0.9398
+   },
+   "tier_precision": {
+    "fuzzy": {
+     "predictions": 2,
+     "precision": 0.0
+    },
+    "import_map": {
+     "predictions": 560,
+     "precision": 0.9786
+    },
+    "inherited": {
+     "predictions": 225,
+     "precision": 1.0
+    },
+    "same_module": {
+     "predictions": 1570,
+     "precision": 0.9924
+    },
+    "suffix": {
+     "predictions": 110,
+     "precision": 0.2636
+    },
+    "unique_name": {
+     "predictions": 450,
+     "precision": 0.1356
+    }
+   }
+  }
+ }
+}
