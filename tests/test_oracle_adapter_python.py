@@ -46,6 +46,9 @@ EXPECTED_EDGES = {
     ("CALLS", f"{USE}::g", f"{CORE}::Base.new_method", "type_declared"),           # obj.new_method() with obj: Base — a POSSIBLE target
     ("CALLS", f"{USE}::i", f"{CORE}::helper", "binding"),                          # nested `cb` rolls up to `i`
     ("CALLS", f"{CORE}::Coll", f"{CORE}::helper", "binding"),                      # class-body call: owned by the class
+    ("REFERENCES", f"{CORE}::Prop.read", f"{CORE}::Prop.val", "binding"),          # @property: defined as a term, used as `().`
+    ("REFERENCES", f"{CORE}::pick", f"{CORE}::helper", "binding"),                 # (a if c else b)(x): the branches are not the callee
+    ("REFERENCES", f"{CORE}::pick", f"{CORE}::outer", "binding"),
     ("CALLS", f"{CORE}::Coll.use", f"{CORE}::Coll.esc", "binding"),                # self.esc(): NOT the nested `build.<locals>.esc` that shares its symbol
 }
 

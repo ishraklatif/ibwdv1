@@ -74,3 +74,16 @@ class Coll:
 
 def shadow(helper):
     return helper()
+
+
+class Prop:
+    @property
+    def val(self):
+        return 1
+
+    def read(self):
+        return self.val
+
+
+def pick(flag):
+    return (helper if flag else outer)(1)

@@ -163,7 +163,10 @@ class FileModel:
                     self._walk(child, prefix, True, new_chain)
                 continue
             if isinstance(child, ast.Call):
-                self.callee_ends[self._end(child.func)] = child
+                # Only a plain name / attribute is the callee occurrence itself. For `(a if c else b)(x)` the expression ends at
+                # `b`, which would make `b` look like the callee; branches of a conditional are value uses (possible callees).
+                if isinstance(child.func, (ast.Name, ast.Attribute)):
+                    self.callee_ends[self._end(child.func)] = child
             elif isinstance(child, ast.AnnAssign):
                 self._add_annotation(child.annotation)
             elif isinstance(child, (ast.Import, ast.ImportFrom)):
@@ -236,6 +239,12 @@ def main() -> int:
             tail = descriptor_tail(occ.symbol)
             if tail.endswith("/__init__:"):
                 module_def_file[occ.symbol] = rel
+            # scip-python defines a @property as a term (`Task#backend.`) but refers to it as `Task#backend().`; a def under
+            # `if TYPE_CHECKING:` is a term too. A term symbol defined ON a `def` line names that function under both spellings.
+            d_at_line = by_line.get(occ.range[0] + 1)
+            if tail.endswith(".") and not tail.endswith("().") and d_at_line is not None and d_at_line["kind"] != "Class":
+                for spelling in (occ.symbol, occ.symbol[:-1] + "()."):
+                    canon_by_def.setdefault(spelling, f"{rel}::{d_at_line['qualname']}")
             if tail.endswith("().") or tail.endswith("#"):
                 d = by_line.get(occ.range[0] + 1)
                 if d is not None:
