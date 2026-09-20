@@ -1,0 +1,330 @@
+{
+ "repo": "sphinx",
+ "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
+ "ibwd": {
+  "ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+  "ibwd_dirty": false,
+  "edge_build_version": 27
+ },
+ "tests_without_tracing": {
+  "available": true,
+  "collected": 2425,
+  "failed": 1,
+  "errors": 0,
+  "skipped": 36,
+  "passed": 2388
+ },
+ "tests_with_tracing": {
+  "available": true,
+  "collected": 2425,
+  "failed": 1,
+  "errors": 0,
+  "skipped": 36,
+  "passed": 2388
+ },
+ "status": {
+  "plain": "exit=1 seconds=121",
+  "traced": "exit=1 seconds=362"
+ },
+ "production_symbols_in_scope": 5498,
+ "production_symbols_observed": 3401,
+ "observed_production_to_production_edges": 5640,
+ "of_which_in_static_resolved": 2120,
+ "of_which_only_static_candidate": 240,
+ "observed_edges_absent_from_static_graph": 3149,
+ "absent_but_in_oracle_graph": 425,
+ "absent_and_not_in_oracle_graph": 2724,
+ "processes_started": 14,
+ "processes_with_trace": 14,
+ "uninstrumented_processes": [],
+ "uninstrumented_process_count": 0,
+ "absent_edge_reasons": {
+  "dispatch_to_override_or_same_name_target_present": 291,
+  "implicit_protocol_call_dunder": 493,
+  "other": 1224,
+  "in_oracle_graph_only": 420,
+  "caller_is_module_level_code": 721
+ },
+ "top_absent_edges": [
+  {
+   "source": "sphinx/environment/collectors/toctree.py::TocTreeCollector.assign_figure_numbers",
+   "target": "sphinx/domains/std/__init__.py::StandardDomain.get_enumerable_node_type",
+   "count": 408178,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "sphinx/environment/__init__.py::_differing_config_keys",
+   "target": "sphinx/config.py::Config.__iter__",
+   "count": 309462,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/config.py::Config.filter",
+   "target": "sphinx/config.py::Config.__iter__",
+   "count": 295183,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/config.py::Config.__repr__",
+   "target": "sphinx/config.py::Config.__getattr__",
+   "count": 184691,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::DefinitionFinder.parse",
+   "target": "sphinx/pycode/parser.py::Token.__eq__",
+   "count": 184089,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/environment/adapters/toctree.py::_toctree_copy_seq",
+   "target": "sphinx/util/nodes.py::_copy_except__document",
+   "count": 121999,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::Token.match",
+   "target": "sphinx/pycode/parser.py::Token.__eq__",
+   "count": 100873,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/config.py::Config.__iter__",
+   "target": "sphinx/config.py::Config.__getattr__",
+   "count": 69235,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/environment/__init__.py::BuildEnvironment._config_status",
+   "target": "sphinx/config.py::Config.filter",
+   "count": 53628,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/environment/__init__.py::BuildEnvironment._config_status",
+   "target": "sphinx/config.py::Config.__getitem__",
+   "count": 52386,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/util/nodes.py::_deepcopy",
+   "target": "sphinx/util/nodes.py::_copy_except__document",
+   "count": 52015,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/search/__init__.py::IndexBuilder.feed",
+   "target": "sphinx/search/__init__.py::SearchLanguage.word_filter",
+   "count": 49721,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/application.py::Sphinx.connect",
+   "target": "sphinx/events.py::EventManager.connect",
+   "count": 49471,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/registry.py::SphinxComponentRegistry.load_extension",
+   "target": "sphinx/locale/__init__.py::get_translation",
+   "count": 43278,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/registry.py::SphinxComponentRegistry.load_extension",
+   "target": "sphinx/locale/__init__.py::_TranslationProxy.__mod__",
+   "count": 43276,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/builders/__init__.py::Builder.get_relative_uri",
+   "target": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.get_target_uri",
+   "count": 36094,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::TokenProcessor.fetch_until",
+   "target": "sphinx/pycode/parser.py::Token.__eq__",
+   "count": 28204,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/util/docutils.py::SphinxTranslator.dispatch_visit",
+   "target": "sphinx/writers/html5.py::HTML5Translator.visit_Text",
+   "count": 28117,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/config.py::Config.__getattr__",
+   "target": "sphinx/builders/epub3.py::setup",
+   "count": 27147,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/config.py::Config.__getattr__",
+   "target": "sphinx/config.py::Config.<lambda>",
+   "count": 24386,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/util/inventory.py::InventoryFile.dump",
+   "target": "sphinx/builders/html/__init__.py::StandaloneHTMLBuilder.get_target_uri",
+   "count": 23339,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "sphinx/environment/collectors/__init__.py::EnvironmentCollector.enable",
+   "target": "sphinx/application.py::Sphinx.connect",
+   "count": 23100,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/config.py::Config.__getattr__",
+   "target": "sphinx/builders/latex/__init__.py::default_latex_engine",
+   "count": 22180,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/config.py::check_confval_types",
+   "target": "sphinx/config.py::Config.__getattr__",
+   "count": 21978,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/application.py::Sphinx.add_transform",
+   "target": "sphinx/registry.py::SphinxComponentRegistry.add_transform",
+   "count": 20790,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/util/docutils.py::SphinxTranslator.dispatch_visit",
+   "target": "sphinx/writers/html5.py::HTML5Translator.visit_reference",
+   "count": 18950,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/util/docutils.py::SphinxTranslator.dispatch_visit",
+   "target": "sphinx/writers/html5.py::HTML5Translator.visit_compact_paragraph",
+   "count": 18893,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/util/docutils.py::SphinxTranslator.dispatch_departure",
+   "target": "sphinx/writers/html5.py::HTML5Translator.depart_compact_paragraph",
+   "count": 18893,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/application.py::Sphinx.add_builder",
+   "target": "sphinx/registry.py::SphinxComponentRegistry.add_builder",
+   "count": 15622,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/application.py::Sphinx.add_post_transform",
+   "target": "sphinx/registry.py::SphinxComponentRegistry.add_post_transform",
+   "count": 15622,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/builders/latex/__init__.py::default_latex_documents",
+   "target": "sphinx/config.py::Config.__getattr__",
+   "count": 13000,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/util/inventory.py::InventoryFile.dump",
+   "target": "sphinx/domains/std/__init__.py::StandardDomain.get_objects",
+   "count": 12343,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "sphinx/search/__init__.py::IndexBuilder.get_objects",
+   "target": "sphinx/domains/std/__init__.py::StandardDomain.get_objects",
+   "count": 12210,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "sphinx/config.py::Config.__getattr__",
+   "target": "sphinx/builders/html/__init__.py::setup",
+   "count": 12159,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/transforms/__init__.py::setup",
+   "target": "sphinx/application.py::Sphinx.add_transform",
+   "count": 11550,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "sphinx/search/__init__.py::IndexBuilder.feed",
+   "target": "sphinx/search/en.py::SearchEnglish.stem",
+   "count": 10200,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/search/__init__.py::_feed_visit_nodes",
+   "target": "sphinx/search/__init__.py::SearchLanguage.split",
+   "count": 10044,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/pycode/parser.py::AfterCommentParser.fetch_rvalue",
+   "target": "sphinx/pycode/parser.py::Token.__eq__",
+   "count": 9780,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "sphinx/builders/html/__init__.py::setup",
+   "target": "sphinx/locale/__init__.py::get_translation",
+   "count": 9132,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "sphinx/util/nodes.py::clean_astext",
+   "target": "sphinx/util/nodes.py::_deepcopy",
+   "count": 8789,
+   "oracle_basis": null,
+   "why": "other"
+  }
+ ]
+}

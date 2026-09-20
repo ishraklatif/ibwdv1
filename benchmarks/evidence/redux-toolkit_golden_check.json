@@ -1,0 +1,161 @@
+{
+ "ground_truth": "benchmarks/ground_truth/redux-toolkit.yaml",
+ "results": [
+  {
+   "id": "redux-toolkit-q1",
+   "stratum": "Q1",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "packages/toolkit/src/entities/sorted_state_adapter.ts::createSortedStateAdapter",
+     "packages/toolkit/src/entities/unsorted_state_adapter.ts::createUnsortedStateAdapter",
+     "packages/toolkit/src/entities/utils.ts::splitAddedUpdatedEntities"
+    ],
+    "got": [
+     "packages/toolkit/src/entities/sorted_state_adapter.ts::createSortedStateAdapter",
+     "packages/toolkit/src/entities/unsorted_state_adapter.ts::createUnsortedStateAdapter",
+     "packages/toolkit/src/entities/utils.ts::splitAddedUpdatedEntities"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "packages/toolkit/src/entities/sorted_state_adapter.ts::createSortedStateAdapter",
+     "packages/toolkit/src/entities/unsorted_state_adapter.ts::createUnsortedStateAdapter",
+     "packages/toolkit/src/entities/utils.ts::splitAddedUpdatedEntities"
+    ],
+    "got": [
+     "packages/toolkit/src/entities/sorted_state_adapter.ts::createSortedStateAdapter",
+     "packages/toolkit/src/entities/unsorted_state_adapter.ts::createUnsortedStateAdapter",
+     "packages/toolkit/src/entities/utils.ts::splitAddedUpdatedEntities"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "redux-toolkit-q2",
+   "stratum": "Q2",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isMutationDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition",
+     "packages/toolkit/src/query/react/buildHooks.ts::buildHooks",
+     "packages/toolkit/src/query/tsHelpers.ts::safeAssign",
+     "packages/toolkit/src/query/utils/capitalize.ts::capitalize",
+     "packages/toolkit/src/query/utils/countObjectKeys.ts::countObjectKeys"
+    ],
+    "got": [
+     "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isMutationDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition",
+     "packages/toolkit/src/query/react/buildHooks.ts::buildHooks",
+     "packages/toolkit/src/query/tsHelpers.ts::safeAssign",
+     "packages/toolkit/src/query/utils/capitalize.ts::capitalize",
+     "packages/toolkit/src/query/utils/countObjectKeys.ts::countObjectKeys"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isMutationDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition",
+     "packages/toolkit/src/query/react/buildHooks.ts::buildHooks",
+     "packages/toolkit/src/query/tsHelpers.ts::safeAssign",
+     "packages/toolkit/src/query/utils/capitalize.ts::capitalize",
+     "packages/toolkit/src/query/utils/countObjectKeys.ts::countObjectKeys"
+    ],
+    "got": [
+     "packages/toolkit/src/query/endpointDefinitions.ts::isInfiniteQueryDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isMutationDefinition",
+     "packages/toolkit/src/query/endpointDefinitions.ts::isQueryDefinition",
+     "packages/toolkit/src/query/react/buildHooks.ts::buildHooks",
+     "packages/toolkit/src/query/tsHelpers.ts::safeAssign",
+     "packages/toolkit/src/query/utils/capitalize.ts::capitalize",
+     "packages/toolkit/src/query/utils/countObjectKeys.ts::countObjectKeys"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "redux-toolkit-q3",
+   "stratum": "Q3",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run",
+     "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+    ],
+    "got": [
+     "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run",
+     "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+    ],
+    "missing": null,
+    "extra": null
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run",
+     "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+    ],
+    "got": [
+     "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run",
+     "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi",
+     "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+    ],
+    "missing": null,
+    "extra": null
+   }
+  },
+  {
+   "id": "redux-toolkit-small",
+   "stratum": "small",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata",
+     "packages/toolkit/src/matchers.ts::isAnyOf",
+     "packages/toolkit/src/matchers.ts::isAsyncThunkArray"
+    ],
+    "got": [
+     "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata",
+     "packages/toolkit/src/matchers.ts::isAnyOf",
+     "packages/toolkit/src/matchers.ts::isAsyncThunkArray"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata",
+     "packages/toolkit/src/matchers.ts::isAnyOf",
+     "packages/toolkit/src/matchers.ts::isAsyncThunkArray"
+    ],
+    "got": [
+     "packages/toolkit/src/matchers.ts::hasExpectedRequestMetadata",
+     "packages/toolkit/src/matchers.ts::isAnyOf",
+     "packages/toolkit/src/matchers.ts::isAsyncThunkArray"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  }
+ ]
+}

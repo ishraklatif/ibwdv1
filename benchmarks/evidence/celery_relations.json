@@ -1,0 +1,6607 @@
+{
+ "repo": "celery",
+ "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+ "manifest_sha256": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407",
+ "ibwd": {
+  "ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+  "ibwd_dirty": false,
+  "edge_build_version": 27
+ },
+ "oracle": {
+  "name": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+  "adapter": "benchmarks/tools/scip_python_to_graph.py",
+  "text_encoding": "UTF8"
+ },
+ "input_sha256": {
+  "ibwd_export": "0442fd11b1661edbeea2063a32d697012f6f0bb92f2fe639a78128420fd56d53",
+  "oracle_export": "f32c977b625f5d0c6eb2f9030c99810d7c88a6d659c0caf9a273432e279973d1"
+ },
+ "oracle_edges_whose_symbol_ibwd_does_not_index": 0,
+ "relations": {
+  "CALLS": {
+   "oracle_edges": 2571,
+   "oracle_supported_scope": 2328,
+   "oracle_declared_type_declared": 243,
+   "oracle_errors_removed": 0,
+   "resolved": {
+    "ibwd_edges": 2340,
+    "TP": 2332,
+    "FP": 8,
+    "FN": 239,
+    "raw_precision": 0.9966,
+    "adjudicated_precision": 1.0,
+    "fp_verdicts": {
+     "oracle_error": 7,
+     "legitimate_out_of_scope": 1
+    },
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {
+     "import_map": {
+      "ibwd_edges": 551,
+      "TP": 548,
+      "FP": 3,
+      "raw_precision": 0.9946
+     },
+     "inherited": {
+      "ibwd_edges": 225,
+      "TP": 225,
+      "FP": 0,
+      "raw_precision": 1.0
+     },
+     "same_module": {
+      "ibwd_edges": 1564,
+      "TP": 1559,
+      "FP": 5,
+      "raw_precision": 0.9968
+     }
+    },
+    "supported_scope_TP": 2328,
+    "supported_scope_FN": 0,
+    "supported_scope_recall": 1.0,
+    "broader_semantic_coverage": 0.907,
+    "broader_denominator": 2571,
+    "supported_FN_verdicts": {},
+    "unadjudicated_supported_FN": 0
+   },
+   "candidate": {
+    "ibwd_edges": 552,
+    "TP": 90,
+    "FP": 462,
+    "FN": 2481,
+    "raw_precision": 0.163,
+    "adjudicated_precision": 0.163,
+    "fp_verdicts": {
+     "UNADJUDICATED": 462
+    },
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 462,
+    "by_tier": {
+     "suffix": {
+      "ibwd_edges": 110,
+      "TP": 29,
+      "FP": 81,
+      "raw_precision": 0.2636
+     },
+     "unique_name": {
+      "ibwd_edges": 442,
+      "TP": 61,
+      "FP": 381,
+      "raw_precision": 0.138
+     }
+    },
+    "recall_resolved_plus_candidates": 0.942
+   }
+  },
+  "IMPORTS": {
+   "oracle_edges": 646,
+   "oracle_supported_scope": 646,
+   "oracle_declared_type_declared": 0,
+   "oracle_errors_removed": 0,
+   "resolved": {
+    "ibwd_edges": 669,
+    "TP": 646,
+    "FP": 23,
+    "FN": 0,
+    "raw_precision": 0.9656,
+    "adjudicated_precision": 1.0,
+    "fp_verdicts": {
+     "oracle_error": 23
+    },
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {
+     "path": {
+      "ibwd_edges": 669,
+      "TP": 646,
+      "FP": 23,
+      "raw_precision": 0.9656
+     }
+    },
+    "supported_scope_TP": 646,
+    "supported_scope_FN": 0,
+    "supported_scope_recall": 1.0,
+    "broader_semantic_coverage": 1.0,
+    "broader_denominator": 646,
+    "supported_FN_verdicts": {},
+    "unadjudicated_supported_FN": 0
+   },
+   "candidate": {
+    "ibwd_edges": 0,
+    "TP": 0,
+    "FP": 0,
+    "FN": 646,
+    "raw_precision": null,
+    "adjudicated_precision": null,
+    "fp_verdicts": {},
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {},
+    "recall_resolved_plus_candidates": 1.0
+   }
+  },
+  "INHERITS": {
+   "oracle_edges": 126,
+   "oracle_supported_scope": 126,
+   "oracle_declared_type_declared": 0,
+   "oracle_errors_removed": 0,
+   "resolved": {
+    "ibwd_edges": 126,
+    "TP": 126,
+    "FP": 0,
+    "FN": 0,
+    "raw_precision": 1.0,
+    "adjudicated_precision": 1.0,
+    "fp_verdicts": {},
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {
+     "import_map": {
+      "ibwd_edges": 57,
+      "TP": 57,
+      "FP": 0,
+      "raw_precision": 1.0
+     },
+     "same_module": {
+      "ibwd_edges": 69,
+      "TP": 69,
+      "FP": 0,
+      "raw_precision": 1.0
+     }
+    },
+    "supported_scope_TP": 126,
+    "supported_scope_FN": 0,
+    "supported_scope_recall": 1.0,
+    "broader_semantic_coverage": 1.0,
+    "broader_denominator": 126,
+    "supported_FN_verdicts": {},
+    "unadjudicated_supported_FN": 0
+   },
+   "candidate": {
+    "ibwd_edges": 0,
+    "TP": 0,
+    "FP": 0,
+    "FN": 126,
+    "raw_precision": null,
+    "adjudicated_precision": null,
+    "fp_verdicts": {},
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {},
+    "recall_resolved_plus_candidates": 1.0
+   }
+  },
+  "REFERENCES": {
+   "oracle_edges": 1074,
+   "oracle_supported_scope": 999,
+   "oracle_declared_type_declared": 75,
+   "oracle_errors_removed": 3,
+   "resolved": {
+    "ibwd_edges": 1000,
+    "TP": 995,
+    "FP": 5,
+    "FN": 79,
+    "raw_precision": 0.995,
+    "adjudicated_precision": 1.0,
+    "fp_verdicts": {
+     "oracle_error": 5
+    },
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {
+     "import_map": {
+      "ibwd_edges": 250,
+      "TP": 247,
+      "FP": 3,
+      "raw_precision": 0.988
+     },
+     "inherited": {
+      "ibwd_edges": 22,
+      "TP": 22,
+      "FP": 0,
+      "raw_precision": 1.0
+     },
+     "same_module": {
+      "ibwd_edges": 728,
+      "TP": 726,
+      "FP": 2,
+      "raw_precision": 0.9973
+     }
+    },
+    "supported_scope_TP": 995,
+    "supported_scope_FN": 4,
+    "supported_scope_recall": 0.996,
+    "broader_semantic_coverage": 0.929,
+    "broader_denominator": 1071,
+    "supported_FN_verdicts": {
+     "legitimate_out_of_scope": 1,
+     "oracle_error": 3
+    },
+    "unadjudicated_supported_FN": 0
+   },
+   "candidate": {
+    "ibwd_edges": 0,
+    "TP": 0,
+    "FP": 0,
+    "FN": 1074,
+    "raw_precision": null,
+    "adjudicated_precision": null,
+    "fp_verdicts": {},
+    "unresolved_disagreements": 0,
+    "unadjudicated_fp": 0,
+    "by_tier": {},
+    "recall_resolved_plus_candidates": 0.9264
+   }
+  }
+ },
+ "disagreements": [
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::setup_app_for_worker",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::_signal_internal_error",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::Backend._call_task_errbacks",
+   "target": "celery/canvas.py::group.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::detached",
+   "target": "celery/platforms.py::Signals.reset",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._freeze_tasks",
+   "target": "celery/canvas.py::_chain.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::maybe_signature",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::debug",
+   "target": "celery/bin/logtool.py::Audit.run",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend.__init__",
+   "target": "celery/backends/database/models.py::Task.configure",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/strategy.py::default",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/multi.py::Node.pid",
+   "target": "celery/platforms.py::Pidfile.read_pid",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::start_worker",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoFixup.on_import_modules",
+   "target": "celery/fixups/django.py::DjangoWorkerFixup.validate_models",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::_start_worker_process",
+   "target": "celery/apps/multi.py::Cluster.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chain.prepare_steps",
+   "target": "celery/canvas.py::_chain.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/utils/graph.py::GraphFormatter.draw_node",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py::Request.maybe_expire",
+   "target": "celery/utils/collections.py::LimitedSet.add",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::TestWorkController.on_consumer_ready",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.on_stopped",
+   "target": "celery/platforms.py::Pidfile.release",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery._after_fork",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/platforms.py::Signals.reset",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/debug.py::blockdetection",
+   "target": "celery/platforms.py::Signals.reset_alarm",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/multi.py::MultiTool._nodes_from_argv",
+   "target": "celery/apps/multi.py::NamespacedOptionParser.parse",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/worker.py::Worker.on_before_init",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.start_scheduler",
+   "target": "celery/beat.py::Service.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/threads.py::_LocalStack.__release_local__",
+   "target": "celery/utils/threads.py::Local.__release_local__",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::Backend._handle_group_chord_error",
+   "target": "celery/result.py::ResultSet.revoke",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/builtins.py::add_group_task",
+   "target": "celery/canvas.py::Signature.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/worker.py::Worker.on_consumer_ready",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.apply",
+   "target": "celery/canvas.py::Signature.apply",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/worker.py::on_cold_shutdown",
+   "target": "celery/worker/worker.py::WorkController.wait_for_soft_shutdown",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/utils/abstract.py::CallableTask.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.__repr__",
+   "target": "celery/bootsteps.py::Blueprint.human_state",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::crontab._expand_cronspec",
+   "target": "celery/schedules.py::crontab_parser.parse",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/utils/graph.py::DependencyGraph.add_arc",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::set_pdeathsig",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.skew",
+   "target": "celery/canvas.py::Signature.set",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py::Request.on_timeout",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::_start_worker_thread",
+   "target": "celery/app/base.py::Celery.connection",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.init_loader",
+   "target": "celery/app/base.py::Celery.finalize",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_unknown_task",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/rpc.py::RPCBackend.on_out_of_band_result",
+   "target": "celery/backends/asynchronous.py::BaseResultConsumer.on_out_of_band_result",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/cursesmon.py::evtop",
+   "target": "celery/events/cursesmon.py::CursesMonitor.resetscreen",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._freeze_unroll",
+   "target": "celery/canvas.py::Signature.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/multi.py::MultiTool._find_sig_argument",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::BaseKeyValueStoreBackend.on_chord_part_return",
+   "target": "celery/utils/abstract.py::CallableTask.delay",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::AsyncResult.build_graph",
+   "target": "celery/utils/graph.py::DependencyGraph.add_arc",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::GraphFormatter.tail",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/security/certificate.py::FSCertStore.__init__",
+   "target": "celery/security/certificate.py::Certificate.get_id",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/dispatch/signal.py::Signal._connect_signal",
+   "target": "celery/local.py::PromiseProxy.__then__",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.start",
+   "target": "celery/bootsteps.py::Blueprint.restart",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.stamp",
+   "target": "celery/canvas.py::Signature.stamp",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::_Process.run",
+   "target": "celery/beat.py::Service.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::_revoke",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery._load_config",
+   "target": "celery/utils/collections.py::ChainMap.add_defaults",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/state.py::reset_state",
+   "target": "celery/utils/collections.py::LimitedSet.clear",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py::Request.on_failure",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/redis.py::RedisBackend.on_task_call",
+   "target": "celery/backends/redis.py::ResultConsumer.consume_from",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.autodiscover_tasks",
+   "target": "celery/utils/dispatch/signal.py::Signal.connect",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/cursesmon.py::evtop",
+   "target": "celery/events/cursesmon.py::CursesMonitor.init_screen",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::TraceInfo.handle_failure",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/abortable.py::AbortableTask.is_aborted",
+   "target": "celery/contrib/abortable.py::AbortableAsyncResult.is_aborted",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/security/__init__.py::setup_security",
+   "target": "celery/local.py::Proxy._get_current_object",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/serialization.py::get_pickled_exception",
+   "target": "celery/utils/serialization.py::UnpickleableExceptionWrapper.restore",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::detached",
+   "target": "celery/platforms.py::Pidfile.release",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.apply_async",
+   "target": "celery/canvas.py::Signature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.topsort",
+   "target": "celery/utils/graph.py::DependencyGraph.add_arc",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::TraceInfo.handle_retry",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/asynpool.py::AsynPool._create_worker_process",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::_Threaded.run",
+   "target": "celery/beat.py::Service.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::hello",
+   "target": "celery/utils/collections.py::LimitedSet.update",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::Signature.stamp_links",
+   "target": "celery/canvas.py::Signature.stamp",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.replace",
+   "target": "celery/canvas.py::Signature.link",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoFixup.on_worker_init",
+   "target": "celery/fixups/django.py::DjangoWorkerFixup.install",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_unknown_message",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._prepared",
+   "target": "celery/canvas.py::Signature.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/utils/graph.py::DependencyGraph.add_edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._prepared",
+   "target": "celery/canvas.py::group._prepared",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/app/task.py::Context.get",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chain.prepare_steps",
+   "target": "celery/canvas.py::_chord.link_error",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/snapshot.py::Polaroid.shutter",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bootsteps.py::Blueprint._finalize_steps",
+   "target": "celery/utils/graph.py::DependencyGraph.topsort",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/time.py::maybe_make_aware",
+   "target": "celery/utils/time.py::_Zone.tz_or_local",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoWorkerFixup.__init__",
+   "target": "celery/utils/collections.py::ConfigurationView.get",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::BaseSchedule.to_local",
+   "target": "celery/utils/time.py::_Zone.to_local_fallback",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.setup_instance",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::_iter_schedule_requests",
+   "target": "celery/worker/request.py::Request.info",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/security/certificate.py::CertStore.add_cert",
+   "target": "celery/security/certificate.py::Certificate.get_id",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/migrate.py::start_filter",
+   "target": "celery/contrib/migrate.py::Filterer.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chain.prepare_steps",
+   "target": "celery/canvas.py::Signature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chain.prepare_steps",
+   "target": "celery/canvas.py::_chord.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/canvas.py::group.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.__init__",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/platforms.py::Signals.ignore",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/builtins.py::add_unlock_chord_task",
+   "target": "celery/utils/abstract.py::CallableTask.delay",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController._send_worker_shutdown",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/app.py::TestApp",
+   "target": "celery/app/base.py::Celery.add_defaults",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::AsyncResult.build_graph",
+   "target": "celery/utils/graph.py::DependencyGraph.add_edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.finalize",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoWorkerFixup.install",
+   "target": "celery/utils/dispatch/signal.py::Signal.connect",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::chunks.apply_async",
+   "target": "celery/canvas.py::group.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/security/certificate.py::FSCertStore.__init__",
+   "target": "celery/security/certificate.py::Certificate.has_expired",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bootsteps.py::Blueprint._finalize_steps",
+   "target": "celery/utils/graph.py::DependencyGraph.add_edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.stop",
+   "target": "celery/bootsteps.py::Blueprint.stop",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.topsort",
+   "target": "celery/utils/graph.py::DependencyGraph._khan62",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::AsyncResult.iterdeps",
+   "target": "celery/result.py::AsyncResult.ready",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::_start_worker_process",
+   "target": "celery/apps/multi.py::Cluster.stopwait",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/prefork.py::process_destructor",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/dumper.py::evdump",
+   "target": "celery/events/dumper.py::Dumper.say",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.apply",
+   "target": "celery/canvas.py::Signature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/utils/collections.py::LimitedSet.add",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::setup_app_for_worker",
+   "target": "celery/app/base.py::Celery.finalize",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::_create_pidlock",
+   "target": "celery/platforms.py::Pidfile.acquire",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/log.py::Logging.setup_task_loggers",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::_Threaded.stop",
+   "target": "celery/beat.py::Service.stop",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/multi.py::MultiTool._nodes_from_argv",
+   "target": "celery/apps/multi.py::MultiParser.parse",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.topsort",
+   "target": "celery/utils/graph.py::DependencyGraph.add_edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/eventlet.py::TaskPool.on_stop",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py::Request.cancel",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::Backend.mark_as_failure",
+   "target": "celery/app/task.py::Context.update",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::ResultSet.app",
+   "target": "celery/local.py::Proxy._get_current_object",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.register_with_event_loop",
+   "target": "celery/bootsteps.py::Blueprint.send_all",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.__call__",
+   "target": "celery/utils/threads.py::_LocalStack.pop",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.replace",
+   "target": "celery/canvas.py::Signature.link_error",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/mocks.py::task_message_from_sig",
+   "target": "celery/app/base.py::Celery.now",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.stamp",
+   "target": "celery/canvas.py::Signature.stamp",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/dispatch/signal.py::_make_id",
+   "target": "celery/local.py::Proxy._get_current_object",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/loaders/base.py::BaseLoader.import_default_modules",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::errors",
+   "target": "celery/bin/logtool.py::Audit.run",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.__call__",
+   "target": "celery/utils/threads.py::_LocalStack.push",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.stats",
+   "target": "celery/bootsteps.py::Blueprint.info",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/builtins.py::add_group_task",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/mocks.py::task_message_from_sig",
+   "target": "celery/canvas.py::Signature.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::GraphFormatter.head",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.link_error",
+   "target": "celery/canvas.py::Signature.link_error",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::_create_pidlock",
+   "target": "celery/platforms.py::Pidfile.read_pid",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.link_error",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/worker.py::Worker.on_start",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.freeze",
+   "target": "celery/canvas.py::group.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.startup_info",
+   "target": "celery/beat.py::Service.get_scheduler",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/worker.py::_shutdown_handler",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend.ResultSession",
+   "target": "celery/backends/database/session.py::SessionManager.session_factory",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._unroll_tasks",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::_Process.stop",
+   "target": "celery/beat.py::Service.stop",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/app/trace.py::TraceInfo.handle_error_state",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/redis.py::RedisBackend.forget",
+   "target": "celery/backends/redis.py::ResultConsumer.cancel_for",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery._sig_to_periodic_task_entry",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.shutdown",
+   "target": "celery/worker/consumer/consumer.py::Consumer.Blueprint.shutdown",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.config_from_cmdline",
+   "target": "celery/utils/collections.py::ChainMap.update",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.install_sync_handler",
+   "target": "celery/beat.py::Service.sync",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController._shutdown",
+   "target": "celery/bootsteps.py::Blueprint.stop",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/heart.py::Heart.start",
+   "target": "celery/worker/heartbeat.py::Heart.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoFixup.install",
+   "target": "celery/utils/dispatch/signal.py::Signal.connect",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.link_error",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.apply",
+   "target": "celery/canvas.py::Signature.apply",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.startup_info",
+   "target": "celery/app/base.py::Celery.connection",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/builtins.py::add_chord_task",
+   "target": "celery/canvas.py::_chord.run",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.__init__",
+   "target": "celery/bootsteps.py::Blueprint.apply",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::traces",
+   "target": "celery/bin/logtool.py::Audit.run",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::incomplete",
+   "target": "celery/bin/logtool.py::Audit.incomplete_tasks",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/app/trace.py::TraceInfo.handle_reject",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/base.py::handle_preload_options",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::ScheduleEntry.is_due",
+   "target": "celery/schedules.py::BaseSchedule.is_due",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py::Request.terminate",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/utils/graph.py::GraphFormatter.draw_edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chain.prepare_steps",
+   "target": "celery/canvas.py::_chord.link",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._prepared",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::revoke_by_stamped_headers",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/snapshot.py::Polaroid.cleanup",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::set_pdeathsig",
+   "target": "celery/platforms.py::Signals.supported",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::GraphFormatter.edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::GraphFormatter.label",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::hello",
+   "target": "celery/utils/collections.py::LimitedSet.purge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.add_defaults",
+   "target": "celery/utils/collections.py::ChainMap.add_defaults",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/collections.py::BufferMap.put",
+   "target": "celery/utils/collections.py::Messagebuffer.put",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend._get_task_meta_for",
+   "target": "celery/backends/database/models.py::Task.to_dict",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.start",
+   "target": "celery/bootsteps.py::Blueprint.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.push_request",
+   "target": "celery/utils/threads.py::_LocalStack.push",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.pop_request",
+   "target": "celery/utils/threads.py::_LocalStack.pop",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::_revoke",
+   "target": "celery/utils/collections.py::LimitedSet.update",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::trace_task_ret",
+   "target": "celery/local.py::Proxy._get_current_object",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::stats",
+   "target": "celery/bin/logtool.py::Audit.run",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::Signature.__or__",
+   "target": "celery/canvas.py::_chain.unchain_tasks",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend.on_backend_retryable_error",
+   "target": "celery/backends/database/session.py::SessionManager.invalidate",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.timezone",
+   "target": "celery/utils/time.py::_Zone.get_timezone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/pytest.py::celery_session_worker",
+   "target": "celery/app/base.py::Celery.register_task",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/redis.py::RedisBackend.on_chord_part_return",
+   "target": "celery/utils/abstract.py::CallableTask.delay",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::_create_pidlock",
+   "target": "celery/platforms.py::Pidfile.remove_if_stale",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/solo.py::TaskPool.__init__",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::_create_pidlock",
+   "target": "celery/platforms.py::Pidfile.is_locked",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController.setup_instance",
+   "target": "celery/bootsteps.py::Blueprint.apply",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/multi.py::multi",
+   "target": "celery/bin/multi.py::MultiTool.execute_from_commandline",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::signature",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::stats",
+   "target": "celery/bin/logtool.py::Audit.report",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bootsteps.py::Blueprint.connect_with",
+   "target": "celery/utils/graph.py::DependencyGraph.add_edge",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.register_with_event_loop",
+   "target": "celery/bootsteps.py::Blueprint.send_all",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/result.py::AsyncResult._get_task_meta",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/rpc.py::RPCBackend._after_fork",
+   "target": "celery/backends/asynchronous.py::BaseResultConsumer._after_fork",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery._load_config",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group.set_immutable",
+   "target": "celery/canvas.py::Signature.set_immutable",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::Backend.chord_error_from_stack",
+   "target": "celery/backends/base.py::Backend.fail_from_current_stack",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/worker.py::WorkController._shutdown",
+   "target": "celery/bootsteps.py::Blueprint.join",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/beat.py::ScheduleEntry.default_now",
+   "target": "celery/schedules.py::BaseSchedule.now",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.install_sync_handler",
+   "target": "celery/platforms.py::Signals.update",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/debug.py::blockdetection",
+   "target": "celery/platforms.py::Signals.arm_alarm",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.__repr__",
+   "target": "celery/bootsteps.py::Blueprint.human_state",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::Backend._call_task_errbacks",
+   "target": "celery/canvas.py::group.apply",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_invalid_task",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.join",
+   "target": "celery/result.py::ResultSet.get",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/collections.py::BufferMap.extend",
+   "target": "celery/utils/collections.py::Messagebuffer.extend",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/logtool.py::incomplete",
+   "target": "celery/bin/logtool.py::Audit.run",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/state.py::State._create_dispatcher",
+   "target": "celery/events/state.py::Task.event",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::crontab.remaining_delta",
+   "target": "celery/utils/time.py::_Zone.get_timezone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/app/trace.py::TraceInfo.handle_ignore",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::group._freeze_unroll",
+   "target": "celery/utils/abstract.py::CallableSignature.clone",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::AsyncResult.get_leaf",
+   "target": "celery/result.py::AsyncResult.get",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chord.link_error",
+   "target": "celery/canvas.py::_chord.link_error",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/base.py::unpickle_backend",
+   "target": "celery/local.py::Proxy._get_current_object",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/log.py::Logging.setup_logging_subsystem",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/multi.py::MultiTool.get",
+   "target": "celery/apps/multi.py::Cluster.find",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/bin/multi.py::main",
+   "target": "celery/bin/multi.py::MultiTool.execute_from_commandline",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/state.py::task_ready",
+   "target": "celery/utils/collections.py::LimitedSet.add",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::AsyncResult.collect",
+   "target": "celery/result.py::AsyncResult.get",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoFixup.__init__",
+   "target": "celery/app/base.py::Celery.set_default",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/consumer.py::Consumer.start",
+   "target": "celery/bootsteps.py::Blueprint.start",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::setup_app_for_worker",
+   "target": "celery/app/base.py::Celery.set_default",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.retry",
+   "target": "celery/canvas.py::Signature.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/rpc.py::RPCBackend.get_task_meta",
+   "target": "celery/backends/asynchronous.py::BaseResultConsumer.on_out_of_band_result",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::fixup",
+   "target": "celery/fixups/django.py::DjangoFixup.install",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::BaseSchedule.app",
+   "target": "celery/local.py::Proxy._get_current_object",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/snapshot.py::Polaroid.install",
+   "target": "celery/utils/timer2.py::Timer.call_repeatedly",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/gcs.py::GCSBackend.on_chord_part_return",
+   "target": "celery/utils/abstract.py::CallableTask.delay",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery._load_config",
+   "target": "celery/utils/collections.py::ConfigurationView.swap_with",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.replace",
+   "target": "celery/canvas.py::_chain.freeze",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py::Request.execute_using_pool",
+   "target": "celery/concurrency/base.py::BasePool.apply_async",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/eventlet.py::TaskPool.on_start",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend.__init__",
+   "target": "celery/backends/database/models.py::TaskSet.configure",
+   "relation": "CALLS",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "import_map",
+   "source": "celery/backends/asynchronous.py::BaseResultConsumer._wait_for_pending",
+   "target": "celery/exceptions.py::TimeoutError",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "import_map",
+   "source": "celery/backends/base.py::BaseKeyValueStoreBackend.get_many",
+   "target": "celery/exceptions.py::TimeoutError",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/backends/filesystem.py::FilesystemBackend._do_directory_test",
+   "target": "celery/backends/filesystem.py::FilesystemBackend.set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "import_map",
+   "source": "celery/backends/base.py::SyncBackendMixin.wait_for",
+   "target": "celery/exceptions.py::TimeoutError",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/canvas.py::Signature.__call__",
+   "target": "celery/canvas.py::Signature.type",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/utils/functional.py::head_from_fun",
+   "target": "celery/utils/functional.py::_getfullargspec",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/app/base.py::Celery.subclass_with_self",
+   "target": "celery/app/base.py::Celery.__reduce_args__",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/backends/base.py::BaseKeyValueStoreBackend._set_with_state",
+   "target": "celery/backends/base.py::BaseKeyValueStoreBackend.set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::create_request_cls",
+   "target": "celery/worker/request.py::Request.acknowledge",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_ack",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/builtins.py::add_chord_task",
+   "target": "celery/canvas.py::_chord",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_declare",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_connection_error_after_connected",
+   "target": "celery/utils/deprecated.py::warn",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/cache.py::CacheBackend.expire",
+   "target": "celery/backends/cache.py::DummyClient.touch",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/shell.py::shell",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/receiver.py::EventReceiver.wakeup_workers",
+   "target": "celery/app/control.py::Control.broadcast",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.setup_queues",
+   "target": "celery/app/amqp.py::Queues.deselect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.send_task",
+   "target": "celery/app/task.py::Task.add_trail",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/celery.py::report",
+   "target": "celery/app/base.py::Celery.bugreport",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool.on_node_restart",
+   "target": "celery/utils/term.py::colored.blue",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/registry.py::TaskRegistry.__missing__",
+   "target": "celery/exceptions.py::NotRegistered",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_failure",
+   "target": "celery/backends/base.py::Backend.mark_as_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_chain.stamp",
+   "target": "celery/canvas.py::StampingVisitor.on_chain_end",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/multi.py::Cluster.shutdown_nodes",
+   "target": "celery/apps/multi.py::Node.alive",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.reload",
+   "target": "celery/worker/consumer/consumer.py::Consumer.reset_rate_limits",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/loaders/base.py::BaseLoader.init_worker",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/multi.py::Cluster.send_all",
+   "target": "celery/apps/multi.py::Node.send",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::greenletDrainer.start",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_get",
+   "target": "celery/bin/amqp.py::AMQPContext.respond",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/logtool.py::incomplete",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/gcs.py::GCSBackendBase._is_bucket_lifecycle_rule_exists",
+   "target": "celery/worker/worker.py::WorkController.reload",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/worker.py::WorkController.on_stopped",
+   "target": "celery/worker/consumer/consumer.py::Consumer.shutdown",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/__init__.py::shared_task",
+   "target": "celery/app/base.py::Celery.gen_task_name",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool.on_still_waiting_for",
+   "target": "celery/utils/term.py::colored.blue",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/migrate.py::migrate",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/redis.py::RedisBackend.on_chord_part_return",
+   "target": "celery/worker/request.py::Request.execute",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/gcs.py::GCSBackendBase.bucket",
+   "target": "celery/backends/gcs.py::GCSBackendBase.bucket",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::SyncBackendMixin.iter_native",
+   "target": "celery/backends/base.py::BaseKeyValueStoreBackend.get_many",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.cancel_task_queue",
+   "target": "celery/app/amqp.py::Queues.deselect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/request.py::Request.on_timeout",
+   "target": "celery/app/task.py::Task.on_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_purge",
+   "target": "celery/bin/base.py::CLIContext.secho",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/task.py::Task.send_event",
+   "target": "celery/app/events.py::Events.default_dispatcher",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/schedules.py::crontab_parser.parse",
+   "target": "celery/schedules.py::ParseException",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::exchange_declare",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/backends/asynchronous.py::BaseResultConsumer.drain_events_until",
+   "target": "celery/backends/asynchronous.py::Drainer.drain_events_until",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.inspect",
+   "target": "celery/app/control.py::Control.inspect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::_list_option",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::SyncBackendMixin.iter_native",
+   "target": "celery/backends/base.py::Backend._ensure_not_eager",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::report",
+   "target": "celery/app/base.py::Celery.bugreport",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::xstarmap.__repr__",
+   "target": "celery/canvas.py::_chord._unpack_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/time.py::LocalTimezone.fromutc",
+   "target": "celery/utils/time.py::LocalTimezone.fromutc",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.setup_queues",
+   "target": "celery/app/amqp.py::Queues.select",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/pidbox.py::gPidbox.on_stop",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::TraceInfo.handle_failure",
+   "target": "celery/backends/base.py::Backend.mark_as_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/security/key.py::PrivateKey.sign",
+   "target": "celery/security/key.py::PrivateKey.sign",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/strategy.py::default",
+   "target": "celery/app/base.py::Celery.uses_utc_timezone",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::AMQPContext.respond",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/registry.py::TaskRegistry.filter_types",
+   "target": "celery/canvas.py::Signature.items",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::EagerResult.__init__",
+   "target": "celery/worker/consumer/consumer.py::Consumer.on_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::AsyncResult._get_task_meta",
+   "target": "celery/backends/base.py::Backend.get_task_meta",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/components.py::Pool.terminate",
+   "target": "celery/worker/components.py::Pool.terminate",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::ResultSet._iter_meta",
+   "target": "celery/backends/base.py::BaseKeyValueStoreBackend.get_many",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Evloop.start",
+   "target": "celery/worker/consumer/consumer.py::Consumer.loop_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.on_node_leave",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/tasks.py::Tasks.start",
+   "target": "celery/worker/consumer/consumer.py::Consumer.update_strategies",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_ack",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::ResultSet._failed_join_report",
+   "target": "celery/backends/base.py::Backend.is_cached",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/pidbox.py::Pidbox.shutdown",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/beat.py::Scheduler.should_sync",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::Worker.emit_banner",
+   "target": "celery/utils/term.py::colored.cyan",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/celery.py::report",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.setup_queues",
+   "target": "celery/app/amqp.py::Queues.select_add",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool.OK",
+   "target": "celery/utils/term.py::colored.green",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/rpc.py::ResultConsumer.on_after_fork",
+   "target": "celery/result.py::AsyncResult.collect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.setup_includes",
+   "target": "celery/loaders/base.py::BaseLoader.import_task_module",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_declare",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/multi.py::MultiTool.stopwait",
+   "target": "celery/apps/multi.py::Cluster.stopwait",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::cancel_consumer",
+   "target": "celery/worker/consumer/consumer.py::Consumer.call_soon",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_accepted",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/amqp.py::AMQP.Router",
+   "target": "celery/app/base.py::Celery.either",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::Backend._handle_group_chord_error",
+   "target": "celery/backends/base.py::Backend.mark_as_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/__init__.py::shared_task",
+   "target": "celery/app/base.py::Celery._task_from_fun",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_unknown_task",
+   "target": "celery/events/dispatcher.py::EventDispatcher.send",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/canvas.py::Signature.items",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery._task_from_fun",
+   "target": "celery/app/task.py::Task.bind",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.revoked",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_bind",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_accepted",
+   "target": "celery/worker/state.py::task_accepted",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/snapshot.py::Polaroid.capture",
+   "target": "celery/events/state.py::State.freeze_while",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::exchange_declare",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::_say_remote_command_reply",
+   "target": "celery/bin/base.py::CLIContext.pretty",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/concurrency/asynpool.py::AsynPool.register_with_event_loop",
+   "target": "celery/concurrency/asynpool.py::ResultHandler.register_with_event_loop",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/consumer.py::Consumer._flush_events",
+   "target": "celery/events/dispatcher.py::EventDispatcher.flush",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_failure",
+   "target": "celery/worker/state.py::task_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "target": "celery/bin/base.py::CLIContext.error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/components.py::StateDB.create",
+   "target": "celery/worker/state.py::Persistent",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Evloop.start",
+   "target": "celery/worker/pidbox.py::gPidbox.loop",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/control.py::_revoke",
+   "target": "celery/worker/request.py::Request.terminate",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::Worker.on_start",
+   "target": "celery/app/log.py::Logging.redirect_stdouts",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.on_node_lost",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/local.py::getappattr",
+   "target": "celery/app/base.py::Celery._rgetattr",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/control.py::election",
+   "target": "celery/worker/consumer/gossip.py::Gossip.election",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/loops.py::asynloop",
+   "target": "celery/worker/consumer/consumer.py::Consumer.create_task_handler",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/canvas.py::_chord.run",
+   "target": "celery/backends/base.py::Backend.apply_chord",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/amqp.py::AMQP._event_dispatcher",
+   "target": "celery/app/events.py::Events.Dispatcher",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.on_node_join",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/dumper.py::evdump",
+   "target": "celery/app/events.py::Events.Receiver",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/shell.py::shell",
+   "target": "celery/loaders/base.py::BaseLoader.import_default_modules",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool.register_with_event_loop",
+   "target": "celery/utils/timer2.py::Timer.call_repeatedly",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/couchbase.py::CouchbaseBackend._get_connection",
+   "target": "celery/backends/gcs.py::GCSBackendBase.bucket",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/events/cursesmon.py::CursesMonitor.selection_info",
+   "target": "celery/events/state.py::Task.info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/security/serialization.py::SecureSerializer.deserialize",
+   "target": "celery/security/certificate.py::Certificate.verify",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/backends/base.py::Backend.process_cleanup",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/events.py::Events.State",
+   "target": "celery/app/base.py::Celery.subclass_with_self",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::CursesMonitor.selection_rate_limit",
+   "target": "celery/app/control.py::Control.rate_limit",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/rpc.py::RPCBackend._slurp_from_queue",
+   "target": "celery/backends/rpc.py::BacklogLimitExceeded",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::AsyncResult.throw",
+   "target": "celery/result.py::AsyncResult.throw",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/worker.py::Worker.startup_info",
+   "target": "celery/app/amqp.py::Queues.format",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/pidbox.py::gPidbox.loop",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::using_cluster",
+   "target": "celery/bin/multi.py::MultiTool.cluster_from_argv",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::exchange_declare",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/migrate.py::republish",
+   "target": "celery/events/dispatcher.py::EventDispatcher.publish",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/beat.py::Scheduler.apply_async",
+   "target": "celery/app/task.py::Task.apply_async",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/logtool.py::errors",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::Worker.on_start",
+   "target": "celery/app/utils.py::Settings.maybe_warn_deprecated_settings",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::Signature.flatten_links",
+   "target": "celery/canvas.py::Signature.flatten_links",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/worker.py::Worker.startup_info",
+   "target": "celery/backends/base.py::Backend.as_uri",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.get_consumers",
+   "target": "celery/app/events.py::Events.Receiver",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/control.py::active",
+   "target": "celery/worker/request.py::Request.info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.send_task",
+   "target": "celery/app/amqp.py::AMQP.create_task_message",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/beat.py::Beat.banner",
+   "target": "celery/utils/term.py::colored.blue",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::AsyncResult._maybe_set_cache",
+   "target": "celery/backends/base.py::Backend.meta_from_decoded",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::control",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_chord.stamp",
+   "target": "celery/canvas.py::StampingVisitor.on_chord_header_end",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.wait_until_idle",
+   "target": "celery/app/control.py::Inspect.active",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/events/cursesmon.py::evtop",
+   "target": "celery/app/events.py::Events.State",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/couchdb.py::CouchBackend._get_connection",
+   "target": "celery/backends/mongodb.py::MongoBackend.database",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/graph.py::bootsteps",
+   "target": "celery/bootsteps.py::Blueprint.connect_with",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/events/state.py::State.get_or_create_worker",
+   "target": "celery/events/state.py::Worker.update",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/timer2.py::Timer.run",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.finalize",
+   "target": "celery/app/task.py::Task.bind",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.call_soon",
+   "target": "celery/worker/consumer/consumer.py::Consumer.call_soon",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/celery.py::report",
+   "target": "celery/loaders/base.py::BaseLoader.import_default_modules",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/amqp.py::AMQP.__init__",
+   "target": "celery/utils/collections.py::ChainMap.bind_to",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/backends/asynchronous.py::AsyncBackendMixin.add_pending_results",
+   "target": "celery/backends/asynchronous.py::Drainer.start",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::AsyncResult._maybe_set_cache",
+   "target": "celery/worker/consumer/consumer.py::Consumer.on_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.add_task_queue",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/redis.py::SentinelBackend._get_sentinel_instance",
+   "target": "celery/contrib/testing/manager.py::Sentinel",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.__init__",
+   "target": "celery/loaders/base.py::BaseLoader.init_worker",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_publish",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::_Threaded.run",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer._schedule_bucket_request",
+   "target": "celery/utils/timer2.py::Timer.call_after",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::GroupResult.restore",
+   "target": "celery/backends/base.py::Backend.restore_group",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::_revoke",
+   "target": "celery/backends/base.py::Backend.mark_as_revoked",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/testing/worker.py::setup_app_for_worker",
+   "target": "celery/app/log.py::Logging.setup",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::ResultHandler.on_stop_not_started",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_bind",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::ResultSet.revoke",
+   "target": "celery/app/control.py::Control.revoke",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::DisplayThread.run",
+   "target": "celery/events/cursesmon.py::CursesMonitor.draw",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/pidbox.py::Pidbox.__init__",
+   "target": "celery/apps/multi.py::Node",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend._restore_group",
+   "target": "celery/utils/collections.py::ConfigurationView.first",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/concurrency/prefork.py::TaskPool.on_terminate",
+   "target": "celery/worker/components.py::Pool.terminate",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/security/certificate.py::Certificate.verify",
+   "target": "celery/security/certificate.py::Certificate.verify",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.update_strategies",
+   "target": "celery/app/task.py::Task.start_strategy",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/__init__.py::bugreport",
+   "target": "celery/app/base.py::Celery.bugreport",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/loaders/base.py::BaseLoader.cmdline_config_parser",
+   "target": "celery/app/defaults.py::Option.to_python",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.wait_until_idle",
+   "target": "celery/app/control.py::Control.inspect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::add_consumer",
+   "target": "celery/worker/consumer/consumer.py::Consumer.call_soon",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::splash",
+   "target": "celery/bin/multi.py::TermLogger.splash",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/connection.py::Connection.info",
+   "target": "celery/worker/consumer/connection.py::Connection.info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.register_timer",
+   "target": "celery/utils/timer2.py::Timer.call_repeatedly",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_basemap.from_dict",
+   "target": "celery/canvas.py::_chord._unpack_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Scheduler.apply_entry",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/pytest.py::depends_on_current_app",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/beat.py::Scheduler.tick",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/routes.py::Router.query_router",
+   "target": "celery/local.py::maybe_evaluate",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/loops.py::asynloop",
+   "target": "celery/worker/consumer/consumer.py::Consumer.on_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::using_cluster_and_sig",
+   "target": "celery/bin/multi.py::MultiTool._find_sig_argument",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.query_tasks",
+   "target": "celery/app/control.py::Inspect.query_task",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_publish",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_chain.run",
+   "target": "celery/canvas.py::Signature.extend_list_option",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.config_from_cmdline",
+   "target": "celery/loaders/base.py::BaseLoader.cmdline_config_parser",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_success",
+   "target": "celery/worker/state.py::task_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_unknown_message",
+   "target": "celery/utils/deprecated.py::warn",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::greenletDrainer.run",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::group._apply_tasks",
+   "target": "celery/app/base.py::Celery.producer_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/loops.py::synloop",
+   "target": "celery/worker/consumer/consumer.py::Consumer.on_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/testing/worker.py::_start_worker_process",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/control.py::Control.purge",
+   "target": "celery/app/base.py::Celery.connection_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::exchange_delete",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::Worker.setup_logging",
+   "target": "celery/app/log.py::Logging.setup",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::SyncBackendMixin.wait_for_pending",
+   "target": "celery/backends/base.py::Backend._ensure_not_eager",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool._help_stuff_finish",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/cassandra.py::CassandraBackend._get_task_meta_for",
+   "target": "celery/worker/request.py::Request.execute",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/gossip.py::Gossip.__init__",
+   "target": "celery/app/events.py::Events.State",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/backends/asynchronous.py::AsyncBackendMixin.add_pending_result",
+   "target": "celery/backends/asynchronous.py::Drainer.start",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/tasks.py::Tasks.shutdown",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bootsteps.py::Blueprint.apply",
+   "target": "celery/bootsteps.py::Step.include",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/imports.py::load_extension_class_names",
+   "target": "celery/app/amqp.py::Queues.select",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request._announce_revoked",
+   "target": "celery/backends/base.py::Backend.mark_as_revoked",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/task.py::Task.replace",
+   "target": "celery/app/task.py::Task.s",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/registry.py::TaskRegistry.unregister",
+   "target": "celery/exceptions.py::NotRegistered",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/pytest.py::celery_session_app",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::during_soft_shutdown",
+   "target": "celery/worker/consumer/consumer.py::Consumer.cancel_active_requests",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_delete",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/beat.py::ScheduleEntry.is_due",
+   "target": "celery/schedules.py::schedule.is_due",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::inspect",
+   "target": "celery/app/control.py::Inspect._request",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/multi.py::MultiParser._node_from_options",
+   "target": "celery/apps/multi.py::NamespacedOptionParser.optmerge",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/pidbox.py::gPidbox.loop",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/beat.py::Beat.run",
+   "target": "celery/utils/term.py::colored.cyan",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::xmap.__repr__",
+   "target": "celery/canvas.py::_chord._unpack_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_bind",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_basemap.apply_async",
+   "target": "celery/canvas.py::_chord._unpack_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::capture_events",
+   "target": "celery/app/events.py::Events.Receiver",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_timeout",
+   "target": "celery/backends/base.py::Backend.mark_as_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/app/log.py::Logging.setup",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/control.py::Inspect._request",
+   "target": "celery/app/control.py::Control.broadcast",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/canvas.py::Signature.election",
+   "target": "celery/app/control.py::Control.election",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::status",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/mingle.py::Mingle.sync",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/state.py::_warn_drift",
+   "target": "celery/utils/deprecated.py::warn",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/events.py::Events.Dispatcher",
+   "target": "celery/app/base.py::Celery.subclass_with_self",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/list.py::bindings",
+   "target": "celery/app/amqp.py::AMQP.TaskConsumer",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/logtool.py::stats",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::DisplayThread.run",
+   "target": "celery/events/cursesmon.py::CursesMonitor.nap",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::Backend._handle_group_chord_error",
+   "target": "celery/backends/base.py::Backend.fail_from_current_stack",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/autoscale.py::Autoscaler.maybe_scale",
+   "target": "celery/concurrency/base.py::BasePool.maintain_pool",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/couchbase.py::CouchbaseBackend.mget",
+   "target": "celery/backends/cache.py::DummyClient.get_multi",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/gcs.py::GCSBackendBase.delete",
+   "target": "celery/result.py::AsyncResult.exists",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/prefork.py::TaskPool.on_stop",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/beat.py::Beat.setup_logging",
+   "target": "celery/app/log.py::Logging.setup",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.select_queues",
+   "target": "celery/app/amqp.py::Queues.select",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::pool_restart",
+   "target": "celery/worker/worker.py::WorkController.reload",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/strategy.py::default",
+   "target": "celery/worker/request.py::Request.reject",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_delete",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/cache.py::CacheBackend.mget",
+   "target": "celery/backends/cache.py::DummyClient.get_multi",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/backends/base.py::Backend.store_result",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/loops.py::synloop",
+   "target": "celery/worker/consumer/consumer.py::Consumer.create_task_handler",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/beat.py::Scheduler._do_sync",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/components.py::Pool.register_with_event_loop",
+   "target": "celery/worker/components.py::Pool.register_with_event_loop",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/worker.py::Worker.emit_banner",
+   "target": "celery/utils/term.py::colored.reset",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_declare",
+   "target": "celery/bin/base.py::CLIContext.secho",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::Signature.election",
+   "target": "celery/app/base.py::Celery.producer_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::exchange_delete",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/worker.py::worker",
+   "target": "celery/app/base.py::Celery.config_from_cmdline",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/worker.py::Worker.purge_messages",
+   "target": "celery/app/control.py::Control.purge",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/events.py::Events.start",
+   "target": "celery/app/events.py::Events.Dispatcher",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool._event_process_exit",
+   "target": "celery/concurrency/base.py::BasePool.maintain_pool",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/rpc.py::ResultConsumer.cancel_for",
+   "target": "celery/backends/rpc.py::RPCBackend._create_binding",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_get",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool.FAILED",
+   "target": "celery/utils/term.py::colored.red",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/mingle.py::Mingle.send_hello",
+   "target": "celery/app/control.py::Control.inspect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/rpc.py::ResultConsumer.consume_from",
+   "target": "celery/backends/rpc.py::RPCBackend._create_binding",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_publish",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.register_task",
+   "target": "celery/app/task.py::Task.bind",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool.DOWN",
+   "target": "celery/utils/term.py::colored.magenta",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/multi.py::MultiTool.stop",
+   "target": "celery/apps/multi.py::Cluster.stop",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::chunks.group",
+   "target": "celery/canvas.py::_chord._unpack_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool._on_soft_timeout",
+   "target": "celery/concurrency/base.py::BasePool.on_soft_timeout",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/autoscale.py::Autoscaler._grow",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/multi.py::Cluster._start_node",
+   "target": "celery/apps/multi.py::Node.start",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/connection.py::Connection.start",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/multi.py::MultiTool.start",
+   "target": "celery/apps/multi.py::Cluster.start",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/multi.py::MultiTool.restart",
+   "target": "celery/apps/multi.py::Cluster.restart",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend.extended_result",
+   "target": "celery/app/utils.py::Settings.find_value_for_key",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/task.py::Task.retry",
+   "target": "celery/exceptions.py::MaxRetriesExceededError",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/gevent.py::TaskPool.on_start",
+   "target": "celery/worker/components.py::Pool",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/consumer.py::Consumer.cancel_active_requests",
+   "target": "celery/worker/request.py::Request.cancel",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/events.py::Events.start",
+   "target": "celery/events/dispatcher.py::EventDispatcher.extend_buffer",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/canvas.py::group._apply_tasks",
+   "target": "celery/backends/base.py::Backend.set_chord_size",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/contrib/abortable.py::AbortableAsyncResult.abort",
+   "target": "celery/backends/base.py::Backend.store_result",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/platforms.py::isatty",
+   "target": "celery/utils/log.py::LoggingProxy.isatty",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/gcs.py::GCSBackend.on_chord_part_return",
+   "target": "celery/result.py::ResultSet._failed_join_report",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/canvas.py::_chain.prepare_steps",
+   "target": "celery/backends/base.py::Backend.ensure_chords_allowed",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::_Process.run",
+   "target": "celery/app/base.py::Celery.set_default",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::exchange_delete",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.cancel_task_queue",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Scheduler.apply_entry",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::group.stamp",
+   "target": "celery/canvas.py::StampingVisitor.on_group_end",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "target": "celery/bin/base.py::CLIContext.secho",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::inspect",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/control.py::status",
+   "target": "celery/app/control.py::Control.inspect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/pytest.py::celery_worker",
+   "target": "celery/loaders/base.py::BaseLoader.import_task_module",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/loops.py::asynloop",
+   "target": "celery/worker/consumer/consumer.py::Consumer.call_soon",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::on_cold_shutdown",
+   "target": "celery/worker/consumer/consumer.py::Consumer.cancel_active_requests",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_timeout",
+   "target": "celery/worker/state.py::task_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_connection_error_after_connected",
+   "target": "celery/result.py::AsyncResult.collect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_chord.__repr__",
+   "target": "celery/canvas.py::Signature.reprcall",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/control.py::_after_fork_cleanup_control",
+   "target": "celery/app/control.py::Control._after_fork",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::SyncBackendMixin.wait_for_pending",
+   "target": "celery/result.py::AsyncResult._maybe_set_cache",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::conf",
+   "target": "celery/app/utils.py::Settings.table",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/autoscale.py::Autoscaler._shrink",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::_say_remote_command_reply",
+   "target": "celery/bin/base.py::CLIContext.style",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/backends/base.py::Backend.mark_as_done",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_purge",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::TermLogger.splash",
+   "target": "celery/utils/term.py::colored.cyan",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_connection_error_after_connected",
+   "target": "celery/worker/request.py::Request.cancel",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/autoscale.py::Autoscaler._update_consumer_prefetch_count",
+   "target": "celery/worker/consumer/consumer.py::Consumer._update_prefetch_count",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::AsyncBackendMixin._maybe_resolve_from_buffer",
+   "target": "celery/result.py::AsyncResult._maybe_set_cache",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/request.py::Request._announce_cancelled",
+   "target": "celery/app/task.py::Task.on_retry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::BaseKeyValueStoreBackend.on_chord_part_return",
+   "target": "celery/result.py::ResultSet._failed_join_report",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/cassandra.py::CassandraBackend._store_result",
+   "target": "celery/worker/request.py::Request.execute",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/mingle.py::Mingle.send_hello",
+   "target": "celery/app/control.py::Inspect.hello",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/amqp.py::AMQP._create_task_sender",
+   "target": "celery/events/dispatcher.py::EventDispatcher.publish",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/time.py::is_naive",
+   "target": "celery/utils/time.py::LocalTimezone.utcoffset",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/task.py::Task.update_state",
+   "target": "celery/backends/base.py::Backend.store_result",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request._announce_cancelled",
+   "target": "celery/worker/state.py::task_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::pydantic_wrapper",
+   "target": "celery/app/task.py::Task.bind",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_delete",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/task.py::Task.add_to_chord",
+   "target": "celery/backends/base.py::Backend.add_to_chord",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool.on_stopping_preamble",
+   "target": "celery/utils/term.py::colored.blue",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.on_unknown_task",
+   "target": "celery/backends/base.py::Backend.mark_as_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/base.py::Celery.start",
+   "target": "celery/bin/celery.py::main",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/redis.py::RedisBackend.on_chord_part_return",
+   "target": "celery/worker/consumer/consumer.py::Consumer.on_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::group.apply_async",
+   "target": "celery/app/task.py::Task.add_trail",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/mingle.py::Mingle.on_node_reply",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Service.stop",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::AsyncResult.exists",
+   "target": "celery/backends/base.py::Backend.task_result_exists",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::PersistentScheduler.setup_schedule",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/autoretry.py::add_autoretry_behaviour",
+   "target": "celery/app/task.py::Task.retry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/multi.py::MultiTool.kill",
+   "target": "celery/apps/multi.py::Cluster.kill",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/worker.py::Worker.on_after_init",
+   "target": "celery/app/base.py::Celery.either",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.wait_until_idle",
+   "target": "celery/app/control.py::Control.purge",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.wait_for",
+   "target": "celery/utils/time.py::humanize_seconds",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::rate_limit",
+   "target": "celery/worker/consumer/consumer.py::Consumer.reset_rate_limits",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.send_task",
+   "target": "celery/app/routes.py::Router.route",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/prefork.py::process_initializer",
+   "target": "celery/loaders/base.py::BaseLoader.init_worker_process",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::AsyncResult.revoke",
+   "target": "celery/app/control.py::Control.revoke",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::_say_remote_command_reply",
+   "target": "celery/bin/base.py::CLIContext.say_chat",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/concurrency/prefork.py::TaskPool.on_stop",
+   "target": "celery/worker/components.py::Pool.close",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/migrate.py::Filterer.create_consumer",
+   "target": "celery/app/amqp.py::AMQP.TaskConsumer",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::setup_worker_optimizations",
+   "target": "celery/app/base.py::Celery.set_default",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/builtins.py::add_group_task",
+   "target": "celery/app/task.py::Task.add_trail",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/gcs.py::GCSBackend._firestore_document",
+   "target": "celery/backends/mongodb.py::MongoBackend.collection",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_get",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_get",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/security/serialization.py::SecureSerializer.serialize",
+   "target": "celery/security/certificate.py::Certificate.get_id",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/collections.py::BufferMap.__init__",
+   "target": "celery/canvas.py::Signature.items",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/schedules.py::crontab_parser._range_steps",
+   "target": "celery/schedules.py::ParseException",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/control.py::control",
+   "target": "celery/app/control.py::Control.broadcast",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/task.py::Task.apply_async",
+   "target": "celery/app/base.py::Celery.producer_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/text.py::simple_format",
+   "target": "celery/bin/multi.py::MultiTool.expand",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/beat.py::Beat.init_loader",
+   "target": "celery/loaders/base.py::BaseLoader.init_worker",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/events/snapshot.py::evcam",
+   "target": "celery/app/events.py::Events.State",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::capture_events",
+   "target": "celery/events/cursesmon.py::CursesMonitor.resetscreen",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/redis.py::RedisBackend._set",
+   "target": "celery/worker/request.py::Request.execute",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/schedules.py::crontab_parser._star_steps",
+   "target": "celery/schedules.py::ParseException",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/control.py::Control.broadcast",
+   "target": "celery/app/base.py::Celery.connection_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/purge.py::purge",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/events/cursesmon.py::CursesMonitor.revoke_selection",
+   "target": "celery/app/control.py::Control.revoke",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::AsyncBackendMixin.wait_for_pending",
+   "target": "celery/backends/base.py::Backend._ensure_not_eager",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/graph.py::bootsteps",
+   "target": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/worker.py::detach",
+   "target": "celery/app/log.py::Logging.setup_logging_subsystem",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/snapshot.py::evcam",
+   "target": "celery/app/events.py::Events.Receiver",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/concurrency/prefork.py::TaskPool.on_close",
+   "target": "celery/worker/components.py::Pool.close",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery.send_task",
+   "target": "celery/app/amqp.py::AMQP.send_task_message",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/trace.py::TraceInfo.handle_failure",
+   "target": "celery/app/task.py::Task.on_failure",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/beat.py::Service.sync",
+   "target": "celery/beat.py::Scheduler.close",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_purge",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_error",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.call_soon_ack",
+   "target": "celery/worker/consumer/consumer.py::Consumer.call_soon",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::_chord.run",
+   "target": "celery/canvas.py::group._freeze_group_tasks",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::capture_events",
+   "target": "celery/events/cursesmon.py::CursesMonitor.init_screen",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/snapshot.py::evcam",
+   "target": "celery/app/log.py::Logging.setup_logging_subsystem",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/components.py::Pool.close",
+   "target": "celery/worker/components.py::Pool.close",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::BaseResultConsumer.on_state_change",
+   "target": "celery/result.py::AsyncResult._maybe_set_cache",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::greenletDrainer._ensure_not_shut_down",
+   "target": "celery/backends/asynchronous.py::EventletAdaptedEvent.is_set",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::MultiTool._nodes_from_argv",
+   "target": "celery/apps/multi.py::MultiParser",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request._announce_cancelled",
+   "target": "celery/backends/base.py::Backend.mark_as_retry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/builtins.py::add_unlock_chord_task",
+   "target": "celery/result.py::ResultSet._failed_join_report",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/autoscale.py::WorkerComponent.info",
+   "target": "celery/worker/autoscale.py::Autoscaler.info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::_Process.run",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/builtins.py::add_unlock_chord_task",
+   "target": "celery/app/task.py::Task.retry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/mongodb.py::MongoBackend._get_task_meta_for",
+   "target": "celery/app/utils.py::Settings.find_value_for_key",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/apps/multi.py::Cluster.shutdown_nodes",
+   "target": "celery/apps/multi.py::Node.send",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/control.py::Control.purge",
+   "target": "celery/app/amqp.py::AMQP.TaskConsumer",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/call.py::call",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::SyncBackendMixin.wait_for",
+   "target": "celery/backends/base.py::Backend._ensure_not_eager",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/eventlet.py::TaskPool.on_start",
+   "target": "celery/worker/components.py::Pool",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.reload",
+   "target": "celery/worker/consumer/consumer.py::Consumer.update_strategies",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::pool_grow",
+   "target": "celery/worker/consumer/consumer.py::Consumer._update_prefetch_count",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/asynchronous.py::AsyncBackendMixin.iter_native",
+   "target": "celery/backends/base.py::Backend._ensure_not_eager",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::AsyncResult.forget",
+   "target": "celery/backends/base.py::Backend.forget",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/rpc.py::ResultConsumer.start",
+   "target": "celery/backends/rpc.py::RPCBackend._create_binding",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/pytest.py::celery_session_worker",
+   "target": "celery/loaders/base.py::BaseLoader.import_task_module",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/autoscale.py::Autoscaler._shrink",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/builtins.py::add_group_task",
+   "target": "celery/app/base.py::Celery.producer_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController._process_task",
+   "target": "celery/worker/request.py::Request.execute_using_pool",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool._on_hard_timeout",
+   "target": "celery/concurrency/base.py::BasePool.on_hard_timeout",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/canvas.py::chunks.from_dict",
+   "target": "celery/canvas.py::_chord._unpack_args",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/schedules.py::crontab_parser._expand_number",
+   "target": "celery/schedules.py::ParseException",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/tasks.py::Tasks.start",
+   "target": "celery/app/amqp.py::AMQP.TaskConsumer",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend._task_result_exists",
+   "target": "celery/utils/collections.py::ConfigurationView.first",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/control.py::inspect",
+   "target": "celery/app/control.py::Control.inspect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/rdb.py::Rdb.get_avail_port",
+   "target": "celery/app/task.py::Task.bind",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request._announce_revoked",
+   "target": "celery/worker/state.py::task_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/control.py::autoscale",
+   "target": "celery/worker/autoscale.py::Autoscaler.update",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/canvas.py::Signature.election",
+   "target": "celery/backends/base.py::Backend.on_task_call",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bin/graph.py::workers",
+   "target": "celery/app/control.py::Control.inspect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController._maybe_reload_module",
+   "target": "celery/loaders/base.py::BaseLoader.import_from_cwd",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_purge",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/security/serialization.py::SecureSerializer.serialize",
+   "target": "celery/security/key.py::PrivateKey.sign",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::ResultSet._on_ready",
+   "target": "celery/worker/consumer/consumer.py::Consumer.on_ready",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/cursesmon.py::CursesMonitor.tasks",
+   "target": "celery/events/state.py::State.tasks_by_time",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/tasks.py::Tasks.stop",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/autoscale.py::WorkerComponent.register_with_event_loop",
+   "target": "celery/utils/timer2.py::Timer.call_repeatedly",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.on_elect_ack",
+   "target": "celery/events/state.py::State.alive_workers",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Scheduler._do_sync",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/task.py::Task.signature_from_request",
+   "target": "celery/app/task.py::Context.as_execution_options",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/control.py::reserved",
+   "target": "celery/worker/request.py::Request.info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/control.py::Control.inspect",
+   "target": "celery/app/base.py::Celery.subclass_with_self",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::Celery._connection",
+   "target": "celery/worker/consumer/connection.py::Connection",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/builtins.py::add_backend_cleanup_task",
+   "target": "celery/backends/base.py::Backend.cleanup",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::basic_ack",
+   "target": "celery/bin/amqp.py::AMQPContext.reconnect",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/graph.py::DependencyGraph.edges",
+   "target": "celery/canvas.py::Signature.items",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/database/__init__.py::DatabaseBackend._query_task",
+   "target": "celery/utils/abstract.py::CallableSignature.options",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bootsteps.py::Blueprint._finalize_steps",
+   "target": "celery/utils/graph.py::GraphFormatter",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_delete",
+   "target": "celery/bin/base.py::CLIContext.secho",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::setup_worker_optimizations",
+   "target": "celery/app/base.py::Celery.set_current",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/result.py::result",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/pytest.py::celery_session_app",
+   "target": "celery/app/base.py::Celery.set_default",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/beat.py::beat",
+   "target": "celery/app/base.py::Celery.config_from_cmdline",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/beat.py::Beat.start_scheduler",
+   "target": "celery/beat.py::Service",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/purge.py::purge",
+   "target": "celery/bin/base.py::CLIContext.style",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::Backend._handle_group_chord_error",
+   "target": "celery/backends/base.py::Backend._call_task_errbacks",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/timer2.py::Timer._next_entry",
+   "target": "celery/beat.py::Scheduler.apply_entry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/worker/worker.py::WorkController.on_stopped",
+   "target": "celery/utils/timer2.py::Timer.stop",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/contrib/migrate.py::move",
+   "target": "celery/app/base.py::Celery.connection_or_acquire",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/events.py::Events.Receiver",
+   "target": "celery/app/base.py::Celery.subclass_with_self",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool.process_flush_queues",
+   "target": "celery/bin/logtool.py::debug",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/events/dispatcher.py::EventDispatcher._publish",
+   "target": "celery/events/dispatcher.py::EventDispatcher.publish",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/heartbeat.py::Heart.start",
+   "target": "celery/utils/timer2.py::Timer.call_repeatedly",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/consumer.py::Consumer.add_task_queue",
+   "target": "celery/app/amqp.py::Queues.select_add",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/celery.py",
+   "target": "celery/app/amqp.py::Queues.select",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/cassandra.py::CassandraBackend._get_connection",
+   "target": "celery/worker/request.py::Request.execute",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::Backend._get_result_meta",
+   "target": "celery/app/utils.py::Settings.find_value_for_key",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_timeout",
+   "target": "celery/utils/deprecated.py::warn",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/request.py::Request.on_timeout",
+   "target": "celery/app/task.py::Task.after_return",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/base.py::Backend.fallback_chord_unlock",
+   "target": "celery/app/routes.py::Router.route",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/utils/term.py::colored._fold_no_color",
+   "target": "celery/utils/term.py::colored.no_color",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bootsteps.py::Blueprint.stop",
+   "target": "celery/worker/worker.py::WorkController.on_stopped",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/base.py::Celery.send_task",
+   "target": "celery/backends/base.py::Backend.on_task_call",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/list.py::bindings",
+   "target": "celery/bin/base.py::CLIContext.echo",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/base.py::_unpickle_appattr",
+   "target": "celery/app/base.py::Celery._rgetattr",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/gossip.py::Gossip.on_elect_ack",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::report_internal_error",
+   "target": "celery/backends/base.py::Backend.prepare_exception",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/redis.py::RedisBackend._set",
+   "target": "celery/events/dispatcher.py::EventDispatcher.publish",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/amqp.py::queue_declare",
+   "target": "celery/bin/amqp.py::AMQPContext.echo_ok",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/app/trace.py::TraceInfo.handle_retry",
+   "target": "celery/app/task.py::Task.on_retry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/worker.py::WorkController.on_close",
+   "target": "celery/loaders/base.py::BaseLoader.shutdown_worker",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/apps/beat.py::Beat.banner",
+   "target": "celery/utils/term.py::colored.magenta",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/result.py::AsyncResult.revoke_by_stamped_headers",
+   "target": "celery/app/control.py::Control.revoke_by_stamped_headers",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Scheduler._when",
+   "target": "celery/beat.py::ScheduleEntry.default_now",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/rpc.py::RPCBackend.store_result",
+   "target": "celery/events/dispatcher.py::EventDispatcher.publish",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/loops.py::_enable_amqheartbeats",
+   "target": "celery/utils/timer2.py::Timer.call_repeatedly",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/backends/database/session.py::SessionManager._migrate_missing_columns",
+   "target": "celery/worker/request.py::Request.execute",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/beat.py::Service.start",
+   "target": "celery/app/trace.py::info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/consumer/mingle.py::Mingle.on_clock_event",
+   "target": "celery/beat.py::Scheduler.adjust",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "suffix",
+   "source": "celery/bootsteps.py::Blueprint.info",
+   "target": "celery/bootsteps.py::Step.info",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/control.py::pool_shrink",
+   "target": "celery/worker/consumer/consumer.py::Consumer._update_prefetch_count",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/trace.py::TraceInfo.handle_retry",
+   "target": "celery/backends/base.py::Backend.mark_as_retry",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/worker/state.py::Persistent._merge_clock",
+   "target": "celery/beat.py::Scheduler.adjust",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/concurrency/asynpool.py::AsynPool.flush",
+   "target": "celery/concurrency/base.py::BasePool.maintain_pool",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/app/builtins.py::add_unlock_chord_task",
+   "target": "celery/backends/base.py::Backend.chord_error_from_stack",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/result.py::AsyncResult.as_list",
+   "target": "celery/result.py::AsyncResult.as_list",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_candidate",
+   "tier": "unique_name",
+   "source": "celery/bin/multi.py::using_cluster_and_sig",
+   "target": "celery/bin/multi.py::MultiTool._cluster_from_argv",
+   "relation": "CALLS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/app/base.py",
+   "target": "celery/app/backends.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/app/base.py",
+   "target": "celery/app/builtins.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/loops.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/__init__.py",
+   "target": "celery/local.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/contrib/testing/app.py",
+   "target": "celery/contrib/testing/tasks.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/autoscale.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/worker.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/concurrency/prefork.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/control.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/concurrency/asynpool.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/concurrency/eventlet.py",
+   "target": "celery/concurrency/base.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/contrib/pytest.py",
+   "target": "celery/contrib/testing/worker.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/concurrency/gevent.py",
+   "target": "celery/concurrency/base.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/backends/rpc.py",
+   "target": "celery/backends/base.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/result.py",
+   "target": "celery/states.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/request.py",
+   "target": "celery/worker/state.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/concurrency/prefork.py",
+   "target": "celery/app/base.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/app/amqp.py",
+   "target": "celery/app/routes.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/pidbox.py",
+   "target": "celery/worker/control.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/strategy.py",
+   "target": "celery/app/trace.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/worker/worker.py",
+   "target": "celery/concurrency/__init__.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/beat.py",
+   "target": "celery/platforms.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "path",
+   "source": "celery/beat.py",
+   "target": "celery/signals.py",
+   "relation": "IMPORTS"
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/time.py::remaining",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/control.py::Control.__init__",
+   "target": "celery/worker/pidbox.py::gPidbox.start",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/security/serialization.py::register_auth",
+   "target": "celery/security/serialization.py::SecureSerializer.serialize",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/time.py::maybe_make_aware",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/result.py::AsyncResult.iterdeps",
+   "target": "celery/result.py::AsyncResult.children",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py::create_pidlock",
+   "target": "celery/platforms.py::Pidfile.release",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery.start",
+   "target": "celery/app/base.py::Celery.conf",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery.start",
+   "target": "celery/app/utils.py::Settings.broker_url",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/_state.py",
+   "target": "celery/utils/threads.py::_LocalStack.push",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task._get_request",
+   "target": "celery/utils/threads.py::_LocalStack.top",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::Signature",
+   "target": "celery/utils/abstract.py::_AbstractClass.register",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/mocks.py::ContextMock",
+   "target": "celery/contrib/testing/mocks.py::_ContextMock.__enter__",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task",
+   "target": "celery/utils/abstract.py::_AbstractClass.register",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::_start_worker_thread",
+   "target": "celery/app/base.py::Celery.tasks",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::crontab.is_due",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.setup_logging",
+   "target": "celery/app/base.py::Celery.log",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::solar.remaining_estimate",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.connection_for_read",
+   "target": "celery/app/utils.py::Settings.broker_read_url",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::GraphFormatter.terminal_node",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.current_task",
+   "target": "celery/utils/threads.py::_LocalStack.top",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/state.py::State._create_dispatcher",
+   "target": "celery/events/state.py::Worker.id",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoWorkerFixup.__init__",
+   "target": "celery/app/base.py::Celery.conf",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.timezone",
+   "target": "celery/utils/time.py::_Zone.local",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::crontab.is_due",
+   "target": "celery/app/base.py::Celery.conf",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/task.py::Task.apply",
+   "target": "celery/utils/threads.py::_LocalStack.top",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.connection",
+   "target": "celery/app/utils.py::Settings.broker_write_url",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.timezone",
+   "target": "celery/app/utils.py::Settings.timezone",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.init_loader",
+   "target": "celery/app/base.py::Celery.loader",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.startup_info",
+   "target": "celery/app/base.py::Celery.loader",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/mocks.py::ContextMock",
+   "target": "celery/contrib/testing/mocks.py::_ContextMock.__exit__",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::BaseSchedule.utc_enabled",
+   "target": "celery/app/base.py::Celery.conf",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/_state.py::get_current_worker_task",
+   "target": "celery/utils/threads.py::_LocalStack.stack",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/eventlet.py::TaskPool.on_start",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py",
+   "target": "celery/platforms.py::Signals.reset",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/log.py::Logging.already_setup",
+   "target": "celery/local.py::class_property.setter",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/testing/worker.py::setup_app_for_worker",
+   "target": "celery/app/base.py::Celery.log",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::BaseSchedule.tz",
+   "target": "celery/app/base.py::Celery.timezone",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/security/serialization.py::register_auth",
+   "target": "celery/security/serialization.py::SecureSerializer.deserialize",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery._validate_configuration",
+   "target": "celery/app/utils.py::Settings.broker_url",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery._get_backend",
+   "target": "celery/app/utils.py::Settings.result_backend",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "binding",
+   "source": "celery/local.py::Proxy.__module__",
+   "target": "celery/local.py::Proxy",
+   "relation": "REFERENCES",
+   "in_supported_scope": true,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "binding",
+   "source": "celery/local.py::Proxy.__doc__",
+   "target": "celery/local.py::Proxy",
+   "relation": "REFERENCES",
+   "in_supported_scope": true,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/strategy.py::default",
+   "target": "celery/utils/time.py::_Zone.to_system",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/utils/threads.py::_LocalStack.pop",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/pytest.py::celery_worker",
+   "target": "celery/app/base.py::Celery.loader",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "binding",
+   "source": "celery/local.py::Proxy.__qualname__",
+   "target": "celery/local.py::Proxy.__name__",
+   "relation": "REFERENCES",
+   "in_supported_scope": true,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/graph.py::DependencyGraph.to_dot",
+   "target": "celery/utils/graph.py::GraphFormatter.node",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/concurrency/prefork.py::TaskPool.register_with_event_loop",
+   "target": "celery/concurrency/asynpool.py::AsynPool.register_with_event_loop",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery._bind_queues",
+   "target": "celery/app/base.py::Celery.amqp",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.__init__",
+   "target": "celery/app/base.py::Celery.either",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py",
+   "target": "celery/platforms.py::Signals.signum",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/_state.py::get_current_task",
+   "target": "celery/utils/threads.py::_LocalStack.top",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/utils/time.py::to_utc",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/events/dumper.py::evdump",
+   "target": "celery/events/dumper.py::Dumper.on_event",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.either",
+   "target": "celery/utils/collections.py::ConfigurationView.get",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.connection_for_write",
+   "target": "celery/app/utils.py::Settings.broker_write_url",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/canvas.py::_chain.apply",
+   "target": "celery/result.py::EagerResult.state",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/result.py::AsyncResult.state",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.uses_utc_timezone",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/amqp.py::AMQP._create_task_sender",
+   "target": "celery/app/amqp.py::AMQP.default_queue",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/schedules.py::BaseSchedule.now",
+   "target": "celery/app/base.py::Celery.now",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/base.py::Celery.timezone",
+   "target": "celery/utils/time.py::_Zone.utc",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/_state.py",
+   "target": "celery/utils/threads.py::_LocalStack.pop",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/control.py::_iter_schedule_requests",
+   "target": "celery/worker/request.py::Request.eta",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/control.py::Control.__init__",
+   "target": "celery/worker/pidbox.py::Pidbox.shutdown",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/control.py::Control.__init__",
+   "target": "celery/worker/pidbox.py::Pidbox.stop",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py",
+   "target": "celery/platforms.py::Signals.ignore",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "binding",
+   "source": "celery/concurrency/asynpool.py::ResultHandler._recv_message",
+   "target": "celery/concurrency/asynpool.py::unpack_from",
+   "relation": "REFERENCES",
+   "in_supported_scope": true,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/apps/beat.py::Beat.__init__",
+   "target": "celery/app/base.py::Celery.log",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/contrib/pytest.py::celery_session_worker",
+   "target": "celery/app/base.py::Celery.loader",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/consumer/delayed_delivery.py::DelayedDelivery._validate_configuration",
+   "target": "celery/app/base.py::Celery.conf",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/heartbeat.py::Heart.__init__",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/platforms.py",
+   "target": "celery/platforms.py::Signals.__setitem__",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/worker/request.py",
+   "target": "celery/utils/time.py::_Zone.tz_or_local",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/amqp.py::AMQP._create_task_sender",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py::build_tracer",
+   "target": "celery/utils/threads.py::_LocalStack.push",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/fixups/django.py::DjangoFixup.install",
+   "target": "celery/app/base.py::Celery.loader",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FN",
+   "basis": "type_declared",
+   "source": "celery/app/trace.py",
+   "target": "celery/utils/dispatch/signal.py::Signal.send",
+   "relation": "REFERENCES",
+   "in_supported_scope": false,
+   "symbol_not_indexed": false
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "import_map",
+   "source": "celery/backends/base.py::Backend",
+   "target": "celery/exceptions.py::TimeoutError",
+   "relation": "REFERENCES"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "import_map",
+   "source": "celery/contrib/testing/manager.py::ManagerMixin.join",
+   "target": "celery/exceptions.py::TimeoutError",
+   "relation": "REFERENCES"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/canvas.py::Signature.election",
+   "target": "celery/canvas.py::Signature.type",
+   "relation": "REFERENCES"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "import_map",
+   "source": "celery/result.py::AsyncResult",
+   "target": "celery/exceptions.py::TimeoutError",
+   "relation": "REFERENCES"
+  },
+  {
+   "kind": "FP_resolved",
+   "tier": "same_module",
+   "source": "celery/canvas.py::Signature.apply",
+   "target": "celery/canvas.py::Signature.type",
+   "relation": "REFERENCES"
+  }
+ ]
+}

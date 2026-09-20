@@ -1417,6 +1417,6 @@
  "manifest_sha256": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e",
  "ground_truth": {
   "file": "benchmarks/ground_truth/bulletproof-react.yaml",
-  "sha256": "28ec0e8c1312edb6db8c728c3d5d5448112636445e1b07607e314ad47815274a"
+  "sha256": "24bdcee84b121c5059db9829adbcd77db9dbd50caea6acc8c44e2eea9df01259"
  }
 }

@@ -128,6 +128,6 @@
  "manifest_sha256": "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e",
  "ground_truth": {
   "file": "benchmarks/ground_truth/redux-toolkit.yaml",
-  "sha256": "7cfd226938a5ca53f5ebbade71a07f6847b78ea17de010a390b024ec9f0b7a4d"
+  "sha256": "fea5b56dfc5705677cc0f6d7b3a27f636c2b9ba080aa2796eb0b7cdd34246844"
  }
 }

@@ -1,0 +1,169 @@
+{
+ "ground_truth": "benchmarks/ground_truth/sphinx.yaml",
+ "results": [
+  {
+   "id": "sphinx-q1",
+   "stratum": "Q1",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines",
+     "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+     "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object"
+    ],
+    "got": [
+     "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines",
+     "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+     "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines",
+     "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+     "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object"
+    ],
+    "got": [
+     "sphinx/ext/autodoc/_dynamic/_docstrings.py::_get_docstring_lines",
+     "sphinx/ext/autodoc/_dynamic/_loader.py::_make_props_from_imported_object",
+     "sphinx/ext/autodoc/_dynamic/_member_finder.py::_best_object_type_for_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::AttributeDocumenter.can_document_member",
+     "sphinx/ext/autodoc/_legacy_class_based/_documenters.py::NonDataDescriptorMixin.import_object"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "sphinx-q2",
+   "stratum": "Q2",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "sphinx/addnodes.py::desc_optional",
+     "sphinx/addnodes.py::desc_parameter",
+     "sphinx/addnodes.py::desc_parameterlist",
+     "sphinx/addnodes.py::desc_sig_name",
+     "sphinx/addnodes.py::desc_sig_operator",
+     "sphinx/addnodes.py::desc_sig_punctuation",
+     "sphinx/addnodes.py::desc_sig_space",
+     "sphinx/domains/python/_annotations.py::_parse_annotation"
+    ],
+    "got": [
+     "sphinx/addnodes.py::desc_optional",
+     "sphinx/addnodes.py::desc_parameter",
+     "sphinx/addnodes.py::desc_parameterlist",
+     "sphinx/addnodes.py::desc_sig_name",
+     "sphinx/addnodes.py::desc_sig_operator",
+     "sphinx/addnodes.py::desc_sig_punctuation",
+     "sphinx/addnodes.py::desc_sig_space",
+     "sphinx/domains/python/_annotations.py::_parse_annotation"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "sphinx/addnodes.py::desc_optional",
+     "sphinx/addnodes.py::desc_parameter",
+     "sphinx/addnodes.py::desc_parameterlist",
+     "sphinx/addnodes.py::desc_sig_name",
+     "sphinx/addnodes.py::desc_sig_operator",
+     "sphinx/addnodes.py::desc_sig_punctuation",
+     "sphinx/addnodes.py::desc_sig_space",
+     "sphinx/domains/python/_annotations.py::_parse_annotation"
+    ],
+    "got": [
+     "sphinx/addnodes.py::desc_optional",
+     "sphinx/addnodes.py::desc_parameter",
+     "sphinx/addnodes.py::desc_parameterlist",
+     "sphinx/addnodes.py::desc_sig_name",
+     "sphinx/addnodes.py::desc_sig_operator",
+     "sphinx/addnodes.py::desc_sig_punctuation",
+     "sphinx/addnodes.py::desc_sig_space",
+     "sphinx/domains/python/_annotations.py::_parse_annotation"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "sphinx-q3",
+   "stratum": "Q3",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list",
+     "sphinx/domains/c/_ast.py::ASTBracedInitList"
+    ],
+    "got": [
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list",
+     "sphinx/domains/c/_ast.py::ASTBracedInitList"
+    ],
+    "missing": null,
+    "extra": null
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list",
+     "sphinx/domains/c/_ast.py::ASTBracedInitList"
+    ],
+    "got": [
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_type_with_init",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_braced_init_list",
+     "sphinx/domains/c/_ast.py::ASTBracedInitList"
+    ],
+    "missing": null,
+    "extra": null
+   }
+  },
+  {
+   "id": "sphinx-small",
+   "stratum": "small",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "sphinx/domains/c/_ast.py::ASTParenExprList",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer_list"
+    ],
+    "got": [
+     "sphinx/domains/c/_ast.py::ASTParenExprList",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer_list"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "sphinx/domains/c/_ast.py::ASTParenExprList",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer_list"
+    ],
+    "got": [
+     "sphinx/domains/c/_ast.py::ASTParenExprList",
+     "sphinx/domains/c/_parser.py::DefinitionParser._parse_initializer_list"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  }
+ ]
+}

@@ -1,0 +1,181 @@
+{
+ "ground_truth": "benchmarks/ground_truth/celery.yaml",
+ "results": [
+  {
+   "id": "celery-q1",
+   "stratum": "Q1",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "celery/canvas.py::xmap.__repr__",
+     "celery/canvas.py::xstarmap.__repr__",
+     "celery/concurrency/base.py::BasePool.apply_async",
+     "celery/contrib/testing/manager.py::ManagerMixin.join",
+     "celery/utils/saferepr.py::_format_chars",
+     "celery/utils/saferepr.py::_saferepr",
+     "celery/worker/consumer/consumer.py::dump_body"
+    ],
+    "got": [
+     "celery/canvas.py::xmap.__repr__",
+     "celery/canvas.py::xstarmap.__repr__",
+     "celery/concurrency/base.py::BasePool.apply_async",
+     "celery/contrib/testing/manager.py::ManagerMixin.join",
+     "celery/utils/saferepr.py::_format_chars",
+     "celery/utils/saferepr.py::_saferepr",
+     "celery/worker/consumer/consumer.py::dump_body"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "celery/canvas.py::xmap.__repr__",
+     "celery/canvas.py::xstarmap.__repr__",
+     "celery/concurrency/base.py::BasePool.apply_async",
+     "celery/contrib/testing/manager.py::ManagerMixin.join",
+     "celery/utils/saferepr.py::_format_chars",
+     "celery/utils/saferepr.py::_saferepr",
+     "celery/worker/consumer/consumer.py::dump_body"
+    ],
+    "got": [
+     "celery/canvas.py::xmap.__repr__",
+     "celery/canvas.py::xstarmap.__repr__",
+     "celery/concurrency/base.py::BasePool.apply_async",
+     "celery/contrib/testing/manager.py::ManagerMixin.join",
+     "celery/utils/saferepr.py::_format_chars",
+     "celery/utils/saferepr.py::_saferepr",
+     "celery/worker/consumer/consumer.py::dump_body"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "celery-q2",
+   "stratum": "Q2",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "celery/_state.py::_register_app",
+     "celery/app/base.py::Celery.__autoset",
+     "celery/app/base.py::Celery._get_default_loader",
+     "celery/app/base.py::Celery.on_init",
+     "celery/app/base.py::Celery.set_current",
+     "celery/app/base.py::PendingConfiguration",
+     "celery/app/base.py::app_has_custom",
+     "celery/app/utils.py::Settings",
+     "celery/utils/dispatch/signal.py::Signal"
+    ],
+    "got": [
+     "celery/_state.py::_register_app",
+     "celery/app/base.py::Celery.__autoset",
+     "celery/app/base.py::Celery._get_default_loader",
+     "celery/app/base.py::Celery.on_init",
+     "celery/app/base.py::Celery.set_current",
+     "celery/app/base.py::PendingConfiguration",
+     "celery/app/base.py::app_has_custom",
+     "celery/app/utils.py::Settings",
+     "celery/utils/dispatch/signal.py::Signal"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "celery/_state.py::_register_app",
+     "celery/app/base.py::Celery.__autoset",
+     "celery/app/base.py::Celery._get_default_loader",
+     "celery/app/base.py::Celery.on_init",
+     "celery/app/base.py::Celery.set_current",
+     "celery/app/base.py::PendingConfiguration",
+     "celery/app/base.py::app_has_custom",
+     "celery/app/utils.py::Settings",
+     "celery/utils/dispatch/signal.py::Signal"
+    ],
+    "got": [
+     "celery/_state.py::_register_app",
+     "celery/app/base.py::Celery.__autoset",
+     "celery/app/base.py::Celery._get_default_loader",
+     "celery/app/base.py::Celery.on_init",
+     "celery/app/base.py::Celery.set_current",
+     "celery/app/base.py::PendingConfiguration",
+     "celery/app/base.py::app_has_custom",
+     "celery/app/utils.py::Settings",
+     "celery/utils/dispatch/signal.py::Signal"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "celery-q3",
+   "stratum": "Q3",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "celery/contrib/testing/app.py::setup_default_app",
+     "celery/_state.py::get_current_app",
+     "celery/_state.py::_get_current_app",
+     "celery/app/base.py::Celery"
+    ],
+    "got": [
+     "celery/contrib/testing/app.py::setup_default_app",
+     "celery/_state.py::get_current_app",
+     "celery/_state.py::_get_current_app",
+     "celery/app/base.py::Celery"
+    ],
+    "missing": null,
+    "extra": null
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "celery/contrib/testing/app.py::setup_default_app",
+     "celery/_state.py::get_current_app",
+     "celery/_state.py::_get_current_app",
+     "celery/app/base.py::Celery"
+    ],
+    "got": [
+     "celery/contrib/testing/app.py::setup_default_app",
+     "celery/_state.py::get_current_app",
+     "celery/_state.py::_get_current_app",
+     "celery/app/base.py::Celery"
+    ],
+    "missing": null,
+    "extra": null
+   }
+  },
+  {
+   "id": "celery-small",
+   "stratum": "small",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "celery/utils/collections.py::ConfigurationView.get",
+     "celery/utils/functional.py::first"
+    ],
+    "got": [
+     "celery/utils/collections.py::ConfigurationView.get",
+     "celery/utils/functional.py::first"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "celery/utils/collections.py::ConfigurationView.get",
+     "celery/utils/functional.py::first"
+    ],
+    "got": [
+     "celery/utils/collections.py::ConfigurationView.get",
+     "celery/utils/functional.py::first"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  }
+ ]
+}

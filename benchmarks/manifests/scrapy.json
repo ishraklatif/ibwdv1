@@ -200,6 +200,6 @@
  "manifest_sha256": "c1448decc3b29ffdf958a342e4ebc328a66a08fb369a20c4841b7c4b030645f5",
  "ground_truth": {
   "file": "benchmarks/ground_truth/scrapy.yaml",
-  "sha256": "8ddf8fed37a22d262bb97c1d9b3903a4bda4cbd4855b96650fe080fbd4d138eb"
+  "sha256": "a0262ff1e90ba2b2cfae7d3da12aae8bf1995b5c6443ee83fd5f0f1bccbc8756"
  }
 }

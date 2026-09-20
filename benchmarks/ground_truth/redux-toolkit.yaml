@@ -16,8 +16,13 @@ qualification_report:
   candidates:
     Q1: 9
     Q2: 24
-    Q3: 43
+    Q3: 32
     small: 12
+  dropped_for_unverifiable_source_evidence:
+    Q1: 0
+    Q2: 0
+    Q3: 1
+    small: 0
   candidate_order_first_five:
     Q1:
       - "packages/toolkit/src/entities/utils.ts::selectIdValue"
@@ -32,9 +37,9 @@ qualification_report:
       - "packages/toolkit/src/entities/create_adapter.ts::createEntityAdapter"
       - "packages/toolkit/src/query/fetchBaseQuery.ts::fetchBaseQuery"
     Q3:
-      - "packages/toolkit/src/listenerMiddleware/task.ts::createDelay -> packages/toolkit/src/listenerMiddleware/task.ts::createPause -> packages/toolkit/src/listenerMiddleware/task.ts::validateActive -> packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
       - "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run -> packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints -> packages/rtk-query-codegen-openapi/src/generate.ts::generateApi -> packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
       - "packages/toolkit/src/matchers.ts::isRejected -> packages/toolkit/src/matchers.ts::isAnyOf -> packages/toolkit/src/matchers.ts::matches -> packages/toolkit/src/tsHelpers.ts::hasMatchFunction"
+      - "packages/toolkit/src/getDefaultMiddleware.ts::buildGetDefaultMiddleware -> packages/toolkit/src/serializableStateInvariantMiddleware.ts::createSerializableStateInvariantMiddleware -> packages/toolkit/src/serializableStateInvariantMiddleware.ts::findNonSerializableValue -> packages/toolkit/src/serializableStateInvariantMiddleware.ts::isNestedFrozen"
     small:
       - "packages/toolkit/src/matchers.ts::isAsyncThunkAction"
       - "packages/toolkit/src/query/endpointDefinitions.ts::isAnyQueryDefinition"
@@ -141,41 +146,41 @@ tasks:
     stratum: "Q3"
     relation: "CALLS"
     source:
-      id: "packages/toolkit/src/listenerMiddleware/task.ts::createDelay"
-      file: "packages/toolkit/src/listenerMiddleware/task.ts"
-      line: 95
-      lines: 6
+      id: "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run"
+      file: "packages/rtk-query-codegen-openapi/src/bin/cli.ts"
+      line: 67
+      lines: 16
     target:
-      id: "packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
-      file: "packages/toolkit/src/listenerMiddleware/exceptions.ts"
-      line: 14
+      id: "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+      file: "packages/rtk-query-codegen-openapi/src/generate.ts"
+      line: 216
       lines: 7
-    question: "Trace the shortest call path from `createDelay` (packages/toolkit/src/listenerMiddleware/task.ts) to `TaskAbortError` (packages/toolkit/src/listenerMiddleware/exceptions.ts). Give every function on the path."
+    question: "Trace the shortest call path from `run` (packages/rtk-query-codegen-openapi/src/bin/cli.ts) to `getOverrides` (packages/rtk-query-codegen-openapi/src/generate.ts). Give every function on the path."
     expected:
       path:
-        - "packages/toolkit/src/listenerMiddleware/task.ts::createDelay"
-        - "packages/toolkit/src/listenerMiddleware/task.ts::createPause"
-        - "packages/toolkit/src/listenerMiddleware/task.ts::validateActive"
-        - "packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
+        - "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run"
+        - "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints"
+        - "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi"
+        - "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
       hops: 3
       any_valid_path_of_this_length: false
       note: "the shortest path is unique in the oracle graph"
     evidence:
-      - source: "packages/toolkit/src/listenerMiddleware/task.ts::createDelay"
-        target: "packages/toolkit/src/listenerMiddleware/task.ts::createPause"
-        file: "packages/toolkit/src/listenerMiddleware/task.ts"
-        line: 96
-        text: "const pause = createPause<void>(signal)"
-      - source: "packages/toolkit/src/listenerMiddleware/task.ts::createPause"
-        target: "packages/toolkit/src/listenerMiddleware/task.ts::validateActive"
-        file: "packages/toolkit/src/listenerMiddleware/task.ts"
-        line: 82
-        text: "validateActive(signal)"
-      - source: "packages/toolkit/src/listenerMiddleware/task.ts::validateActive"
-        target: "packages/toolkit/src/listenerMiddleware/exceptions.ts::TaskAbortError"
-        file: "packages/toolkit/src/listenerMiddleware/task.ts"
-        line: 13
-        text: "throw new TaskAbortError(signal.reason)"
+      - source: "packages/rtk-query-codegen-openapi/src/bin/cli.ts::run"
+        target: "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints"
+        file: "packages/rtk-query-codegen-openapi/src/bin/cli.ts"
+        line: 75
+        text: "await generateEndpoints(config);"
+      - source: "packages/rtk-query-codegen-openapi/src/index.ts::generateEndpoints"
+        target: "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi"
+        file: "packages/rtk-query-codegen-openapi/src/index.ts"
+        line: 27
+        text: "return generateApi(schemaAbsPath, options);"
+      - source: "packages/rtk-query-codegen-openapi/src/generate.ts::generateApi"
+        target: "packages/rtk-query-codegen-openapi/src/generate.ts::getOverrides"
+        file: "packages/rtk-query-codegen-openapi/src/generate.ts"
+        line: 321
+        text: "overrides: getOverrides(operationDefinition, endpointOverrides, operationIdTransformer),"
     grading: "the exact three-hop path"
   - id: "redux-toolkit-small"
     stratum: "small"

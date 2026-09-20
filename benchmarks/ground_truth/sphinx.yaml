@@ -11,13 +11,18 @@ qualification_report:
   repo_sha: "b04a2101295ac3fb725b16111eda0284b6da4cca"
   oracle: "scip-python 0.6.6 (Pyright) + ast roles/owners"
   seed: "sprint3-gt-v1"
-  production_files: 239
-  test_like_files_excluded: 4
+  production_files: 243
+  test_like_files_excluded: 0
   candidates:
-    Q1: 41
+    Q1: 42
     Q2: 77
-    Q3: 723
+    Q3: 718
     small: 109
+  dropped_for_unverifiable_source_evidence:
+    Q1: 0
+    Q2: 0
+    Q3: 1
+    small: 0
   candidate_order_first_five:
     Q1:
       - "sphinx/util/inspect.py::isattributedescriptor"

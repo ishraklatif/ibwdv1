@@ -1,186 +1,1426 @@
 {
- "generated_at": "2026-09-20T06:19:43+00:00",
- "purpose": "Full-repo semantic comparison of IBWD CALLS edges against scip-python (Pyright) \u2014 Python repositories, pair level",
- "oracle": "scip-python 0.6.6 + ast owner ranges (benchmarks/tools/scip_python_to_graph.py)",
- "granularity": "caller symbol -> target symbol per relation; IBWD stores no callsite positions",
- "status_of_data": "DEVELOPMENT data: these repositories were inspected and the resolver was changed in response. Not an untouched generalization test.",
- "denominator_policy": "broader = all oracle edges minus individually evidenced oracle errors; supported = broader minus the declared type/data-flow category and adjudicated unsupported cases. Nothing is removed for being hard. precision_raw is unadjudicated.",
- "adjudications_file": "benchmarks/adjudications/sprint_3_adjudications.json",
+ "purpose": "Sprint 3 semantic comparison: IBWD export vs oracle graph, per relation, resolved edges and candidate hints separately.",
+ "gate_definition": "benchmarks/SPRINT3_gate_definition.md (v2)",
+ "adjudications_file": "benchmarks/adjudications/sprint_3_adjudications_v2.json",
+ "adjudications_sha256": "91d49a021a2341a8ab89ab3b1317becdf65c2ca69b8a5f42ed5f5b49f4364977",
  "repos": {
   "sphinx": {
    "provenance": {
+    "full_ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+    "dirty": false,
+    "edge_build_version": 27,
     "repo_sha": "b04a2101295ac3fb725b16111eda0284b6da4cca",
-    "ibwd_commit": "9854df3aa9aa6a3f09fd5cf62954aadcfc5a1611",
-    "ibwd_dirty": false,
-    "edge_build_version": 13,
+    "manifest_hash": "edacfb3c930c95f59039ffbf93391eb49adfff3c1d9f421edca92d3b351e0e34",
+    "manifest_sha256_field": "eae7f93611b9f84cf872e2d874460853985e64c2869ff63c014c201e7e501353",
+    "oracle_version": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+    "oracle_text_encoding": "UTF16",
+    "adapter": "benchmarks/tools/scip_python_to_graph.py",
+    "adapter_commit": "d35a7808e36953fdb8155e1a5a72a34c99e4b21c",
+    "adapter_dirty": false,
+    "ibwd_export_hash": "ad653eb9fe167ef6df883c0b1c60382d2925e258d903fbabbbdc9b888b3f1dc2",
+    "oracle_export_hash": "52edbc16759ff499bd2f43bab81b69cb807f46be29f968ad377fa01f7076efa2",
+    "relation_report_hash": "dc213f70e5d632419cb1b8c832f34d35961a538fcb60b45b89386687d72fa4d0",
     "scope": "source files only; test files, vendored and generated files are not indexed"
    },
-   "role": "headline_candidate",
-   "expected_raw": 5423,
-   "tp": 4488,
-   "fp": 96,
-   "fn": 935,
-   "actual": 4584,
-   "precision_raw": 0.9791,
-   "missing_by_category": {
-    "variable receiver (type-resolved local/param)": 551,
-    "attribute-chain receiver (type-resolved)": 349,
-    "call-result receiver (type-resolved)": 31,
-    "self/cls/this.method": 3,
-    "bare call": 1
+   "adjudication_counts": {
+    "ibwd_defect": 0,
+    "oracle_error": 9,
+    "legitimate_out_of_scope": 2,
+    "unresolved_disagreement": 0
    },
-   "declared_unsupported_type_resolved": 931,
-   "supported_category_misses": 4,
-   "supported_category_miss_verdicts": {
-    "oracle_error": 1,
-    "UNADJUDICATED": 1,
-    "unsupported_type_resolved": 2
-   },
-   "oracle_errors_removed": 1,
-   "broader_denominator": 5422,
-   "broader_recall": 0.8277,
-   "unsupported_adjudicated": 2,
-   "supported_denominator": 4489,
-   "supported_recall": 0.9998,
-   "unadjudicated_supported_misses": 1,
-   "tier_precision": {
-    "import_map": {
-     "predictions": 1643,
-     "precision": 0.9988
+   "relations": {
+    "CALLS": {
+     "resolved": {
+      "ibwd_edges": 4115,
+      "TP": 4111,
+      "FP": 4,
+      "FN": 1315,
+      "raw_precision": 0.999,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 3,
+       "legitimate_out_of_scope": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 1643,
+        "TP": 1643,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "inherited": {
+        "ibwd_edges": 513,
+        "TP": 513,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 1959,
+        "TP": 1955,
+        "FP": 4,
+        "raw_precision": 0.998
+       }
+      },
+      "supported_scope_TP": 4100,
+      "supported_scope_FN": 1,
+      "supported_scope_recall": 0.9998,
+      "broader_semantic_coverage": 0.7576,
+      "broader_denominator": 5426,
+      "supported_FN_verdicts": {
+       "legitimate_out_of_scope": 1
+      },
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 463,
+      "TP": 381,
+      "FP": 82,
+      "FN": 5045,
+      "raw_precision": 0.8229,
+      "adjudicated_precision": 0.8229,
+      "fp_verdicts": {
+       "UNADJUDICATED": 82
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 82,
+      "by_tier": {
+       "inherited_uncertain": {
+        "ibwd_edges": 1,
+        "TP": 0,
+        "FP": 1,
+        "raw_precision": 0.0
+       },
+       "suffix": {
+        "ibwd_edges": 72,
+        "TP": 55,
+        "FP": 17,
+        "raw_precision": 0.7639
+       },
+       "unique_name": {
+        "ibwd_edges": 390,
+        "TP": 326,
+        "FP": 64,
+        "raw_precision": 0.8359
+       }
+      },
+      "recall_resolved_plus_candidates": 0.8279
+     },
+     "oracle_edges": 5426,
+     "oracle_supported_scope": 4101,
+     "oracle_type_declared_or_possible": 1325
     },
-    "inherited": {
-     "predictions": 514,
-     "precision": 0.9981
+    "IMPORTS": {
+     "resolved": {
+      "ibwd_edges": 1505,
+      "TP": 1501,
+      "FP": 4,
+      "FN": 0,
+      "raw_precision": 0.9973,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 4
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "path": {
+        "ibwd_edges": 1505,
+        "TP": 1501,
+        "FP": 4,
+        "raw_precision": 0.9973
+       }
+      },
+      "supported_scope_TP": 1501,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 1501,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 1501,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 1501,
+     "oracle_supported_scope": 1501,
+     "oracle_type_declared_or_possible": 0
     },
-    "same_module": {
-     "predictions": 1961,
-     "precision": 0.9959
+    "INHERITS": {
+     "resolved": {
+      "ibwd_edges": 500,
+      "TP": 500,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 196,
+        "TP": 196,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 304,
+        "TP": 304,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 500,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 500,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 500,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 500,
+     "oracle_supported_scope": 500,
+     "oracle_type_declared_or_possible": 0
     },
-    "suffix": {
-     "predictions": 72,
-     "precision": 0.7639
-    },
-    "unique_name": {
-     "predictions": 394,
-     "precision": 0.8274
+    "REFERENCES": {
+     "resolved": {
+      "ibwd_edges": 1479,
+      "TP": 1478,
+      "FP": 1,
+      "FN": 191,
+      "raw_precision": 0.9993,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 408,
+        "TP": 408,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "inherited": {
+        "ibwd_edges": 232,
+        "TP": 232,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 839,
+        "TP": 838,
+        "FP": 1,
+        "raw_precision": 0.9988
+       }
+      },
+      "supported_scope_TP": 1478,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 0.8856,
+      "broader_denominator": 1669,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 1669,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 0.8856
+     },
+     "oracle_edges": 1669,
+     "oracle_supported_scope": 1478,
+     "oracle_type_declared_or_possible": 191
     }
+   },
+   "thresholds": {
+    "declared": {
+     "overall_precision_min": 0.95,
+     "import_map_min": 0.99,
+     "same_module_min": 0.99,
+     "inherited_min": 0.99,
+     "supported_recall_min": 0.9
+    },
+    "raw": {
+     "overall_precision": 0.999,
+     "import_map": 1.0,
+     "same_module": 0.998,
+     "inherited": 1.0,
+     "supported_recall": 0.9998
+    },
+    "adjudicated": {
+     "overall_precision": 1.0,
+     "import_map": 1.0,
+     "same_module": 1.0,
+     "inherited": 1.0,
+     "supported_recall": 0.9998
+    },
+    "passes": {
+     "raw": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     },
+     "adjudicated": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     }
+    }
+   },
+   "disagreement_counts": {
+    "resolved_false_positives": 9,
+    "supported_scope_false_negatives": 1
    }
   },
   "scrapy": {
    "provenance": {
+    "full_ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+    "dirty": false,
+    "edge_build_version": 27,
     "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
-    "ibwd_commit": "9854df3aa9aa6a3f09fd5cf62954aadcfc5a1611",
-    "ibwd_dirty": false,
-    "edge_build_version": 13,
+    "manifest_hash": "68c03e801e4ac75b1d4ed4ab15b75cc02b8f9a06d187ac9aadf7cb068364195f",
+    "manifest_sha256_field": "c1448decc3b29ffdf958a342e4ebc328a66a08fb369a20c4841b7c4b030645f5",
+    "oracle_version": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+    "oracle_text_encoding": "UTF8",
+    "adapter": "benchmarks/tools/scip_python_to_graph.py",
+    "adapter_commit": "d35a7808e36953fdb8155e1a5a72a34c99e4b21c",
+    "adapter_dirty": false,
+    "ibwd_export_hash": "155a881dde03b052b3770506b5b285ad3495fadd5c05821471243e3c32ef00dc",
+    "oracle_export_hash": "4f4a05d6b8f22cf3b044da654dccfe75078c3adadf075948668a57ad2546b51c",
+    "relation_report_hash": "594964f06ecac468f9ceeb7cb5fb9c84f7a1b35989956aa3e90dda2ccd8380e2",
     "scope": "source files only; test files, vendored and generated files are not indexed"
    },
-   "role": "headline_candidate",
-   "expected_raw": 2188,
-   "tp": 1943,
-   "fp": 76,
-   "fn": 245,
-   "actual": 2019,
-   "precision_raw": 0.9624,
-   "missing_by_category": {
-    "attribute-chain receiver (type-resolved)": 129,
-    "variable receiver (type-resolved local/param)": 112,
-    "call-result receiver (type-resolved)": 4
+   "adjudication_counts": {
+    "ibwd_defect": 0,
+    "oracle_error": 6,
+    "legitimate_out_of_scope": 0,
+    "unresolved_disagreement": 0
    },
-   "declared_unsupported_type_resolved": 245,
-   "supported_category_misses": 0,
-   "supported_category_miss_verdicts": {},
-   "oracle_errors_removed": 0,
-   "broader_denominator": 2188,
-   "broader_recall": 0.888,
-   "unsupported_adjudicated": 0,
-   "supported_denominator": 1943,
-   "supported_recall": 1.0,
-   "unadjudicated_supported_misses": 0,
-   "tier_precision": {
-    "fuzzy": {
-     "predictions": 3,
-     "precision": 0.0
+   "relations": {
+    "CALLS": {
+     "resolved": {
+      "ibwd_edges": 1651,
+      "TP": 1647,
+      "FP": 4,
+      "FN": 541,
+      "raw_precision": 0.9976,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 4
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 698,
+        "TP": 698,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "inherited": {
+        "ibwd_edges": 129,
+        "TP": 129,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 824,
+        "TP": 820,
+        "FP": 4,
+        "raw_precision": 0.9951
+       }
+      },
+      "supported_scope_TP": 1643,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 0.7527,
+      "broader_denominator": 2188,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 367,
+      "TP": 298,
+      "FP": 69,
+      "FN": 1890,
+      "raw_precision": 0.812,
+      "adjudicated_precision": 0.812,
+      "fp_verdicts": {
+       "UNADJUDICATED": 69
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 69,
+      "by_tier": {
+       "suffix": {
+        "ibwd_edges": 99,
+        "TP": 64,
+        "FP": 35,
+        "raw_precision": 0.6465
+       },
+       "unique_name": {
+        "ibwd_edges": 268,
+        "TP": 234,
+        "FP": 34,
+        "raw_precision": 0.8731
+       }
+      },
+      "recall_resolved_plus_candidates": 0.8889
+     },
+     "oracle_edges": 2188,
+     "oracle_supported_scope": 1643,
+     "oracle_type_declared_or_possible": 545
     },
-    "import_map": {
-     "predictions": 698,
-     "precision": 1.0
+    "IMPORTS": {
+     "resolved": {
+      "ibwd_edges": 902,
+      "TP": 901,
+      "FP": 1,
+      "FN": 0,
+      "raw_precision": 0.9989,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "path": {
+        "ibwd_edges": 902,
+        "TP": 901,
+        "FP": 1,
+        "raw_precision": 0.9989
+       }
+      },
+      "supported_scope_TP": 901,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 901,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 901,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 901,
+     "oracle_supported_scope": 901,
+     "oracle_type_declared_or_possible": 0
     },
-    "inherited": {
-     "predictions": 125,
-     "precision": 1.0
+    "INHERITS": {
+     "resolved": {
+      "ibwd_edges": 108,
+      "TP": 107,
+      "FP": 1,
+      "FN": 0,
+      "raw_precision": 0.9907,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 65,
+        "TP": 65,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 43,
+        "TP": 42,
+        "FP": 1,
+        "raw_precision": 0.9767
+       }
+      },
+      "supported_scope_TP": 107,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 107,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 107,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 107,
+     "oracle_supported_scope": 107,
+     "oracle_type_declared_or_possible": 0
     },
-    "same_module": {
-     "predictions": 824,
-     "precision": 0.9951
-    },
-    "suffix": {
-     "predictions": 99,
-     "precision": 0.6465
-    },
-    "unique_name": {
-     "predictions": 270,
-     "precision": 0.8741
+    "REFERENCES": {
+     "resolved": {
+      "ibwd_edges": 574,
+      "TP": 574,
+      "FP": 0,
+      "FN": 249,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 329,
+        "TP": 329,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "inherited": {
+        "ibwd_edges": 33,
+        "TP": 33,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 212,
+        "TP": 212,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 574,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 0.6974,
+      "broader_denominator": 823,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 823,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 0.6974
+     },
+     "oracle_edges": 823,
+     "oracle_supported_scope": 574,
+     "oracle_type_declared_or_possible": 249
     }
+   },
+   "thresholds": {
+    "declared": {
+     "overall_precision_min": 0.95,
+     "import_map_min": 0.99,
+     "same_module_min": 0.99,
+     "inherited_min": 0.99,
+     "supported_recall_min": 0.9
+    },
+    "raw": {
+     "overall_precision": 0.9976,
+     "import_map": 1.0,
+     "same_module": 0.9951,
+     "inherited": 1.0,
+     "supported_recall": 1.0
+    },
+    "adjudicated": {
+     "overall_precision": 1.0,
+     "import_map": 1.0,
+     "same_module": 1.0,
+     "inherited": 1.0,
+     "supported_recall": 1.0
+    },
+    "passes": {
+     "raw": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     },
+     "adjudicated": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     }
+    }
+   },
+   "disagreement_counts": {
+    "resolved_false_positives": 6,
+    "supported_scope_false_negatives": 0
    }
   },
   "celery": {
    "provenance": {
+    "full_ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+    "dirty": false,
+    "edge_build_version": 27,
     "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
-    "ibwd_commit": "9854df3aa9aa6a3f09fd5cf62954aadcfc5a1611",
-    "ibwd_dirty": false,
-    "edge_build_version": 13,
+    "manifest_hash": "85364e91dccc05d999240479de349a663874f96a02b8f6d11224f3c36b3829c0",
+    "manifest_sha256_field": "383eab52acd1a69f71ba2a15efd8bb8d8fde30bdfd8e710e0363d9adbea25407",
+    "oracle_version": "scip-python 0.6.6 (Pyright) + ast roles/owners",
+    "oracle_text_encoding": "UTF8",
+    "adapter": "benchmarks/tools/scip_python_to_graph.py",
+    "adapter_commit": "d35a7808e36953fdb8155e1a5a72a34c99e4b21c",
+    "adapter_dirty": false,
+    "ibwd_export_hash": "0442fd11b1661edbeea2063a32d697012f6f0bb92f2fe639a78128420fd56d53",
+    "oracle_export_hash": "f32c977b625f5d0c6eb2f9030c99810d7c88a6d659c0caf9a273432e279973d1",
+    "relation_report_hash": "36f3390956b2ed8fd3897b3631efaf8452085d5b284e0a841435a8537f03c57f",
     "scope": "source files only; test files, vendored and generated files are not indexed"
    },
-   "role": "negative_control",
-   "expected_raw": 2576,
-   "tp": 2421,
-   "fp": 496,
-   "fn": 155,
-   "actual": 2917,
-   "precision_raw": 0.83,
-   "missing_by_category": {
-    "variable receiver (type-resolved local/param)": 104,
-    "attribute-chain receiver (type-resolved)": 29,
-    "call-result receiver (type-resolved)": 16,
-    "bare call": 6
+   "adjudication_counts": {
+    "ibwd_defect": 0,
+    "oracle_error": 38,
+    "legitimate_out_of_scope": 2,
+    "unresolved_disagreement": 0
    },
-   "declared_unsupported_type_resolved": 149,
-   "supported_category_misses": 6,
-   "supported_category_miss_verdicts": {
-    "unsupported_dynamic_callable_attribute": 6
-   },
-   "oracle_errors_removed": 0,
-   "broader_denominator": 2576,
-   "broader_recall": 0.9398,
-   "unsupported_adjudicated": 6,
-   "supported_denominator": 2421,
-   "supported_recall": 1.0,
-   "unadjudicated_supported_misses": 0,
-   "tier_precision": {
-    "fuzzy": {
-     "predictions": 2,
-     "precision": 0.0
+   "relations": {
+    "CALLS": {
+     "resolved": {
+      "ibwd_edges": 2340,
+      "TP": 2332,
+      "FP": 8,
+      "FN": 239,
+      "raw_precision": 0.9966,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 7,
+       "legitimate_out_of_scope": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 551,
+        "TP": 548,
+        "FP": 3,
+        "raw_precision": 0.9946
+       },
+       "inherited": {
+        "ibwd_edges": 225,
+        "TP": 225,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 1564,
+        "TP": 1559,
+        "FP": 5,
+        "raw_precision": 0.9968
+       }
+      },
+      "supported_scope_TP": 2328,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 0.907,
+      "broader_denominator": 2571,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 552,
+      "TP": 90,
+      "FP": 462,
+      "FN": 2481,
+      "raw_precision": 0.163,
+      "adjudicated_precision": 0.163,
+      "fp_verdicts": {
+       "UNADJUDICATED": 462
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 462,
+      "by_tier": {
+       "suffix": {
+        "ibwd_edges": 110,
+        "TP": 29,
+        "FP": 81,
+        "raw_precision": 0.2636
+       },
+       "unique_name": {
+        "ibwd_edges": 442,
+        "TP": 61,
+        "FP": 381,
+        "raw_precision": 0.138
+       }
+      },
+      "recall_resolved_plus_candidates": 0.942
+     },
+     "oracle_edges": 2571,
+     "oracle_supported_scope": 2328,
+     "oracle_type_declared_or_possible": 243
     },
-    "import_map": {
-     "predictions": 560,
-     "precision": 0.9786
+    "IMPORTS": {
+     "resolved": {
+      "ibwd_edges": 669,
+      "TP": 646,
+      "FP": 23,
+      "FN": 0,
+      "raw_precision": 0.9656,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 23
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "path": {
+        "ibwd_edges": 669,
+        "TP": 646,
+        "FP": 23,
+        "raw_precision": 0.9656
+       }
+      },
+      "supported_scope_TP": 646,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 646,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 646,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 646,
+     "oracle_supported_scope": 646,
+     "oracle_type_declared_or_possible": 0
     },
-    "inherited": {
-     "predictions": 225,
-     "precision": 1.0
+    "INHERITS": {
+     "resolved": {
+      "ibwd_edges": 126,
+      "TP": 126,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 57,
+        "TP": 57,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 69,
+        "TP": 69,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 126,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 126,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 126,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 126,
+     "oracle_supported_scope": 126,
+     "oracle_type_declared_or_possible": 0
     },
-    "same_module": {
-     "predictions": 1570,
-     "precision": 0.9924
-    },
-    "suffix": {
-     "predictions": 110,
-     "precision": 0.2636
-    },
-    "unique_name": {
-     "predictions": 450,
-     "precision": 0.1356
+    "REFERENCES": {
+     "resolved": {
+      "ibwd_edges": 1000,
+      "TP": 995,
+      "FP": 5,
+      "FN": 79,
+      "raw_precision": 0.995,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "oracle_error": 5
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 250,
+        "TP": 247,
+        "FP": 3,
+        "raw_precision": 0.988
+       },
+       "inherited": {
+        "ibwd_edges": 22,
+        "TP": 22,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 728,
+        "TP": 726,
+        "FP": 2,
+        "raw_precision": 0.9973
+       }
+      },
+      "supported_scope_TP": 995,
+      "supported_scope_FN": 4,
+      "supported_scope_recall": 0.996,
+      "broader_semantic_coverage": 0.929,
+      "broader_denominator": 1071,
+      "supported_FN_verdicts": {
+       "legitimate_out_of_scope": 1,
+       "oracle_error": 3
+      },
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 1074,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 0.9264
+     },
+     "oracle_edges": 1074,
+     "oracle_supported_scope": 999,
+     "oracle_type_declared_or_possible": 75
     }
+   },
+   "thresholds": {
+    "declared": {
+     "overall_precision_min": 0.95,
+     "import_map_min": 0.99,
+     "same_module_min": 0.99,
+     "inherited_min": 0.99,
+     "supported_recall_min": 0.9
+    },
+    "raw": {
+     "overall_precision": 0.9966,
+     "import_map": 0.9946,
+     "same_module": 0.9968,
+     "inherited": 1.0,
+     "supported_recall": 1.0
+    },
+    "adjudicated": {
+     "overall_precision": 1.0,
+     "import_map": 1.0,
+     "same_module": 1.0,
+     "inherited": 1.0,
+     "supported_recall": 1.0
+    },
+    "passes": {
+     "raw": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     },
+     "adjudicated": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     }
+    }
+   },
+   "disagreement_counts": {
+    "resolved_false_positives": 36,
+    "supported_scope_false_negatives": 4
+   }
+  },
+  "redux-toolkit": {
+   "provenance": {
+    "full_ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+    "dirty": false,
+    "edge_build_version": 27,
+    "repo_sha": "c9dac937d77adc3bf04842a43955e81d0e7a46da",
+    "manifest_hash": "ee9bb0236e50c257932a82640120aa9ca99a7f56cd6c594de772d17dd45d6ab1",
+    "manifest_sha256_field": "dfa686890e885eff99a5222e93d8747a94c224f55cbd9a29c2fc6f3047bc098e",
+    "oracle_version": "TypeScript compiler 6.0.3 (checker symbol resolution)",
+    "oracle_text_encoding": "UTF16",
+    "adapter": "benchmarks/tools/ts_oracle.js",
+    "adapter_commit": "a2f506ab672abcb47faa18322452d5188cfa2e69",
+    "adapter_dirty": false,
+    "ibwd_export_hash": "a2a3bc888d19c6e4fbf4815569a1f7ec54923fa90f1e9f876d527a7c45144251",
+    "oracle_export_hash": "f68690f8b16fbaead9eb49824f8178e6aa966b35dc418d5cff0338dfda959f4c",
+    "relation_report_hash": "4090ad303bfeb2ada79527e5463acfdd45d700b9430cbaf66d6469647910fb91",
+    "scope": "source files only; test files, vendored and generated files are not indexed"
+   },
+   "adjudication_counts": {
+    "ibwd_defect": 0,
+    "oracle_error": 0,
+    "legitimate_out_of_scope": 4,
+    "unresolved_disagreement": 0
+   },
+   "relations": {
+    "CALLS": {
+     "resolved": {
+      "ibwd_edges": 303,
+      "TP": 302,
+      "FP": 1,
+      "FN": 1,
+      "raw_precision": 0.9967,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "legitimate_out_of_scope": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 185,
+        "TP": 184,
+        "FP": 1,
+        "raw_precision": 0.9946
+       },
+       "same_module": {
+        "ibwd_edges": 118,
+        "TP": 118,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 302,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 0.9967,
+      "broader_denominator": 303,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 4,
+      "TP": 0,
+      "FP": 4,
+      "FN": 303,
+      "raw_precision": 0.0,
+      "adjudicated_precision": 0.0,
+      "fp_verdicts": {
+       "UNADJUDICATED": 4
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 4,
+      "by_tier": {
+       "unique_name": {
+        "ibwd_edges": 4,
+        "TP": 0,
+        "FP": 4,
+        "raw_precision": 0.0
+       }
+      },
+      "recall_resolved_plus_candidates": 0.9967
+     },
+     "oracle_edges": 303,
+     "oracle_supported_scope": 302,
+     "oracle_type_declared_or_possible": 1
+    },
+    "IMPORTS": {
+     "resolved": {
+      "ibwd_edges": 406,
+      "TP": 406,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "path": {
+        "ibwd_edges": 406,
+        "TP": 406,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 239,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 406,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 406,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 406,
+     "oracle_supported_scope": 239,
+     "oracle_type_declared_or_possible": 167
+    },
+    "INHERITS": {
+     "resolved": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "supported_scope_TP": 0,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": null,
+      "broader_semantic_coverage": null,
+      "broader_denominator": 0,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": null
+     },
+     "oracle_edges": 0,
+     "oracle_supported_scope": 0,
+     "oracle_type_declared_or_possible": 0
+    },
+    "REFERENCES": {
+     "resolved": {
+      "ibwd_edges": 54,
+      "TP": 53,
+      "FP": 1,
+      "FN": 0,
+      "raw_precision": 0.9815,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {
+       "legitimate_out_of_scope": 1
+      },
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 22,
+        "TP": 21,
+        "FP": 1,
+        "raw_precision": 0.9545
+       },
+       "same_module": {
+        "ibwd_edges": 32,
+        "TP": 32,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 53,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 53,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 53,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 53,
+     "oracle_supported_scope": 53,
+     "oracle_type_declared_or_possible": 0
+    }
+   },
+   "thresholds": {
+    "declared": {
+     "overall_precision_min": 0.95,
+     "import_map_min": 0.99,
+     "same_module_min": 0.99,
+     "inherited_min": 0.99,
+     "supported_recall_min": 0.9
+    },
+    "raw": {
+     "overall_precision": 0.9967,
+     "import_map": 0.9946,
+     "same_module": 1.0,
+     "inherited": null,
+     "supported_recall": 1.0
+    },
+    "adjudicated": {
+     "overall_precision": 1.0,
+     "import_map": 1.0,
+     "same_module": 1.0,
+     "inherited": null,
+     "supported_recall": 1.0
+    },
+    "passes": {
+     "raw": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     },
+     "adjudicated": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     }
+    }
+   },
+   "disagreement_counts": {
+    "resolved_false_positives": 2,
+    "supported_scope_false_negatives": 0
+   }
+  },
+  "bulletproof-react": {
+   "provenance": {
+    "full_ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+    "dirty": false,
+    "edge_build_version": 27,
+    "repo_sha": "9506629ed003a561c6627735480cce4994244bb4",
+    "manifest_hash": "e4ebb9fdab67b9f9f7687991c9b4d97db614e4d7dfb37f5eeec1afeb4a8ffad2",
+    "manifest_sha256_field": "1dff66453d265299bc3717f46197486a7a8b168ea601893eaeff15e337191d4e",
+    "oracle_version": "TypeScript compiler 5.4.5 (checker symbol resolution)",
+    "oracle_text_encoding": "UTF16",
+    "adapter": "benchmarks/tools/ts_oracle.js",
+    "adapter_commit": "a2f506ab672abcb47faa18322452d5188cfa2e69",
+    "adapter_dirty": false,
+    "ibwd_export_hash": "be1fc53a9992602816458320c407ef710eebabb7078e8b1dd4459d1a1294b536",
+    "oracle_export_hash": "7f6886f4422ee990c9cb968ee9065b16c0f6f2beea62569119863aad5bf59001",
+    "relation_report_hash": "ff6b1c3d5fc030cef4f76d7e4b0b6ceb08feddf4fa948389ffc10e40f0bf950d",
+    "scope": "source files only; test files, vendored and generated files are not indexed"
+   },
+   "adjudication_counts": {
+    "ibwd_defect": 0,
+    "oracle_error": 0,
+    "legitimate_out_of_scope": 0,
+    "unresolved_disagreement": 0
+   },
+   "relations": {
+    "CALLS": {
+     "resolved": {
+      "ibwd_edges": 207,
+      "TP": 207,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 164,
+        "TP": 164,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 43,
+        "TP": 43,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 207,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 207,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 207,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 207,
+     "oracle_supported_scope": 207,
+     "oracle_type_declared_or_possible": 0
+    },
+    "IMPORTS": {
+     "resolved": {
+      "ibwd_edges": 278,
+      "TP": 278,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "path": {
+        "ibwd_edges": 278,
+        "TP": 278,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 278,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 278,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 278,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 278,
+     "oracle_supported_scope": 278,
+     "oracle_type_declared_or_possible": 0
+    },
+    "INHERITS": {
+     "resolved": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "supported_scope_TP": 0,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": null,
+      "broader_semantic_coverage": null,
+      "broader_denominator": 0,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": null
+     },
+     "oracle_edges": 0,
+     "oracle_supported_scope": 0,
+     "oracle_type_declared_or_possible": 0
+    },
+    "REFERENCES": {
+     "resolved": {
+      "ibwd_edges": 34,
+      "TP": 34,
+      "FP": 0,
+      "FN": 0,
+      "raw_precision": 1.0,
+      "adjudicated_precision": 1.0,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {
+       "import_map": {
+        "ibwd_edges": 3,
+        "TP": 3,
+        "FP": 0,
+        "raw_precision": 1.0
+       },
+       "same_module": {
+        "ibwd_edges": 31,
+        "TP": 31,
+        "FP": 0,
+        "raw_precision": 1.0
+       }
+      },
+      "supported_scope_TP": 34,
+      "supported_scope_FN": 0,
+      "supported_scope_recall": 1.0,
+      "broader_semantic_coverage": 1.0,
+      "broader_denominator": 34,
+      "supported_FN_verdicts": {},
+      "unadjudicated_supported_FN": 0
+     },
+     "candidates": {
+      "ibwd_edges": 0,
+      "TP": 0,
+      "FP": 0,
+      "FN": 34,
+      "raw_precision": null,
+      "adjudicated_precision": null,
+      "fp_verdicts": {},
+      "unresolved_disagreements": 0,
+      "unadjudicated_fp": 0,
+      "by_tier": {},
+      "recall_resolved_plus_candidates": 1.0
+     },
+     "oracle_edges": 34,
+     "oracle_supported_scope": 34,
+     "oracle_type_declared_or_possible": 0
+    }
+   },
+   "thresholds": {
+    "declared": {
+     "overall_precision_min": 0.95,
+     "import_map_min": 0.99,
+     "same_module_min": 0.99,
+     "inherited_min": 0.99,
+     "supported_recall_min": 0.9
+    },
+    "raw": {
+     "overall_precision": 1.0,
+     "import_map": 1.0,
+     "same_module": 1.0,
+     "inherited": null,
+     "supported_recall": 1.0
+    },
+    "adjudicated": {
+     "overall_precision": 1.0,
+     "import_map": 1.0,
+     "same_module": 1.0,
+     "inherited": null,
+     "supported_recall": 1.0
+    },
+    "passes": {
+     "raw": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     },
+     "adjudicated": {
+      "overall_precision": true,
+      "supported_recall": true,
+      "import_map": true,
+      "same_module": true,
+      "inherited": true
+     }
+    }
+   },
+   "disagreement_counts": {
+    "resolved_false_positives": 0,
+    "supported_scope_false_negatives": 0
    }
   }
  }

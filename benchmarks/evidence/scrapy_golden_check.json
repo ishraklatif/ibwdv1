@@ -1,0 +1,156 @@
+{
+ "ground_truth": "benchmarks/ground_truth/scrapy.yaml",
+ "results": [
+  {
+   "id": "scrapy-q1",
+   "stratum": "Q1",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "scrapy/core/downloader/handlers/_base_streaming.py::BaseStreamingDownloadHandler._extract_proxy",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._get_agent",
+     "scrapy/utils/url.py::guess_scheme"
+    ],
+    "got": [
+     "scrapy/core/downloader/handlers/_base_streaming.py::BaseStreamingDownloadHandler._extract_proxy",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._get_agent",
+     "scrapy/utils/url.py::guess_scheme"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "scrapy/core/downloader/handlers/_base_streaming.py::BaseStreamingDownloadHandler._extract_proxy",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._get_agent",
+     "scrapy/utils/url.py::guess_scheme"
+    ],
+    "got": [
+     "scrapy/core/downloader/handlers/_base_streaming.py::BaseStreamingDownloadHandler._extract_proxy",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._get_agent",
+     "scrapy/utils/url.py::guess_scheme"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "scrapy-q2",
+   "stratum": "Q2",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "scrapy/core/downloader/handlers/http11.py::_ResponseReader",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._headers_from_twisted_response",
+     "scrapy/exceptions.py::DownloadCancelledError",
+     "scrapy/utils/_download_handlers.py::check_stop_download",
+     "scrapy/utils/_download_handlers.py::get_maxsize_msg",
+     "scrapy/utils/_download_handlers.py::get_warnsize_msg"
+    ],
+    "got": [
+     "scrapy/core/downloader/handlers/http11.py::_ResponseReader",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._headers_from_twisted_response",
+     "scrapy/exceptions.py::DownloadCancelledError",
+     "scrapy/utils/_download_handlers.py::check_stop_download",
+     "scrapy/utils/_download_handlers.py::get_maxsize_msg",
+     "scrapy/utils/_download_handlers.py::get_warnsize_msg"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": false,
+    "expected": [
+     "scrapy/core/downloader/handlers/http11.py::_ResponseReader",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._headers_from_twisted_response",
+     "scrapy/exceptions.py::DownloadCancelledError",
+     "scrapy/utils/_download_handlers.py::check_stop_download",
+     "scrapy/utils/_download_handlers.py::get_maxsize_msg",
+     "scrapy/utils/_download_handlers.py::get_warnsize_msg"
+    ],
+    "got": [
+     "scrapy/core/downloader/handlers/http11.py::_RequestBodyProducer.stopProducing",
+     "scrapy/core/downloader/handlers/http11.py::_ResponseReader",
+     "scrapy/core/downloader/handlers/http11.py::_ScrapyAgent._headers_from_twisted_response",
+     "scrapy/exceptions.py::DownloadCancelledError",
+     "scrapy/utils/_download_handlers.py::check_stop_download",
+     "scrapy/utils/_download_handlers.py::get_maxsize_msg",
+     "scrapy/utils/_download_handlers.py::get_warnsize_msg"
+    ],
+    "missing": [],
+    "extra": [
+     "scrapy/core/downloader/handlers/http11.py::_RequestBodyProducer.stopProducing"
+    ]
+   }
+  },
+  {
+   "id": "scrapy-q3",
+   "stratum": "Q3",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "scrapy/signalmanager.py::SignalManager.wait_for",
+     "scrapy/utils/defer.py::maybe_deferred_to_future",
+     "scrapy/utils/asyncio.py::is_asyncio_available",
+     "scrapy/utils/reactor.py::is_reactor_installed"
+    ],
+    "got": [
+     "scrapy/signalmanager.py::SignalManager.wait_for",
+     "scrapy/utils/defer.py::maybe_deferred_to_future",
+     "scrapy/utils/asyncio.py::is_asyncio_available",
+     "scrapy/utils/reactor.py::is_reactor_installed"
+    ],
+    "missing": null,
+    "extra": null
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "scrapy/signalmanager.py::SignalManager.wait_for",
+     "scrapy/utils/defer.py::maybe_deferred_to_future",
+     "scrapy/utils/asyncio.py::is_asyncio_available",
+     "scrapy/utils/reactor.py::is_reactor_installed"
+    ],
+    "got": [
+     "scrapy/signalmanager.py::SignalManager.wait_for",
+     "scrapy/utils/defer.py::maybe_deferred_to_future",
+     "scrapy/utils/asyncio.py::is_asyncio_available",
+     "scrapy/utils/reactor.py::is_reactor_installed"
+    ],
+    "missing": null,
+    "extra": null
+   }
+  },
+  {
+   "id": "scrapy-small",
+   "stratum": "small",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "scrapy/utils/project.py::inside_project",
+     "scrapy/utils/project.py::project_data_dir"
+    ],
+    "got": [
+     "scrapy/utils/project.py::inside_project",
+     "scrapy/utils/project.py::project_data_dir"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "scrapy/utils/project.py::inside_project",
+     "scrapy/utils/project.py::project_data_dir"
+    ],
+    "got": [
+     "scrapy/utils/project.py::inside_project",
+     "scrapy/utils/project.py::project_data_dir"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  }
+ ]
+}

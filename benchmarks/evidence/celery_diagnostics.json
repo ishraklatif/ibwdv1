@@ -1,0 +1,105 @@
+{
+ "repo": "celery",
+ "repo_sha": "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6",
+ "ibwd": {
+  "ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+  "ibwd_dirty": false,
+  "edge_build_version": 27
+ },
+ "scope_symbols": 3144,
+ "no_static_use": {
+  "resolved_only": {
+   "symbols_claimed_unused": 1473,
+   "oracle_finds_a_use": 109,
+   "of_which_lexically_bound": 1,
+   "false_claim_rate": 0.074,
+   "false_claims_bound_lexically": [
+    {
+     "symbol": "celery/concurrency/asynpool.py::unpack_from",
+     "uses": [
+      "celery/concurrency/asynpool.py::ResultHandler._recv_message:REFERENCES"
+     ]
+    }
+   ],
+   "false_claims_type_declared_only": 108
+  },
+  "with_candidate_hints": {
+   "symbols_claimed_unused": 1310,
+   "oracle_finds_a_use": 66,
+   "of_which_lexically_bound": 1,
+   "false_claim_rate": 0.0504,
+   "false_claims_bound_lexically": [
+    {
+     "symbol": "celery/concurrency/asynpool.py::unpack_from",
+     "uses": [
+      "celery/concurrency/asynpool.py::ResultHandler._recv_message:REFERENCES"
+     ]
+    }
+   ],
+   "false_claims_type_declared_only": 65
+  }
+ },
+ "hard_cases": {
+  "ambiguous_target_name": {
+   "label": "the callee's simple name is defined more than once in the repository",
+   "resolved": {
+    "ibwd_edges": 616,
+    "TP": 612,
+    "FP": 4,
+    "raw_precision": 0.9935
+   },
+   "candidate": {
+    "ibwd_edges": 151,
+    "TP": 29,
+    "FP": 122,
+    "raw_precision": 0.1921
+   },
+   "oracle_edges": 786,
+   "oracle_supported_scope": 610,
+   "supported_recall_resolved": 1.0,
+   "supported_missed_but_present_as_candidate": 0,
+   "supported_missed_entirely": 0
+  },
+  "self_or_this_inherited": {
+   "label": "callee is a method in ANOTHER file than the caller (inheritance / imported class)",
+   "resolved": {
+    "ibwd_edges": 228,
+    "TP": 228,
+    "FP": 0,
+    "raw_precision": 1.0
+   },
+   "candidate": {
+    "ibwd_edges": 0,
+    "TP": 0,
+    "FP": 0,
+    "raw_precision": null
+   },
+   "oracle_edges": 228,
+   "oracle_supported_scope": 228,
+   "supported_recall_resolved": 1.0,
+   "supported_missed_but_present_as_candidate": 0,
+   "supported_missed_entirely": 0
+  },
+  "nested_caller_rolled_up": {
+   "label": "caller is a nested function rolled up to its enclosing symbol",
+   "resolved": {
+    "ibwd_edges": 79,
+    "TP": 79,
+    "FP": 0,
+    "raw_precision": 1.0
+   },
+   "candidate": {
+    "ibwd_edges": 9,
+    "TP": 9,
+    "FP": 0,
+    "raw_precision": 1.0
+   },
+   "oracle_edges": 101,
+   "oracle_supported_scope": 79,
+   "supported_recall_resolved": 1.0,
+   "supported_missed_but_present_as_candidate": 0,
+   "supported_missed_entirely": 0
+  }
+ },
+ "note": "the oracle cannot see dynamic dispatch, decorators/frameworks that register handlers by name, or reflection: a symbol with no oracle use may still be used at runtime"
+}

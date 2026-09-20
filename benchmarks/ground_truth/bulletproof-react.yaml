@@ -11,13 +11,18 @@ qualification_report:
   repo_sha: "9506629ed003a561c6627735480cce4994244bb4"
   oracle: "TypeScript compiler 5.4.5 (checker symbol resolution)"
   seed: "sprint3-gt-v1"
-  production_files: 90
-  test_like_files_excluded: 14
+  production_files: 104
+  test_like_files_excluded: 0
   candidates:
     Q1: 4
     Q2: 15
-    Q3: 74
-    small: 3
+    Q3: 81
+    small: 4
+  dropped_for_unverifiable_source_evidence:
+    Q1: 0
+    Q2: 0
+    Q3: 2
+    small: 1
   candidate_order_first_five:
     Q1:
       - "apps/react-vite/src/components/layouts/content-layout.tsx::ContentLayout"
@@ -35,6 +40,7 @@ qualification_report:
       - "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute -> apps/react-vite/src/features/users/components/users-list.tsx::UsersList -> apps/react-vite/src/features/users/api/get-users.ts::useUsers -> apps/react-vite/src/features/users/api/get-users.ts::getUsersQueryOptions"
       - "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList -> apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion -> apps/react-vite/src/components/ui/dialog/confirmation-dialog/confirmation-dialog.tsx::ConfirmationDialog -> apps/react-vite/src/hooks/use-disclosure.ts::useDisclosure"
     small:
+      - "apps/react-vite/src/testing/test-utils.tsx::initializeUser"
       - "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
       - "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationNext"
       - "apps/react-vite/src/features/comments/components/comments.tsx::Comments"
@@ -178,27 +184,27 @@ tasks:
     stratum: "small"
     relation: "CALLS"
     source:
-      id: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
-      file: "apps/react-vite/src/components/ui/table/pagination.tsx"
-      line: 73
-      lines: 14
-    question: "Which functions, methods and classes defined in this repository does `PaginationPrevious` (in apps/react-vite/src/components/ui/table/pagination.tsx) call directly? List each with its file."
+      id: "apps/react-vite/src/testing/test-utils.tsx::initializeUser"
+      file: "apps/react-vite/src/testing/test-utils.tsx"
+      line: 46
+      lines: 10
+    question: "Which functions, methods and classes defined in this repository does `initializeUser` (in apps/react-vite/src/testing/test-utils.tsx) call directly? List each with its file."
     expected:
-      - callee: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationLink"
-        file: "apps/react-vite/src/components/ui/table/pagination.tsx"
-      - callee: "apps/react-vite/src/utils/cn.ts::cn"
-        file: "apps/react-vite/src/utils/cn.ts"
+      - callee: "apps/react-vite/src/testing/test-utils.tsx::createUser"
+        file: "apps/react-vite/src/testing/test-utils.tsx"
+      - callee: "apps/react-vite/src/testing/test-utils.tsx::loginAsUser"
+        file: "apps/react-vite/src/testing/test-utils.tsx"
     evidence:
-      - source: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
-        target: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationLink"
-        file: "apps/react-vite/src/components/ui/table/pagination.tsx"
-        line: 77
-        text: "<PaginationLink"
-      - source: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
-        target: "apps/react-vite/src/utils/cn.ts::cn"
-        file: "apps/react-vite/src/components/ui/table/pagination.tsx"
-        line: 80
-        text: "className={cn('gap-1 pl-2.5', className)}"
+      - source: "apps/react-vite/src/testing/test-utils.tsx::initializeUser"
+        target: "apps/react-vite/src/testing/test-utils.tsx::createUser"
+        file: "apps/react-vite/src/testing/test-utils.tsx"
+        line: 48
+        text: "const newUser = await createUser();"
+      - source: "apps/react-vite/src/testing/test-utils.tsx::initializeUser"
+        target: "apps/react-vite/src/testing/test-utils.tsx::loginAsUser"
+        file: "apps/react-vite/src/testing/test-utils.tsx"
+        line: 49
+        text: "return loginAsUser(newUser);"
     grading: "exact set of internal callees"
 candidates:
   Q1:
@@ -252,6 +258,10 @@ candidates:
       line: 9
       lines: 53
   small:
+    - id: "apps/react-vite/src/testing/test-utils.tsx::initializeUser"
+      file: "apps/react-vite/src/testing/test-utils.tsx"
+      line: 46
+      lines: 10
     - id: "apps/react-vite/src/components/ui/table/pagination.tsx::PaginationPrevious"
       file: "apps/react-vite/src/components/ui/table/pagination.tsx"
       line: 73

@@ -11,13 +11,18 @@ qualification_report:
   repo_sha: "e86ca9ee8d7d7f3558b7fcf0910120f60b9866c6"
   oracle: "scip-python 0.6.6 (Pyright) + ast roles/owners"
   seed: "sprint3-gt-v1"
-  production_files: 155
-  test_like_files_excluded: 6
+  production_files: 161
+  test_like_files_excluded: 0
   candidates:
     Q1: 31
     Q2: 14
-    Q3: 262
-    small: 110
+    Q3: 274
+    small: 112
+  dropped_for_unverifiable_source_evidence:
+    Q1: 0
+    Q2: 0
+    Q3: 0
+    small: 0
   candidate_order_first_five:
     Q1:
       - "celery/utils/text.py::truncate"
@@ -32,9 +37,9 @@ qualification_report:
       - "celery/backends/base.py::Backend.exception_to_python"
       - "celery/app/base.py::Celery.send_task"
     Q3:
+      - "celery/contrib/testing/app.py::setup_default_app -> celery/_state.py::get_current_app -> celery/_state.py::_get_current_app -> celery/app/base.py::Celery"
       - "celery/app/amqp.py::AMQP.as_task_v2 -> celery/utils/saferepr.py::saferepr -> celery/utils/saferepr.py::_saferepr -> celery/utils/saferepr.py::reprstream"
-      - "celery/canvas.py::group.freeze -> celery/canvas.py::group._freeze_group_tasks -> celery/utils/functional.py::regen -> celery/utils/functional.py::_regen"
-      - "celery/backends/rpc.py::RPCBackend._to_result -> celery/backends/base.py::Backend._get_result_meta -> celery/backends/base.py::Backend.encode -> celery/backends/base.py::Backend._encode"
+      - "celery/contrib/testing/worker.py::TestWorkController.__init__ -> celery/worker/worker.py::WorkController.__init__ -> celery/worker/worker.py::WorkController.setup_defaults -> celery/exceptions.py::ImproperlyConfigured"
     small:
       - "celery/utils/collections.py::ConfigurationView.first"
       - "celery/bin/events.py::_run_evtop"
@@ -59,6 +64,8 @@ tasks:
         file: "celery/canvas.py"
       - caller: "celery/concurrency/base.py::BasePool.apply_async"
         file: "celery/concurrency/base.py"
+      - caller: "celery/contrib/testing/manager.py::ManagerMixin.join"
+        file: "celery/contrib/testing/manager.py"
       - caller: "celery/utils/saferepr.py::_format_chars"
         file: "celery/utils/saferepr.py"
       - caller: "celery/utils/saferepr.py::_saferepr"
@@ -81,6 +88,11 @@ tasks:
         file: "celery/concurrency/base.py"
         line: 150
         text: "target, truncate(safe_repr(args), 1024),"
+      - source: "celery/contrib/testing/manager.py::ManagerMixin.join"
+        target: "celery/utils/text.py::truncate"
+        file: "celery/contrib/testing/manager.py"
+        line: 128
+        text: "truncate(', '.join(waiting_for)), exc), '!',"
       - source: "celery/utils/saferepr.py::_format_chars"
         target: "celery/utils/text.py::truncate"
         file: "celery/utils/saferepr.py"
@@ -176,41 +188,41 @@ tasks:
     stratum: "Q3"
     relation: "CALLS"
     source:
-      id: "celery/app/amqp.py::AMQP.as_task_v2"
-      file: "celery/app/amqp.py"
-      line: 327
-      lines: 93
+      id: "celery/contrib/testing/app.py::setup_default_app"
+      file: "celery/contrib/testing/app.py"
+      line: 90
+      lines: 28
     target:
-      id: "celery/utils/saferepr.py::reprstream"
-      file: "celery/utils/saferepr.py"
-      line: 197
-      lines: 73
-    question: "Trace the shortest call path from `AMQP.as_task_v2` (celery/app/amqp.py) to `reprstream` (celery/utils/saferepr.py). Give every function on the path."
+      id: "celery/app/base.py::Celery"
+      file: "celery/app/base.py"
+      line: 293
+      lines: 1441
+    question: "Trace the shortest call path from `setup_default_app` (celery/contrib/testing/app.py) to `Celery` (celery/app/base.py). Give every function on the path."
     expected:
       path:
-        - "celery/app/amqp.py::AMQP.as_task_v2"
-        - "celery/utils/saferepr.py::saferepr"
-        - "celery/utils/saferepr.py::_saferepr"
-        - "celery/utils/saferepr.py::reprstream"
+        - "celery/contrib/testing/app.py::setup_default_app"
+        - "celery/_state.py::get_current_app"
+        - "celery/_state.py::_get_current_app"
+        - "celery/app/base.py::Celery"
       hops: 3
       any_valid_path_of_this_length: false
       note: "the shortest path is unique in the oracle graph"
     evidence:
-      - source: "celery/app/amqp.py::AMQP.as_task_v2"
-        target: "celery/utils/saferepr.py::saferepr"
-        file: "celery/app/amqp.py"
-        line: 364
-        text: "argsrepr = saferepr(args, self.argsrepr_maxsize, maxlevels=self.app.conf.task_repr_maxlevels)"
-      - source: "celery/utils/saferepr.py::saferepr"
-        target: "celery/utils/saferepr.py::_saferepr"
-        file: "celery/utils/saferepr.py"
-        line: 75
-        text: "return ''.join(_saferepr("
-      - source: "celery/utils/saferepr.py::_saferepr"
-        target: "celery/utils/saferepr.py::reprstream"
-        file: "celery/utils/saferepr.py"
-        line: 161
-        text: "for token, it in reprstream(stack, seen=seen, maxlevels=maxlevels):"
+      - source: "celery/contrib/testing/app.py::setup_default_app"
+        target: "celery/_state.py::get_current_app"
+        file: "celery/contrib/testing/app.py"
+        line: 95
+        text: "prev_current_app = _state.get_current_app()"
+      - source: "celery/_state.py::get_current_app"
+        target: "celery/_state.py::_get_current_app"
+        file: "celery/_state.py"
+        line: 116
+        text: "return _get_current_app()"
+      - source: "celery/_state.py::_get_current_app"
+        target: "celery/app/base.py::Celery"
+        file: "celery/_state.py"
+        line: 96
+        text: "set_default_app(Celery("
     grading: "the exact three-hop path"
   - id: "celery-small"
     stratum: "small"

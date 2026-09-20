@@ -16,8 +16,13 @@ qualification_report:
   candidates:
     Q1: 28
     Q2: 21
-    Q3: 198
+    Q3: 191
     small: 63
+  dropped_for_unverifiable_source_evidence:
+    Q1: 0
+    Q2: 0
+    Q3: 0
+    small: 0
   candidate_order_first_five:
     Q1:
       - "scrapy/utils/url.py::add_http_if_no_scheme"
@@ -34,7 +39,7 @@ qualification_report:
     Q3:
       - "scrapy/signalmanager.py::SignalManager.wait_for -> scrapy/utils/defer.py::maybe_deferred_to_future -> scrapy/utils/asyncio.py::is_asyncio_available -> scrapy/utils/reactor.py::is_reactor_installed"
       - "scrapy/core/engine.py::ExecutionEngine.open_spider -> scrapy/utils/defer.py::deferred_from_coro -> scrapy/utils/asyncio.py::is_asyncio_available -> scrapy/utils/reactor.py::is_reactor_installed"
-      - "scrapy/core/downloader/middleware.py::DownloaderMiddlewareManager.download -> scrapy/utils/defer.py::deferred_from_coro -> scrapy/utils/asyncio.py::is_asyncio_available -> scrapy/utils/reactor.py::_is_asyncio_reactor_installed"
+      - "scrapy/spiders/feed.py::XMLFeedSpider.parse_nodes -> scrapy/utils/spider.py::iterate_spider_output -> scrapy/utils/defer.py::deferred_from_coro -> scrapy/utils/asyncio.py::is_asyncio_available"
     small:
       - "scrapy/utils/project.py::data_path"
       - "scrapy/core/downloader/handlers/http2.py::_ScrapyH2Agent._get_agent"

@@ -1,0 +1,338 @@
+{
+ "repo": "scrapy",
+ "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+ "ibwd": {
+  "ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+  "ibwd_dirty": false,
+  "edge_build_version": 27
+ },
+ "tests_without_tracing": {
+  "available": true,
+  "collected": 2584,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 63,
+  "passed": 2521
+ },
+ "tests_with_tracing": {
+  "available": true,
+  "collected": 2584,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 63,
+  "passed": 2521
+ },
+ "status": {
+  "plain": "exit=0 seconds=41",
+  "traced": "exit=0 seconds=162"
+ },
+ "production_symbols_in_scope": 2048,
+ "production_symbols_observed": 1404,
+ "observed_production_to_production_edges": 2433,
+ "of_which_in_static_resolved": 991,
+ "of_which_only_static_candidate": 227,
+ "observed_edges_absent_from_static_graph": 1171,
+ "absent_but_in_oracle_graph": 256,
+ "absent_and_not_in_oracle_graph": 915,
+ "processes_started": 9,
+ "processes_with_trace": 2,
+ "uninstrumented_processes": [
+  "13",
+  "16",
+  "22",
+  "23",
+  "24",
+  "25",
+  "29"
+ ],
+ "uninstrumented_process_count": 7,
+ "absent_edge_reasons": {
+  "implicit_protocol_call_dunder": 322,
+  "in_oracle_graph_only": 253,
+  "other": 292,
+  "dispatch_to_override_or_same_name_target_present": 32,
+  "caller_is_module_level_code": 272
+ },
+ "top_absent_edges": [
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__contains__",
+   "count": 725745,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.set",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__contains__",
+   "count": 448298,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::overridden_settings",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 252928,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.get",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 88583,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.getpriority",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__contains__",
+   "count": 36995,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.set",
+   "target": "scrapy/settings/__init__.py::SettingsAttribute.set",
+   "count": 32941,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.get_component_priority_dict_with_base",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 21299,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/utils/conf.py::build_component_list",
+   "target": "scrapy/settings/__init__.py::BaseSettings.set",
+   "count": 17661,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/crawler.py::Crawler._apply_settings",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 6080,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/extensions/corestats.py::CoreStats.from_crawler",
+   "target": "scrapy/signalmanager.py::SignalManager.connect",
+   "count": 6080,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/http/response/text.py::TextResponse._declared_encoding",
+   "target": "scrapy/utils/python.py::memoizemethod_noargs",
+   "count": 5642,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "target": "scrapy/statscollectors.py::StatsCollector.inc_value",
+   "count": 5464,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/statscollectors.py::StatsCollector.inc_value",
+   "target": "scrapy/statscollectors.py::StatsCollector.__getattribute__",
+   "count": 5464,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/crawler.py::Crawler._apply_settings",
+   "target": "scrapy/crawler.py::_LateAttribute.__set__",
+   "count": 4864,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/http/headers.py::Headers.update",
+   "target": "scrapy/http/headers.py::Headers.items",
+   "count": 4836,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/core/downloader/middleware.py::DownloaderMiddlewareManager._handle_mw_method",
+   "target": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "count": 3972,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/settings/__init__.py::BaseSettings.get_component_priority_dict_with_base",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__len__",
+   "count": 3714,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/extensions/logcount.py::LogCount.from_crawler",
+   "target": "scrapy/signalmanager.py::SignalManager.connect",
+   "count": 2432,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/extensions/memusage.py::MemoryUsage.__init__",
+   "target": "scrapy/signalmanager.py::SignalManager.connect",
+   "count": 2432,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/extensions/feedexport.py::FeedExporter.__init__",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 2432,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/extensions/logstats.py::LogStats.from_crawler",
+   "target": "scrapy/signalmanager.py::SignalManager.connect",
+   "count": 2430,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/middleware.py::MiddlewareManager.__init__",
+   "target": "scrapy/core/downloader/middleware.py::DownloaderMiddlewareManager._add_middleware",
+   "count": 2392,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "scrapy/utils/misc.py::build_from_crawler",
+   "target": "scrapy/middleware.py::MiddlewareManager.from_crawler",
+   "count": 1848,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/middleware.py::MiddlewareManager.from_crawler",
+   "target": "scrapy/middleware.py::MiddlewareManager.__init__",
+   "count": 1848,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/downloadermiddlewares/redirect.py::BaseRedirectMiddleware._redirect",
+   "target": "scrapy/http/request/__init__.py::Request.meta",
+   "count": 1640,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "target": "scrapy/spidermiddlewares/base.py::BaseSpiderMiddleware.process_spider_output_async",
+   "count": 1595,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/core/spidermw.py::SpiderMiddlewareManager._evaluate_iterable",
+   "target": "scrapy/utils/decorators.py::_warn_spider_arg",
+   "count": 1572,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/utils/conf.py::_job_dir",
+   "target": "scrapy/settings/__init__.py::BaseSettings.__getitem__",
+   "count": 1551,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/spidermiddlewares/base.py::BaseSpiderMiddleware.process_spider_output_async",
+   "target": "scrapy/core/spidermw.py::SpiderMiddlewareManager._evaluate_iterable",
+   "count": 1550,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/utils/request.py::fingerprint",
+   "target": "scrapy/http/request/__init__.py::Request.meta",
+   "count": 1454,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/http/response/__init__.py::Response.__init__",
+   "target": "scrapy/http/response/text.py::TextResponse._set_body",
+   "count": 1404,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "scrapy/utils/request.py::RequestFingerprinter.fingerprint",
+   "target": "scrapy/utils/request.py::fingerprint",
+   "count": 1373,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/utils/misc.py::build_from_crawler",
+   "target": "scrapy/extensions/remote_control.py::RemoteControl.from_crawler",
+   "count": 1272,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/extensions/remote_control.py::RemoteControl.from_crawler",
+   "target": "scrapy/extensions/remote_control.py::RemoteControl.__init__",
+   "count": 1272,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/utils/misc.py::build_from_crawler",
+   "target": "scrapy/extensions/throttle.py::AutoThrottle.from_crawler",
+   "count": 1253,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/extensions/throttle.py::AutoThrottle.from_crawler",
+   "target": "scrapy/extensions/throttle.py::AutoThrottle.__init__",
+   "count": 1253,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  },
+  {
+   "source": "scrapy/middleware.py::MiddlewareManager.__init__",
+   "target": "scrapy/core/spidermw.py::SpiderMiddlewareManager._add_middleware",
+   "count": 1252,
+   "oracle_basis": null,
+   "why": "dispatch_to_override_or_same_name_target_present"
+  },
+  {
+   "source": "scrapy/crawler.py::Crawler.__init__",
+   "target": "scrapy/settings/__init__.py::BaseSettings.copy",
+   "count": 1250,
+   "oracle_basis": "type_declared",
+   "why": "in_oracle_graph_only"
+  },
+  {
+   "source": "scrapy/utils/misc.py::build_from_crawler",
+   "target": "scrapy/extensions/telnet.py::TelnetConsole.from_crawler",
+   "count": 1220,
+   "oracle_basis": null,
+   "why": "other"
+  },
+  {
+   "source": "scrapy/extensions/telnet.py::TelnetConsole.from_crawler",
+   "target": "scrapy/extensions/telnet.py::TelnetConsole.__init__",
+   "count": 1220,
+   "oracle_basis": null,
+   "why": "implicit_protocol_call_dunder"
+  }
+ ]
+}

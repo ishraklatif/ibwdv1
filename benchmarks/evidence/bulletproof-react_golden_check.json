@@ -1,0 +1,157 @@
+{
+ "ground_truth": "benchmarks/ground_truth/bulletproof-react.yaml",
+ "results": [
+  {
+   "id": "bulletproof-react-q1",
+   "stratum": "Q1",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute",
+     "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+    ],
+    "got": [
+     "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute",
+     "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute",
+     "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+    ],
+    "got": [
+     "apps/react-vite/src/app/routes/app/dashboard.tsx::DashboardRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussion.tsx::DiscussionRoute",
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/app/routes/app/profile.tsx::ProfileRoute",
+     "apps/react-vite/src/app/routes/app/users.tsx::UsersRoute"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "bulletproof-react-q2",
+   "stratum": "Q2",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer",
+     "apps/react-vite/src/components/ui/form/form.tsx::Form",
+     "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion",
+     "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion",
+     "apps/react-vite/src/lib/authorization.tsx::Authorization"
+    ],
+    "got": [
+     "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer",
+     "apps/react-vite/src/components/ui/form/form.tsx::Form",
+     "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion",
+     "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion",
+     "apps/react-vite/src/lib/authorization.tsx::Authorization"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer",
+     "apps/react-vite/src/components/ui/form/form.tsx::Form",
+     "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion",
+     "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion",
+     "apps/react-vite/src/lib/authorization.tsx::Authorization"
+    ],
+    "got": [
+     "apps/react-vite/src/components/ui/form/form-drawer.tsx::FormDrawer",
+     "apps/react-vite/src/components/ui/form/form.tsx::Form",
+     "apps/react-vite/src/features/discussions/api/get-discussion.ts::useDiscussion",
+     "apps/react-vite/src/features/discussions/api/update-discussion.ts::useUpdateDiscussion",
+     "apps/react-vite/src/lib/authorization.tsx::Authorization"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  },
+  {
+   "id": "bulletproof-react-q3",
+   "stratum": "Q3",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList",
+     "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion",
+     "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+    ],
+    "got": [
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList",
+     "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion",
+     "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+    ],
+    "missing": null,
+    "extra": null
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList",
+     "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion",
+     "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+    ],
+    "got": [
+     "apps/react-vite/src/app/routes/app/discussions/discussions.tsx::DiscussionsRoute",
+     "apps/react-vite/src/features/discussions/components/discussions-list.tsx::DiscussionsList",
+     "apps/react-vite/src/features/discussions/components/delete-discussion.tsx::DeleteDiscussion",
+     "apps/react-vite/src/features/discussions/api/delete-discussion.ts::useDeleteDiscussion"
+    ],
+    "missing": null,
+    "extra": null
+   }
+  },
+  {
+   "id": "bulletproof-react-small",
+   "stratum": "small",
+   "default_resolved_only": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/testing/test-utils.tsx::createUser",
+     "apps/react-vite/src/testing/test-utils.tsx::loginAsUser"
+    ],
+    "got": [
+     "apps/react-vite/src/testing/test-utils.tsx::createUser",
+     "apps/react-vite/src/testing/test-utils.tsx::loginAsUser"
+    ],
+    "missing": [],
+    "extra": []
+   },
+   "with_candidate_hints": {
+    "correct": true,
+    "expected": [
+     "apps/react-vite/src/testing/test-utils.tsx::createUser",
+     "apps/react-vite/src/testing/test-utils.tsx::loginAsUser"
+    ],
+    "got": [
+     "apps/react-vite/src/testing/test-utils.tsx::createUser",
+     "apps/react-vite/src/testing/test-utils.tsx::loginAsUser"
+    ],
+    "missing": [],
+    "extra": []
+   }
+  }
+ ]
+}

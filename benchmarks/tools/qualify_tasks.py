@@ -77,8 +77,10 @@ def main() -> int:
     repo, manifest = Path(repo_dir), json.loads(Path(manifest_path).read_text())
     oracle = json.loads(Path(oracle_path).read_text())
     exts = (".py",) if language == "python" else (".ts", ".tsx", ".js", ".jsx")
-    prod = {f for f in manifest["included_files"] if f.endswith(exts) and not TEST_LIKE.search(f)}
-    excluded_tests = sum(1 for f in manifest["included_files"] if f.endswith(exts) and TEST_LIKE.search(f))
+    # The manifest IS the benchmark scope (production-only by construction); no second, broader "test-like" filter: it hid real callers in
+    # shipped modules such as celery/contrib/testing (found by the golden check, which compares against IBWD's manifest-scoped graph).
+    prod = {f for f in manifest["included_files"] if f.endswith(exts)}
+    excluded_tests = 0
 
     syms = {s["id"]: s for s in oracle["symbols"] if s["kind"] != "File" and not s.get("nested") and s["file"] in prod}
     callable_kinds = {"Function", "Method"}
@@ -171,18 +173,19 @@ def main() -> int:
     direct = {(e["source"], e["target"]) for e in binding
               if all(o["original_owner_id"] == o["projected_owner_id"] for o in occ.get((e["source"], e["target"]), [])) and syms[e["target"]]["kind"] in callable_kinds | {"Class"}
               and syms[e["source"]]["kind"] in callable_kinds}
-    adj = defaultdict(set)
-    for a, b in direct:
-        adj[a].add(b)
+    adj_all = defaultdict(set)                         # every binding CALLS edge (incl. rolled-up nested callers): uniqueness is judged here
+    for e in binding:
+        if e["source"] != e["target"] and syms[e["source"]]["kind"] in callable_kinds and syms[e["target"]]["kind"] in callable_kinds | {"Class"}:
+            adj_all[e["source"]].add(e["target"])
     q3 = []
-    for a in adj:
+    for a in adj_all:
         dist, paths = {a: 0}, {a: 1}
         dq = deque([a])
         while dq:
             u = dq.popleft()
             if dist[u] == 3:
                 continue
-            for v in adj.get(u, ()):
+            for v in adj_all.get(u, ()):
                 if v not in dist:
                     dist[v], paths[v] = dist[u] + 1, 0
                     dq.append(v)
@@ -193,10 +196,11 @@ def main() -> int:
                 chain = [a]
                 cur = a
                 while cur != d:                      # reconstruct the unique shortest path
-                    cur = next(v for v in adj[cur] if dist.get(v) == dist[cur] + 1 and (v == d or _reaches(adj, v, d, 3 - dist[cur] - 1)))
+                    cur = next(v for v in adj_all[cur] if dist.get(v) == dist[cur] + 1 and (v == d or _reaches(adj_all, v, d, 3 - dist[cur] - 1)))
                     chain.append(cur)
                 files = [syms[c]["file"] for c in chain]
-                if len(set(files)) >= 2 and len(set(chain)) == 4 and not any(td_out[c] for c in chain[:-1]):
+                hops_direct = all((x, y) in direct for x, y in zip(chain, chain[1:]))
+                if len(set(files)) >= 2 and len(set(chain)) == 4 and hops_direct and not any(td_out[c] for c in chain[:-1]):
                     q3.append(tuple(chain))
 
     report = {"repo": manifest["repo"], "repo_sha": manifest["repo_sha"], "oracle": oracle["oracle"], "seed": SEED,
@@ -210,6 +214,22 @@ def main() -> int:
             failures.append(f"{stratum}: {len(cands)} qualifying candidates, {minimum} required")
         return ordered
 
+    # A candidate qualifies only if EVERY expected edge's source evidence can be opened and shows the callee on that line.
+    def evidenced_q1(t):
+        return all(evidence(c, t) for c in callers[t])
+
+    def evidenced_out(s):
+        return all(evidence(s, c) for c in callees[s] if syms[c]["kind"] in callable_kinds | {"Class"})
+
+    def evidenced_chain(ch):
+        return all(evidence(a, b) for a, b in zip(ch, ch[1:]))
+
+    dropped = {"Q1": [t for t in q1 if not evidenced_q1(t)], "Q2": [x for x in q2 if not evidenced_out(x)],
+               "Q3": [c for c in q3 if not evidenced_chain(c)], "small": [x for x in small if not evidenced_out(x)]}
+    q1, q2, q3, small = ([x for x in lst if x not in dropped[k]] for k, lst in (("Q1", q1), ("Q2", q2), ("Q3", q3), ("small", small)))
+    q1, q2, q3, small = list(q1), list(q2), list(q3), list(small)
+    report["candidates"] = {"Q1": len(q1), "Q2": len(q2), "Q3": len(q3), "small": len(small)}
+    report["dropped_for_unverifiable_source_evidence"] = {k: len(v) for k, v in dropped.items()}
     q1o, q2o, q3o, so = pick("Q1", q1, 3), pick("Q2", q2, 3), pick("Q3", q3, 1), pick("small", small, 1)
     report["candidate_order_first_five"] = {"Q1": q1o[:5], "Q2": q2o[:5], "Q3": [" -> ".join(c) for c in q3o[:3]], "small": so[:5]}
 

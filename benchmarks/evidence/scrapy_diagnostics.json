@@ -1,0 +1,91 @@
+{
+ "repo": "scrapy",
+ "repo_sha": "fe30c1882a12651c19c5a94d71e9f14e442456c7",
+ "ibwd": {
+  "ibwd_commit": "4be690b40cb0713062624acfd4b6530a819879f2",
+  "ibwd_dirty": false,
+  "edge_build_version": 27
+ },
+ "scope_symbols": 2048,
+ "no_static_use": {
+  "resolved_only": {
+   "symbols_claimed_unused": 1039,
+   "oracle_finds_a_use": 178,
+   "of_which_lexically_bound": 0,
+   "false_claim_rate": 0.1713,
+   "false_claims_bound_lexically": [],
+   "false_claims_type_declared_only": 178
+  },
+  "with_candidate_hints": {
+   "symbols_claimed_unused": 938,
+   "oracle_finds_a_use": 100,
+   "of_which_lexically_bound": 0,
+   "false_claim_rate": 0.1066,
+   "false_claims_bound_lexically": [],
+   "false_claims_type_declared_only": 100
+  }
+ },
+ "hard_cases": {
+  "ambiguous_target_name": {
+   "label": "the callee's simple name is defined more than once in the repository",
+   "resolved": {
+    "ibwd_edges": 220,
+    "TP": 216,
+    "FP": 4,
+    "raw_precision": 0.9818
+   },
+   "candidate": {
+    "ibwd_edges": 110,
+    "TP": 82,
+    "FP": 28,
+    "raw_precision": 0.7455
+   },
+   "oracle_edges": 540,
+   "oracle_supported_scope": 213,
+   "supported_recall_resolved": 1.0,
+   "supported_missed_but_present_as_candidate": 0,
+   "supported_missed_entirely": 0
+  },
+  "self_or_this_inherited": {
+   "label": "callee is a method in ANOTHER file than the caller (inheritance / imported class)",
+   "resolved": {
+    "ibwd_edges": 130,
+    "TP": 130,
+    "FP": 0,
+    "raw_precision": 1.0
+   },
+   "candidate": {
+    "ibwd_edges": 0,
+    "TP": 0,
+    "FP": 0,
+    "raw_precision": null
+   },
+   "oracle_edges": 130,
+   "oracle_supported_scope": 130,
+   "supported_recall_resolved": 1.0,
+   "supported_missed_but_present_as_candidate": 0,
+   "supported_missed_entirely": 0
+  },
+  "nested_caller_rolled_up": {
+   "label": "caller is a nested function rolled up to its enclosing symbol",
+   "resolved": {
+    "ibwd_edges": 32,
+    "TP": 32,
+    "FP": 0,
+    "raw_precision": 1.0
+   },
+   "candidate": {
+    "ibwd_edges": 4,
+    "TP": 4,
+    "FP": 0,
+    "raw_precision": 1.0
+   },
+   "oracle_edges": 36,
+   "oracle_supported_scope": 32,
+   "supported_recall_resolved": 1.0,
+   "supported_missed_but_present_as_candidate": 0,
+   "supported_missed_entirely": 0
+  }
+ },
+ "note": "the oracle cannot see dynamic dispatch, decorators/frameworks that register handlers by name, or reflection: a symbol with no oracle use may still be used at runtime"
+}
