@@ -1,5 +1,5 @@
 {
- "experiment_id": "sprint3-ab-v1",
+ "experiment_id": "sprint3-ab-v2",
  "status": "frozen",
  "model": "claude-sonnet-5",
  "effort": null,
@@ -27,8 +27,8 @@
   "stratum": "Q1",
   "rule": "alphabetically first headline repository of each language, its Q1 task, both conditions, repeat 1"
  },
- "frozen_at": "2026-09-20T12:19:23Z",
- "ibwd_commit": "8fb7ed99c3cec46ae89f32b16fef5387b1c7f593",
+ "frozen_at": "2026-09-20T12:38:31Z",
+ "ibwd_commit": "ed7e4346861879c0cf9f0c3fdc6da4f9b35cb859",
  "edge_build_version": 27,
  "tool_contract_version": 2,
  "release_runtime_commit": "ad623932551868e2f3259af2cd2278f2c4653d07",
@@ -37,7 +37,7 @@
  "prompt_template_sha256": "206f05185f559fa9a4c2432cc5a06ebc59e84a1370c1a75c3c45d518fb917c01",
  "task_specs_index_sha256": "1228b0cc4441104541d5ee4cf9f95376ad751cd99bacb2ed5810873b878549d4",
  "grader_and_harness_sha256": {
-  "benchmarks/run_sprint3_ab.py": "ae9c7e34282a6dcce1c9255f07d96458128eeb443a34a09cfb6da5b00b14b868",
+  "benchmarks/run_sprint3_ab.py": "5186db49f0f2c1dd58d3316de37a4cf332b2d07db553b3a6cd12c54d44329b34",
   "benchmarks/ab_prepare.py": "e0e9b487382957ca481609dd1318dfba66607b3e7b908415a3be0b60ede5ac35",
   "benchmarks/grade_sprint3_answers.py": "0e8218a26678f85e58fcb7bb0043d2294e1b77dd330451180fb5166ecccaf97e",
   "benchmarks/summarize_sprint3_ab.py": "9efcf8c7e401f3a8210fe28626d8e0102012b08fbbe4b48edc7618e7096b97e0",
@@ -46,8 +46,8 @@
   "benchmarks/ab/schedule.py": "2167d1bcc9dcb99f1ac4a49c04afceb38cfdd2f05193ff4be95e15834741e6fe",
   "benchmarks/ab/transcript.py": "87aa535b51b73db8075664fe295fa5b3a27f295869824167885b785bdaa7d40d",
   "benchmarks/ab/execute.py": "36bdae580317a2f21951eef848432c5e07673195840c0a7c087dd5b94e4bd01a",
-  "benchmarks/ab/store.py": "b21261a8d547dba0b60e9339a26ca7837287415b7938dec34b679fcddedd2517",
-  "benchmarks/ab/run.py": "5593a0aab44f4a9c2614aacf19f19ad1c5382c462a6ef716633c8f5e920ab46b",
+  "benchmarks/ab/store.py": "8024647d9579ded5dfc31e980c0f7037d78b2e9ceac5917394abf3740b845451",
+  "benchmarks/ab/run.py": "de7e4e063475f96f8d309d68f2eb5e08d2920239de8a09acb30232ab3d861c15",
   "benchmarks/ab/mock.py": "ad499fafab09e0490e00a77ca48ef13d880a6b9aa96676171e1d066d8ad07dfc",
   "benchmarks/tools/build_task_specs.py": "7b6f2cd8a1cd6eb618789fa38406e1b675d1b91227530ba6c212d1e1692b0483"
  },
