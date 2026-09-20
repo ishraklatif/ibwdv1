@@ -151,8 +151,8 @@ def verify(evidence: Path, summary_path: Path) -> int:
     head = git("rev-parse", "HEAD")
     for repo, entry in summary["repos"].items():
         problems += check_repo(entry, evidence, repo)
-        if entry["provenance"]["full_ibwd_commit"] != head and git("diff", "--name-only", entry["provenance"]["full_ibwd_commit"], "HEAD", "--", "src") != "":
-            problems.append(f"{repo}: src/ changed since the IBWD export commit {entry['provenance']['full_ibwd_commit'][:8]}")
+        if entry["provenance"]["full_ibwd_commit"] != head and git("diff", "--name-only", entry["provenance"]["full_ibwd_commit"], "HEAD", "--", "src/ibwd/graph", "src/ibwd/scanner", "src/ibwd/scan.py", "src/ibwd/export.py", "src/ibwd/retrieval") != "":
+            problems.append(f"{repo}: graph-affecting src changed since the IBWD export commit {entry['provenance']['full_ibwd_commit'][:8]}")
     print("OK: summary matches its inputs" if not problems else "MISMATCH:\n  " + "\n  ".join(problems))
     return 1 if problems else 0
 

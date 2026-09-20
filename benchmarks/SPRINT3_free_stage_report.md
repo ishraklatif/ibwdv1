@@ -112,10 +112,10 @@ over hops without nested-callback projection. I fixed both rules (manifest scope
 candidates with unverifiable source evidence are dropped, re-qualified all five repositories from the oracle graphs and re-checked; the
 first-check result is disclosed here rather than hidden.
 
-Free diagnostics (`<repo>_diagnostics.json`). **No-static-use:** IBWD says "no static use" for Sphinx 3310 / Scrapy 1039 / Celery 1473 /
+Free diagnostics (`<repo>_diagnostics.json`). **No resolved incoming edges (formerly called "no static use"):** IBWD reports no resolved incoming CALLS/REFERENCES edge in the indexed production scope for Sphinx 3310 / Scrapy 1039 / Celery 1473 /
 RTK 24 / Bulletproof 8 symbols; the oracle finds a use for 394 / 178 / 109 / 1 / 0 of them (11.9% / 17.1% / 7.4% / 4.2% / 0%), of which
 only 1 / 0 / 1 / 0 / 0 are lexically bound (the adjudicated misses); the rest are type-inferred receivers. With candidate hints the wrong
-claims fall to 257 / 100 / 66. **"No callers" is not evidence of dead code, especially for methods** (already the documented rule).
+claims fall to 257 / 100 / 66. **An empty result supports only "no matching edges in this graph", not "no possible uses" or deletion safety, especially for methods.** The MCP tools now say so in every empty response.
 **Hard cases** (ambiguous callee names): resolved precision 99.7% / 98.2% / 99.4% / 100% / 100%, supported recall 99.9–100%, no
 supported miss present only as a candidate.
 
@@ -150,7 +150,7 @@ worker-integration/broker tests were not run.
 ## 8. Caveats that do not block but limit the claim
 
 1. **The five repositories are development data.** The resolver was changed in response to them repeatedly; the figures above are
-   optimistic for unseen code. TypeDoc is reserved, uninspected, as the confirmation repository; results there must be reported separately.
+   optimistic for unseen code. TypeDoc is reserved as the confirmation repository (inspected during early screening, not used for local resolver tuning); results there must be reported separately.
 2. Supported scope was defined partly after seeing misses (e.g. `self` of a module-level function is type-inferred). Both raw supported
    recall and *broader* coverage are reported; broader is 75.3–75.8% on Sphinx/Scrapy CALLS.
 3. Adjudicated precision drops 3 out-of-scope items from denominators (Sphinx 1, Celery 1, RTK 1); raw is next to it everywhere.

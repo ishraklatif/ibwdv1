@@ -213,7 +213,7 @@ against independent full-repository oracles.
   method through a receiver whose class is known only from its inferred or declared type (`obj.method()`, an imported instance such
   as `current_app` or `timezone`). IBWD reports them, if at all, as low-precision candidate hints (unique-name 84–87% and suffix
   65–76% on Sphinx/Scrapy, 14–26% on the Celery control). Broader semantic coverage is therefore 75–76% on those two repositories.
-- **"No static use" is unreliable for methods.** The oracle finds a use for 11.9% (Sphinx), 17.1% (Scrapy), 7.4% (Celery) of the
+- **An empty resolved-edge result is scoped, not exhaustive.** It means only "no matching resolved edges in the indexed production graph". The oracle finds a use for 11.9% (Sphinx), 17.1% (Scrapy), 7.4% (Celery) of the
   symbols IBWD reports as unused, almost all through type-inferred receivers; with candidate hints included the rates fall to 8.1%,
   10.7%, 5.0%. Framework entry points and dynamic dispatch add to it. Check the code before deleting anything.
 - **Runtime behaviour differs from the static graph.** In the real test suites 48–57% of observed production→production edges are missing from resolved edges plus candidate hints (53–62% from resolved alone; the causes include implicit `__iter__`/`__eq__`/`__getattr__` calls, module-level code executing at import, calls to subclass

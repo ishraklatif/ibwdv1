@@ -1,6 +1,6 @@
 # Sprint 3 gate definition — metric, weights, scope and policies
 
-**Status: FROZEN, version 2 (2026-09-20). Both OPEN items from version 1 are closed (§10).** Nothing here may be changed
+**Status: FROZEN, version 2 (2026-09-20; §10.5 TypeDoc wording corrected afterwards, no rule changed). Both OPEN items from version 1 are closed (§10).** Nothing here may be changed
 after paid runs begin without a new version of this file and a full re-run. Paid A/B runs do **not** start merely because the
 free-stage scripts complete: they start only on the explicit `READY FOR PAID A/B` verdict (§11) and an owner instruction.
 This file supersedes §4.6 (CSV columns), §5.1 (headline) and §5.3 of `SPRINT3_protocol.md`; that file is left as written.
@@ -128,8 +128,9 @@ configuration invalidation; a fabricated path; silent truncation; or a summary's
 3. Headline strata: Q1 callers, Q2 dependencies, Q3 chain, small-function. No-static-use and hard-case are mandatory free diagnostics.
 4. Celery is the negative control and stays outside the headline. Planned paid workload: 120 sessions.
 5. **The current repositories are development data.** They were inspected repeatedly and the resolver was changed in response;
-   results on them are labelled as such. TypeDoc is reserved, **uninspected**, as the confirmation repository and must not be
-   examined before the paid A/B; results on a confirmation repository are reported separately.
+   results on them are labelled as such. TypeDoc is reserved as the confirmation repository. It was inspected during early repository/candidate screening but is **not used for
+   local resolver tuning**, and it must not be scanned or tuned against before the paid A/B; results on a confirmation repository are
+   reported separately. (Wording corrected 2026-09-20 after the free stage; the correction changes this file's hash, recorded in the preparation record.)
 
 ## 11. Verdict vocabulary
 

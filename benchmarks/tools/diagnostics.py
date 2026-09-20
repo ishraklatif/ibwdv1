@@ -3,10 +3,11 @@
 
 Usage: diagnostics.py MANIFEST IBWD_EXPORT.json ORACLE.json OUT.json [--ext .py | --ext .ts --ext .tsx]
 
-no-static-use  What IBWD calls "no callers / not used" is what an agent would act on ("safe to delete"). For every function/method/
+no-incoming-edge check  (key `no_static_use` kept for file compatibility) An empty result means only "no matching resolved edges in the indexed
+               production graph"; it is what an agent might over-read as "safe to delete". For every function/method/
                class in the manifest scope with NO resolved incoming CALLS/REFERENCES edge in IBWD, the oracle is asked whether ANY
                static use exists (CALLS or REFERENCES, any basis, from another symbol, production files). A use the oracle finds is
-               a false "no static use" claim. Reported with candidate hints excluded and included.
+               a use missed by the empty result. Reported with candidate hints excluded and included.
 hard-case      Restricts the CALLS comparison to the cases that break name-based resolution: (a) ambiguous names (the same simple name
                is defined more than once in the repository), (b) methods reached through `self`/`this` on a base class, (c) edges whose
                caller is a nested function rolled up to its enclosing symbol. Precision/recall on that subset only.

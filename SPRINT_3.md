@@ -122,9 +122,9 @@ Redux Toolkit, Bulletproof React), resolved CALLS edges have raw precision 99.66
 75–100%. 61 disagreement records were adjudicated with machine-verified evidence (53 oracle errors, 8 out-of-scope, 0 IBWD defects,
 0 unresolved); 20 of 20 qualified golden tasks are answered correctly with the default resolved-only policy; incremental == fresh scan
 and five-repetition medians of 6.0–22.7x. Runtime traces of the real test suites show that **48–57% of observed production→production
-call edges are missing from the resolved graph plus candidate hints (53–62% from resolved edges alone)** (protocol calls, import-time code, dispatch, type-inferred receivers), and "no static use"
-is wrong for 4–17% of the symbols it is claimed for (type-inferred uses): IBWD is a static lead generator, not a runtime call graph.
-The repositories are development data (the resolver was tuned on them); TypeDoc is reserved for confirmation. Details, the
+call edges are missing from the resolved graph plus candidate hints (53–62% from resolved edges alone)** (protocol calls, import-time code, dispatch, type-inferred receivers), and an empty resolved-edge result
+misses a use the oracle finds for 4–17% of such symbols (type-inferred uses): IBWD is a static lead generator, not a runtime call graph.
+The repositories are development data (the resolver was tuned on them); TypeDoc is reserved for confirmation (inspected during early screening, not used for local resolver tuning). Details, the
 disclosed qualification defects, and every caveat are in `benchmarks/SPRINT3_free_stage_report.md`.
 
 ## Definition of done — status
