@@ -54,6 +54,46 @@ def pilot_sessions(cfg, tasks, schedule):
     return out
 
 
+HARNESS_FILES = ["benchmarks/run_sprint3_ab.py", "benchmarks/ab_prepare.py", "benchmarks/grade_sprint3_answers.py", "benchmarks/summarize_sprint3_ab.py",
+                 "benchmarks/ab/__init__.py", "benchmarks/ab/config.py", "benchmarks/ab/schedule.py", "benchmarks/ab/transcript.py", "benchmarks/ab/execute.py",
+                 "benchmarks/ab/store.py", "benchmarks/ab/run.py", "benchmarks/ab/mock.py", "benchmarks/tools/build_task_specs.py"]
+
+
+def file_hashes(files):
+    return {f: sha256_bytes((ROOT / f).read_bytes()) for f in files}
+
+
+def freeze(cfg, tasks, experiment_id):
+    """Write the frozen configuration. The implementation commit it names is the commit that is CHECKED OUT and clean when this runs."""
+    if git("status", "--porcelain"):
+        print("REFUSED: dirty tree"); return 1
+    from ab.config import PROMPT_TEMPLATE
+    prep = json.loads((ROOT / "benchmarks/preparation_record.json").read_text())
+    frozen = dict(cfg)
+    frozen.pop("_config_sha256", None); frozen.pop("_task_hashes", None)
+    frozen.update({
+        "experiment_id": experiment_id, "status": "frozen", "frozen_at": subprocess.run(["date", "-u", "+%Y-%m-%dT%H:%M:%SZ"], capture_output=True, text=True).stdout.strip(),
+        "ibwd_commit": git("rev-parse", "HEAD"), "edge_build_version": prep["edge_build_version"], "tool_contract_version": 2,
+        "release_runtime_commit": (Path(cfg["layout"]["workspace_root"]) / "release" / "RELEASE_COMMIT").read_text().strip(),
+        "gate_definition_sha256": sha256_bytes(GATE.read_bytes()),
+        "prompt_template_sha256": sha256_bytes(PROMPT_TEMPLATE.encode()),
+        "task_specs_index_sha256": sha256_bytes((ROOT / cfg["tasks_index"]).read_bytes()),
+        "grader_and_harness_sha256": file_hashes(HARNESS_FILES),
+        "graph_inputs": {r: {"repo_sha": v["repo_sha"], "ibwd_export_sha256": v["ibwd_export_sha256"], "oracle_export_sha256": v["oracle_export_sha256"],
+                             "manifest_sha256_file": v["manifest_sha256_file"], "ground_truth_yaml_sha256": v["ground_truth_yaml_sha256"]} for r, v in prep["repositories"].items()},
+        "aggregation": "ratio of weighted medians of T = input+cache_creation+cache_read+output from the final result.usage; hierarchical equal weights (gate §2-3); Celery separate",
+        "grading": "benchmarks/grade_sprint3_answers.py (deterministic; exact ids; Q3 accepts any minimum-cost path)",
+        "retry_policy": "only infrastructure failures (non-zero exit with no model output) are retried, at most max_infra_retries; timeouts, budget exhaustion, missing usage, "
+                        "malformed output are final invalid measurements, retained and counted as failed answers; nothing is silently rerun, dropped or replaced",
+        "conditions_detail": {"baseline": {"tools": tools_for("baseline")[0], "mcp": "none"},
+                              "ibwd": {"tools": tools_for("ibwd")[0], "hidden_mcp_tools": IBWD_BLOCKED, "include_candidates": "off (tool default)", "mcp": "release runtime, stdio"}},
+        "isolation": "macOS sandbox-exec profile per session (benchmarks/ab/execute.py); per-session APFS clone of the checkout; evidence in benchmarks/evidence/isolation_check.json",
+    })
+    (ROOT / "benchmarks/experiment/experiment.json").write_text(json.dumps(frozen, indent=1) + "\n")
+    print("frozen", experiment_id, frozen["ibwd_commit"])
+    return 0
+
+
 def layout(cfg):
     root = Path(cfg["layout"]["workspace_root"])
     return {"checkouts": str(root / "checkouts"), "workspaces": str(root / "workspaces"), "release": str(root / "release"),
@@ -80,6 +120,17 @@ def preflight(cfg, tasks, strict=True) -> int:
         problems.append(f"CLI version {cli!r} != frozen {cfg['cli_version']}")
     if cfg.get("ibwd_commit") and git("cat-file", "-t", cfg["ibwd_commit"]) != "commit":
         problems.append("frozen ibwd_commit not found")
+    if cfg.get("ibwd_commit"):
+        if git("diff", "--name-only", cfg["ibwd_commit"], "HEAD", "--", "src") or cfg.get("release_runtime_commit") != cfg["ibwd_commit"]:
+            problems.append("implementation (src/) or the release runtime differs from the frozen commit")
+        for f, h in cfg.get("grader_and_harness_sha256", {}).items():
+            if sha256_bytes((ROOT / f).read_bytes()) != h:
+                problems.append(f"harness file changed since the freeze: {f}")
+        from ab.config import PROMPT_TEMPLATE
+        if sha256_bytes(PROMPT_TEMPLATE.encode()) != cfg.get("prompt_template_sha256"):
+            problems.append("prompt template differs from the frozen hash")
+        if sha256_bytes((ROOT / cfg["tasks_index"]).read_bytes()) != cfg.get("task_specs_index_sha256"):
+            problems.append("task specification index differs from the frozen hash")
     if cfg.get("ibwd_commit") and git("status", "--porcelain"):
         problems.append("working tree is dirty (freeze requires a clean tree)")
     lay = layout(cfg)
@@ -103,7 +154,7 @@ def preflight(cfg, tasks, strict=True) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["preflight", "schedule", "mock", "prepare", "isolation", "inventory", "pilot", "run", "summarize"])
+    ap.add_argument("cmd", choices=["freeze", "preflight", "schedule", "mock", "prepare", "isolation", "inventory", "pilot", "run", "summarize"])
     ap.add_argument("paths", nargs="*")
     ap.add_argument("--config", type=Path, default=None)
     ap.add_argument("--limit", type=int, default=None)
@@ -114,6 +165,8 @@ def main() -> int:
     by_id = {t["task_id"]: t for t in tasks}
     for t in tasks:
         cfg.setdefault("_task_hashes", {})[t["task_id"]] = hashlib.sha256(json.dumps(t, sort_keys=True).encode()).hexdigest()
+    if a.cmd == "freeze":
+        return freeze(cfg, tasks, a.paths[0])
     if a.cmd == "preflight":
         return preflight(cfg, tasks)
     sched = build_schedule(cfg["experiment_id"], tasks, cfg["repeats"], cfg["seed"])

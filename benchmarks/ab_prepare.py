@@ -30,8 +30,8 @@ def prepare(cfg, tasks, layout) -> int:
     if not (rel / "bin" / "python").exists():
         py = run([str(ROOT / ".venv" / "bin" / "python"), "-c", "import sys;print('%d.%d' % sys.version_info[:2])"]).stdout.strip()
         assert run([UV, "venv", str(rel), "--python", py]).returncode == 0
-        r = run([UV, "pip", "install", "--python", str(rel / "bin" / "python"), str(ROOT)])
-        assert r.returncode == 0, r.stderr
+    r = run([UV, "pip", "install", "--reinstall", "--python", str(rel / "bin" / "python"), str(ROOT)])   # always rebuilt from the committed tree
+    assert r.returncode == 0, r.stderr
     from ab.execute import mcp_config
     (rel / "mcp_config.json").write_text(json.dumps(mcp_config(str(rel / "bin" / "python")), indent=1))
     (rel / "RELEASE_COMMIT").write_text(run(["git", "rev-parse", "HEAD"], cwd=ROOT).stdout.strip() + "\n")
