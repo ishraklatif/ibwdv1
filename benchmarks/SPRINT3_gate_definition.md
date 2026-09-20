@@ -1,119 +1,137 @@
-# Sprint 3 gate definition — metric, weights and scope
+# Sprint 3 gate definition — metric, weights, scope and policies
 
-**Status: FROZEN on 2026-09-20, except the two parameters marked OPEN (§9).** No paid A/B session may run until
-both are closed. Nothing here may be changed after paid runs begin without a new version of this file and a re-run.
+**Status: FROZEN, version 2 (2026-09-20). Both OPEN items from version 1 are closed (§10).** Nothing here may be changed
+after paid runs begin without a new version of this file and a full re-run. Paid A/B runs do **not** start merely because the
+free-stage scripts complete: they start only on the explicit `READY FOR PAID A/B` verdict (§11) and an owner instruction.
 This file supersedes §4.6 (CSV columns), §5.1 (headline) and §5.3 of `SPRINT3_protocol.md`; that file is left as written.
-
-Sprint 3 is **production-only**: test files are not part of the graph or of the benchmark ground truth.
+Sprint 3 is **production-only for benchmark answers** (§7): tests are excluded from graph answers and ground truth, but may
+appear in diagnostic oracle and runtime inventories.
 
 ## 1. Primary metric — cumulative processed tokens
 
-For session `r` of task `i` under condition `c`:
-
     T[i,c,r] = input_tokens + cache_creation_input_tokens + cache_read_input_tokens + output_tokens
 
-**All four values are taken from the final `result` event's `usage` object, once.** Never add per-request usage on top.
-
-Verification (saved transcripts `benchmarks/raw/sprint_3/*.jsonl`, 3 sessions): for input, cache-creation and cache-read
-tokens the final `result.usage` equals the sum over unique assistant messages, and the cache-creation sub-buckets
-(`ephemeral_1h` + `ephemeral_5m`) sum to its total, so the three input categories are disjoint and counted once.
-**Output tokens are not consistent:** per-message snapshots undercount them (232 vs 294; 872 vs 1933; 31 vs 1536), so
-per-request sums must not be used for output. The unique-message count is used only for the request count.
+- **Usage source: the final `result.usage` object only**, all four fields, once. Never add per-request usage on top.
+- Verified on three saved transcripts: input, cache-creation and cache-read tokens equal the per-request sums and are disjoint
+  (cache-creation sub-buckets add up); per-request **output** tokens undercount (232 vs 294; 872 vs 1933; 31 vs 1536).
+- **Repeats: 3** per task and condition.
+- **Missing usage, a missing `result` event, a budget/time-limit exit or any incomplete run = an invalid measurement.** It is
+  retained as a failure record in the results (with its raw log), counts as a failed answer, and is never silently rerun,
+  dropped or replaced. Only infrastructure failures declared here in advance (network outage before the first request,
+  CLI crash before any model output) may be rerun, and each rerun is logged.
 
 ## 2. Aggregation — a ratio of weighted medians
 
     m[i,c] = median over r = 1,2,3 of T[i,c,r]
-
     R = ( sum_i w[i] * m[i,baseline] ) / ( sum_i w[i] * m[i,IBWD] )
 
-This is **not** an average of per-task ratios. Per-task paired ratios are also published, as secondary information.
+Not an average of per-task ratios. Per-task paired ratios are published as secondary information.
 
 ## 3. Weights — hierarchical, equal at each level, predeclared
 
-1. equal weight per **language**;
-2. within a language, equal weight per **repository**;
-3. within a repository, equal weight per **question stratum**;
-4. within a stratum, equal weight per task.
+Equal weight per **language**; within a language equal per **repository**; within a repository equal per **question stratum**;
+within a stratum equal per task. `w[i] = 1 / (#languages x #repos in language x #strata in repo x #tasks in stratum)`.
 
-`w[i] = 1 / (#languages x #repos in that language x #strata in that repo x #tasks in that stratum)`; weights sum to 1.
-
-- **Celery is the labelled negative control.** Its results are published alongside the headline, computed with the same
-  formula, but it is **excluded from the headline `R`**.
-- **Small-function questions are a stratum and stay in the workload.** No task is dropped because it scored low.
-- Languages in the headline: Python and TypeScript/TSX. Python repositories: Scrapy and, if admitted, Sphinx (§9).
-  TypeScript repositories: Redux Toolkit and Bulletproof React.
+- **Headline strata (four):** Q1 callers, Q2 dependencies, Q3 chain, small-function.
+- **Languages / repositories in the headline:** Python — Scrapy and Sphinx (Python-only scope, §10); TypeScript/TSX — Redux
+  Toolkit and Bulletproof React.
+- **Celery is the labelled negative control and stays outside the headline.** Its results are computed with the same formula
+  and published beside it.
+- **No task is removed and no weight is redistributed after results are observed.** A stratum that cannot be qualified for a
+  repository **blocks that repository's admission**; its weight is never quietly redistributed.
+- Planned paid workload: (4 headline repos x 4 strata + Celery 4 strata) tasks x 1 task per stratum x 2 conditions x 3 repeats
+  = **120 sessions** (96 headline + 24 Celery), about $11.5 at the historical $0.096 mean; actual cost is unknown.
 
 ## 4. Gate
 
-**GO** requires all of:
-1. `R >= 3.0`;
-2. IBWD answer correctness >= baseline correctness on the same tasks (deterministic grader on the frozen ground-truth
-   YAML with exact expected sets, plus a source spot-check);
-3. no blocking structural failure: invalid ground truth; missing corpus coverage; a wrong answer on a golden task; a
-   high-confidence spurious edge; an unsupported "safe to delete" statement; >= 2 distinct adjudicated in-scope missing
-   edges (unique edges, not repeats); incremental != fresh scan; stale configuration invalidation; a fabricated path;
-   silent truncation of output.
+**GO** requires all of: (1) `R >= 3.0`; (2) IBWD answer correctness >= baseline correctness on the same tasks (deterministic
+grader on frozen ground truth with exact expected sets, plus a source spot-check); (3) no blocking failure (§9).
 
-Secondary, reported and **not gating**: output tokens (comparable with Sprints 1–3), cost in dollars, tool calls, latency.
-A clean but `R < 3` result is a STOP under this gate; an output-token win may be reported only as a narrower finding.
+Secondary, reported and not gating: output tokens, dollars, tool calls, latency. A clean but `R < 3` result is a STOP.
+
+### Declared population thresholds (free stage, per repository, from adjudicated data)
+- overall CALLS precision (resolved edges) **>= 95%**;
+- **import-map and same-module precision >= 99%** each; inherited reported separately (target >= 99%);
+- recall of in-scope, statically resolvable CALLS **>= 90%**.
+Raw high-tier disagreements are **adjudicated before a pass is declared**; any *confirmed* high-tier defect blocks (§9).
 
 ## 5. Startup overhead — measured for both configurations
 
-Measured 2026-09-20 with a trivial prompt in an empty directory (`benchmarks/sprint_3_startup_usage.json`), CLI 2.1.278,
-model `claude-sonnet-5`:
-
-| Configuration | T (tokens) |
-|---|---|
-| Baseline: `--tools Read,Glob,Grep`, empty MCP config | **6,322** (`H_B`) |
-| IBWD, exactly the 4 Sprint-3 graph tools | **8,362** (`H_I`) |
-| IBWD, all 7 server tools advertised | 9,067 |
-
-IBWD's schemas cost **+2,040 tokens** (4 tools) and are charged to IBWD. With task-specific work `B` (baseline) and `I` (IBWD)
-beyond startup, `R = (H_B + B) / (H_I + I) >= 3` is equivalent to `B >= 3*H_I - H_B + 3*I`, i.e. **`B >= 18,764 + 3*I`**.
-(With equal overhead `H` this reduces to `B >= 2H + 3I`.) The previous overhead obstruction (29,267 tokens per session
-with `--allowedTools` alone) has been reduced; **the gate remains untested.** Startup usage (the first request's tokens)
-must also be recorded for every real run, since the real working directory can add project files.
+Measured 2026-09-20 (`benchmarks/sprint_3_startup_usage.json`; CLI 2.1.278; model `claude-sonnet-5`; trivial prompt; empty dir):
+baseline `H_B` = **6,322** tokens; IBWD with exactly the 4 graph tools `H_I` = **8,362** (+2,040, charged to IBWD); all 7 tools
+9,067. `R = (H_B + B)/(H_I + I) >= 3` is equivalent to `B >= 3*H_I - H_B + 3*I = 18,764 + 3*I`. The previous overhead
+obstruction has been reduced; **the gate remains untested.** The first request's startup usage is recorded for every real run.
 
 ## 6. Frozen run configuration
 
-- Model `claude-sonnet-5` passed explicitly; CLI `2.1.278` (nvm install); fresh session per run, `--no-session-persistence`.
-- Baseline: `--strict-mcp-config --tools "Read,Glob,Grep" --allowedTools "Read,Glob,Grep" --mcp-config '{"mcpServers":{}}'`.
-- IBWD: same, plus `--mcp-config <ibwd server>` , `--allowedTools` adding `mcp__ibwd__ibwd_callers`, `_dependents`,
-  `_find_symbol`, `_trace_path`, and `--disallowedTools` for `_scan`, `_find_files`, `_list_symbols`.
-- `--output-format stream-json --verbose --max-budget-usd 1.00`; raw logs kept; budget/time-limit exits count as failures.
-- Baseline directory never contains `.ibwd`, ground truth or prior answers; evidence lives outside the agent-readable mount.
-- Condition order balanced with a fixed seed; >= 3 repeats per task and condition; warm/cold cache recorded.
+Model `claude-sonnet-5` passed explicitly; CLI `2.1.278`; fresh session per run; `--no-session-persistence`; `--strict-mcp-config`;
+`--tools "Read,Glob,Grep"`. Baseline: empty MCP config. IBWD: the four tools `ibwd_callers`, `ibwd_dependents`,
+`ibwd_find_symbol`, `ibwd_trace_path` allowed; `ibwd_scan`, `ibwd_find_files`, `ibwd_list_symbols` disallowed. `--output-format
+stream-json --verbose --max-budget-usd 1.00`. Baseline directory never contains `.ibwd`, ground truth or prior answers.
+Condition order balanced with a fixed seed; warm/cold cache recorded.
 
-## 7. Scope definitions (declared now, before the full comparisons)
+### Frozen IBWD query policy
+- **Default edge policy:** only `resolution_status = resolved` edges — import-map, same-module and inherited — appear in
+  `ibwd_callers`, `ibwd_dependents` and `ibwd_trace_path`. Unique-name and suffix edges are `candidate` hints; fuzzy is
+  **disabled** (experimental flag only). `include_candidates=true` exposes candidates with their status labelled; a candidate
+  never contributes silently to an ordinary answer or path.
+- **Relation per question:** Q1 and Q2 grade **CALLS**; Q3 uses a **CALLS-only** path (`edge_types=["CALLS"]`); REFERENCES is
+  graded in the no-static-use diagnostic. When a pair has both CALLS and REFERENCES, both are preserved.
+- **Path cost:** the existing `sum(1/confidence)`, described as a **heuristic cost**, not a probability or a maximum-product score.
+- **Nested-owner projection:** the oracle keeps `original_owner`; the Sprint 3 comparison view rolls the *source* owner up to the
+  enclosing indexed symbol. A nested *target* is never replaced by its enclosing function. Primary Q3 chains avoid depending
+  on callback projection.
+- **Task files:** `benchmarks/ground_truth/<repo>.yaml`; the SHA-256 of each is recorded in the manifest when qualified and
+  must match at run time.
 
-**In supported scope:** production files (audit roots, excluding tests, docs, vendored and generated files) in Python and
-JS/TS/TSX; statically visible calls, imports, inheritance and value references between indexed symbols, including JSX tags,
-default exports, barrel re-exports, `tsconfig` aliases, and calls through `self` / `super`.
+## 7. Scope definitions
 
-**Declared outside supported scope (still reported):** dynamic dispatch (`getattr`, `importlib`, registries, DI); references
-resolved only through **type or data flow** (a function-typed property, a local variable's initial value); instance-variable
-receivers without type inference; nested functions (rolled up to the enclosing symbol); test files; vendored/generated files.
+**Benchmark scope** = the files listed in `benchmarks/manifests/<repo>.json` (§10). Ground truth, IBWD exports and oracle
+graphs are all filtered by the same manifest.
 
-**Rules.** Difficult but legitimate references are **never removed from a denominator after seeing failures**. Every result
-reports both **supported-scope recall** and **broader semantic coverage** (all adjudicated-valid oracle edges). A candidate
-edge may be dropped only after an individual, evidenced adjudication that it is an oracle error, and the drop is listed.
-Note: the two unsupported categories above were named after the pilot's misses; they are declared before the full comparison.
+**In supported scope:** statically visible calls, imports, inheritance and value references between indexed symbols in
+manifest files of Python and JS/TS/TSX — including JSX tags, named exports, `tsconfig` aliases, calls through `self`/`super`,
+default exports **except anonymous defaults**, and barrel re-exports **except default re-exports (`export { default }`) and
+namespace re-exports (`export * as ns`)**.
+
+**Outside supported scope (still reported):** dynamic dispatch; references resolved only through type or data flow (a
+function-typed property, a variable's initial value) — such a target is a **possible target**, never a definite one; instance
+receivers without type inference; nested functions (rolled up); vendored/generated files.
+
+**Rules.** Difficult but legitimate references are never removed from a denominator after seeing failures. Every result reports
+supported-scope recall and broader semantic coverage. An oracle edge is dropped only after an individual evidenced adjudication
+that it is an oracle error, and every drop is listed. `unresolved_disagreement` records are never counted as proven correctness.
+
+**Diagnostics.** Test files **are permitted** in oracle and runtime inventories; primary comparisons filter production→production.
+The no-static-use and hard-case checks are **mandatory free diagnostics**, not paid strata.
 
 ## 8. Sprint 4 readiness (separate from the Sprint 3 gate)
 
-Timing cases reported so far exceed the 3x threshold (one-file rescan vs full: Scrapy 13.6x, Sphinx 16.2x, Celery 6.7x,
-Redux Toolkit 6.3x, Bulletproof 5.3x; best of 3). **Readiness is not yet established.** It also requires:
-the declared repeat procedure (five timed repetitions per edit, median full/incremental >= 3x per repository), and
-incremental == fresh-scan equivalence after edits that change imports, exports, inheritance, deletion and configuration.
-Currently covered by tests: body edits, added/deleted files, `tsconfig` changes. **Not yet covered:** import changes, export
-renames, base-class method edits; timing uses best-of-3, not a median of five.
+Required and reported as medians of **five timing repetitions** (best-of-three claims are withdrawn): one-file rescan vs full
+scan >= 3x per repository; and incremental == fresh-scan equivalence after a body edit, an import change, an export rename, a
+base-class method change, file addition/deletion, and a `tsconfig`/alias change.
 
-## 9. OPEN parameters — awaiting the owner
+## 9. Blocking conditions
 
-1. **Question strata** for the headline: {Q1 callers, Q2 dependencies, Q3 chain, small-function} (the recommended headline)
-   versus also including {no-static-use, labelled hard-case} (the plan's six-task design; 180 sessions vs 120).
-2. **Sphinx admission.** The audit's "385 production files" = 243 Python + 142 JavaScript: 34 minified files IBWD excludes,
-   **70 generated translation catalogs**, 33 other search JS and 5 theme assets (`sphinx_reconciliation.json`). Under the
-   original literal rule (no committed minified/vendor bundles) Sphinx does not qualify merely because IBWD excludes them.
-   Options: a documented amendment permitting such assets when independently identified and excluded from the benchmark
-   scope (applied to every repository), or reject Sphinx.
+Progression stops if: a confirmed high-confidence (import-map / same-module / inherited) defect remains; **two or more distinct
+adjudicated in-scope missing edges** remain; a golden-task answer is wrong; a declared precision threshold fails; the oracle is
+incomplete enough that a claimed metric cannot be established; a qualified stratum is missing; incremental != fresh; stale
+configuration invalidation; a fabricated path; silent truncation; or a summary's commit/hashes do not match its inputs.
+
+## 10. Decisions closing the OPEN items (owner, 2026-09-20)
+
+1. **Sphinx is admitted with a Python-only benchmark scope: 243 Python files.** Its 142 JavaScript files are not benchmark
+   source; they are kept in a separate classification diagnostic (`benchmarks/manifests/sphinx_js_classification.json`).
+2. **Amendment, applied to every repository:** independently identified generated/vendor assets may sit outside the benchmark
+   scope. Every exclusion is a manifest record `{file, reason, evidence}` (a source header or documented provenance); a file is
+   never excluded merely for containing long lines, and hand-written files are never excluded on heuristics alone.
+3. Headline strata: Q1 callers, Q2 dependencies, Q3 chain, small-function. No-static-use and hard-case are mandatory free diagnostics.
+4. Celery is the negative control and stays outside the headline. Planned paid workload: 120 sessions.
+5. **The current repositories are development data.** They were inspected repeatedly and the resolver was changed in response;
+   results on them are labelled as such. TypeDoc is reserved, **uninspected**, as the confirmation repository and must not be
+   examined before the paid A/B; results on a confirmation repository are reported separately.
+
+## 11. Verdict vocabulary
+
+The free stage ends with exactly one of `READY FOR PAID A/B` (all required evidence linked) or `BLOCKED` (specific defects or
+missing qualifications listed). Pushing to the remote is a separate action requiring an explicit instruction.

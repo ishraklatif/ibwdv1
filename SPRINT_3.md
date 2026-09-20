@@ -108,6 +108,12 @@ first of two same-named definitions (property getter/setter, overloads) lost the
 the loose tiers are weak (unique-name 83/87/14%, suffix 76/65/26%, fuzzy 0 of 5), which is a finding, not yet a decision.
 TypeScript oracles (Redux Toolkit, Bulletproof React), runtime traces and the Q1/Q2/Q3 qualification are not yet done.
 
+### Sprint 4 readiness checks (free stage)
+
+Incremental == fresh scan after a body edit, import change, export rename, base-class method change, file addition/deletion and a
+`tsconfig` alias change (8 tests, exact edge equality incl. status and tier, no dangling edges). Five-repetition medians for a
+one-file rescan vs a full scan: Scrapy 17.0x, Sphinx 18.9x, Celery 7.3x, Redux Toolkit 6.9x, Bulletproof React 5.8x.
+
 ## Definition of done — status
 
 | Item | Status |

@@ -172,6 +172,11 @@ CREATE INDEX IF NOT EXISTS idx_edges_relation ON edges(relation);
 Supports traversal in both directions (parents of a node, children of a
 node) and filtering by relationship type.
 
+**Resolution status (added after Sprint 3).** Every edge is `resolved` (import-map, same-module, inherited; all `IMPORTS`) or
+`candidate` (unique-name, suffix). Default `ibwd_callers` / `ibwd_dependents` / `ibwd_trace_path` follow `resolved` edges only;
+`include_candidates=true` adds candidates, clearly labelled. Fuzzy edges are not created unless `IBWD_EXPERIMENTAL_FUZZY=1`.
+`resolution_tier` keeps the mechanism and `confidence` the heuristic score; neither is a calibrated probability.
+
 ## 3b. Table: `file_refs` (Sprint 3 follow-up)
 
 Cache of each source file's extracted (unresolved) references — imports, call sites, value uses, base
@@ -316,6 +321,7 @@ define *how* it is stored.
 | 1      | `nodes`, `edges` tables for `Directory`/`File` and `CONTAINS` edges. |
 | 2      | `Class`/`Function`/`Method` node types, `qualified_name` uniqueness, `DEFINES` edges. |
 | 3      | No schema change (edge-build version 3: JSX tags count as calls; tsconfig `paths` aliases resolve JS/TS imports). `IMPORTS`/`CALLS`/`INHERITS` edges now emitted (confidence 0.35–1.0, `source_type='static_analysis'`) and rebuilt wholesale on any source change; `PRAGMA user_version` records the edge-build version so older graphs are rebuilt on the next scan. Recursive-CTE traversal implemented in `retrieval/traversal.py`. |
+| 3c     | `edges` gains `resolution_status` (`resolved` | `candidate`, default `resolved`) and `resolution_tier` (`import_map`, `same_module`, `inherited`, `unique_name`, `suffix`, `path`); added in place by an idempotent `ALTER TABLE` at connect time, so existing databases upgrade without a rebuild. `confidence` is kept and is a *heuristic score*. Edge-build version 14. |
 | 3b     | Additive: `file_refs` table (per-file extracted references keyed by content hash, so rescans re-parse only changed files); `REFERENCES` relation; File `kind` gains `vendor` / `generated`; edge-build version 7. |
 | 5      | `vec_nodes` virtual table planned (not yet created). |
 | 6      | `summaries` table added for LLM-derived node metadata. |

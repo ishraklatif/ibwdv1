@@ -85,9 +85,11 @@ fully fixed without running code), **Decision pending** (needs an owner's call).
   files are never re-parsed; only cheap in-memory resolution and a diff-based edge write re-run.
   `benchmarks/timing.py` reports the ratio.
 - **Measured after the fix:** one-file rescan is 4.3x / 5.9x / 6.5x faster than a full scan at 100 / 400 /
-  1,200 synthetic files, and about 4x on IBWD's own repo (best of 3). Tests assert that an incremental rescan yields exactly the same edges as a
-  fresh scan after body edits, added/deleted files and `tsconfig` changes; **not yet covered:** import changes, export renames
-  and base-class edits, and the five-repetition median timing procedure. Sprint 4 readiness is therefore not yet established. Import resolution now uses plain strings (the `pathlib`
+  1,200 synthetic files, and about 4x on IBWD's own repo (best of 3). Eight tests assert that an incremental rescan yields exactly the same edges (with status and tier) as a
+  fresh scan after a body edit, an import change, an export rename, a base-class method change, a file addition, a file deletion
+  and a `tsconfig` alias change and fix. **Five-repetition medians** (`benchmarks/sprint_4_readiness_timing.json`): one-file rescan
+  vs full scan is Scrapy 17.0x, Sphinx 18.9x, Celery 7.3x, Redux Toolkit 6.9x, Bulletproof React 5.8x (synthetic 4.3–6.1x). The
+  best-of-three figures quoted earlier are withdrawn. Import resolution now uses plain strings (the `pathlib`
   version was most of the remaining cost).
 
 ## 6. Default-export name mismatches
@@ -184,8 +186,12 @@ against independent full-repository oracles.
   attribute (`self.__ident_func__()`, `self._on_ack(...)`), which SCIP attributes to the class (oracle artifact; dynamic).
 - **Loose tiers are weak and uncalibrated** (raw precision vs the oracle): unique-name 82.7% / 87.4% / 13.6%
   (Sphinx / Scrapy / Celery control), suffix 76.4% / 64.6% / 26.4%, fuzzy 0 of 5. Tiers 1–2 (import-map, same-module,
-  inherited) are 97.9–100%. The confidence numbers are heuristic scores, not calibrated probabilities. Whether to keep,
-  demote or remove the fuzzy tier is an open decision.
+  inherited) are 97.9–100%. The confidence numbers are heuristic scores, not calibrated probabilities.
+  **Policy adopted (frozen in `benchmarks/SPRINT3_gate_definition.md` §6):** import-map, same-module and inherited edges are
+  `resolved`; unique-name and suffix are `candidate` hints that default callers/dependents/trace-path never use
+  (`include_candidates=true` shows them, labelled); **fuzzy is disabled** (experimental flag only). Recall is still measured
+  against the unchanged oracle denominator, so removing loose edges lowers recall honestly. Default call chains are CALLS-only;
+  when a pair has both CALLS and REFERENCES both are preserved; the path cost is a heuristic cost, not a probability.
 - **After the fixes (measured on the five repos):** the largest single-symbol caller counts are genuine hubs
   (`getLogger`, `useUser`, `nanoid`, `load_object`, `shared_task`); unique-name edges in Sphinx fell from 899 to 445.
 
