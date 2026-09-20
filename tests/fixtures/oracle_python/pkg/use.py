@@ -48,3 +48,11 @@ def i():
         return helper()
 
     return cb()
+
+
+def r1(obj: Base):
+    return list(map(obj.new_method, [1]))
+
+
+def r2():
+    return list(map(Base.new_method, [1]))

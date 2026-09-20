@@ -46,6 +46,9 @@ EXPECTED_EDGES = {
     ("CALLS", f"{USE}::g", f"{CORE}::Base.new_method", "type_declared"),           # obj.new_method() with obj: Base — a POSSIBLE target
     ("CALLS", f"{USE}::i", f"{CORE}::helper", "binding"),                          # nested `cb` rolls up to `i`
     ("CALLS", f"{CORE}::Coll", f"{CORE}::helper", "binding"),                      # class-body call: owned by the class
+    ("REFERENCES", f"{USE}::r1", f"{CORE}::Base.new_method", "type_declared"),      # obj.new_method as a value, obj: Base — POSSIBLE target
+    ("REFERENCES", f"{USE}::r2", f"{CORE}::Base.new_method", "binding"),           # Base.new_method as a value: lexical class receiver
+    ("REFERENCES", f"{USE}::r2", f"{CORE}::Base", "binding"),                       # `Base` used as a namespace
     ("REFERENCES", f"{CORE}::Prop.read", f"{CORE}::Prop.val", "binding"),          # @property: defined as a term, used as `().`
     ("REFERENCES", f"{CORE}::pick", f"{CORE}::helper", "binding"),                 # (a if c else b)(x): the branches are not the callee
     ("REFERENCES", f"{CORE}::pick", f"{CORE}::outer", "binding"),
@@ -77,7 +80,8 @@ def test_edges_match_the_expected_classification_exactly(graph):
 def test_type_positions_are_never_runtime_references(graph):
     type_use = {(o["file"], tuple(o["start"]), o["target_id"]) for o in graph["occurrences"] if o["relation"] == "TYPE_USE"}
     assert type_use == {(USE, (14, 9), f"{CORE}::Child"), (USE, (14, 19), f"{CORE}::Child"),   # def c(x: Child) -> Child
-                        (USE, (30, 11), f"{CORE}::Base"), (USE, (42, 9), f"{CORE}::Opts")}
+                        (USE, (30, 11), f"{CORE}::Base"), (USE, (42, 9), f"{CORE}::Opts"),
+                        (USE, (53, 12), f"{CORE}::Base")}
     assert not any(e["target"] == f"{CORE}::Opts" for e in graph["edges"])
 
 

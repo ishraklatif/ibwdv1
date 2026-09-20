@@ -108,6 +108,7 @@ class FileModel:
         self.lines = text.splitlines()
         self.defs: list[dict] = []
         self.callee_ends: dict[tuple[int, int], ast.Call] = {}
+        self.attribute_ends: dict[tuple[int, int], ast.Attribute] = {}   # end of `.name` -> its Attribute node (any use, not only calls)
         self.annotation_spans: list[tuple[tuple[int, int], tuple[int, int]]] = []
         self.base_heads: dict[tuple[int, int], str] = {}
         self.base_spans: list[tuple[tuple[int, int], tuple[int, int], str]] = []
@@ -162,6 +163,8 @@ class FileModel:
                     new_chain = [*chain, child.name] if in_function else [*prefix, child.name]
                     self._walk(child, prefix, True, new_chain)
                 continue
+            if isinstance(child, ast.Attribute):
+                self.attribute_ends[self._end(child)] = child
             if isinstance(child, ast.Call):
                 # Only a plain name / attribute is the callee occurrence itself. For `(a if c else b)(x)` the expression ends at
                 # `b`, which would make `b` look like the callee; branches of a conditional are value uses (possible callees).
@@ -197,6 +200,18 @@ class FileModel:
         outer = [d for d in containing if not d["nested"]]
         projected = min(outer, key=lambda d: d["end"] - d["start"]) if outer else original
         return original, projected
+
+
+def receiver_basis(model: "FileModel", fn: ast.Attribute, lexical_receivers: set) -> str:
+    """`binding` when the receiver is lexically known (self/cls, a module alias, a class name, super()); otherwise the target was found
+    through an inferred type (`obj.method` with `obj: Base`) and is only a POSSIBLE target."""
+    obj = fn.value
+    obj_start = (obj.lineno, ast_col_to_char(model.lines[obj.lineno - 1], obj.col_offset))
+    if isinstance(obj, ast.Name) and (obj.id in ("self", "cls") or obj_start in lexical_receivers or obj.id in model.import_names):
+        return "binding"
+    if isinstance(obj, ast.Call) and isinstance(obj.func, ast.Name) and obj.func.id == "super":
+        return "binding"
+    return "type_declared"
 
 
 def main() -> int:
@@ -308,21 +323,11 @@ def main() -> int:
                     call = model.callee_ends[end]
                     relation = "CALLS"
                     fn = call.func
-                    if isinstance(fn, ast.Name):
-                        basis = "binding"
-                    elif isinstance(fn, ast.Attribute):
-                        obj = fn.value
-                        obj_start = (obj.lineno, ast_col_to_char(model.lines[obj.lineno - 1], obj.col_offset))
-                        if isinstance(obj, ast.Name) and (obj.id in ("self", "cls") or obj_start in lexical_receivers or obj.id in model.import_names):
-                            basis = "binding"      # self/cls, a module alias, or a class name
-                        elif isinstance(obj, ast.Call) and isinstance(obj.func, ast.Name) and obj.func.id == "super":
-                            basis = "binding"
-                        else:
-                            basis = "type_declared"  # a variable, attribute chain or call result whose type was inferred
-                    else:
-                        basis = "type_declared"
+                    basis = "binding" if isinstance(fn, ast.Name) else (receiver_basis(model, fn, lexical_receivers) if isinstance(fn, ast.Attribute) else "type_declared")
                 else:
-                    relation, basis = "REFERENCES", "binding"
+                    relation = "REFERENCES"
+                    attr = model.attribute_ends.get(end)
+                    basis = receiver_basis(model, attr, lexical_receivers) if attr is not None else "binding"
             else:
                 continue
 
