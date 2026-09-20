@@ -2,7 +2,7 @@
 
 **IBWD** builds a persistent, deterministically-derived structural + semantic graph of a codebase and exposes it to Claude Code as an MCP server — so the agent can answer "where is X defined," "what calls X," and "what breaks if I change X" from a sub-millisecond graph query instead of repeated `Glob`/`Grep`/`Read` exploration.
 
-> **Status:** Sprints 1–3 are built (file index, symbol index, call graph with `ibwd_trace_path`), with an MCP server and tests. The Sprint 3 benchmark gate is **open**: the ≥3x token target was met on 2 of 3 tasks on IBWD's own repo (2.3x on the third) and awaits multi-repository validation. Sprints 4–8 (impact analysis, semantic search, summaries) are still planned; parts of this README below describe that target design. Known gaps are tracked in [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md); per-sprint write-ups are `SPRINT_1.md`–`SPRINT_3.md`.
+> **Status:** Sprints 1–3 are built (file index, symbol index, call graph with `ibwd_trace_path`), with an MCP server and tests. The Sprint 3 benchmark gate is **still open (untested)**: the free validation stages are complete with the verdict *READY FOR PAID A/B* ([`benchmarks/SPRINT3_free_stage_report.md`](benchmarks/SPRINT3_free_stage_report.md)); the paid A/B has **not** been run, so the ≥3x token claim rests only on the earlier 2-of-3 demo on IBWD's own repo. Sprints 4–8 (impact analysis, semantic search, summaries) are still planned; parts of this README below describe that target design. Known gaps are tracked in [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md); per-sprint write-ups are `SPRINT_1.md`–`SPRINT_3.md`.
 
 ## Core hypothesis
 

@@ -1,6 +1,6 @@
 # Sprint 3 — Call Graph & Dependencies (write-up)
 
-**Status: built and tested; benchmark gate OPEN.** The ≥3x token target was met on 2 of 3 demo tasks on IBWD's own
+**Status: built and tested; free validation stages complete (verdict READY FOR PAID A/B, see `benchmarks/SPRINT3_free_stage_report.md`); the paid benchmark gate is still OPEN and untested.** The ≥3x token target was met on 2 of 3 demo tasks on IBWD's own
 repo and missed on the third (2.3x). Multi-repository validation is in progress
 (`benchmarks/SPRINT3_protocol.md`, `SPRINT_3_FINISH_PLAN.md`).
 
@@ -113,6 +113,19 @@ TypeScript oracles (Redux Toolkit, Bulletproof React), runtime traces and the Q1
 Incremental == fresh scan after a body edit, import change, export rename, base-class method change, file addition/deletion and a
 `tsconfig` alias change (8 tests, exact edge equality incl. status and tier, no dangling edges). Five-repetition medians for a
 one-file rescan vs a full scan: Scrapy 17.0x, Sphinx 18.9x, Celery 7.3x, Redux Toolkit 6.9x, Bulletproof React 5.8x.
+
+## Free-stage validation result (edge-build 27)
+
+Against independent oracles on five pinned repositories (scip-python/Pyright for Sphinx, Scrapy, Celery; the TypeScript checker for
+Redux Toolkit, Bulletproof React), resolved CALLS edges have raw precision 99.66–100% and adjudicated 100%, import-map and same-module
+≥99% on raw figures too, supported-scope recall 99.98–100%; broader semantic coverage (including type-inferred "possible" edges) is
+75–100%. 61 disagreement records were adjudicated with machine-verified evidence (53 oracle errors, 8 out-of-scope, 0 IBWD defects,
+0 unresolved); 20 of 20 qualified golden tasks are answered correctly with the default resolved-only policy; incremental == fresh scan
+and five-repetition medians of 6.0–22.7x. Runtime traces of the real test suites show that **46–56% of observed production→production
+call edges are not in the static graph** (protocol calls, import-time code, dispatch, type-inferred receivers), and "no static use"
+is wrong for 4–17% of the symbols it is claimed for (type-inferred uses): IBWD is a static lead generator, not a runtime call graph.
+The repositories are development data (the resolver was tuned on them); TypeDoc is reserved for confirmation. Details, the
+disclosed qualification defects, and every caveat are in `benchmarks/SPRINT3_free_stage_report.md`.
 
 ## Definition of done — status
 
