@@ -308,7 +308,7 @@ def _py_is_value_use_attribute(node: Node) -> bool:
         return False
     if t in ("for_statement", "for_in_clause") and f == "left":
         return False
-    if t in _PY_PATTERN_TYPES or t == "as_pattern":
+    if t in _PY_PATTERN_TYPES or (t == "as_pattern" and f == "alias"):
         return False
     if t == "keyword_argument" and f == "name":
         return False
