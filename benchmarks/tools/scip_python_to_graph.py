@@ -27,7 +27,7 @@ resolution_basis:
   type_declared  the receiver is an expression whose type had to be inferred (`x.m()`, `self.a.b.m()`, `f().m()`); the target
                  is the declared type's member — a POSSIBLE target, not proof of the runtime callee
 Positions are converted between SCIP's text encoding and ast's UTF-8 byte offsets, so non-ASCII text before a reference is safe.
-Ownership: `original_owner` is the innermost enclosing def (nested functions keep `outer.<locals>.inner`); `projected_owner` is
+Ownership: a class body's own statements belong to the class; `original_owner` is the innermost enclosing def (nested functions keep `outer.<locals>.inner`); `projected_owner` is
 the outermost non-nested def (Sprint 3's enclosing-symbol view). A nested *target* is never replaced by its enclosing function.
 """
 from __future__ import annotations
@@ -178,10 +178,18 @@ class FileModel:
         return any(a <= start and end <= b for a, b in self.annotation_spans)
 
     def owners(self, line: int):
-        """(original owner def or None, projected owner def or None) for a line; classes are not call owners."""
+        """(original owner def or None, projected owner def or None) for a line.
+
+        A statement inside a function belongs to that function (nested: original = innermost, projected = outermost non-nested).
+        A statement directly in a class body belongs to the innermost enclosing class, which Sprint 3 indexes as a symbol (it runs at
+        import time). Module-level statements have no owner (the file)."""
         containing = [d for d in self.defs if d["start"] <= line <= d["end"] and d["kind"] != "Class"]
         if not containing:
-            return None, None
+            classes = [d for d in self.defs if d["start"] <= line <= d["end"] and d["kind"] == "Class"]
+            if not classes:
+                return None, None
+            innermost = min(classes, key=lambda d: d["end"] - d["start"])
+            return innermost, innermost
         original = min(containing, key=lambda d: d["end"] - d["start"])
         outer = [d for d in containing if not d["nested"]]
         projected = min(outer, key=lambda d: d["end"] - d["start"]) if outer else original
@@ -212,6 +220,8 @@ def main() -> int:
 
     module_def_file: dict[str, str] = {}   # scip module symbol -> the file that defines it (exact; no name mangling)
     canon_by_def: dict[str, str] = {}
+    nested_canon: set[str] = set()   # symbols whose current definition is a nested function
+    nested_seen: set[str] = set(); plain_seen: set[str] = set(); nested_target: dict[str, str] = {}
     for doc in index.documents:
         rel = doc.relative_path
         model = models.get(rel)
@@ -229,8 +239,19 @@ def main() -> int:
             if tail.endswith("().") or tail.endswith("#"):
                 d = by_line.get(occ.range[0] + 1)
                 if d is not None:
-                    canon_by_def[occ.symbol] = f"{rel}::{d['qualname']}"
+                    # scip-python gives a nested function the same symbol as a method of the same name (`State#_event().` for both the
+                    # method and `_create_dispatcher.<locals>._event`). A `self._event()` call can never reach the nested one, so a
+                    # non-nested definition always wins; among equals (accessor pairs, overloads) the last definition wins.
+                    # A colliding symbol's bare-name uses (`return esc`) bind to the nested function, its attribute uses (`self.esc`)
+                    # to the method; occurrences below are routed accordingly.
+                    (nested_seen if d["nested"] else plain_seen).add(occ.symbol)
+                    if d["nested"]:
+                        nested_target[occ.symbol] = f"{rel}::{d['qualname']}"
+                    if occ.symbol not in canon_by_def or not d["nested"] or occ.symbol in nested_canon:
+                        canon_by_def[occ.symbol] = f"{rel}::{d['qualname']}"
+                        (nested_canon.add if d["nested"] else nested_canon.discard)(occ.symbol)
 
+    colliding = nested_seen & plain_seen
     occurrences: list[dict] = []
     for doc in index.documents:
         rel = doc.relative_path
@@ -265,6 +286,8 @@ def main() -> int:
                     continue
             elif occ.symbol in canon_by_def:
                 target_id = canon_by_def[occ.symbol]
+                if occ.symbol in colliding and start_char > 0 and text[start_char - 1] != ".":
+                    target_id = nested_target[occ.symbol]      # a bare name reaches the nested function, not the method
                 if occ.symbol_roles & WriteAccess:
                     continue
                 if end in model.base_heads:

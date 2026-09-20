@@ -54,3 +54,23 @@ class Opts:
 
 
 label = "héllo→世界"; touched = helper()
+
+
+class Coll:
+    made = helper()
+
+    def esc(self):
+        return 1
+
+    def use(self):
+        return self.esc()
+
+    def build(self):
+        def esc():
+            return 2
+
+        return esc
+
+
+def shadow(helper):
+    return helper()

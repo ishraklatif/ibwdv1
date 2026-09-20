@@ -26,7 +26,7 @@ CORE, USE, INIT = "pkg/core.py", "pkg/use.py", "pkg/__init__.py"
 EXPECTED_EDGES = {
     # (relation, source, target, resolution_basis)
     ("CALLS", CORE, f"{CORE}::helper", "binding"),                                 # module-level `touched = helper()` after non-ASCII text
-    ("REFERENCES", CORE, f"{CORE}::default_backoff", "binding"),                   # class-body value, executed at import
+    ("REFERENCES", f"{CORE}::Opts", f"{CORE}::default_backoff", "binding"),        # class-body value: owned by the class (executed at import)
     ("INHERITS", f"{CORE}::Child", f"{CORE}::Base", "binding"),                    # `Generic[T]` is external: no edge
     ("CALLS", f"{CORE}::P.conf", f"{CORE}::helper", "binding"),                    # accessor pair: both bodies keep their owner
     ("CALLS", f"{CORE}::P.conf", f"{CORE}::outer", "binding"),
@@ -45,6 +45,8 @@ EXPECTED_EDGES = {
     ("REFERENCES", f"{USE}::f", f"{CORE}::helper", "binding"),                     # map(helper, ...)
     ("CALLS", f"{USE}::g", f"{CORE}::Base.new_method", "type_declared"),           # obj.new_method() with obj: Base — a POSSIBLE target
     ("CALLS", f"{USE}::i", f"{CORE}::helper", "binding"),                          # nested `cb` rolls up to `i`
+    ("CALLS", f"{CORE}::Coll", f"{CORE}::helper", "binding"),                      # class-body call: owned by the class
+    ("CALLS", f"{CORE}::Coll.use", f"{CORE}::Coll.esc", "binding"),                # self.esc(): NOT the nested `build.<locals>.esc` that shares its symbol
 }
 
 
@@ -87,7 +89,7 @@ def test_nested_functions_keep_their_original_owner_and_targets_are_not_replaced
     assert ("make.<locals>.inner", "make", "helper", "CALLS") in nested         # original owner preserved, projected to `make`
     assert ("i.<locals>.cb", "i", "helper", "CALLS") in nested
     assert {(o["original_owner_id"].split("::")[1], o["target_id"].split("::")[1]) for o in graph["nested_target_occurrences"]} == {
-        ("make", "make.<locals>.inner"), ("i", "i.<locals>.cb")}                # nested targets reported, never rewritten to `make`/`i`
+        ("make", "make.<locals>.inner"), ("i", "i.<locals>.cb"), ("Coll.build", "Coll.build.<locals>.esc")}                # nested targets reported, never rewritten to `make`/`i`
 
 
 def test_non_ascii_text_before_a_reference_does_not_shift_its_position(graph):
@@ -96,3 +98,8 @@ def test_non_ascii_text_before_a_reference_does_not_shift_its_position(graph):
     assert [(o["relation"], o["start"][1]) for o in hits] == [("CALLS", line.index("helper()"))]
     # scip-python DECLARES UTF-8 but emits UTF-16 columns; the adapter validates instead of trusting the declaration
     assert graph["declared_text_encoding"] == "UTF8" and graph["text_encoding"] == "UTF16"
+
+
+def test_a_parameter_that_shadows_a_module_function_is_not_a_call_edge(graph):
+    # shadow(helper): helper() calls the parameter, not the module-level function
+    assert not any(e["source"] == f"{CORE}::shadow" for e in graph["edges"])
