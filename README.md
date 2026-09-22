@@ -6,6 +6,10 @@
 
 > **Current direction:** no paid model calls. Development continues with local correctness, index-health, and MCP transport checks for both clients. See [DEVELOPMENT.md](DEVELOPMENT.md). The frozen benchmark is historical evidence; the paid token-savings gate remains untested.
 
+For daily use, run `.venv/bin/python -m ibwd.cli setup --repo /path/to/work-project` from your installed IBWD checkout.
+This sets up **both Codex and Claude Code**: MCP configuration, routing instructions, automatic reports and a fresh index.
+Reconnect the clients and complete their normal trust prompts. See [daily setup](docs/DAILY_USE.md) for details.
+
 ## Core hypothesis
 
 > A persistent structural + semantic graph lets an AI coding agent solve repository tasks using substantially less context than repeatedly exploring the repository, while maintaining or improving task success.

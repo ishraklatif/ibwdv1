@@ -43,7 +43,9 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
             params = StdioServerParameters(**config, cwd=elsewhere)
             async with stdio_client(params) as (read, write):
                 async with ClientSession(read, write) as session:
-                    await session.initialize()
+                    initialized = await session.initialize()
+                    assert "Use IBWD first" in initialized.instructions
+                    assert "ibwd_scan" in initialized.instructions
                     names = {t.name for t in (await session.list_tools()).tools}
                     assert names == {"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
                                      "ibwd_callers", "ibwd_dependents", "ibwd_trace_path"}

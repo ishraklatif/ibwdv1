@@ -55,13 +55,38 @@ def client_config(client: str, repo: Path) -> None:
 
 @main.command()
 @click.option("--repo", type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
-def doctor(repo: Path) -> None:
+@click.option("--setup", "check_setup", is_flag=True, help="Also check both clients' configuration, routing and reporting.")
+def doctor(repo: Path, check_setup: bool) -> None:
     """Check index freshness locally without changing the graph or calling a model."""
     from ibwd.health import inspect_index
 
-    report = inspect_index(repo.resolve())
+    if check_setup:
+        from ibwd.setup import inspect_setup
+        report = inspect_setup(repo.resolve())
+    else:
+        report = inspect_index(repo.resolve())
     click.echo(json.dumps(report, indent=2))
     if report["status"] != "ready":
+        raise click.exceptions.Exit(1)
+
+
+@main.command()
+@click.option("--client", type=click.Choice(["codex", "claude", "both"]), default="both", show_default=True)
+@click.option("--repo", type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option("--dry-run", is_flag=True, help="Validate and list proposed file changes without writing or scanning.")
+def setup(client: str, repo: Path, dry_run: bool) -> None:
+    """Set up MCP, routing, reports and a fresh index in one local operation."""
+    from ibwd.setup import plan_setup, setup_project
+
+    try:
+        if dry_run:
+            click.echo(json.dumps({"would_change": list(plan_setup(repo, client)), "would_scan": True}, indent=2))
+            return
+        result = setup_project(repo, client)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, indent=2))
+    if result["readiness"]["status"] != "ready":
         raise click.exceptions.Exit(1)
 
 
@@ -111,6 +136,39 @@ def usage_summary(reports: tuple[Path, ...]) -> None:
     except (OSError, ValueError, KeyError, TypeError) as exc:
         raise click.ClickException(str(exc)) from exc
     click.echo(json.dumps(summary, indent=2))
+
+
+@main.command("usage-setup")
+@click.option("--client", type=click.Choice(["codex", "claude", "both"]), default="both", show_default=True)
+@click.option("--repo", type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+def usage_setup(client: str, repo: Path) -> None:
+    """Enable automatic local reports in a project (one-time setup, no model calls)."""
+    from ibwd.usage_hooks import install_hooks
+
+    for selected in (("codex", "claude") if client == "both" else (client,)):
+        try:
+            path = install_hooks(selected, repo)
+        except (OSError, ValueError) as exc:
+            raise click.ClickException(str(exc)) from exc
+        click.echo(f"{selected}: configured {path}")
+    click.echo(f"Reports: {repo.resolve() / '.ibwd' / 'usage' / 'sessions'}")
+    click.echo("Restart/reconnect the client. In Codex, use /hooks to review and trust these hooks once.")
+    click.echo("This enables reporting only; MCP connection and IBWD routing instructions are separate.")
+
+
+@main.command("usage-hook")
+@click.option("--client", type=click.Choice(["codex", "claude"]), required=True)
+@click.option("--repo", type=click.Path(exists=True, file_okay=False, path_type=Path), required=True)
+def usage_hook(client: str, repo: Path) -> None:
+    """Internal hook: read client event from stdin and save a local report."""
+    from ibwd.usage_hooks import capture_session
+
+    try:
+        capture_session(json.load(sys.stdin), client, repo)
+    except (OSError, ValueError, TypeError) as exc:
+        # Exit 1 is an advisory error. Never use exit 2 or Stop decision output,
+        # which some clients interpret as asking the model to continue.
+        raise click.ClickException(f"IBWD session report not saved: {exc}") from exc
 
 
 if __name__ == "__main__":

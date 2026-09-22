@@ -3,6 +3,47 @@
 IBWD is a local MCP server. One installation serves both clients; each work repository gets its own `.ibwd` index.
 It does not call a model. Your normal agent conversations still use your existing plan allowance. No paid benchmark is needed.
 
+## Recommended: one project setup for both clients
+
+From your existing IBWD checkout, run once per work project:
+
+```bash
+.venv/bin/python -m ibwd.cli setup --repo /absolute/path/to/work-project
+```
+
+This configures both MCP clients, adds marked IBWD routing sections to `AGENTS.md` and `CLAUDE.md`, enables automatic reports,
+refreshes the index, and checks local readiness. If root `AGENTS.override.md` exists, it receives Codex's routing section instead.
+Other instructions/settings are preserved. The MCP initialization response also carries the routing guidance.
+
+Reconnect both clients and check IBWD in `/mcp`. In Codex, review and trust the hooks once in `/hooks`; complete the clients'
+normal project/MCP approval prompts. IBWD does not grant trust or bypass policies.
+
+Thereafter work normally. Agents are instructed to scan before the first structural query and after relevant changes, use IBWD
+first for supported navigation (including implementation/UI work), and explain an unavailable/failed fallback. Read automatic
+reports at `.ibwd/usage/latest-codex.md` and `.ibwd/usage/latest-claude.md`; no per-session command is needed.
+
+Use `--dry-run` to validate/list proposed file changes without writing/scanning. Use `--client codex` or `--client claude` for one
+client. Repeated setup does not duplicate routing sections or identical hooks. Existing changed files receive a first-install backup
+under `.ibwd/setup-backups/`. Conflicting existing IBWD server command/args, malformed configurations/markers, or symlinked targets
+stop preflight before writes. Reconcile conflicting server configuration deliberately. Writes are individually atomic, not a
+transaction across all files and the scan; fix any reported I/O/scan failure and rerun.
+
+Existing disabled-server/hook settings remain disabled and appear in readiness problems. Machine-specific settings, backups and
+the index receive `.gitignore` entries; already tracked files remain tracked. Routing sections have no machine-specific paths.
+
+For troubleshooting only, one read-only command checks configuration, instructions, hooks and freshness together:
+
+```bash
+.venv/bin/python -m ibwd.cli doctor --setup --repo /absolute/path/to/work-project
+```
+
+Local readiness does not prove client connection or adoption. Global policies, trust and nested instruction overrides are outside
+this check. Verify selection during the next ordinary coding task: look for a supported navigation call or an explained fallback.
+Do not start extra paid sessions or benchmarks. See [usage measurement](USAGE_MEASUREMENT.md) for evidence limits.
+
+The remaining sections describe first installation and optional manual configuration. Existing users should prefer the single
+setup command above; `client-config` and reporting-only `usage-setup` remain available for advanced use.
+
 ## 1. Install once
 
 ```bash
@@ -52,11 +93,13 @@ Claude Code configuration details: [official MCP documentation](https://code.cla
 Append this to existing `AGENTS.md` (Codex) and `CLAUDE.md` (Claude Code) in your work project. Do not replace your project instructions.
 
 ```text
-Use IBWD for file/symbol discovery, callers, dependencies and call paths.
+Use IBWD first for file/symbol discovery, callers, dependencies and call paths,
+including navigation during implementation, debugging and UI tasks.
 Scan before the first query and rescan after relevant edits. Use exact symbol_id
 values to disambiguate definitions. Read source before editing. Use text search
 for unsupported languages, runtime behavior and exhaustive searches. Empty graph
-results are scoped, never proof of no uses. Do not run paid benchmarks.
+results are scoped, never proof of no uses. If tools are unavailable or fail,
+explain the fallback briefly. Do not run paid benchmarks.
 ```
 
 Python and JS/JSX/TS/TSX production code are the current symbol/edge scope. Test files, dynamic dispatch and type-inferred receivers
@@ -79,5 +122,14 @@ Both clients can then query the same index. Regenerate configuration if you move
 
 ## 5. Measure existing work
 
-Follow [USAGE_MEASUREMENT.md](USAGE_MEASUREMENT.md) after finishing a normal work session. The included analyzer reads local logs;
-it does not start Codex, Claude Code, API calls, or benchmark runs.
+Enable automatic reports once per work project:
+
+```bash
+"$IBWD_PY" -m ibwd.cli usage-setup --repo "$TARGET_REPO"
+```
+
+Reconnect the clients; in Codex, review and trust the new hooks in `/hooks` once. Thereafter reports update after replies and at
+normal session end. Open `.ibwd/usage/latest-codex.md` or `.ibwd/usage/latest-claude.md`; no per-session command is needed.
+This configures reporting only, so complete the MCP connection and routing steps above as well.
+See [USAGE_MEASUREMENT.md](USAGE_MEASUREMENT.md) for limitations, disabling hooks and optional manual comparisons.
+The analyzer reads local logs; it does not start Codex, Claude Code, API calls, or benchmark runs.

@@ -31,6 +31,16 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
     messages = {}
     malformed = records = snapshots = 0
     started = ended = None
+    instruction_records = 0
+    ibwd_guidance = False
+
+    def instruction(text):
+        nonlocal instruction_records, ibwd_guidance
+        if isinstance(text, dict):
+            text = text.get("text")
+        if isinstance(text, str) and text.strip():
+            instruction_records += 1
+            ibwd_guidance |= "ibwd" in text.lower()
 
     def call(name, ident):
         if not isinstance(name, str):
@@ -63,12 +73,15 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                 if not isinstance(payload, dict):
                     continue
                 if event.get("type") == "session_meta":
+                    instruction(payload.get("base_instructions"))
                     sid = payload.get("id") or payload.get("session_id")
                     if sid:
                         session_ids.add(str(sid))
                     if payload.get("cli_version"):
                         versions.add(str(payload["cli_version"]))
                 if event.get("type") == "turn_context":
+                    for field in ("developer_instructions", "user_instructions"):
+                        instruction(payload.get(field))
                     if payload.get("model"):
                         models.add(str(payload["model"]))
                     if payload.get("effort"):
@@ -91,6 +104,14 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     latest = usage
                 if event.get("type") == "response_item" and payload.get("type") in ("function_call", "custom_tool_call"):
                     call(payload.get("name"), payload.get("call_id"))
+                if event.get("type") == "response_item" and payload.get("type") == "message":
+                    for block in payload.get("content", []) if isinstance(payload.get("content"), list) else []:
+                        if not isinstance(block, dict):
+                            continue
+                        text = block.get("text", "")
+                        if isinstance(text, str) and (payload.get("role") in ("system", "developer") or
+                                (payload.get("role") == "user" and text.startswith("# AGENTS.md instructions for "))):
+                            instruction(text)
             else:
                 if event.get("sessionId"):
                     session_ids.add(str(event["sessionId"]))
@@ -160,6 +181,9 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
         "usage_snapshots": snapshots, "usage": latest, "accounting": method,
         "tool_calls": dict(sorted(tools.items())),
         "direct_ibwd_calls": sum(n for name, n in tools.items() if "ibwd_" in name),
+        "instruction_evidence": {"recognized_records": instruction_records,
+                                 "ibwd_mentioned": ibwd_guidance,
+                                 "scope": "Recognized Codex instruction records only; absence is inconclusive."},
         "warnings": sorted(warnings), "comparable": not warnings and condition != "unknown" and task_kind != "unknown" and outcome != "unknown",
         "limitations": ["One supplied log only; child-agent logs and omitted requests may be absent.",
                         "Indirect calls through shell or orchestration tools are not detected.",

@@ -16,6 +16,47 @@ Codex locations and JSONL fields are based on local observed logs, not a stable 
 Do not use `history.jsonl` as a usage transcript. Cloud-only sessions may have no local log. If your client disables persistence,
 this analyzer cannot reconstruct missing usage; it will not launch another session to fill the gap.
 
+### Automatic reports (recommended for daily use)
+
+Run this once per work project using your installed IBWD interpreter:
+
+```bash
+"$IBWD_PY" -m ibwd.cli setup --repo "$TARGET_REPO"
+```
+
+This installs MCP configuration, routing guidance, reporting hooks and a fresh index for both clients. See
+[daily setup](DAILY_USE.md) for preservation, backups and readiness checks. Use `--client codex` or `--client claude` for one client.
+The narrower `usage-setup` command remains available to install reporting only; its existing-file backups use `.ibwd-backup`.
+
+Restart/reconnect the client. **In Codex, open `/hooks` once to review and trust the installed hooks.** Project configuration
+must also be trusted; disabled or administrator-restricted hooks cannot be enabled by IBWD.
+
+After each normal assistant turn (`Stop`) and normal session end (`SessionEnd`), the client supplies its exact transcript
+path to IBWD. No log search or separate analysis command is needed. Open these files in your editor:
+
+- `.ibwd/usage/latest-codex.md` or `.ibwd/usage/latest-claude.md`: most recently captured report for that client.
+- `.ibwd/usage/sessions/`: one JSON and readable Markdown report per client/session, updated on resume.
+
+Reports include recorded token totals, direct tool counts, and whether IBWD was mentioned in recognized Codex instruction
+records. Ordinary conversation mentions do not count as instruction evidence. Claude instruction loading is not reconstructed.
+Absence of recorded instructions does not prove instructions were absent. Availability, task category, success and condition
+remain unknown rather than being guessed; the automatic reports are not eligible for comparative savings claims.
+
+Hooks run local Python only: no model requests, transcript copies, daemon, or telemetry. Successful hooks emit no model context,
+and failures are advisory rather than requests to continue a turn. The client must retain readable transcripts. Reports are
+snapshots, including at session end: final accounting may not have reached the transcript yet. Crashes/forced exits may skip hooks;
+the last completed Stop snapshot remains. Subagent events with agent metadata are ignored, and child logs are not aggregated.
+
+Codex session-end hooks have a maximum three-second runtime; the setup also uses a 30-second Stop hook to save progress before
+shutdown. Very large logs can exceed those budgets; the client will report hook failure and the previous report remains. Hooks
+use POSIX shell quoting (macOS/Linux). Transcript formats are version-dependent and may require parser updates.
+
+To disable reporting, remove only the command entries containing `ibwd.cli usage-hook` from the two client configuration files,
+then reconnect. Existing reports remain. Do not restore a backup over settings you changed after installation.
+
+Hook contracts: [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Claude Code hooks](https://code.claude.com/docs/en/hooks).
+The commands below remain useful for manual analysis and explicitly labelled comparisons.
+
 Claude Code documents its [transcripts, retention and logging controls](https://code.claude.com/docs/en/claude-directory).
 Normal sessions must retain their transcripts; do not use `--no-session-persistence` or logging opt-outs if you want to analyze them.
 Export your small reports before transcript cleanup. Do not change managed retention rules just for this experiment.

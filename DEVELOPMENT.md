@@ -22,6 +22,9 @@ and no replacement correctness or transport test establishes an agent token-savi
 
 Daily setup for both clients is in [docs/DAILY_USE.md](docs/DAILY_USE.md). Offline analysis of existing Codex and Claude Code
 transcripts is in [docs/USAGE_MEASUREMENT.md](docs/USAGE_MEASUREMENT.md); no paid benchmark is required.
+`ibwd usage-setup --repo PATH` installs opt-in Codex/Claude command hooks for automatic local session reports.
+Codex hook trust remains a client-side user action. Deterministic hook tests validate configuration merging and real handler
+subprocesses, not a live model session or measured savings.
 
 ```bash
 .venv/bin/python -m pytest -q
@@ -37,14 +40,19 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
 
 ## Next priorities
 
-1. Improve deterministic retrieval quality and concise output, with explicit scope and truncation metadata. Measure response bytes,
+1. Verify adoption during ordinary work in both clients before adding retrieval features. `ibwd setup --repo PATH` now installs
+   project MCP settings, marked routing instructions, reporting hooks and a fresh index together. `doctor --setup` checks local
+   configuration, routing, reporting and freshness, with runtime connection/adoption explicitly unverified. The MCP initialization
+   response also carries routing guidance. Observe supported navigation in existing normal sessions; record fallback explanations
+   and actual calls. No paid probes or benchmark runs. Passing deterministic tests does not establish model adoption or savings.
+2. Improve deterministic retrieval quality and concise output, with explicit scope and truncation metadata. Measure response bytes,
    correctness, latency, and incremental/fresh equivalence locally; label bytes as bytes, not measured agent tokens.
-2. Add bounded impact traversal with evidence paths, and separately labelled test linkage. Keep inferred test relevance distinct
+3. Add bounded impact traversal with evidence paths, and separately labelled test linkage. Keep inferred test relevance distinct
    from verified coverage; the current production-only graph cannot establish test coverage.
-3. Add opt-in local lexical/concept retrieval before requiring embeddings or generated summaries. Preserve source provenance and
+4. Add opt-in local lexical/concept retrieval before requiring embeddings or generated summaries. Preserve source provenance and
    clear invalidation for every derived result.
 
-These are future work, not shipped capabilities. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
+The retrieval improvements are future work, not shipped capabilities. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
 over tuning to the five development benchmark repositories. Preserve TypeDoc's reserved confirmation role.
 
 ## Historical experiment
