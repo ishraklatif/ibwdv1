@@ -1,5 +1,9 @@
 # Graph Schema Reference
 
+Future sprint numbers in this reference originated in the historical plan; see
+[the active roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md) for current sequencing.
+The `summaries` table exists as reserved storage, but no shipped local-model summarization pipeline populates it.
+
 **File:** `src/ibwd/graph/schema.sql`
 **Engine:** SQLite (single-file database at `.ibwd/graph.db`)
 **Loaded by:** `ibwd.graph.database.connect()`, via `executescript()` on every connection
@@ -15,9 +19,9 @@ tables:
 | `edges`| A directed, typed relationship between two entities.               |
 
 A third table, `summaries`, attaches optional LLM-derived narrative
-metadata to individual nodes. All three tables share a single SQLite file
-and are created idempotently (`CREATE TABLE IF NOT EXISTS`), so applying
-the schema is safe on every scan and requires no separate migration step.
+metadata to individual nodes. These tables share a single SQLite file and
+are created idempotently (`CREATE TABLE IF NOT EXISTS`). Existing schema
+changes still require explicit migration logic; see the write-path section.
 
 This document specifies the schema's structure, its constraints and their
 rationale, the write path that enforces them, and a worked example.
@@ -134,7 +138,7 @@ CREATE TABLE IF NOT EXISTS edges (
 | `source_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's origin. |
 | `target_id`   | INTEGER | No       | Foreign key to `nodes.id`; the relationship's destination. |
 | `relation`    | TEXT    | No       | Relationship type. Currently emitted: `CONTAINS` (directory→directory, directory→file), `DEFINES` (file→symbol), `IMPORTS` (file→file), `CALLS` (symbol-or-file→symbol; a module-level call is attributed to its `File` node; a JSX tag such as `<Card />` counts as a call to the component), `INHERITS` (class→class), `REFERENCES` (symbol-or-file→symbol; a function used as a value, e.g. `useReducer(fn)`). Reserved for later sprints: `TOUCHED`, `TESTED_BY`, `RELATES_TO`. |
-| `confidence`  | REAL    | No       | `1.0` for facts derived from parsing; `< 1.0` for inferred relationships (see §3.3). |
+| `confidence`  | REAL    | No       | Extraction/resolution heuristic score; static call resolution also uses values below `1.0` (see §3.3). |
 | `source_type` | TEXT    | No       | `static_analysis` (parsed from source) or `llm_inference` (model-derived, not yet emitted by any sprint as of this schema). |
 | `created_at`  | TEXT    | No       | UTC timestamp, set on insert. |
 
@@ -153,13 +157,12 @@ given relation type exists between any ordered pair of nodes. Rescanning
 an unchanged relationship updates the existing row (`confidence`,
 `source_type`) rather than inserting a duplicate.
 
-The `confidence` / `source_type` pair exists to let structurally-derived
-facts and model-inferred relationships coexist in the same table while
-remaining distinguishable: a `CALLS` edge produced by parsing an AST
-carries `confidence = 1.0, source_type = 'static_analysis'`; a future
-edge produced by an LLM's best guess at an implicit dependency would carry
-something like `confidence = 0.7, source_type = 'llm_inference'`, and any
-consumer of the graph can filter or weight accordingly.
+The `confidence` / `source_type` pair distinguishes extraction provenance from
+heuristic resolution scores. `CONTAINS`/`DEFINES` can carry `1.0`; resolved `CALLS`
+use heuristic scores such as `0.95` for import-map resolution while retaining
+`source_type = 'static_analysis'`. Deterministic extraction does not imply
+semantic certainty. Future model-derived hints must remain separately labelled
+`llm_inference`; a numeric score does not make them verified facts.
 
 ### 3.4 Indexes
 
@@ -192,7 +195,7 @@ re-runs cheap in-memory resolution over the rest.
 
 Created with `CREATE TABLE IF NOT EXISTS`, so existing databases upgrade without a rebuild.
 
-## 4. Table: `summaries` (Sprint 6)
+## 4. Table: `summaries` (reserved for future inference)
 
 ```sql
 CREATE TABLE IF NOT EXISTS summaries (
@@ -305,8 +308,9 @@ the scan pipeline, each targeting a specific constraint:
 `connect()` opens `.ibwd/graph.db`, sets `PRAGMA foreign_keys = ON`
 (required for cascade deletes to take effect — SQLite does not enforce
 foreign keys by default), and applies `schema.sql` via `executescript()`
-on every connection. Because every DDL statement uses `IF NOT EXISTS`,
-this is idempotent and requires no separate migration tooling.
+on every connection. `IF NOT EXISTS` makes creation idempotent but does not migrate
+existing column definitions. `connect()` also adds missing resolution-status/tier
+columns explicitly; future schema changes need a deliberate migration or rebuild strategy.
 
 `src/ibwd/graph/queries.py` builds the higher-level scan reconciliation
 (`sync_files`, `sync_symbols`) and read queries (`find_symbol`,
@@ -324,4 +328,4 @@ define *how* it is stored.
 | 3c     | `edges` gains `resolution_status` (`resolved` | `candidate`, default `resolved`) and `resolution_tier` (`import_map`, `same_module`, `inherited`, `inherited_uncertain`, `unique_name`, `suffix`, `path`); added in place by an idempotent `ALTER TABLE` at connect time, so existing databases upgrade without a rebuild. `confidence` is kept and is a *heuristic score*. Edge-build version 27 (14 at the policy change; 15–27 are resolver/extraction fixes found by the oracle comparison, listed in `benchmarks/SPRINT3_free_stage_report.md` §2). `inherited_uncertain` (candidate) marks an inherited dunder call behind an external base class. |
 | 3b     | Additive: `file_refs` table (per-file extracted references keyed by content hash, so rescans re-parse only changed files); `REFERENCES` relation; File `kind` gains `vendor` / `generated`; edge-build version 7. |
 | 5      | `vec_nodes` virtual table planned (not yet created). |
-| 6      | `summaries` table added for LLM-derived node metadata. |
+| Future inference | `summaries` storage is already reserved; the generation pipeline remains unimplemented. |

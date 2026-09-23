@@ -1,5 +1,10 @@
 # IBWD v1 — Agile Execution Plan (Sprint-Based)
 
+> **Historical plan; future sequencing superseded 2026-09-24.** Use
+> [the active device-agnostic roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md) for Sprint 3 hardening and later work.
+> Its no-spend, dual-client direction overrides paid demo instructions and mandatory model choices below.
+> This body is preserved as design history; the old token gate remains untested, not passed.
+
 **Persistent structural + semantic codebase memory for AI coding agents.**
 Drop this file in the repo root as `EXECUTION_PLAN.md`, keep `CLAUDE.md` (Appendix C) alongside it, and work through the sprints in order with Claude Code.
 

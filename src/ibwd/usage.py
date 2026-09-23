@@ -10,6 +10,7 @@ import json
 import statistics
 from collections import Counter, defaultdict
 from pathlib import Path
+from ibwd.telemetry import key, tool_name
 
 CODEX_FIELDS = ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens", "total_tokens")
 CLAUDE_FIELDS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
@@ -23,16 +24,27 @@ def _counts(value, fields):
     return {k: value[k] for k in fields}
 
 
-def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown", outcome="unknown") -> dict:
-    warnings = set()
-    models, efforts, versions, session_ids = set(), set(), set(), set()
-    tools, seen_calls = Counter(), set()
-    latest = None
-    messages = {}
-    malformed = records = snapshots = 0
-    started = ended = None
-    instruction_records = 0
-    ibwd_guidance = False
+def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown", outcome="unknown", *, state=None, lines=None) -> dict:
+    """Fold supported structured events. Optional state/lines enable append-only parsing.
+
+    State contains counters and pseudonymous IDs, never text, arguments or results.
+    Nested execution source strings are deliberately never parsed or executed.
+    """
+    if client not in ("codex", "claude"):
+        raise ValueError("Unknown client.")
+    state = state if state is not None else {}
+    warnings = set(state.get("warnings", []))
+    models, efforts, versions, session_ids = (set(state.get(k, [])) for k in ("models", "efforts", "versions", "session_ids"))
+    tools = Counter(state.get("tools", {}))
+    calls = state.setdefault("calls", {})
+    latest = state.get("latest")
+    messages = state.setdefault("messages", {})
+    malformed, records, snapshots = (state.get(k, 0) for k in ("malformed", "records", "snapshots"))
+    started, ended = state.get("started"), state.get("ended")
+    instruction_records = state.get("instruction_records", 0)
+    ibwd_guidance = state.get("ibwd_guidance", False)
+    child_seen = state.get("child_seen", False)
+    fallback_seen = state.get("fallback_seen", False)
 
     def instruction(text):
         nonlocal instruction_records, ibwd_guidance
@@ -42,18 +54,52 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
             instruction_records += 1
             ibwd_guidance |= "ibwd" in text.lower()
 
-    def call(name, ident):
+    def call(name, ident, source="direct"):
         if not isinstance(name, str):
             return
         if not ident:
             warnings.add("Tool calls without IDs cannot be counted reliably.")
             return
-        if ident not in seen_calls:
-            seen_calls.add(ident)
+        ident = key(ident)
+        if ident not in calls:
+            calls[ident] = {"name": name, "sources": [], "status": "unknown", "observation_id": None}
             tools[name] += 1
+        elif (tool_name(calls[ident]["name"]) or calls[ident]["name"]) != (tool_name(name) or name):
+            warnings.add("Conflicting tool identities share a call ID; attribution is incomplete.")
+            return
+        if source not in calls[ident]["sources"]:
+            calls[ident]["sources"].append(source)
 
-    with path.open(encoding="utf-8") as stream:
-        for line in stream:
+    def complete(ident, result, status=None):
+        item = calls.get(key(ident))
+        if not item or not tool_name(item["name"]):
+            return
+        if status:
+            item["status"] = status
+        if isinstance(result, str):
+            try:
+                result = json.loads(result)
+            except ValueError:
+                return
+        if not isinstance(result, (dict, list)):
+            return
+        item["status"] = status or ("error" if isinstance(result, dict) and result.get("isError", result.get("is_error", False)) else "success")
+        meta = result.get("_meta", {}) if isinstance(result, dict) else {}
+        observation = meta.get("ibwd", {}) if isinstance(meta, dict) else {}
+        oid = observation.get("observation_id") if isinstance(observation, dict) and observation.get("schema_version") == 1 else None
+        if isinstance(oid, str) and len(oid) == 32 and all(c in "0123456789abcdef" for c in oid):
+            item["observation_id"] = oid
+
+    def session(ident):
+        session_ids.add(hashlib.sha256((client + ':' + str(ident)).encode()).hexdigest()[:20])
+
+    def read_lines():
+        with path.open(encoding="utf-8") as stream:
+            yield from stream
+
+    if lines is None:
+        lines = read_lines()
+    for line in lines:
             if not line.strip():
                 continue
             try:
@@ -64,6 +110,14 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                 malformed += 1
                 continue
             records += 1
+            # Child records must not inflate parent tokens or tool counts.
+            if event.get("agent_id") or event.get("agentId") or event.get("isSidechain"):
+                child_seen = True
+                continue
+            # Explicit adapter event, not a prose heuristic or native-client assumption.
+            if event.get("type") == "ibwd_observation" and event.get("schema_version") == 1:
+                if event.get("kind") == "fallback" and event.get("reason") in ("unavailable", "error", "unsupported"):
+                    fallback_seen = True
             stamp = event.get("timestamp")
             if isinstance(stamp, str):
                 started = started or stamp
@@ -76,7 +130,7 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     instruction(payload.get("base_instructions"))
                     sid = payload.get("id") or payload.get("session_id")
                     if sid:
-                        session_ids.add(str(sid))
+                        session(sid)
                     if payload.get("cli_version"):
                         versions.add(str(payload["cli_version"]))
                 if event.get("type") == "turn_context":
@@ -104,6 +158,20 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     latest = usage
                 if event.get("type") == "response_item" and payload.get("type") in ("function_call", "custom_tool_call"):
                     call(payload.get("name"), payload.get("call_id"))
+                    if payload.get("name") in ("spawn_agent", "functions.spawn_agent", "collaboration.spawn_agent"):
+                        child_seen = True
+                if event.get("type") == "response_item" and payload.get("type") in ("function_call_output", "custom_tool_call_output"):
+                    complete(payload.get("call_id"), payload.get("output"))
+                if event.get("type") == "event_msg" and payload.get("type") in ("mcp_tool_call_begin", "mcp_tool_call_end"):
+                    invocation = payload.get("invocation", {})
+                    if isinstance(invocation, dict) and invocation.get("server") == "ibwd" and tool_name(invocation.get("tool")):
+                        call("mcp__ibwd__" + tool_name(invocation["tool"]), payload.get("call_id"), "structured_mcp")
+                        result = payload.get("result")
+                        if payload["type"] == "mcp_tool_call_end" and isinstance(result, dict):
+                            if "Ok" in result:
+                                complete(payload.get("call_id"), result["Ok"])
+                            elif "Err" in result:
+                                complete(payload.get("call_id"), {}, "transport_error")
                 if event.get("type") == "response_item" and payload.get("type") == "message":
                     for block in payload.get("content", []) if isinstance(payload.get("content"), list) else []:
                         if not isinstance(block, dict):
@@ -114,12 +182,16 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                             instruction(text)
             else:
                 if event.get("sessionId"):
-                    session_ids.add(str(event["sessionId"]))
+                    session(event["sessionId"])
                 if event.get("version"):
                     versions.add(str(event["version"]))
                 if event.get("effort"):
                     efforts.add(str(event["effort"]))
                 message = event.get("message")
+                if event.get("type") == "user" and isinstance(message, dict):
+                    for block in message.get("content", []) if isinstance(message.get("content"), list) else []:
+                        if isinstance(block, dict) and block.get("type") == "tool_result":
+                            complete(block.get("tool_use_id"), block.get("content", []), "error" if block.get("is_error") else "success")
                 if event.get("type") != "assistant" or not isinstance(message, dict):
                     continue
                 model = message.get("model")
@@ -131,6 +203,7 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                 if not mid:
                     warnings.add("Assistant message without an ID; usage cannot be deduplicated.")
                     continue
+                mid = key(mid)
                 usage = _counts(message.get("usage"), CLAUDE_FIELDS)
                 # Several transcript rows can contain blocks from the same API message.
                 # Keep the largest observed counters per message, never sum the snapshots.
@@ -145,6 +218,15 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     for block in content:
                         if isinstance(block, dict) and block.get("type") == "tool_use":
                             call(block.get("name"), block.get("id"))
+                            if block.get("name") in ("Agent", "Task"):
+                                child_seen = True
+
+    # Save only cumulative parser facts. Derived warnings below are reevaluated each time.
+    state.update(warnings=sorted(warnings), models=sorted(models), efforts=sorted(efforts), versions=sorted(versions),
+                 session_ids=sorted(session_ids), tools=dict(tools), latest=latest, malformed=malformed,
+                 records=records, snapshots=snapshots, started=started, ended=ended,
+                 instruction_records=instruction_records, ibwd_guidance=ibwd_guidance,
+                 child_seen=child_seen, fallback_seen=fallback_seen)
 
     if malformed:
         warnings.add(f"{malformed} malformed JSONL lines; the log may be incomplete or still being written.")
@@ -168,25 +250,58 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
         warnings.add("Mixed reasoning effort settings.")
     if not efforts:
         warnings.add("Effort not recorded; confirm client settings before comparison.")
-    if condition == "disabled" and any("ibwd_" in name for name in tools):
+    if child_seen:
+        warnings.add("Child-agent activity observed; child usage is not aggregated and parent accounting may be incomplete.")
+    ibwd = {ident: item for ident, item in calls.items() if tool_name(item["name"])}
+    # Shared server observation identity is stronger than different client wrapper IDs.
+    unique = {}
+    for ident, item in ibwd.items():
+        identity_key = item["observation_id"] or ident
+        if identity_key not in unique:
+            unique[identity_key] = dict(item, sources=list(item["sources"]))
+        else:
+            previous = unique[identity_key]
+            previous["sources"] = sorted(set(previous["sources"] + item["sources"]))
+            if previous["status"] == "unknown":
+                previous["status"] = item["status"]
+    if condition == "disabled" and ibwd:
         warnings.add("Declared disabled but direct IBWD calls were observed.")
     # Stable pseudonym supports replacing snapshots of a resumed session without exporting its ID.
-    identity = next(iter(session_ids)) if len(session_ids) == 1 else str(path.resolve())
+    identity = next(iter(session_ids)) if len(session_ids) == 1 else key(path.resolve())[:20]
+    retrieval = [item for item in unique.values() if tool_name(item["name"]) != "ibwd_scan"]
+    observations = {
+        "configured": {"value": "unknown", "source": "No project configuration inspected."},
+        "connection_observed": {"value": True if any(i["status"] in ("success", "error") for i in unique.values()) else "unknown",
+                                "source": "Structured IBWD tool responses; an invocation alone does not prove connection."},
+        "scan_calls": {"value": sum(tool_name(i["name"]) == "ibwd_scan" for i in unique.values()), "source": "Observed structured invocations only; lower bound."},
+        "retrieval_calls": {"value": len(retrieval), "source": "Observed structured invocations only; lower bound."},
+        "retrieval_errors": {"value": sum(i["status"] in ("error", "transport_error") for i in retrieval) if retrieval and all(i["status"] != "unknown" for i in retrieval) else "unknown",
+                             "source": "Observed retrieval completions; missing responses are unknown."},
+        "fallback_observed": {"value": True if fallback_seen else "unknown", "source": "Version-1 explicit ibwd_observation fallback events only."},
+        "attribution_unknown": {"value": True if any(n in tools for n in ("exec", "functions.exec", "Bash", "exec_command")) or child_seen else "unknown",
+                                "source": "Opaque orchestration/child records cannot establish complete attribution."},
+        "usage_incomplete": {"value": True if latest is None or malformed or child_seen or warnings else "unknown",
+                             "source": "Transcript accounting checks; final provider accounting is not guaranteed."},
+    }
     return {
-        "schema_version": 1, "client": client,
-        "session_key": hashlib.sha256((client + ':' + identity).encode()).hexdigest()[:20],
+        "schema_version": 2, "client": client,
+        "session_key": identity,
         "condition": condition, "task_kind": task_kind, "outcome": outcome,
         "models": sorted(models), "efforts": sorted(efforts), "client_versions": sorted(versions),
         "first_timestamp": started, "last_timestamp": ended, "records": records,
         "usage_snapshots": snapshots, "usage": latest, "accounting": method,
         "tool_calls": dict(sorted(tools.items())),
-        "direct_ibwd_calls": sum(n for name, n in tools.items() if "ibwd_" in name),
+        "direct_ibwd_calls": sum("direct" in i["sources"] for i in unique.values()),
+        "observations": observations,
+        "observed_ibwd_calls": len(unique),
+        "server_observation_ids": sorted({i["observation_id"] for i in unique.values() if i["observation_id"]}),
+        "child_usage": {"observed": child_seen, "aggregation": "excluded; no reliable disjoint child accounting contract"},
         "instruction_evidence": {"recognized_records": instruction_records,
                                  "ibwd_mentioned": ibwd_guidance,
                                  "scope": "Recognized Codex instruction records only; absence is inconclusive."},
         "warnings": sorted(warnings), "comparable": not warnings and condition != "unknown" and task_kind != "unknown" and outcome != "unknown",
         "limitations": ["One supplied log only; child-agent logs and omitted requests may be absent.",
-                        "Indirect calls through shell or orchestration tools are not detected.",
+                        "Structured MCP lifecycle events are counted; code strings and unstructured nested calls are not.",
                         "No direct IBWD calls does not mean IBWD was disabled or had no context overhead.",
                         "Observed session usage is not a causal savings measurement or subscription allowance."],
     }
@@ -198,7 +313,7 @@ def summarize_reports(paths: tuple[Path, ...]) -> dict:
     excluded = 0
     for path in paths:
         report = json.loads(path.read_text())
-        if not isinstance(report, dict) or report.get("schema_version") != 1 or report.get("client") not in ("codex", "claude"):
+        if not isinstance(report, dict) or report.get("schema_version") not in (1, 2) or report.get("client") not in ("codex", "claude"):
             raise ValueError("Expected an IBWD usage report, not a raw transcript.")
         key = (report["client"], report["session_key"])
         if key in seen:

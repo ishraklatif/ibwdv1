@@ -1,220 +1,104 @@
-# IBWD — Persistent Codebase Memory for AI Coding Agents
+# IBWD — Local Codebase Context for Codex and Claude Code
 
-**IBWD** builds a persistent, deterministically-derived structural + semantic graph of a codebase and exposes it to Codex and Claude Code as a local MCP server — so the agent can answer "where is X defined," "what calls X," and "what breaks if I change X" from a sub-millisecond graph query instead of repeated `Glob`/`Grep`/`Read` exploration.
+IBWD indexes repository files, symbols and static relationships, then exposes them through a local MCP server.
+It helps coding agents locate relevant code and trace relationships before reading exact source and making changes.
+The objective is less model context per correctly completed task. General token savings are **not yet established**.
 
-> **Status:** Sprints 1–3 are built (file index, symbol index, call graph with `ibwd_trace_path`), with an MCP server and tests. The Sprint 3 benchmark gate is **still open (untested)**: the free validation stages are complete with the verdict *READY FOR PAID A/B* ([`benchmarks/SPRINT3_free_stage_report.md`](benchmarks/SPRINT3_free_stage_report.md)); the paid A/B has **not** been run, so the ≥3x token claim rests only on the earlier 2-of-3 demo on IBWD's own repo. Sprints 4–8 (impact analysis, semantic search, summaries) are still planned; parts of this README below describe that target design. Known gaps are tracked in [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md); per-sprint write-ups are `SPRINT_1.md`–`SPRINT_3.md`.
+## Current status
 
-> **Current direction:** no paid model calls. Development continues with local correctness, index-health, and MCP transport checks for both clients. See [DEVELOPMENT.md](DEVELOPMENT.md). The frozen benchmark is historical evidence; the paid token-savings gate remains untested.
+Sprints 1–3 deliver seven MCP tools, incremental indexing, explicit repository selection, index diagnostics,
+project setup for both clients and automatic local session reports. Symbol/graph support covers production Python and JS/JSX/TS/TSX.
+Embeddings, generated summaries, impact analysis, task-context packets and automatic query-time refresh are not shipped.
 
-For daily use, run `.venv/bin/python -m ibwd.cli setup --repo /path/to/work-project` from your installed IBWD checkout.
-This sets up **both Codex and Claude Code**: MCP configuration, routing instructions, automatic reports and a fresh index.
-Reconnect the clients and complete their normal trust prompts. See [daily setup](docs/DAILY_USE.md) for details.
+The active plan is [the token-efficiency roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md), revised 2026-09-24.
+It prioritizes trustworthy reporting, bounded retrieval and context assembly before optional local AI.
+It is device-agnostic: deterministic operation is the base profile; each laptop can enable local models according to its capabilities.
 
-## Core hypothesis
+No paid model calls, new subscriptions, usage credits, hosted inference or hardware purchases are part of this development plan.
+IBWD itself requires no model or API key. Ordinary Codex/Claude conversations remain subject to the user's existing access and allowance.
 
-> A persistent structural + semantic graph lets an AI coding agent solve repository tasks using substantially less context than repeatedly exploring the repository, while maintaining or improving task success.
+## Set up once per repository
 
-This is a hypothesis under active test, not an assumed fact. Every sprint in the build plan ends with an A/B benchmark (IBWD-assisted vs. vanilla `Glob`/`Grep`/`Read`) that must clear a go/no-go token/quality threshold before the next layer gets built. If the structural layer (Sprints 1–4) doesn't clearly win on tokens, the plan calls for stopping and fixing retrieval before adding any LLM semantics.
-
-## Golden rule
-
-Deterministic, tree-sitter-derived facts are tagged `confidence=1.0, source_type=static_analysis`. LLM-inferred facts (summaries, responsibility claims, semantic relations) are tagged `confidence<1.0, source_type=llm_inference`. **Agents must verify graph claims against actual source before editing anything.** The graph is a map, never the territory — this mirrors Anthropic's own caution that Claude Code's glob/grep approach deliberately avoids stale-index risk, so IBWD has to earn its keep with measured wins, not by being trusted blindly.
-
-## Why this approach (research grounding)
-
-The design is grounded in a survey of prior art (`compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md`) rather than invented from scratch:
-
-- **Codebase-Memory** (arXiv:2603.27277) — the closest published prior art, essentially IBWD's structural layer as an MCP server. Across 31 repos it reports ~10× fewer tokens, 2.1× fewer tool calls, and sub-millisecond queries vs. a file-explorer agent, at ~90% of its answer quality — but it *loses* on tasks needing full source or exhaustive text search. Its own conclusion: **the right architecture is hybrid** — graph-first for structural queries, file-fallback for source-level tasks. IBWD adopts this hybrid stance directly.
-- **Aider's repo map** — the precedent for tree-sitter parsing + graph-ranking (personalized PageRank, signature-only elided views fitted to a token budget). IBWD borrows the ranking approach but adds persistence, since Aider rebuilds its map in-memory on every run.
-- **Cursor / Continue.dev** — validate content-hash incremental indexing (Merkle-tree-style) and confirm that pure embedding search degrades as codebases grow ("embedding search becomes unreliable as a retrieval heuristic as the size of the codebase grows" — Windsurf's Varun). This is why IBWD layers graph traversal on top of embeddings rather than relying on embeddings alone.
-- **Anthropic's context-engineering guidance** — the philosophical backbone: minimize tokens spent per unit of usefulness, treat context as a scarce resource, and note that Claude Code already does hybrid upfront (CLAUDE.md) + just-in-time (glob/grep) retrieval. Anthropic explicitly names stale indexing as a reason it *avoids* structural graphs by default — which is the bar IBWD has to clear with evidence, not assumption.
-
-Full findings, citations, and the corrected tech-stack table (vs. an earlier draft plan) live in `compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md`.
-
-## Architecture
-
-```
-                        ┌─────────────────────────────────────────────┐
-                        │                 IBWD engine                  │
-                        │                                              │
-  ┌──────────┐  scan    │  ┌────────────┐   deterministic (conf=1.0)  │
-  │  Git repo │─────────▶│  │ tree-sitter │──▶ imports / calls /        │
-  │ (Py,JS/TS)│          │  │  parser     │    classes / inheritance   │
-  └──────────┘  SHA256/  │  └────────────┘         │                   │
-        │       XXH3     │                         ▼                   │
-        │  (changed      │   ┌───────────────────────────────────┐    │
-        │   files only)  │   │        SQLite graph store          │    │
-        │                │   │  nodes / edges (+conf, +src_type,  │    │
-        │                │   │   +file:line, +content_hash)       │    │
-        │                │   │  + sqlite-vec vector index         │    │
-        │                │   └───────────────────────────────────┘    │
-        │                │        ▲                    │               │
-        │  qwen3-coder:30b│  summaries (conf<1,         │ recursive CTE │
-        │  (Ollama)  ─────┼──▶ src_type=llm_inference)  │ traversal     │
-        │                │        │   ▲ hallucination   ▼               │
-        │  qwen3-embedding│        │   │ grader   ┌──────────────┐      │
-        │  (Ollama)  ─────┼──▶ embeddings ────────▶│ retrieval:   │      │
-        │                │                         │ vector →     │      │
-        │                │                         │ graph-hops → │      │
-        │                │                         │ rerank →     │      │
-        │                │                         │ ctx builder  │      │
-        │                │                         └──────┬───────┘      │
-        └────────────────┴────────────────────────────────┼──────────────┘
-                                                           │ MCP tools
-                                    ┌──────────────────────▼───────────────┐
-                                    │  Claude Code (final reasoning/coding) │
-                                    │  ibwd_impact / ibwd_callers / ...     │
-                                    │  → verify graph claims vs source      │
-                                    │  → fall back to glob/grep for source  │
-                                    └───────────────────────────────────────┘
-```
-
-**Pipeline:** a repo scan hashes files (XXH3/SHA256) and only reprocesses what changed → tree-sitter extracts structural facts (imports, calls, classes, inheritance) as confidence-1.0 edges → optional local-LLM passes (Ollama) generate embeddings and summaries as confidence-<1.0, `llm_inference`-tagged nodes/edges, gated by a hallucination grader → everything lands in a single SQLite file (graph tables + a `sqlite-vec` vector index) → a retrieval layer (vector search → graph traversal → ranking/reranking → token-budgeted context builder) serves results → Claude Code consumes it all through typed MCP tools, and is instructed to verify anything graph-derived against real source before editing.
-
-### Why MCP, not just slash commands
-
-Every comparable 2025–2026 code-graph project (Codebase-Memory, CodeGraphContext, code-graph-mcp, Code-Graph-RAG) ships as an MCP server, and slash commands have effectively been superseded by the skills model in Claude Code. IBWD follows suit: the **MCP server is the primary interface**, shipped starting in Sprint 1 with a single tool and extended every sprint after. Thin slash-command wrappers (`/graphify`, `/graph`, `/impact`) exist only as ergonomic convenience on top of the same MCP tools.
-
-## Data model
-
-**Node types:** `Project`, `Package`, `Folder`, `File`, `Module`, `Class`, `Function`, `Method`, `Interface`/`Type`, plus semantic nodes (`Summary`, `Responsibility`, `Component`/`ADR`) and historical nodes (`Commit`, `PR`).
-
-**Edge types:**
-- Structural, `confidence=1.0`, `source_type=static_analysis`: `CONTAINS`, `DEFINES`, `IMPORTS`, `CALLS`, `INHERITS`, `IMPLEMENTS`, `DECORATES`
-- Semantic, `confidence<1.0`, `source_type=llm_inference`: `RELATES_TO`, `RESPONSIBLE_FOR`, `SIMILAR_TO`
-- Historical: `TOUCHED` (commit→file), `TESTED_BY` (test→symbol)
-
-Every node stores an exact `file:line` and the `content_hash` it was derived from. Every edge stores `confidence` + `source_type`, so results can be filtered by authority and invalidated automatically when source changes. `CALLS` edges specifically go through a 5-tier resolution cascade (import-map match → same-module → unique-name-in-repo → suffix match → fuzzy match), with confidence reflecting resolution certainty (0.95 down to 0.35), not authorship — the fact itself is still static analysis.
-
-See `IBWD_v1_EXECUTION_PLAN.md` Appendix B for the concrete SQLite schema (`nodes`, `edges`, `summaries` tables, plus the `sqlite-vec` virtual table and a worked recursive-CTE example for "callers of node N up to depth 3").
-
-## Tech stack
-
-| Layer | Choice | Why |
-|---|---|---|
-| Structural parsing | **tree-sitter** (Python + JS/TS in v1) | Single consistent CST pipeline, exact source positions, incremental, 130+ languages available if extended later. Used by Aider/Cursor/Continue. |
-| Graph storage | **SQLite** | Recursive CTEs do graph traversal (BFS callers/dependents) in sub-millisecond time; zero server; single-file; portable. Kuzu was considered and rejected — its repo was archived Oct 2025 after Apple's acquisition of Kùzu Inc. |
-| Vector store | **sqlite-vec** (same SQLite file) | No separate server; embeddings live alongside the graph; "deploying a new index is copying a file." LanceDB is the fallback if this is outgrown. |
-| Embeddings | **`qwen3-embedding:0.6b`** (Ollama), scalable to 4b/8b | Official Ollama model; the 8B variant ranks #1 on MTEB multilingual and leads MTEB-Code; Apache 2.0; Matryoshka dimensions let you scale precision to hardware. |
-| Summarization LLM | **`qwen3-coder:30b`** (Ollama) | 30.5B total / 3.3B active MoE, ~19GB at Q4_K_M, 256K context. Falls back to `devstral-small:24b` or `gpt-oss:20b` on lighter hardware. |
-| Reranking | **`dengcao/Qwen3-Reranker-0.6B`** (community GGUF) or deferred | No first-class official Ollama reranker yet; v1 can fuse vector-score + graph-distance instead of a dedicated reranker pass. |
-| Agent integration | **MCP server**, Python (official Anthropic MCP SDK) | Idiomatic 2026 Claude Code integration; typed, token-efficient, self-contained tools per Anthropic's tool-design guidance. |
-| Incremental updates | **XXH3/SHA256 content hashing** + manifest | Only changed files get reprocessed; mirrors Cursor's Merkle-diff approach and Codebase-Memory's ~1.2s incremental re-index. |
-
-Rejected/deferred: Neo4j and other graph DBs (SQLite CTEs suffice at this scale), Kuzu (archived), ChromaDB (HNSW corruption on abrupt exit), multi-agent orchestration, 20+ language support, autonomous code modification, fine-tuning.
-
-## MCP tools (by sprint)
-
-| Tool | Ships in | Answers |
-|---|---|---|
-| `ibwd_scan`, `ibwd_find_files` | Sprint 1 | "Which files are tests/configs/X?" |
-| `ibwd_find_symbol`, `ibwd_list_symbols` | Sprint 2 | "Where is X defined?" |
-| `ibwd_callers`, `ibwd_dependents`, `ibwd_trace_path` | Sprint 3 | "What calls/imports X? What does X depend on? How does A reach B?" |
-| `ibwd_impact`, `ibwd_tests_for` | Sprint 4 | "What breaks if I change X? What tests cover it?" |
-| `ibwd_search` | Sprint 5 | Vague/conceptual queries without an exact symbol name |
-| `ibwd_explain` | Sprint 6 | "What is X responsible for?" (with confidence/source_type on every claim) |
-| *(upgrade)* ranked + budgeted output | Sprint 7 | Complex multi-hop questions, fit to a token budget |
-
-Symbol discovery returns definition locations and exact `symbol_id` identities. Traversal returns relations, heuristic confidence and resolution status; scan and diagnostic responses use their own schemas. Definition lines are not call-site positions.
-
-## Build plan: 8 sprints, not phases
-
-The plan is agile rather than linear on purpose: the MCP server ships in **Sprint 1** with one working tool, and every sprint after adds exactly one capability. Each sprint ends with a real **A/B demo** — the same question asked with and without that sprint's new tool, tokens and tool-calls logged to `benchmarks/sprint_N_results.csv` — so there's a go/no-go signal at every step instead of only at the end.
-
-| Sprint | Ships | Go/no-go signal |
-|---|---|---|
-| 1 | File/dir index | Fewer tool calls than `Glob` |
-| 2 | Symbol index | Fewer tokens than `Grep`, especially on common names |
-| 3 | Call graph | ≥3× fewer tokens than manual grep-tracing |
-| 4 | Impact analysis | ≥3–5× fewer tokens, equal/better correctness |
-| 5 | Semantic search | Higher first-try hit rate than grep on vague queries |
-| 6 | Semantic understanding | Matches manual-read accuracy, far fewer tokens |
-| 7 | Context optimization | Equal/better task success at a smaller fixed token budget |
-| 8 | Full agent integration | Structural ≥5× tokens saved; source-level within ~10–20% of baseline |
-
-**Checkpoint at Sprint 4:** this is the deepest test of the pure structural layer (no LLM semantics yet). If Sprints 1–4 aren't clearly winning on tokens by then, the plan says stop and fix structural retrieval — layering summaries on a weak foundation won't rescue the numbers.
-
-Full sprint-by-sprint build tasks, exact Claude Code prompts, demo protocols, and definitions of done are in `IBWD_v1_EXECUTION_PLAN.md`.
-
-## Evaluation approach
-
-Every benchmark separates tasks into **structural** (impact analysis, "what calls X", dependency chains) vs. **source-level** (full-file understanding, exhaustive text search) and reports them separately rather than as one blended number — this is the key lesson from Codebase-Memory, which wins big on the former and roughly ties/loses on the latter. Sprint 8 aggregates three conditions across the whole task set: (a) vanilla Claude Code (`Glob`/`Grep`/`Read` only), (b) embedding-only retrieval (graph disabled), and (c) full IBWD — specifically to prove the *graph*, not just the embeddings, is doing the work.
-
-## Repo layout (target)
-
-```
-ibwd/
-├── README.md
-├── IBWD_v1_EXECUTION_PLAN.md
-├── compass_artifact_..._markdown.md   # research findings behind the design
-├── CLAUDE.md                          # built incrementally across sprints
-├── pyproject.toml
-├── .claude/commands/                  # thin slash-command wrappers (graphify, graph, impact)
-├── KNOWN_LIMITATIONS.md               # what the graph can't see, and why
-├── SPRINT_1.md / SPRINT_2.md / SPRINT_3.md   # per-sprint write-ups
-├── src/ibwd/
-│   ├── cli.py
-│   ├── scan.py          # orchestrates scan -> symbols -> edges
-│   ├── scanner/         # filesystem.py, symbols.py, python.py, javascript.py, references.py, valuerefs.py
-│   ├── graph/           # schema.sql, database.py, queries.py, manifest.py, resolution.py, modules.py
-│   ├── retrieval/       # traversal.py (callers/dependents, path finding); ranking + context builder planned
-│   ├── mcp/             # server.py — the MCP tool surface, shipped Sprint 1
-│   ├── ai/              # (planned, Sprint 5–6) ollama client, embeddings, summarizer, hallucination grader
-│   └── git/             # (planned, Sprint 4) commit/PR history ingestion
-├── tests/
-└── benchmarks/          # harness.py, tasks.yaml, per-sprint results, RESULTS.md
-```
-
-## Getting started — local, no model required
-
-For both clients, follow the [daily-work setup guide](docs/DAILY_USE.md), then
-[measure existing session logs](docs/USAGE_MEASUREMENT.md) with `ibwd usage-report` and `ibwd usage-summary`.
-These analyzers run locally without starting a model or benchmark session.
-
-Use Python 3.11+ and install this existing repository once:
+From an installed IBWD checkout:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -e '.[dev]'
-.venv/bin/python -m ibwd.cli scan --repo /absolute/path/to/target-repo
-.venv/bin/python -m ibwd.cli doctor --repo /absolute/path/to/target-repo
+.venv/bin/python -m ibwd.cli setup --repo /absolute/path/to/work-project
 ```
 
-Installation downloads Python dependencies; scanning, querying and diagnostics run locally and require no model or API key.
-Ollama, embeddings and generated summaries are not required for the shipped tools.
-`doctor` emits JSON and exits with status 1 for a missing, stale, inconsistent or invalid index. It does not modify the index.
+This configures both clients, installs routing guidance and reporting hooks, refreshes the index and checks local readiness.
+Reconnect the clients and complete their normal trust/approval flow. Work normally; repeated “use IBWD” reminders should not be necessary,
+but configured instructions alone do not prove the agent selected a tool.
 
-Generate the configuration for either client from IBWD's environment:
+Reports update at normal client hook events:
+
+```text
+<work-project>/.ibwd/usage/latest-codex.md
+<work-project>/.ibwd/usage/latest-claude.md
+```
+
+Reports count direct and supported structured nested MCP calls, separate scans from retrievals, and retain unknowns.
+Open `.ibwd/usage/comparison.md` for automatic client-separated summaries. Opaque orchestration and child usage can be missing.
+See [Sprint 3A delivery notes](docs/SPRINT_3A.md); live adoption and token savings remain unverified.
+A scan is maintenance; token totals are not tokens saved. See [measurement and limitations](docs/USAGE_MEASUREMENT.md).
+
+For first installation or another laptop, follow [the full setup guide](docs/NEW_DEVICE_SETUP.md).
+Use a new environment on each device and run setup for each work repository; do not copy virtual environments or machine-specific settings.
+Current setup/hooks support macOS, Linux and WSL; native Windows hook generation is not implemented.
+
+## Shipped tools
+
+| Tool | Purpose |
+| --- | --- |
+| `ibwd_scan` | Refresh the local index |
+| `ibwd_find_files` | Find files by category or path substring |
+| `ibwd_find_symbol` | Find definitions and exact `symbol_id` values |
+| `ibwd_list_symbols` | List indexed symbols in a file |
+| `ibwd_callers` | Find incoming calls, imports, inheritance and value references |
+| `ibwd_dependents` | Find outgoing relationships |
+| `ibwd_trace_path` | Find a scoped path; CALLS-only by default |
+
+Use returned exact identities to disambiguate symbols. Read source before editing.
+Current scans are explicit: refresh after relevant edits or branch changes and avoid simultaneous scans from two clients.
+For troubleshooting, run:
 
 ```bash
-.venv/bin/python -m ibwd.cli client-config --client codex --repo /absolute/path/to/target-repo
-.venv/bin/python -m ibwd.cli client-config --client claude --repo /absolute/path/to/target-repo
+.venv/bin/python -m ibwd.cli doctor --setup --repo /absolute/path/to/work-project
 ```
 
-For Codex, merge the printed `[mcp_servers.ibwd]` table into your user `~/.codex/config.toml` or trusted project's
-`.codex/config.toml` ([official MCP configuration](https://developers.openai.com/codex/mcp)). For Claude Code, merge the printed
-`mcpServers.ibwd` entry into the target project's `.mcp.json`. Preserve other settings and servers. These commands only print
-configuration; they do not install it or replace existing files. Restart/reconnect the client and complete its normal project trust
-and MCP approval flow if prompted.
+## Accuracy and evidence
 
-Both configurations invoke the installed Python by absolute path and pass `--repo` explicitly. They work even when the client
-starts elsewhere, without asking `uv run` to resolve IBWD from the target project's dependencies. Regenerate configuration if the
-IBWD installation or target repository moves. You can also start the server directly:
+Tree-sitter and SQLite provide deterministic extraction and storage, not complete program semantics.
+Default graph queries use resolved edges; candidate hints are opt-in and fuzzy resolution is disabled by default.
+Confidence numbers are heuristic scores, not calibrated probabilities.
 
-```bash
-.venv/bin/python -m ibwd.cli serve --repo /absolute/path/to/target-repo
-```
+An empty result means no matching resolved edges in the indexed scope. It never proves a function is unused or safe to delete.
+Tests, dynamic dispatch and type-inferred receivers are not fully represented. Read [known limitations](KNOWN_LIMITATIONS.md).
 
-The server uses stdio for MCP; it is not an interactive terminal command. Query tools ask for `ibwd_scan` when the target has no
-index. After edits, rescan explicitly. Use the `symbol_id` returned by discovery (for example `src/models.py::User.greet`) to
-resolve ambiguous names in callers, dependencies and path queries. A path query with too many matches asks for an exact identity
-rather than silently omitting possible endpoints.
+Historical Sprint 3 validation found strong supported-scope precision on development repositories but substantial runtime gaps.
+The qualified paid token-efficiency gate remains untested and is not authorized to run. The new roadmap changes future engineering priorities;
+it does not turn that historical gate into a pass. See [Sprint 3](SPRINT_3.md) and [the frozen report](benchmarks/SPRINT3_free_stage_report.md).
 
-Codex reads `AGENTS.md`; Claude Code reads `CLAUDE.md`. In this repository `AGENTS.md` links to `CLAUDE.md` so both share the routing
-and no-spending instructions. In other repositories, add the relevant graph-first guidance to their existing instruction files.
-The `.claude/commands/` wrappers are client-specific; the seven MCP tools work through either client's standard MCP interface.
+## Revised development sequence
 
-## Documents in this repo
+| Stage | Focus |
+| --- | --- |
+| Sprint 3A | Adoption evidence and accurate automatic usage reporting |
+| Sprint 3B | Freshness, concurrent clients and bounded results |
+| Sprint 4 | Lexical retrieval, task-context packets and exact source expansion |
+| Sprint 5 | Scoped impact analysis, test relevance and optional compiler evidence |
+| Sprint 6 | Optional local embeddings, justified by retrieval quality |
+| Sprint 7 | Optional local specialists and source-backed reusable memory |
+| Sprint 8 | Portable skills, dual-client packaging and ordinary-work efficiency review |
 
-- **`IBWD_v1_EXECUTION_PLAN.md`** — the original sprint-by-sprint build plan (current direction is in `DEVELOPMENT.md`): build tasks, exact Claude Code prompts, demo protocols, go/no-go thresholds, and appendices (repo layout, SQLite schema, `CLAUDE.md` template, benchmark protocol).
-- **`compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md`** — the research report grounding every architectural decision above in prior art (Codebase-Memory, Aider, Cursor, Continue.dev, Anthropic's context-engineering guidance) and correcting an earlier draft plan's model names/tags.
+Local deterministic tests establish engineering quality; existing ordinary-work logs provide observational usage evidence.
+Neither establishes a causal savings claim on its own. Local models remain optional and are selected by available resources,
+supported runtime and measured benefit rather than a fixed laptop or model name.
+
+## Project documentation
+
+- [Active roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md): architecture, sprint acceptance criteria, device profiles and model strategy.
+- [Documentation review](docs/DOCUMENTATION_REVIEW.md): all 22 original Markdown paths and reasons for the pivot.
+- [Development guide](DEVELOPMENT.md): delivered work and local validation commands.
+- [Daily use](docs/DAILY_USE.md), [new-device setup](docs/NEW_DEVICE_SETUP.md), [usage measurement](docs/USAGE_MEASUREMENT.md).
+- [Schema reference](SCHEMA.md) and [graph limitations](KNOWN_LIMITATIONS.md).
+- [Original execution plan](IBWD_v1_EXECUTION_PLAN.md): preserved design history; future sequencing is superseded.

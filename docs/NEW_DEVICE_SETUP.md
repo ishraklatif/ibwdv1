@@ -2,6 +2,9 @@
 
 Install IBWD once on the device, then run one setup command for each repository. The default setup supports **both Codex and Claude Code**.
 
+The [active roadmap](TOKEN_EFFICIENCY_ROADMAP.md) keeps this device-agnostic: no particular laptop or local model is required.
+Future local-AI features are optional capability profiles; the current deterministic setup below needs none of them.
+
 These commands use a macOS/Linux terminal with Bash or Zsh. On Windows, use a Linux environment such as WSL and install IBWD and both coding clients inside that same environment. Native PowerShell hook generation is not implemented. This guide has been checked against the current IBWD code; the new device itself has not been tested.
 
 IBWD installation downloads Python dependencies. Its setup, indexing, checks and reporting run locally without model requests. Normal coding conversations remain subject to your coding client's account and usage arrangement. No Ollama installation, model downloads, extra API keys or paid benchmark runs are needed.

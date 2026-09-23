@@ -1,5 +1,10 @@
 # Addendum — Path Finding (`ibwd_trace_path`)
 
+> **Historical design note.** Current path semantics and limitations are in [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md);
+> future work follows [the revised roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md).
+> Empty graph results never establish deletion safety. The cosine-A* proposal below is not an accepted relevance guarantee;
+> an admissible heuristic preserves the existing objective, while an arbitrary one may lose optimality.
+
 > **Integration note for Claude Code:** this is not a new sprint number. It
 > fills a gap inside **Sprint 3 — Call Graph & Dependencies**: that sprint's
 > own demo test #3 ("Trace the call chain from `<function A>` to

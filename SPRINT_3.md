@@ -1,8 +1,14 @@
 # Sprint 3 — Call Graph & Dependencies (write-up)
 
-**Status: built and tested; free validation stages complete (verdict READY FOR PAID A/B, see `benchmarks/SPRINT3_free_stage_report.md`); the paid benchmark gate is still OPEN and untested.** The ≥3x token target was met on 2 of 3 demo tasks on IBWD's own
-repo and missed on the third (2.3x). Multi-repository validation is in progress
-(`benchmarks/SPRINT3_protocol.md`, `SPRINT_3_FINISH_PLAN.md`).
+> **Current direction, 2026-09-24:** the structural implementation and historical free-stage evidence are retained.
+> The paid efficiency gate remains untested and unauthorized. Continue with Sprint 3A/3B product hardening under
+> [the active roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md); later engineering no longer waits for paid execution.
+> The historical observations below are not a certification of current model-level savings.
+
+**Status: structural implementation built; historical free validation complete (see `benchmarks/SPRINT3_free_stage_report.md`);
+the paid benchmark gate is still OPEN and untested.** The ≥3x output-token target was met on 2 of 3 demo tasks on IBWD's own
+repo and missed on the third (2.3x). This does not establish the later cumulative-token gate.
+The frozen experiment and earlier verification plans are historical; the current next step is 3A/3B below.
 
 ## What was built
 
@@ -138,6 +144,6 @@ disclosed qualification defects, and every caveat are in `benchmarks/SPRINT3_fre
 
 ## Next
 
-Multi-repo validation on Sphinx, Scrapy, Redux Toolkit, Bulletproof React and Celery (pinned SHAs in
-`benchmarks/sprint_3_repos.lock` and the finish plan), with independent oracles, free checks first, then a paid A/B on a
-pre-declared metric. Sprint 4 waits on that verdict.
+Sprint 3A: reliable adoption/usage attribution. Sprint 3B: freshness, concurrent clients and bounded retrieval.
+Then Sprint 4: lexical retrieval and task-context packets. See [the revised roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md)
+for acceptance criteria. Frozen artifacts stay historical; do not run the paid pilot or rewrite hashes to imply a pass.

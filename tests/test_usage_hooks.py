@@ -74,7 +74,8 @@ def test_invalid_event_does_not_write_reports(tmp_path, field, value):
     event[field] = value
     with pytest.raises(ValueError):
         capture_session(event, "codex", tmp_path)
-    assert not (tmp_path / ".ibwd").exists()
+    assert not list((tmp_path / ".ibwd/usage/sessions").glob("*.json"))
+    assert not list((tmp_path / ".ibwd/usage/state").glob("*.json"))
 
 
 def test_child_event_is_not_attributed_to_parent(tmp_path):

@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import sys
 import tomllib
+from importlib.resources import files
 
 from ibwd.health import inspect_index
 from ibwd.scan import run_scan
@@ -31,6 +32,14 @@ No paid model jobs or benchmarks. Normal work and local deterministic checks onl
 BLOCK = f"{START}\n## IBWD repository navigation\n\n{ROUTING}\n{END}"
 TOOLS = {"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
          "ibwd_callers", "ibwd_dependents", "ibwd_trace_path"}
+
+
+def skill_path(client: str) -> str:
+    return (".agents" if client == "codex" else ".claude") + "/skills/ibwd-navigation/SKILL.md"
+
+
+def skill_source() -> str:
+    return files("ibwd").joinpath("resources/ibwd-navigation/SKILL.md").read_text(encoding="utf-8")
 
 
 def selected_clients(client: str) -> tuple[str, ...]:
@@ -110,6 +119,11 @@ def plan_setup(repo: Path, client: str = "both") -> dict[str, str]:
             changes[relative] = updated
         route = routing_file(repo, name)
         changes[route] = merge_routing(_read(repo, route))
+        skill = skill_path(name)
+        existing_skill = _read(repo, skill)
+        if existing_skill and "<!-- ibwd:managed-skill:v1 -->" not in existing_skill:
+            raise ValueError(f"Conflicting user-owned skill at {skill}; preserve or rename it before setup. No files written.")
+        changes[skill] = skill_source()
         hooks_path = ".codex/hooks.json" if name == "codex" else ".claude/settings.local.json"
         hooks = merge_hook_config(_json(_read(repo, hooks_path)), name, repo)
         changes[hooks_path] = json.dumps(hooks, indent=2) + "\n"
@@ -174,6 +188,8 @@ def inspect_setup(repo: Path, client: str = "both") -> dict:
                 problems.append("Configured Python interpreter is missing or not executable.")
             if BLOCK not in _read(repo, route):
                 problems.append(f"Missing or outdated IBWD routing block in {route}; run ibwd setup --repo PATH.")
+            if _read(repo, skill_path(name)) != skill_source():
+                problems.append(f"Missing or outdated routing skill in {skill_path(name)}; run ibwd setup --repo PATH.")
             hook_settings = _json(_read(repo, reporting))
             hooks = hook_settings.get("hooks", {})
             for event, groups in hook_config(name, repo)["hooks"].items():
@@ -189,6 +205,7 @@ def inspect_setup(repo: Path, client: str = "both") -> dict:
             problems.append(f"Cannot inspect project configuration: {exc}")
         clients[name] = {"local_status": "ready" if not problems else "needs_attention",
                          "routing_file": route, "problems": problems,
+                         "skill_file": skill_path(name),
                          "automatic_report_seen": (repo / ".ibwd/usage" / f"latest-{name}.md").is_file(),
                          "runtime_connection": "unverified", "agent_adoption": "unverified"}
     index = inspect_index(repo)

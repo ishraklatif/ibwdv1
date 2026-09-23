@@ -27,11 +27,16 @@ from ibwd.retrieval.traversal import (
 )
 from ibwd.scan import run_scan
 from ibwd.setup import ROUTING
+from ibwd.telemetry import ObservedServerMixin
 
 # Ambiguous names (substring fallback) can match many nodes; bound the path search.
 MAX_PATH_CANDIDATES = 10
 
-mcp = MCPServer("ibwd", instructions=ROUTING)
+class ObservedMCPServer(ObservedServerMixin, MCPServer):
+    pass
+
+
+mcp = ObservedMCPServer("ibwd", instructions=ROUTING)
 
 
 def _connect_index():

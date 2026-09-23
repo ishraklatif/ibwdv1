@@ -13,6 +13,7 @@ from mcp.client.stdio import stdio_client
 from ibwd.cli import main
 from ibwd.health import inspect_index
 from ibwd.scan import run_scan
+from ibwd.telemetry import read_events
 
 
 @pytest.mark.parametrize("client", ["codex", "claude"])
@@ -51,9 +52,12 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                                      "ibwd_callers", "ibwd_dependents", "ibwd_trace_path"}
                     missing = await session.call_tool("ibwd_find_symbol", {"name": "finish"})
                     assert error(missing) and "ibwd_scan" in missing.content[0].text
-                    assert not (repo / ".ibwd").exists()
+                    assert not (repo / ".ibwd/graph.db").exists()
+                    assert read_events(repo)[-1]["status"] == "error"
                     assert payload(await session.call_tool("ibwd_scan", {}))["total_files"] == 1
-                    assert payload(await session.call_tool("ibwd_find_files", {}))[0]["path"] == "app.py"
+                    found = await session.call_tool("ibwd_find_files", {})
+                    assert payload(found)[0]["path"] == "app.py"
+                    assert found.meta["ibwd"]["observation_id"] == read_events(repo)[-1]["observation_id"]
                     assert payload(await session.call_tool("ibwd_find_symbol", {"name": "finish"}))[0]["line"] == 4
                     assert len(payload(await session.call_tool("ibwd_list_symbols", {"file": "app.py"}))) == 2
                     assert payload(await session.call_tool("ibwd_callers", {"symbol": "finish"}))[0]["name"] == "start"
@@ -63,6 +67,11 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
     asyncio.run(exercise())
     assert not (elsewhere / ".ibwd").exists()
     assert inspect_index(repo)["status"] == "ready"
+    events = read_events(repo)
+    assert len(events) == 16
+    assert all(e["session_key"] is None for e in events)
+    assert all("arguments" not in e for e in events)
+    assert all(e["response_bytes"] > 0 for e in events if e["status"] == "success")
 
 
 def test_doctor_is_read_only_and_detects_edits_deletions_and_additions(tmp_path):

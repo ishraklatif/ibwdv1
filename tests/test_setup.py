@@ -5,7 +5,7 @@ import pytest
 from click.testing import CliRunner
 
 from ibwd.cli import main
-from ibwd.setup import BLOCK, START, inspect_setup, plan_setup, server_config, setup_project
+from ibwd.setup import BLOCK, START, inspect_setup, plan_setup, server_config, setup_project, skill_path, skill_source
 
 
 def test_setup_both_preserves_settings_and_instructions_and_is_idempotent(tmp_path):
@@ -30,6 +30,9 @@ def test_setup_both_preserves_settings_and_instructions_and_is_idempotent(tmp_pa
     assert plan_setup(tmp_path) == {}
     assert setup_project(tmp_path)["changed_files"] == []
     assert (tmp_path / "AGENTS.md").read_text().count(START) == 1
+    assert (tmp_path / skill_path("codex")).read_text() == (tmp_path / skill_path("claude")).read_text() == skill_source()
+    assert "description: Locate unfamiliar" in skill_source()
+    assert "override conflicting instructions" in skill_source()
 
 
 def test_override_receives_routing_without_replacing_agents(tmp_path):
@@ -49,6 +52,7 @@ def test_override_receives_routing_without_replacing_agents(tmp_path):
     (".claude/settings.local.json", '{"hooks":{"Stop":{}}}'),
     ("CLAUDE.md", START + "\nmissing end"),
     (".codex/config.toml", "invalid toml"),
+    (".agents/skills/ibwd-navigation/SKILL.md", "user-owned skill"),
 ])
 def test_preflight_failure_never_partially_installs(tmp_path, relative, content):
     path = tmp_path / relative
@@ -59,6 +63,14 @@ def test_preflight_failure_never_partially_installs(tmp_path, relative, content)
         setup_project(tmp_path)
     after = {p.relative_to(tmp_path): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
     assert after == before
+
+
+def test_skill_preserves_conflicting_user_direction(tmp_path):
+    original = "Do not use IBWD on this task.\n"
+    (tmp_path / "AGENTS.md").write_text(original)
+    setup_project(tmp_path)
+    assert (tmp_path / "AGENTS.md").read_text().startswith(original)
+    assert "Respect the user's instructions" in skill_source()
 
 
 def test_readiness_distinguishes_missing_stale_disabled_and_runtime_unknown(tmp_path):

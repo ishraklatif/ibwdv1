@@ -6,25 +6,14 @@ empty so reporting cannot inject instructions or trigger another agent turn.
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 import shlex
 import sys
-import tempfile
+import sqlite3
 
-from ibwd.usage import analyze_log
-
-
-def _atomic_write(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix=".ibwd-", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as stream:
-            stream.write(text)
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)
+from ibwd.usage_stream import incremental_report
+from ibwd.local_io import atomic_write as _atomic_write, report_lock
+from ibwd.telemetry import read_events
 
 
 def hook_config(client: str, repo: Path) -> dict:
@@ -98,7 +87,66 @@ def render_report(report: dict) -> str:
     if report["warnings"]:
         lines += ["", "## Recording warnings", ""]
         lines.extend(f"- {warning}" for warning in report["warnings"])
+    lines += ["", "## Adoption evidence", ""]
+    for name, observation in report.get("observations", {}).items():
+        lines.append(f"- {name}: {observation['value']} — {observation['source']}")
+    lines += ["", "A scan is maintenance, not retrieval. Counts are observed lower bounds, not proof of complete coverage.",
+              "See comparison.md for separate client cohorts and unattributed server activity."]
     return "\n".join(lines) + "\n"
+
+
+def _configuration(repo, client):
+    import tomllib
+    from ibwd.setup import server_config, _server_matches
+    path = repo / (".codex/config.toml" if client == "codex" else ".mcp.json")
+    try:
+        config = tomllib.loads(path.read_text()) if client == "codex" else json.loads(path.read_text())
+        entry = config.get("mcp_servers" if client == "codex" else "mcpServers", {}).get("ibwd")
+        value = True if _server_matches(entry, server_config(repo)) and entry.get("enabled") is not False else "unknown"
+        if isinstance(entry, dict) and entry.get("enabled") is False:
+            value = False
+        if client == "claude":
+            settings = repo / ".claude/settings.local.json"
+            if settings.exists() and "ibwd" in json.loads(settings.read_text()).get("disabledMcpjsonServers", []):
+                value = False
+        return {"value": value, "source": "Project MCP command/repo snapshot at capture; global settings and client loading not verified."}
+    except (OSError, ValueError, AttributeError):
+        return {"value": "unknown", "source": "No readable matching project MCP configuration."}
+
+
+def refresh_comparison(folder: Path, events: list[dict]) -> None:
+    """Display observational cohorts; no automatic savings or outcome inference."""
+    from collections import defaultdict
+    import statistics
+    groups = defaultdict(list)
+    ids = set()
+    unreadable = 0
+    for path in sorted((folder / "sessions").glob("*.json")):
+        try:
+            report = json.loads(path.read_text())
+            group = (report["client"], tuple(report["models"]), tuple(report["efforts"]), tuple(report["client_versions"]),
+                     report["task_kind"], report["condition"])
+            groups[group].append(report)
+            ids.update(report.get("server_observation_ids", []))
+        except (OSError, ValueError, KeyError, TypeError):
+            unreadable += 1
+    server = {e["observation_id"]: e for e in events}
+    unmatched = sum(oid not in ids for oid in server)
+    lines = ["# IBWD ordinary-work comparison", "", "Observational snapshots, not matched tasks or measured savings.",
+             "Models, effort, client versions, task kinds and conditions remain separate; unknown labels are not inferred.", "",
+             f"Unreadable reports: {unreadable}", f"Retained server requests: {len(server)}",
+             f"Unattributed retained server requests: {unmatched}",
+             "Server ledger is a bounded recent window; connection/request IDs are not conversation IDs.", ""]
+    for group, reports in sorted(groups.items()):
+        tokens = [r["usage"]["total_tokens"] for r in reports if r.get("usage")]
+        lines += [f"## {' / '.join(str(v) for v in group)}", "",
+                  f"Sessions: {len(reports)}; missing token totals: {len(reports) - len(tokens)}; "
+                  f"unknown outcomes: {sum(r['outcome'] == 'unknown' for r in reports)}.",
+                  f"Median recorded tokens (available snapshots, all outcomes): {statistics.median(tokens) if tokens else 'unknown'}.",
+                  f"Incomplete/uncertain usage: {sum(r.get('observations', {}).get('usage_incomplete', {}).get('value') != False for r in reports)}.",
+                  f"Observed scans: {sum(r.get('observations', {}).get('scan_calls', {}).get('value', 0) for r in reports)}; "
+                  f"observed retrieval calls: {sum(r.get('observations', {}).get('retrieval_calls', {}).get('value', 0) for r in reports)}.", ""]
+    _atomic_write(folder / "comparison.md", "\n".join(lines) + "\n")
 
 
 def capture_session(event: dict, client: str, repo: Path) -> Path | None:
@@ -121,20 +169,36 @@ def capture_session(event: dict, client: str, repo: Path) -> Path | None:
     session_id = event.get("session_id")
     if not isinstance(session_id, str) or not session_id:
         raise ValueError("Client did not supply a session identity.")
-    report = analyze_log(Path(transcript), client)
     # Match transcript identity to the event before persisting an attribution.
     import hashlib
 
     expected = hashlib.sha256((client + ":" + session_id).encode()).hexdigest()[:20]
-    if report["session_key"] != expected:
-        raise ValueError("Hook session identity does not match the transcript.")
-    report["capture_event"] = event["hook_event_name"]
-    report["provisional"] = True  # Even SessionEnd does not promise final accounting.
-    folder = repo / ".ibwd" / "usage" / "sessions"
-    name = f"{client}-{report['session_key']}"
-    destination = folder / f"{name}.json"
-    _atomic_write(destination, json.dumps(report, indent=2) + "\n")
-    _atomic_write(folder / f"{name}.md", render_report(report))
-    # Human-facing shortcut; JSON session reports remain unique for aggregation.
-    _atomic_write(folder.parent / f"latest-{client}.md", render_report(report))
+    base = repo / ".ibwd/usage"
+    name = f"{client}-{expected}"
+    with report_lock(base / ".report.lock"):
+        checkpoint = base / "state" / f"{name}.json"
+        report, state = incremental_report(Path(transcript), client, checkpoint)
+        if report["session_key"] != expected:
+            raise ValueError("Hook session identity does not match the transcript.")
+        report["capture_event"] = event["hook_event_name"]
+        report["provisional"] = True  # SessionEnd does not promise final accounting.
+        report["observations"]["configured"] = _configuration(repo, client)
+        try:
+            events = read_events(repo)
+        except (OSError, ValueError, sqlite3.Error):
+            events = []
+            report["warnings"].append("Server ledger could not be read; attribution remains incomplete.")
+        linked = [e for e in events if e["observation_id"] in report["server_observation_ids"]]
+        report["server_evidence"] = {"linked_requests": len({e['observation_id'] for e in linked}),
+                                     "join": "Exact response _meta.ibwd.observation_id only; never timestamps or connection identity."}
+        if linked:
+            report["observations"]["connection_observed"] = {"value": True, "source": "Exact response-ID join to local server ledger."}
+        folder = base / "sessions"
+        destination = folder / f"{name}.json"
+        _atomic_write(destination, json.dumps(report, indent=2) + "\n")
+        _atomic_write(folder / f"{name}.md", render_report(report))
+        _atomic_write(base / f"latest-{client}.md", render_report(report))
+        refresh_comparison(base, events)
+        # Commit parser progress last: interrupted publication replays safely.
+        _atomic_write(checkpoint, json.dumps(state, separators=(",", ":")) + "\n")
     return destination

@@ -1,6 +1,8 @@
 # Current development direction
 
-Owner direction, 2026-09-20: build on the existing IBWD repository for **Codex and Claude Code**, with **no paid model calls**.
+Owner direction, updated 2026-09-24: build on the existing IBWD repository for **Codex and Claude Code**, with **no additional spending**
+and a **device-agnostic** design. Optimize context and recorded usage per correctly completed task; optional local models must earn their resource cost.
+The active sprint sequence and acceptance criteria are in [docs/TOKEN_EFFICIENCY_ROADMAP.md](docs/TOKEN_EFFICIENCY_ROADMAP.md).
 The original execution plan remains design history. Its paid gate no longer blocks local product engineering; it remains untested,
 and no replacement correctness or transport test establishes an agent token-savings claim.
 
@@ -40,20 +42,24 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
 
 ## Next priorities
 
-1. Verify adoption during ordinary work in both clients before adding retrieval features. `ibwd setup --repo PATH` now installs
-   project MCP settings, marked routing instructions, reporting hooks and a fresh index together. `doctor --setup` checks local
-   configuration, routing, reporting and freshness, with runtime connection/adoption explicitly unverified. The MCP initialization
-   response also carries routing guidance. Observe supported navigation in existing normal sessions; record fallback explanations
-   and actual calls. No paid probes or benchmark runs. Passing deterministic tests does not establish model adoption or savings.
-2. Improve deterministic retrieval quality and concise output, with explicit scope and truncation metadata. Measure response bytes,
-   correctness, latency, and incremental/fresh equivalence locally; label bytes as bytes, not measured agent tokens.
-3. Add bounded impact traversal with evidence paths, and separately labelled test linkage. Keep inferred test relevance distinct
-   from verified coverage; the current production-only graph cannot establish test coverage.
-4. Add opt-in local lexical/concept retrieval before requiring embeddings or generated summaries. Preserve source provenance and
-   clear invalidation for every derived result.
+1. **Sprint 3A instrumentation delivered:** shared routing skill, structured nested-call parsing, bounded server observations,
+   incremental serialized hooks and automatic comparison reports. See [implementation and limits](docs/SPRINT_3A.md).
+   Model adoption and token savings remain unverified; observe the next needed normal task in each client only.
+2. **Sprint 3B:** bound output and traversal work, version compact result envelopes, and coordinate freshness/index publication across clients.
+   Preserve explicit scan instructions until query-time freshness is implemented and tested.
+3. **Sprint 4:** deliver lexical retrieval, budgeted task-context packets and exact source expansion. Measure cumulative evidence size,
+   required-evidence retention and latency against competent bounded search; this is not a model-token benchmark.
+4. **Sprint 5:** add scoped impact/test relevance and optional installed compiler evidence. Reference linkage is not verified test coverage.
+5. **Sprints 6–7:** add optional local embeddings, then specialized local models only if separate quality/resource checks justify them.
+   Select a device profile from available capabilities; deterministic operation always remains supported.
+6. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.
 
 The retrieval improvements are future work, not shipped capabilities. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
 over tuning to the five development benchmark repositories. Preserve TypeDoc's reserved confirmation role.
+
+The initial 2026-09-24 roadmap revision was documentation-only; subsequent Sprint 3A implements reporting and skill installation.
+No local models are downloaded and the proposed Sprint 4 retrieval interfaces remain future work.
+See [the complete document audit](docs/DOCUMENTATION_REVIEW.md).
 
 ## Historical experiment
 

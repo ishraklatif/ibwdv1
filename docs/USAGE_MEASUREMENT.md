@@ -36,13 +36,19 @@ path to IBWD. No log search or separate analysis command is needed. Open these f
 
 - `.ibwd/usage/latest-codex.md` or `.ibwd/usage/latest-claude.md`: most recently captured report for that client.
 - `.ibwd/usage/sessions/`: one JSON and readable Markdown report per client/session, updated on resume.
+- `.ibwd/usage/comparison.md`: automatically refreshed observational cohorts and missing-data counts.
+
+Sprint 3A adds evidence-backed configuration, connection, scan/retrieval/error, fallback and incompleteness fields.
+Supported structured MCP lifecycle events count even when the outer call is orchestration; source strings do not count.
+The bounded local server ledger joins only on exact response observation IDs. See [format and limits](SPRINT_3A.md).
+Setup also installs the shared navigation skill for both clients; rerun setup after upgrading and reconnect.
 
 Reports include recorded token totals, direct tool counts, and whether IBWD was mentioned in recognized Codex instruction
 records. Ordinary conversation mentions do not count as instruction evidence. Claude instruction loading is not reconstructed.
 Absence of recorded instructions does not prove instructions were absent. Availability, task category, success and condition
 remain unknown rather than being guessed; the automatic reports are not eligible for comparative savings claims.
 
-Hooks run local Python only: no model requests, transcript copies, daemon, or telemetry. Successful hooks emit no model context,
+Hooks run local Python only: no model requests, transcript copies, daemon, or remote telemetry. Successful hooks emit no model context,
 and failures are advisory rather than requests to continue a turn. The client must retain readable transcripts. Reports are
 snapshots, including at session end: final accounting may not have reached the transcript yet. Crashes/forced exits may skip hooks;
 the last completed Stop snapshot remains. Subagent events with agent metadata are ignored, and child logs are not aggregated.
