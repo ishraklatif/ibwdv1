@@ -165,7 +165,7 @@ Setup manages these files in the work repository:
 
 If root `AGENTS.override.md` already exists, setup puts Codex's routing section there instead of `AGENTS.md`. Existing unrelated instructions, settings, servers and hooks are preserved. Changed existing files receive first-install backups under `.ibwd/setup-backups/`.
 
-Repeated setup does not duplicate identical hooks or routing sections. It updates the marked routing section and refreshes the index. Setup refuses malformed files, symlinked targets and conflicting existing IBWD server command/arguments before writing. Writes and indexing are not one all-or-nothing transaction; fix any reported failure and rerun.
+Repeated setup does not duplicate identical hooks or routing sections. It updates the marked routing section and refreshes the index. Setup refuses malformed files and conflicting existing IBWD server command/arguments before writing. When root `AGENTS.md` is a symlink, Codex automatically uses `AGENTS.override.md` and leaves the symlink untouched. Writes and indexing are not one all-or-nothing transaction; fix any reported failure and rerun.
 
 Do not copy machine-specific `.codex/config.toml`, `.codex/hooks.json`, `.mcp.json` or `.claude/settings.local.json` from the original device. Generate them here. Portable routing instructions can be shared through Git. Ignore entries do not untrack files already committed.
 

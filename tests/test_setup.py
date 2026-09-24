@@ -46,6 +46,17 @@ def test_override_receives_routing_without_replacing_agents(tmp_path):
     assert not (tmp_path / ".mcp.json").exists()
 
 
+def test_symlinked_agents_automatically_uses_codex_override(tmp_path):
+    target = tmp_path / "CLAUDE.md"
+    target.write_text("shared instructions\n")
+    (tmp_path / "AGENTS.md").symlink_to(target.name)
+    result = setup_project(tmp_path, "codex")
+    assert result["readiness"]["clients"]["codex"]["routing_file"] == "AGENTS.override.md"
+    assert BLOCK in (tmp_path / "AGENTS.override.md").read_text()
+    assert (tmp_path / "AGENTS.md").is_symlink()
+    assert (tmp_path / "AGENTS.md").read_text() == "shared instructions\n"
+
+
 @pytest.mark.parametrize("relative,content", [
     (".mcp.json", "invalid json"),
     (".mcp.json", '{"mcpServers":{"ibwd":{"command":"someone-else"}}}'),

@@ -12,3 +12,9 @@ ibwd-sprint3-kit/node_modules/
 
 # generated from scip.proto (protoc --python_out); see scip_python_to_graph.py docstring
 benchmarks/tools/scip_pb2.py
+/.ibwd/
+/.codex/config.toml
+/.codex/hooks.json
+/.mcp.json
+/.claude/settings.local.json
+*.ibwd-backup

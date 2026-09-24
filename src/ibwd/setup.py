@@ -75,7 +75,9 @@ def _json(text: str) -> dict:
 def routing_file(repo: Path, client: str) -> str:
     if client == "claude":
         return "CLAUDE.md"
-    return "AGENTS.override.md" if (repo / "AGENTS.override.md").exists() else "AGENTS.md"
+    # AGENTS.md is commonly a symlink shared with Claude instructions. Never
+    # write through it: select the Codex override automatically on fresh clones.
+    return "AGENTS.override.md" if (repo / "AGENTS.override.md").exists() or (repo / "AGENTS.md").is_symlink() else "AGENTS.md"
 
 
 def merge_routing(text: str) -> str:

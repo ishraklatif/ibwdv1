@@ -4,6 +4,7 @@ Implemented for the existing seven tools, with no model calls or added dependenc
 IBWD installation and reconnect Codex/Claude Code to load revised schemas and navigation instructions. The shared skill now
 uses automatic freshness and version-2 responses. Instructions guide model behavior; ordinary-work adoption and savings are
 still unverified. Native Windows hook/lock support remains future work; the current implementation supports macOS/Linux/WSL.
+When root `AGENTS.md` is symlinked, setup automatically selects `AGENTS.override.md`; no manual file creation is required.
 
 ## Publication and freshness
 
