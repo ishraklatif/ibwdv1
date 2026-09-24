@@ -112,26 +112,38 @@ def hash_file(path: Path) -> str:
 
 
 def scan_files(repo_root: Path) -> list[ScannedFile]:
-    """Walk repo_root respecting .gitignore + ALWAYS_IGNORE, return classified+hashed files."""
-    spec = _load_gitignore_spec(repo_root) # Load the .gitignore file from the repo root and create a PathSpec object for matching files
-    results: list[ScannedFile] = [] # Initialize an empty list to hold the scanned files
-
-    for path in sorted(repo_root.rglob("*")):# Recursively walk the repo_root directory and its subdirectories, yielding all files and directories
-        if not path.is_file(): # If the path is not a file (e.g., it is a directory), skip it and continue to the next path
-            continue
-        rel_path = path.relative_to(repo_root) # Get the relative path of the file with respect to the repo_root directory
-        if any(part in ALWAYS_IGNORE for part in rel_path.parts): # If any part of the relative path is in the ALWAYS_IGNORE set, skip it and continue to the next path
-            continue
-        rel_posix = rel_path.as_posix() # Convert the relative path to a POSIX-style string (e.g., "src/ibwd/scanner/filesystem.py")
-        if spec.match_file(rel_posix): # If the relative path matches any pattern in the .gitignore file, skip it and continue to the next path
-            continue
-        try: # Read the file once: hash it, and inspect source files for generated/minified content
+    """Prune ignored trees, apply nested gitignores and hash the readable inventory."""
+    import os
+    results: list[ScannedFile] = []
+    inherited = {}
+    def walk_error(error):
+        raise error
+    for directory, directories, names in os.walk(repo_root, followlinks=False, onerror=walk_error):
+        folder = Path(directory)
+        specs = list(inherited.get(folder, []))
+        ignore = folder / '.gitignore'
+        if ignore.is_file():
+            specs.append((folder, pathspec.PathSpec.from_lines('gitignore', ignore.read_text().splitlines())))
+        def ignored(path, is_dir=False):
+            matched = False
+            for base, spec in specs:
+                relative = path.relative_to(base).as_posix() + ('/' if is_dir else '')
+                for pattern in spec.patterns:
+                    if pattern.include is not None and pattern.match_file(relative) is not None:
+                        matched = pattern.include
+            return matched
+        directories[:] = sorted(name for name in directories if name not in ALWAYS_IGNORE
+                                and not (folder / name).is_symlink() and not ignored(folder / name, True))
+        for name in directories:
+            inherited[folder / name] = specs
+        for name in sorted(names):
+            path = folder / name
+            if path.is_symlink() or ignored(path):
+                continue
             data = path.read_bytes()
-        except OSError:
-            continue
-        kind = classify_file(rel_posix)
-        if kind == "source" and looks_generated(data):
-            kind = "generated"
-        results.append(ScannedFile(path=rel_posix, kind=kind, content_hash=xxhash.xxh3_64(data).hexdigest())) # Create a ScannedFile object with the relative path, classification, and content hash of the file, and append it to the results list
-
-    return results
+            rel_posix = path.relative_to(repo_root).as_posix()
+            kind = classify_file(rel_posix)
+            if kind == 'source' and looks_generated(data):
+                kind = 'generated'
+            results.append(ScannedFile(rel_posix, kind, xxhash.xxh3_64(data).hexdigest()))
+    return sorted(results, key=lambda file: file.path)

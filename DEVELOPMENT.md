@@ -14,7 +14,7 @@ and no replacement correctness or transport test establishes an agent token-savi
 - Read-only index diagnostics for file additions, edits, deletions, classification changes, build mismatch, corrupt databases,
   and disagreement between the manifest and database. This checks a snapshot of readable files, not concurrent-edit atomicity or
   semantic completeness. It does not monitor files in the background; rescan after edits.
-- Unindexed repositories produce an actionable MCP error rather than an empty graph result.
+- Unindexed or stale repositories refresh automatically before retrieval; repeated concurrent edits produce an explicit error.
 - Exact symbol identities distinguish same-named methods, and broad path queries disclose ambiguity instead of searching only
   the first ten matches and potentially reporting a false negative.
 - Real stdio MCP tests exercise all seven tools using both generated client configurations from a different working directory.
@@ -45,8 +45,8 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
 1. **Sprint 3A instrumentation delivered:** shared routing skill, structured nested-call parsing, bounded server observations,
    incremental serialized hooks and automatic comparison reports. See [implementation and limits](docs/SPRINT_3A.md).
    Model adoption and token savings remain unverified; observe the next needed normal task in each client only.
-2. **Sprint 3B:** bound output and traversal work, version compact result envelopes, and coordinate freshness/index publication across clients.
-   Preserve explicit scan instructions until query-time freshness is implemented and tested.
+2. **Sprint 3B delivered:** serialized staged index publication, generation-bound pagination, automatic freshness and bounded
+   retrieval. [Delivery notes and measured profile](docs/SPRINT_3B.md) describe compatibility and limits.
 3. **Sprint 4:** deliver lexical retrieval, budgeted task-context packets and exact source expansion. Measure cumulative evidence size,
    required-evidence retention and latency against competent bounded search; this is not a model-token benchmark.
 4. **Sprint 5:** add scoped impact/test relevance and optional installed compiler evidence. Reference linkage is not verified test coverage.

@@ -120,12 +120,16 @@ is unavailable, release instrumentation but label model adoption unverified. No 
 
 ### Sprint 3B — inexpensive and reliable retrieval
 
+Implementation and measured local profile: [Sprint 3B delivery notes](SPRINT_3B.md). Automatic freshness is now active;
+version 1 keeps legacy shapes with hard failure on oversized queries, while version 2 provides bounded envelopes and pages.
+The criteria below remain the design/acceptance reference. Other laptops need their own measurements using the same frozen profile.
+
 1. Establish a per-repository scan lock and a published index generation. Publish graph and manifest consistently; interrupted scans
    must leave the previous complete generation or an explicit unavailable/stale state. Test two MCP processes and a crashing writer.
 2. Check freshness inside retrieval so future clients need not spend an extra model round trip requesting a scan each session.
    Cache checks only within a bounded validity policy. Cover untracked files, deletions, ignore/config changes, dirty files and branch switches;
    a clean Git diff or watcher event stream alone is insufficient. Validate emitted source hashes and retry once if they change mid-read.
-   Until this ships, retain the current explicit scan workflow.
+   Automatic freshness replaces the former mandatory per-session scan workflow; explicit scan remains available.
 3. Add limits to discovery and traversal: result count, output bytes, visited nodes/edges and elapsed time. Limit during computation,
    not only after constructing an enormous result. Use progress interruption or bounded traversal for dense/cyclic graphs.
 4. Version a compact response envelope: `schema_version`, `index_generation`, `scope`, `items`, `truncated`, `limit_reason`, `next_cursor`.
@@ -344,8 +348,8 @@ If local summaries add latency or errors, leave them disabled indefinitely. Thes
 
 ## 9. First implementation sequence
 
-1. Implement Sprint 3A attribution and scan-versus-retrieval reporting in the existing usage/server modules.
-2. Add bounded output/computation and generation-safe scan/query behavior in Sprint 3B; preserve existing contracts through versioning.
+1. Delivered: Sprint 3A attribution and scan-versus-retrieval reporting in the existing usage/server modules.
+2. Delivered: Sprint 3B bounded output/computation and generation-safe scan/query behavior with versioned compatibility.
 3. Build Sprint 4's lexical packet and source expansion. Compare it locally against frozen bounded-search recipes.
 4. Observe the next necessary task in each client; fix the largest evidenced waste before starting Sprint 5.
 

@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from ibwd.local_io import atomic_write
 
 DEFAULT_MANIFEST_PATH = Path(".ibwd") / "manifest.json"
 
@@ -54,7 +55,7 @@ def save_manifest(manifest: dict[str, str], manifest_path: Path = DEFAULT_MANIFE
     This function saves the latest file-to-hash mapping.
     """
     manifest_path.parent.mkdir(parents=True, exist_ok=True) # Ensure the parent directory of the manifest file exists, creating it if necessary
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True))    #Converts the dictionary into formatted JSON and writes it to disk.
+    atomic_write(manifest_path, json.dumps(manifest, indent=2, sort_keys=True))
                                                                                 # indent=2 makes the file readable.
                                                                                 # sort_keys=True keeps entries in a consistent alphabetical order.
                                                                                 # Consistent formatting makes changes easier to inspect and compare.

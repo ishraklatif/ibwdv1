@@ -14,6 +14,13 @@ ROOT_DIR_PATH = "."
 SYMBOL_NODE_TYPES = ("Class", "Function", "Method")
 
 
+def _bounded_rows(cursor):
+    rows = cursor.fetchmany(2001)
+    if len(rows) > 2000:
+        raise ValueError('Legacy result budget exceeded; use response_version=2 with pagination or narrow the query.')
+    return rows
+
+
 @dataclass
 class ScanSummary:
     added: int = 0
@@ -121,30 +128,30 @@ def find_symbol(conn: sqlite3.Connection, name: str) -> list[sqlite3.Row]:
     placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
     # An explicit identity must never fall back to a different symbol.
     if "::" in name:
-        return conn.execute(
+        return _bounded_rows(conn.execute(
             f"SELECT id, name, qualified_name, node_type AS kind, file_path, start_line, end_line "
             f"FROM nodes WHERE node_type IN ({placeholders}) AND qualified_name = ?",
             (*SYMBOL_NODE_TYPES, name),
-        ).fetchall()
-    exact = conn.execute(
+        ))
+    exact = _bounded_rows(conn.execute(
         f"""
         SELECT id, name, qualified_name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND name = ?
         ORDER BY file_path, start_line
         """,
         (*SYMBOL_NODE_TYPES, name),
-    ).fetchall()
+    ))
     if exact:
         return exact
 
-    return conn.execute(
+    return _bounded_rows(conn.execute(
         f"""
         SELECT id, name, qualified_name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND name LIKE ? ESCAPE '\\'
         ORDER BY file_path, start_line
         """,
         (*SYMBOL_NODE_TYPES, f"%{_escape_like(name)}%"),
-    ).fetchall()
+    ))
 
 
 def resolve_targets(conn: sqlite3.Connection, name: str, file: str | None = None) -> list[sqlite3.Row]:
@@ -170,14 +177,14 @@ def resolve_targets(conn: sqlite3.Connection, name: str, file: str | None = None
 
 def list_symbols(conn: sqlite3.Connection, file_path: str) -> list[sqlite3.Row]:
     placeholders = ",".join("?" * len(SYMBOL_NODE_TYPES))
-    return conn.execute(
+    return _bounded_rows(conn.execute(
         f"""
         SELECT name, qualified_name, node_type AS kind, file_path, start_line, end_line
         FROM nodes WHERE node_type IN ({placeholders}) AND file_path = ?
         ORDER BY start_line
         """,
         (*SYMBOL_NODE_TYPES, file_path),
-    ).fetchall()
+    ))
 
 
 def _escape_like(value: str) -> str:
@@ -198,4 +205,4 @@ def find_files(
         query += " AND file_path LIKE ?"
         params.append(f"%{name_pattern}%")
     query += " ORDER BY file_path"
-    return conn.execute(query, params).fetchall()
+    return _bounded_rows(conn.execute(query, params))

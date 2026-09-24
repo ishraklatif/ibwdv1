@@ -7,7 +7,10 @@ checks. The frozen Sprint 3 artefacts/tag are historical evidence, not the curre
 untested. See `DEVELOPMENT.md` for current priorities/validation and `docs/TOKEN_EFFICIENCY_ROADMAP.md` for the active sprint plan.
 `AGENTS.md` shares these instructions. Do not load the entire roadmap for unrelated coding tasks.
 
-Use `ibwd doctor --repo PATH` to inspect index freshness without modifying it. Scan before querying an unindexed repository.
+Use `ibwd doctor --repo PATH` to inspect index freshness without modifying it. Retrieval automatically indexes or refreshes
+the repository under a shared lock. Prefer `response_version=2` for bounded envelopes, source hashes and pagination;
+follow `next_cursor` with the same query when needed. A truncated result is incomplete; narrow the query or use source search
+when a work limit prevents continuation. `ibwd_scan` remains available for an explicit refresh.
 Discovery tools return `symbol_id` (`file::Class.method` or `file::function`); pass that exact identity to graph queries when names
 are ambiguous. An ambiguous path response means no search was performed, not that no path exists.
 

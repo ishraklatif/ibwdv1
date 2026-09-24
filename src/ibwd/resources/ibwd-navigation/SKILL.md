@@ -17,8 +17,10 @@ When navigation is needed, use the available IBWD MCP tools:
 - Incoming calls/imports/references: `ibwd_callers`; outgoing dependencies: `ibwd_dependents`.
 - A connection between two endpoints: `ibwd_trace_path`.
 
-Run `ibwd_scan` before the first structural query in a session and after relevant edits or a branch switch.
-Avoid concurrent scans. Reuse exact `symbol_id` values when names are ambiguous; do not repeatedly search the same unchanged evidence.
+Retrieval checks freshness and refreshes automatically, including after edits and branch switches.
+Use `response_version=2` for bounded responses. Follow `next_cursor` with the same query when more evidence is needed;
+if a work limit prevents pagination, narrow the query or use source search. A truncated result is incomplete.
+Use `ibwd_scan` only for an explicit refresh. Reuse exact `symbol_id` values when names are ambiguous; do not repeatedly search the same unchanged evidence.
 Start graph queries at depth 1 unless the task needs a deeper relationship.
 
 Read the exact source needed for an edit and verify the result with appropriate checks. Current graph coverage is production

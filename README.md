@@ -83,7 +83,7 @@ it does not turn that historical gate into a pass. See [Sprint 3](SPRINT_3.md) a
 | Stage | Focus |
 | --- | --- |
 | Sprint 3A | Adoption evidence and accurate automatic usage reporting |
-| Sprint 3B | Freshness, concurrent clients and bounded results |
+| Sprint 3B (implemented) | Automatic freshness, locked publication and version-2 bounded results |
 | Sprint 4 | Lexical retrieval, task-context packets and exact source expansion |
 | Sprint 5 | Scoped impact analysis, test relevance and optional compiler evidence |
 | Sprint 6 | Optional local embeddings, justified by retrieval quality |

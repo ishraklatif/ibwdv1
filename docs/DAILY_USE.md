@@ -18,7 +18,7 @@ Other instructions/settings are preserved. The MCP initialization response also 
 Reconnect both clients and check IBWD in `/mcp`. In Codex, review and trust the hooks once in `/hooks`; complete the clients'
 normal project/MCP approval prompts. IBWD does not grant trust or bypass policies.
 
-Thereafter work normally. Agents are instructed to scan before the first structural query and after relevant changes, use IBWD
+Thereafter work normally. Retrieval refreshes automatically; agents use IBWD
 first for supported navigation (including implementation/UI work), and explain an unavailable/failed fallback. Read automatic
 reports at `.ibwd/usage/latest-codex.md` and `.ibwd/usage/latest-claude.md`; no per-session command is needed.
 
@@ -133,3 +133,10 @@ normal session end. Open `.ibwd/usage/latest-codex.md` or `.ibwd/usage/latest-cl
 This configures reporting only, so complete the MCP connection and routing steps above as well.
 See [USAGE_MEASUREMENT.md](USAGE_MEASUREMENT.md) for limitations, disabling hooks and optional manual comparisons.
 The analyzer reads local logs; it does not start Codex, Claude Code, API calls, or benchmark runs.
+
+## Sprint 3B update
+
+After updating IBWD, rerun `python -m ibwd.cli setup --repo /absolute/path/to/work-project` with your installed environment,
+then reconnect both clients so they load the updated tool schemas and shared navigation skill. Retrieval now checks and refreshes
+the index automatically. Prefer `response_version=2`; use `next_cursor` with the same query for additional results.
+See [Sprint 3B](SPRINT_3B.md) for response budgets, compatibility and measured performance.

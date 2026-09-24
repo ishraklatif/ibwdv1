@@ -51,9 +51,9 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                     assert names == {"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
                                      "ibwd_callers", "ibwd_dependents", "ibwd_trace_path"}
                     missing = await session.call_tool("ibwd_find_symbol", {"name": "finish"})
-                    assert error(missing) and "ibwd_scan" in missing.content[0].text
-                    assert not (repo / ".ibwd/graph.db").exists()
-                    assert read_events(repo)[-1]["status"] == "error"
+                    assert payload(missing)[0]['symbol_id'] == 'app.py::finish'
+                    assert (repo / ".ibwd/graph.db").exists()
+                    assert read_events(repo)[-1]["status"] == "success"
                     assert payload(await session.call_tool("ibwd_scan", {}))["total_files"] == 1
                     found = await session.call_tool("ibwd_find_files", {})
                     assert payload(found)[0]["path"] == "app.py"

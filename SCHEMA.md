@@ -6,7 +6,12 @@ The `summaries` table exists as reserved storage, but no shipped local-model sum
 
 **File:** `src/ibwd/graph/schema.sql`
 **Engine:** SQLite (single-file database at `.ibwd/graph.db`)
-**Loaded by:** `ibwd.graph.database.connect()`, via `executescript()` on every connection
+**Initialized by:** `ibwd.graph.database.connect()` for writers; MCP retrieval opens a read-only published snapshot.
+
+Sprint 3B adds `index_metadata(key TEXT PRIMARY KEY, value TEXT NOT NULL)` during staged publication.
+`generation` identifies the published snapshot; `config_digest` fingerprints import-resolution inputs. A per-repository
+lock coordinates graph/manifest/generation publication and retrieval. A publication marker makes interrupted updates explicitly
+stale. See [Sprint 3B](docs/SPRINT_3B.md) for the version-2 retrieval envelope and cursor contract.
 
 ## 1. Overview
 

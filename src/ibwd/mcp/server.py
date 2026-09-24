@@ -28,6 +28,7 @@ from ibwd.retrieval.traversal import (
 from ibwd.scan import run_scan
 from ibwd.setup import ROUTING
 from ibwd.telemetry import ObservedServerMixin
+from ibwd.retrieval.service import retrieval, readonly
 
 # Ambiguous names (substring fallback) can match many nodes; bound the path search.
 MAX_PATH_CANDIDATES = 10
@@ -43,7 +44,7 @@ def _connect_index():
     root = Path.cwd()
     if not (root / ".ibwd" / "graph.db").is_file() or not (root / ".ibwd" / "manifest.json").is_file():
         raise ToolError("Repository is not indexed. Run ibwd_scan first; an absent index is not an empty graph.")
-    return connect(root / ".ibwd" / "graph.db")
+    return readonly(root.resolve())
 
 
 @mcp.tool()
@@ -57,6 +58,7 @@ def ibwd_scan() -> dict:
 
 
 @mcp.tool()
+@retrieval('find_files')
 def ibwd_find_files(kind: str | None = None, name_pattern: str | None = None) -> list[dict]:
     """List files in the codebase graph, optionally filtered.
 
@@ -65,8 +67,7 @@ def ibwd_find_files(kind: str | None = None, name_pattern: str | None = None) ->
         name_pattern: substring to match against the file path.
 
     Returns a compact list of {path, kind} — prefer this over repeated Glob
-    calls for file discovery/categorization questions. Results reflect the
-    graph as of the last ibwd_scan; call ibwd_scan first if unsure.
+    calls for file discovery/categorization questions. Freshness is checked automatically.
     """
     conn = _connect_index()
     try:
@@ -77,6 +78,7 @@ def ibwd_find_files(kind: str | None = None, name_pattern: str | None = None) ->
 
 
 @mcp.tool()
+@retrieval('find_symbol')
 def ibwd_find_symbol(name: str) -> list[dict]:
     """Find where a class/function/method is defined by name.
 
@@ -90,8 +92,7 @@ def ibwd_find_symbol(name: str) -> list[dict]:
         name: the symbol name or exact file::symbol identity to look up.
 
     Returns a list of {name, symbol_id, kind, file, line} — kind is one of
-    "Class"/"Function"/"Method". Results reflect the graph as of the last
-    ibwd_scan; call ibwd_scan first if unsure. Currently covers Python and
+    "Class"/"Function"/"Method". Freshness is checked automatically. Currently covers Python and
     JS/JSX/TS/TSX only.
     """
     conn = _connect_index()
@@ -106,14 +107,14 @@ def ibwd_find_symbol(name: str) -> list[dict]:
 
 
 @mcp.tool()
+@retrieval('list_symbols')
 def ibwd_list_symbols(file: str) -> list[dict]:
     """List every class/function/method defined in a file, in source order.
 
     Args:
         file: repo-relative path to the file (as returned by ibwd_find_files).
 
-    Returns a list of {name, symbol_id, kind, file, line}. Results reflect the graph as
-    of the last ibwd_scan; call ibwd_scan first if unsure.
+    Returns a list of {name, symbol_id, kind, file, line}. Freshness is checked automatically.
     """
     conn = _connect_index()
     try:
@@ -188,6 +189,7 @@ def _reach_tool(direction, symbol: str, depth: int, file: str | None, include_ca
 
 
 @mcp.tool()
+@retrieval('callers')
 def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None, include_candidates: bool = False) -> list[dict]:
     """What calls / imports / subclasses / references a symbol (or file), out to `depth` hops.
 
@@ -218,13 +220,13 @@ def ibwd_callers(symbol: str, depth: int = 1, file: str | None = None, include_c
     uses may exist." That supports only "no matching edges in this graph", never "no possible uses"
     or "safe to delete": dynamic dispatch, framework registration and type-inferred receivers have no
     static edge (see KNOWN_LIMITATIONS.md). If several definitions match `symbol`, each result carries an `of`
-    ("file:line") naming which one it reaches. Results reflect the graph as of
-    the last ibwd_scan; call ibwd_scan first if unsure. Python and JS/TS only.
+    ("file:line") naming which one it reaches. Freshness is checked automatically. Python and JS/TS only.
     """
     return _reach_tool(callers_of, symbol, depth, file, include_candidates)
 
 
 @mcp.tool()
+@retrieval('dependents')
 def ibwd_dependents(symbol: str, depth: int = 1, file: str | None = None, include_candidates: bool = False) -> list[dict]:
     """What a symbol (or file) calls / imports / inherits from, out to `depth` hops.
 
@@ -238,6 +240,7 @@ def ibwd_dependents(symbol: str, depth: int = 1, file: str | None = None, includ
 
 
 @mcp.tool()
+@retrieval('trace_path')
 def ibwd_trace_path(source: str, target: str, edge_types: list[str] | None = None, include_candidates: bool = False) -> dict:
     """Find how `source` reaches `target` through the call/import graph, if it does.
 

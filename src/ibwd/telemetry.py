@@ -118,7 +118,15 @@ class ObservedServerMixin:
         data = serialized.get("structuredContent") if serialized else None
         if isinstance(data, dict) and "result" in data:
             data = data["result"]
-        count = len(data) if isinstance(data, list) else None
+        if isinstance(data, dict):
+            event['index_generation'] = data.get('index_generation')
+        if isinstance(data, dict) and data.get('schema_version') == 2:
+            budget = (arguments or {}).get('max_bytes', 16384)
+            if len(json.dumps(serialized, separators=(',', ':'), ensure_ascii=False).encode()) > budget:
+                record(event | {'phase': 'completed', 'status': 'error',
+                                'duration_ms': round((time.monotonic() - started) * 1000, 3)})
+                raise ValueError('Serialized MCP response exceeds max_bytes; narrow the query or increase the budget.')
+        count = len(data) if isinstance(data, list) else (len(data['items']) if isinstance(data, dict) and isinstance(data.get('items'), list) else None)
         if isinstance(data, list) and len(data) == 1 and isinstance(data[0], dict) and data[0].get("empty_result"):
             count = 0
         record(event | {"phase": "completed", "status": status,

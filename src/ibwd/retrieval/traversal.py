@@ -11,6 +11,7 @@ import sqlite3
 from dataclasses import dataclass
 
 import networkx as nx
+from ibwd.retrieval.bounded import Work, MAX_EDGES, LimitExceeded
 
 TRAVERSAL_RELATIONS = ("CALLS", "IMPORTS", "INHERITS", "REFERENCES")
 # A "call chain" is CALLS-only by default; mixed dependency paths (CALLS + IMPORTS, ...) must be requested explicitly.
@@ -48,6 +49,7 @@ def _reach(conn: sqlite3.Connection, node_id: int, depth: int, incoming: bool, i
     placeholders = ",".join("?" * len(TRAVERSAL_RELATIONS))
     status_filter = "" if include_candidates else "AND e.resolution_status = 'resolved'"
 
+    work = Work()
     rows = conn.execute(
         f"""
         WITH RECURSIVE reach(id, depth, conf, rel, cand) AS (
@@ -62,12 +64,15 @@ def _reach(conn: sqlite3.Connection, node_id: int, depth: int, incoming: bool, i
         SELECT id, depth, conf, rel, cand FROM reach
         """,
         (node_id, *TRAVERSAL_RELATIONS, *TRAVERSAL_RELATIONS, _clamp_depth(depth)),
-    ).fetchall()
+    ).fetchmany(MAX_EDGES + 1)
+    if len(rows) > MAX_EDGES:
+        raise LimitExceeded('Legacy traversal work budget exceeded; use response_version=2 or narrow the query.')
 
     # A node reachable at several depths is reported once, at its shortest distance; among that distance's rows the
     # highest-confidence one sets the score/status, and *every* relation seen there is kept (CALLS and REFERENCES both).
     by_node: dict[int, list[sqlite3.Row]] = {}
     for row in rows:
+        work.check(row['id'], edge=True)
         if row["id"] != node_id:
             by_node.setdefault(row["id"], []).append(row)
     best: dict[int, sqlite3.Row] = {}
@@ -133,6 +138,7 @@ def build_call_subgraph(
     confidence and status.
     """
     graph = nx.DiGraph()
+    work = Work()
     placeholders = ",".join("?" * len(edge_types))
     status_filter = "" if include_candidates else "AND e.resolution_status = 'resolved'"
     rows = conn.execute(
@@ -148,6 +154,8 @@ def build_call_subgraph(
         list(edge_types),
     )
     for row in rows:
+        work.check(row['source_id'], edge=True)
+        work.check(row['target_id'])
         graph.add_node(row["source_id"], name=row["s_name"], kind=row["s_kind"], file_path=row["s_file"], line=row["s_line"])
         graph.add_node(row["target_id"], name=row["t_name"], kind=row["t_kind"], file_path=row["t_file"], line=row["t_line"])
         weight = 1.0 / max(row["confidence"], 0.01)
