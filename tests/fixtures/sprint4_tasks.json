@@ -1,0 +1,308 @@
+[
+  {
+    "id": "task_01",
+    "task": "access token",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_02",
+    "task": "expired credential",
+    "targets": [],
+    "scopes": [
+      "test"
+    ],
+    "required_file": "tests/test_auth.py"
+  },
+  {
+    "id": "task_03",
+    "task": "credential renewal",
+    "targets": [],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": "docs/auth.md"
+  },
+  {
+    "id": "task_04",
+    "task": "expiry seconds",
+    "targets": [],
+    "scopes": [
+      "config"
+    ],
+    "required_file": "settings.toml"
+  },
+  {
+    "id": "task_05",
+    "task": "refreshAccessToken",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_06",
+    "task": "refreshSession",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/session.ts"
+  },
+  {
+    "id": "task_07",
+    "task": "validate",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_08",
+    "task": "trim",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/session.ts"
+  },
+  {
+    "id": "task_09",
+    "task": "authentication",
+    "targets": [],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": "docs/auth.md"
+  },
+  {
+    "id": "task_10",
+    "task": "local authentication tests",
+    "targets": [],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": "AGENTS.md"
+  },
+  {
+    "id": "task_11",
+    "task": "edit renewal",
+    "targets": [
+      "src/auth.py::refreshAccessToken"
+    ],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_12",
+    "task": "edit session",
+    "targets": [
+      "src/session.ts::refreshSession"
+    ],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/session.ts"
+  },
+  {
+    "id": "task_13",
+    "task": "edit validation",
+    "targets": [
+      "src/auth.py::validate"
+    ],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_14",
+    "task": "edit docs",
+    "targets": [
+      "docs/auth.md"
+    ],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": "docs/auth.md"
+  },
+  {
+    "id": "task_15",
+    "task": "edit config",
+    "targets": [
+      "settings.toml"
+    ],
+    "scopes": [
+      "config"
+    ],
+    "required_file": "settings.toml"
+  },
+  {
+    "id": "task_16",
+    "task": "edit test",
+    "targets": [
+      "tests/test_auth.py"
+    ],
+    "scopes": [
+      "test"
+    ],
+    "required_file": "tests/test_auth.py"
+  },
+  {
+    "id": "task_17",
+    "task": "edit file",
+    "targets": [
+      "src/auth.py"
+    ],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_18",
+    "task": "edit typescript",
+    "targets": [
+      "src/session.ts"
+    ],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/session.ts"
+  },
+  {
+    "id": "task_19",
+    "task": "refresh access token",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_20",
+    "task": "refresh session",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/session.ts"
+  },
+  {
+    "id": "task_21",
+    "task": "test expired credential",
+    "targets": [],
+    "scopes": [
+      "test"
+    ],
+    "required_file": "tests/test_auth.py"
+  },
+  {
+    "id": "task_22",
+    "task": "Renew expired credentials",
+    "targets": [],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": "docs/auth.md"
+  },
+  {
+    "id": "task_23",
+    "task": "bool",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/auth.py"
+  },
+  {
+    "id": "task_24",
+    "task": "session",
+    "targets": [],
+    "scopes": [
+      "config"
+    ],
+    "required_file": "settings.toml"
+  },
+  {
+    "id": "task_25",
+    "task": "session",
+    "targets": [],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": "docs/auth.md"
+  },
+  {
+    "id": "task_26",
+    "task": "session",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": "src/session.ts"
+  },
+  {
+    "id": "task_27",
+    "task": "zzzznonexistentzzzz",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": null
+  },
+  {
+    "id": "task_28",
+    "task": "zzzznonexistentzzzz",
+    "targets": [],
+    "scopes": [
+      "test"
+    ],
+    "required_file": null
+  },
+  {
+    "id": "task_29",
+    "task": "zzzznonexistentzzzz",
+    "targets": [],
+    "scopes": [
+      "doc"
+    ],
+    "required_file": null
+  },
+  {
+    "id": "task_30",
+    "task": "zzzznonexistentzzzz",
+    "targets": [],
+    "scopes": [
+      "config"
+    ],
+    "required_file": null
+  },
+  {
+    "id": "task_31",
+    "task": "quoted \" OR *",
+    "targets": [],
+    "scopes": [
+      "source"
+    ],
+    "required_file": null
+  },
+  {
+    "id": "task_32",
+    "task": "edit missing",
+    "targets": [
+      "missing.py::absent"
+    ],
+    "scopes": [
+      "source"
+    ],
+    "required_file": null
+  }
+]

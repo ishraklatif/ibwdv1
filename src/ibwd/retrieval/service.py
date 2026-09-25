@@ -12,6 +12,7 @@ from ibwd.scan import scan_locked
 from ibwd.scanner.filesystem import scan_files
 from ibwd.retrieval.bounded import execute, MAX_BYTES, MAX_SECONDS
 from ibwd.index_inputs import config_digest
+from ibwd.retrieval.lexical import SourceChanged
 
 
 def readonly(root):
@@ -20,6 +21,38 @@ def readonly(root):
     deadline = time.monotonic() + MAX_SECONDS
     conn.set_progress_handler(lambda: int(time.monotonic() > deadline), 1000)
     return conn
+
+
+def fresh_query(root, query):
+    """Run a read against one published generation; validate again before return."""
+    root = Path(root).resolve()
+    with report_lock(root / '.ibwd/index.lock', timeout=30):
+        for attempt in range(2):
+            if inspect_index(root)['status'] != 'ready':
+                scan_locked(root)
+            conn = readonly(root)
+            try:
+                generation = conn.execute("SELECT value FROM index_metadata WHERE key='generation'").fetchone()[0]
+                inputs = conn.execute("SELECT value FROM index_metadata WHERE key='config_digest'").fetchone()[0]
+                expected = {r[0]: (r[1], r[2]) for r in conn.execute(
+                    "SELECT file_path,content_hash,kind FROM nodes WHERE node_type='File'")}
+                result = query(conn, generation)
+            except SourceChanged:
+                if attempt == 0:
+                    continue
+                raise ValueError('Sources changed during retrieval twice; retry when edits settle.') from None
+            except sqlite3.OperationalError as exc:
+                if 'interrupt' in str(exc):
+                    raise ValueError('Query work budget exceeded; narrow the query or use source search.') from None
+                raise
+            finally:
+                conn.close()
+            scanned = scan_files(root)
+            if {f.path: (f.content_hash, f.kind) for f in scanned} != expected or config_digest(root, scanned) != inputs:
+                if attempt == 0:
+                    continue
+                raise ValueError('Sources changed during retrieval twice; retry when edits settle.')
+            return result
 
 
 def retrieval(operation):
@@ -40,34 +73,13 @@ def retrieval(operation):
             bound = signature.bind(*args, **kwargs)
             bound.apply_defaults()
             root = Path.cwd().resolve()
-            with report_lock(root / '.ibwd/index.lock', timeout=30):
-                for attempt in range(2):
-                    health = inspect_index(root)
-                    if health['status'] != 'ready':
-                        scan_locked(root)
-                    conn = readonly(root)
-                    try:
-                        generation = conn.execute("SELECT value FROM index_metadata WHERE key='generation'").fetchone()[0]
-                        inputs = conn.execute("SELECT value FROM index_metadata WHERE key='config_digest'").fetchone()[0]
-                        expected = {r[0]: (r[1], r[2]) for r in conn.execute("SELECT file_path,content_hash,kind FROM nodes WHERE node_type='File'")}
-                        result = (execute(conn, operation, dict(bound.arguments), generation, limit, max_bytes, cursor)
-                                  if version == 2 else function(*args, **kwargs))
-                    except sqlite3.OperationalError as exc:
-                        if 'interrupt' in str(exc):
-                            raise ValueError('Query work budget exceeded; narrow the query or use source search.') from None
-                        raise
-                    finally:
-                        conn.close()
-                    scanned = scan_files(root)
-                    current = {f.path: (f.content_hash, f.kind) for f in scanned}
-                    if current != expected or config_digest(root, scanned) != inputs:
-                        if attempt == 0:
-                            continue
-                        raise ValueError('Sources changed during retrieval twice; retry when edits settle.')
-                    if version == 1 and len(json.dumps(result).encode()) * 6 + 2048 > MAX_BYTES:
-                        raise ValueError('Legacy output budget exceeded; use response_version=2 with pagination.')
-                    return result
-            raise ValueError('Index unavailable')
+            def query(conn, generation):
+                result = (execute(conn, operation, dict(bound.arguments), generation, limit, max_bytes, cursor)
+                          if version == 2 else function(*args, **kwargs))
+                if version == 1 and len(json.dumps(result).encode()) * 6 + 2048 > MAX_BYTES:
+                    raise ValueError('Legacy output budget exceeded; use response_version=2 with pagination.')
+                return result
+            return fresh_query(root, query)
 
         parameters = list(signature.parameters.values()) + [
             inspect.Parameter('response_version', inspect.Parameter.KEYWORD_ONLY, default=1, annotation=int),

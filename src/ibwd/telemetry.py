@@ -10,7 +10,7 @@ import time
 import uuid
 
 TOOLS = frozenset({"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
-                   "ibwd_callers", "ibwd_dependents", "ibwd_trace_path"})
+                   "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read"})
 MAX_EVENTS = 10000
 
 
@@ -122,6 +122,8 @@ class ObservedServerMixin:
             event['index_generation'] = data.get('index_generation')
         if isinstance(data, dict) and data.get('schema_version') == 2:
             budget = (arguments or {}).get('max_bytes', 16384)
+            if name in {'ibwd_context', 'ibwd_read'}:
+                budget = min(budget, 4 * (arguments or {}).get('budget_tokens', 2000 if name == 'ibwd_context' else 1000))
             if len(json.dumps(serialized, separators=(',', ':'), ensure_ascii=False).encode()) > budget:
                 record(event | {'phase': 'completed', 'status': 'error',
                                 'duration_ms': round((time.monotonic() - started) * 1000, 3)})

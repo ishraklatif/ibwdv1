@@ -13,6 +13,12 @@ Sprint 3B adds `index_metadata(key TEXT PRIMARY KEY, value TEXT NOT NULL)` durin
 lock coordinates graph/manifest/generation publication and retrieval. A publication marker makes interrupted updates explicitly
 stale. See [Sprint 3B](docs/SPRINT_3B.md) for the version-2 retrieval envelope and cursor contract.
 
+Sprint 4 adds `lexical_version` to index metadata, plus `evidence_files(path PRIMARY KEY, scope, content_hash, omission)`
+and the FTS5 virtual table `evidence_fts(path, scope, start_line, end_line, heading, terms)`. Only `terms` is searchable;
+other columns retain exact evidence locations and scope. Lexical evidence is incrementally updated in the staged graph DB
+and published in the same generation. Test/doc/config evidence does not create production graph nodes or edges.
+See [Sprint 4](docs/SPRINT_4.md) for chunk/exclusion limits and the separate generation-bound packet cache.
+
 ## 1. Overview
 
 IBWD represents a codebase as a property graph persisted in two relational

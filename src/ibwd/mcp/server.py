@@ -40,6 +40,36 @@ class ObservedMCPServer(ObservedServerMixin, MCPServer):
 mcp = ObservedMCPServer("ibwd", instructions=ROUTING)
 
 
+@mcp.tool()
+def ibwd_context(task: str, targets: list[str] | None = None, budget_tokens: int = 2000,
+                 detail: str = 'outline', cursor: str | None = None,
+                 scopes: list[str] | None = None, max_bytes: int = 16384) -> dict:
+    """Find task evidence using lexical search and exact targets, with resolved graph links.
+
+    scopes selects source/test/doc/config (all by default). detail is outline or source.
+    Follow next_cursor with the same task/targets/scopes/detail. Candidate caps require
+    narrowing or source search. budget_tokens is a four-byte estimate, not provider tokens.
+    Source omitted to fit a packet remains available via ibwd_read and its exact hash/range.
+    Test matches are verification pointers, not proof of coverage. Freshness is automatic.
+    """
+    from ibwd.retrieval.context import context
+    return context(Path.cwd(), task, targets, budget_tokens, detail, cursor, scopes, max_bytes)
+
+
+@mcp.tool()
+def ibwd_read(symbol_id_or_path: str, expected_hash: str, range: list[int] | None = None,
+              budget_tokens: int = 1000, max_bytes: int = 16384) -> dict:
+    """Read exact UTF-8 source using a current hash from discovery/context.
+
+    range is optional [start_line, end_line], inclusive and one-based. Without it,
+    return the complete symbol or file. Stale hashes and excluded paths fail explicitly.
+    Source spans are never silently shortened; request a smaller explicit range if needed.
+    budget_tokens is a four-byte estimate of serialized MCP output, not provider tokens.
+    """
+    from ibwd.retrieval.context import read
+    return read(Path.cwd(), symbol_id_or_path, expected_hash, range, budget_tokens, max_bytes)
+
+
 def _connect_index():
     root = Path.cwd()
     if not (root / ".ibwd" / "graph.db").is_file() or not (root / ".ibwd" / "manifest.json").is_file():

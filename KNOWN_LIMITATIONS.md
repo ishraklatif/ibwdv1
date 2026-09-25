@@ -5,6 +5,10 @@ no type information. Every item below is a place where the map can differ from t
 Each entry says what the limit is, **why it exists**, an example, what it does to answers, and
 its status. Treat each as a hypothesis to keep testing, not a settled trade-off.
 
+Sprint 4 adds separate lexical test/doc/config retrieval and hash-checked source expansion. It does not resolve the graph
+limitations below or establish test coverage. See [Sprint 4 limits](docs/SPRINT_4.md) for exclusions, candidate caps,
+bounded source expansion and the unmeasured comparative performance target.
+
 Status key: **Fixed** (code + tests), **Open** (documented, not fixed), **Inherent** (cannot be
 fully fixed without running code), **Decision pending** (needs an owner's call).
 

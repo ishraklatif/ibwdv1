@@ -47,18 +47,19 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
    Model adoption and token savings remain unverified; observe the next needed normal task in each client only.
 2. **Sprint 3B delivered:** serialized staged index publication, generation-bound pagination, automatic freshness and bounded
    retrieval. [Delivery notes and measured profile](docs/SPRINT_3B.md) describe compatibility and limits.
-3. **Sprint 4:** deliver lexical retrieval, budgeted task-context packets and exact source expansion. Measure cumulative evidence size,
-   required-evidence retention and latency against competent bounded search; this is not a model-token benchmark.
+3. **Sprint 4 features delivered:** lexical retrieval, budgeted task-context packets, exact source expansion and saved-output reduction.
+   [Contracts and verification](docs/SPRINT_4.md) include 32 fixed retrieval cases. Comparative payload/latency acceptance remains
+   unmeasured under the no-benchmark instruction; no savings claim is made.
 4. **Sprint 5:** add scoped impact/test relevance and optional installed compiler evidence. Reference linkage is not verified test coverage.
 5. **Sprints 6–7:** add optional local embeddings, then specialized local models only if separate quality/resource checks justify them.
    Select a device profile from available capabilities; deterministic operation always remains supported.
 6. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.
 
-The retrieval improvements are future work, not shipped capabilities. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
+Further retrieval improvements remain future work. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
 over tuning to the five development benchmark repositories. Preserve TypeDoc's reserved confirmation role.
 
 The initial 2026-09-24 roadmap revision was documentation-only; subsequent Sprint 3A implements reporting and skill installation.
-No local models are downloaded and the proposed Sprint 4 retrieval interfaces remain future work.
+No local models are downloaded; Sprint 4's context/read interfaces are now implemented.
 See [the complete document audit](docs/DOCUMENTATION_REVIEW.md).
 
 ## Historical experiment

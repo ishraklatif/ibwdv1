@@ -140,3 +140,10 @@ After updating IBWD, rerun `python -m ibwd.cli setup --repo /absolute/path/to/wo
 then reconnect both clients so they load the updated tool schemas and shared navigation skill. Retrieval now checks and refreshes
 the index automatically. Prefer `response_version=2`; use `next_cursor` with the same query for additional results.
 See [Sprint 3B](SPRINT_3B.md) for response budgets, compatibility and measured performance.
+
+## Task evidence and source reads
+
+Sprint 4 adds `ibwd_context` for unfamiliar tasks and `ibwd_read` for exact source spans checked against a current hash.
+Reconnect the server after updating; rerun setup to refresh installed routing instructions. Known symbols still use the
+existing exact discovery tools. See [Sprint 4](SPRINT_4.md) for MCP/CLI examples, scope limits, pagination and opt-in saved-log
+reduction. A `budget_tokens` value is a byte-based estimate, not a provider token count.

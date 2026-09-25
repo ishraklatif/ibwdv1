@@ -147,7 +147,8 @@ do not retune the limits after seeing a failure without recording the revision.
 
 ### Sprint 4 — useful evidence in one request
 
-Proposed interface, **not available yet**:
+Implemented interfaces and limits: [Sprint 4 delivery notes](SPRINT_4.md). Comparative performance acceptance remains pending;
+no benchmarks were run under the repository restriction. The criteria below remain the acceptance reference.
 
 ```text
 ibwd_context(task, targets=[], budget_tokens=2000, detail="outline", cursor=null)
@@ -350,7 +351,8 @@ If local summaries add latency or errors, leave them disabled indefinitely. Thes
 
 1. Delivered: Sprint 3A attribution and scan-versus-retrieval reporting in the existing usage/server modules.
 2. Delivered: Sprint 3B bounded output/computation and generation-safe scan/query behavior with versioned compatibility.
-3. Build Sprint 4's lexical packet and source expansion. Compare it locally against frozen bounded-search recipes.
+3. Sprint 4 features implemented: lexical packets, source expansion and saved-output reduction. Comparative payload/latency
+   acceptance against bounded-search recipes remains pending authorization for benchmarks.
 4. Observe the next necessary task in each client; fix the largest evidenced waste before starting Sprint 5.
 
 No paid experiment, model download, new service, automatic model selection, skill installation or runtime behavior was enabled by this document revision.

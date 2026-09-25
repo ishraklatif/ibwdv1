@@ -8,6 +8,7 @@ from pathlib import Path
 from ibwd.graph.resolution import EDGE_BUILD_VERSION
 from ibwd.scanner.filesystem import scan_files
 from ibwd.index_inputs import config_digest
+from ibwd.retrieval.lexical import VERSION as LEXICAL_VERSION
 
 
 def inspect_index(root: Path) -> dict:
@@ -38,6 +39,9 @@ def inspect_index(root: Path) -> dict:
                 report['index_generation'] = row[0] if row else None
                 row = conn.execute("SELECT value FROM index_metadata WHERE key='config_digest'").fetchone()
                 report['config_digest'] = row[0] if row else None
+                row = conn.execute("SELECT value FROM index_metadata WHERE key='lexical_version'").fetchone()
+                if not row or row[0] != LEXICAL_VERSION:
+                    report['problems'].append('Lexical index version differs from this installation.')
             indexed = {p: (h, k) for p, h, k in conn.execute(
                 "SELECT file_path, content_hash, kind FROM nodes WHERE node_type = 'File'")}
             report["symbols"] = conn.execute(

@@ -12,6 +12,7 @@ import uuid
 
 from ibwd.local_io import atomic_write, report_lock
 from ibwd.index_inputs import config_digest
+from ibwd.retrieval.lexical import rebuild as rebuild_lexical
 
 from ibwd.graph.database import connect, get_node_by_path
 from ibwd.graph.modules import is_ts_config
@@ -134,6 +135,8 @@ def _scan_into(repo_root, database_path, scanned, previous_manifest, inputs) -> 
         ) or any(is_ts_config(path) for path in set(previous_manifest) - {f.path for f in scanned})
         if source_changed or removed_source or stale_edges or config_changed or stale_symbols or old_inputs != inputs:
             rebuild_reference_edges(conn, repo_root)
+
+        rebuild_lexical(conn, repo_root, scanned)
 
         placeholders = ",".join("?" * len(REFERENCE_RELATIONS))
         edge_counts = dict(

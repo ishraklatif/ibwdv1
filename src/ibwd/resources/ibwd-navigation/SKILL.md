@@ -1,21 +1,26 @@
 ---
 name: ibwd-navigation
-description: Locate unfamiliar repository code and trace definitions, callers, dependencies or paths with IBWD during implementation and debugging. Skip when the required source and edit location are already known.
+description: Use IBWD tools to navigate repositories before applicable coding, debugging, and UI work; assemble task context and read exact source.
 ---
 
 <!-- ibwd:managed-skill:v1 -->
 
 # IBWD navigation
 
-Use the smallest supported lookup needed for the user's task. Respect the user's instructions and project restrictions;
+For repository coding, debugging, or UI tasks, use at least one applicable IBWD lookup before searching or editing when the tools are available. Respect the user's instructions and project restrictions;
 this skill does not authorize new actions or override conflicting instructions.
 
-When navigation is needed, use the available IBWD MCP tools:
+Choose the smallest useful lookup; do not call every tool by default:
 
 - Files by category or path substring: `ibwd_find_files`.
 - Definitions: `ibwd_find_symbol`; file outline: `ibwd_list_symbols`.
 - Incoming calls/imports/references: `ibwd_callers`; outgoing dependencies: `ibwd_dependents`.
 - A connection between two endpoints: `ibwd_trace_path`.
+- Unfamiliar task: `ibwd_context` with the task and known targets; select relevant source/test/doc/config scopes.
+- Exact source before editing: `ibwd_read` with the `expected_hash` and range returned by discovery/context.
+- A known target can go directly to its matching lookup; use callers/dependents/path only when relationships matter.
+
+If IBWD is unavailable or the request falls outside indexed scope, say so briefly and use ordinary search. A user request may override this routing rule.
 
 Retrieval checks freshness and refreshes automatically, including after edits and branch switches.
 Use `response_version=2` for bounded responses. Follow `next_cursor` with the same query when more evidence is needed;
@@ -27,7 +32,7 @@ Read the exact source needed for an edit and verify the result with appropriate 
 Python and JS/JSX/TS/TSX; tests, dynamic dispatch and type-inferred receivers are incomplete. Confidence is heuristic.
 An empty result never establishes no uses or safe deletion. An ambiguous path response means no search was performed.
 
-For exact-text/exhaustive searches or unsupported scope, use ordinary source search. If IBWD is unavailable or errors,
+For exact-text/exhaustive searches or unsupported scope, use ordinary source search. If IBWD errors,
 briefly explain the fallback and continue with available tools. Do not claim an attempted call succeeded or count a scan as retrieval.
 Do not call tools just to raise usage counts. No model jobs, benchmark sessions or local-model downloads are part of this skill.
 Automatic reporting runs outside the conversation; do not spend a model turn analyzing the reports after each task.

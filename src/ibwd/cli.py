@@ -171,5 +171,57 @@ def usage_hook(client: str, repo: Path) -> None:
         raise click.ClickException(f"IBWD session report not saved: {exc}") from exc
 
 
+@main.command('context')
+@click.argument('task')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--target', 'targets', multiple=True)
+@click.option('--scope', 'scopes', multiple=True, type=click.Choice(['source', 'test', 'doc', 'config']))
+@click.option('--budget-tokens', default=2000, type=int)
+@click.option('--max-bytes', default=16384, type=int)
+@click.option('--detail', default='outline', type=click.Choice(['outline', 'source']))
+@click.option('--cursor', default=None)
+def context_command(task, repo, targets, scopes, budget_tokens, max_bytes, detail, cursor):
+    """Return a bounded task-evidence packet without calling a model."""
+    from ibwd.retrieval.context import context
+    try:
+        result = context(repo, task, list(targets), budget_tokens, detail, cursor, list(scopes) or None, max_bytes)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('read')
+@click.argument('symbol_id_or_path')
+@click.option('--expected-hash', required=True)
+@click.option('--range', 'line_range', nargs=2, type=int, default=None)
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--budget-tokens', default=1000, type=int)
+@click.option('--max-bytes', default=16384, type=int)
+def read_command(symbol_id_or_path, expected_hash, line_range, repo, budget_tokens, max_bytes):
+    """Read an exact source span, rejecting stale hashes."""
+    from ibwd.retrieval.context import read
+    try:
+        result = read(repo, symbol_id_or_path, expected_hash, list(line_range) if line_range else None, budget_tokens, max_bytes)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('reduce-output')
+@click.argument('log', type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option('--format', 'format_name', required=True, type=click.Choice(['pytest', 'tsc']))
+@click.option('--exit-code', required=True, type=int)
+def reduce_output_command(log, format_name, exit_code):
+    """Explicitly summarize a saved pytest/tsc log; never execute a command."""
+    from ibwd.retrieval.output import reduce_output
+    try:
+        result = reduce_output(log, format_name, exit_code)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+    if exit_code:
+        raise click.exceptions.Exit(exit_code)
+
+
 if __name__ == "__main__":
     main()
