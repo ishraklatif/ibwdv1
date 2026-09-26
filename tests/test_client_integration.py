@@ -49,7 +49,7 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                     assert "ibwd_scan" in initialized.instructions
                     names = {t.name for t in (await session.list_tools()).tools}
                     assert names == {"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
-                                     "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read"}
+                                     "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence"}
                     missing = await session.call_tool("ibwd_find_symbol", {"name": "finish"})
                     assert payload(missing)[0]['symbol_id'] == 'app.py::finish'
                     assert (repo / ".ibwd/graph.db").exists()
@@ -63,6 +63,12 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                     assert payload(await session.call_tool("ibwd_callers", {"symbol": "finish"}))[0]["name"] == "start"
                     assert payload(await session.call_tool("ibwd_dependents", {"symbol": "start"}))[0]["name"] == "finish"
                     assert payload(await session.call_tool("ibwd_trace_path", {"source": "start", "target": "finish"}))["hops"] == 1
+                    impact_result = await session.call_tool('ibwd_impact', {'targets': ['app.py::finish']})
+                    assert payload(impact_result)['items'][0]['symbol_id'] == 'app.py::start'
+                    assert len(json.dumps(impact_result.model_dump(mode='json', by_alias=True, exclude_none=True),
+                                          ensure_ascii=False, separators=(',', ':')).encode()) <= 16384
+                    compiler_result = await session.call_tool('ibwd_compiler_evidence', {'file': 'app.py', 'line': 1, 'column': 1})
+                    assert payload(compiler_result)['status'] == 'unknown'
                     packet_result = await session.call_tool('ibwd_context', {'task': 'finish', 'targets': ['app.py::finish']})
                     packet = payload(packet_result)
                     assert packet['items'][0]['symbol_id'] == 'app.py::finish'
@@ -78,7 +84,7 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
     assert not (elsewhere / ".ibwd").exists()
     assert inspect_index(repo)["status"] == "ready"
     events = read_events(repo)
-    assert len(events) == 20
+    assert len(events) == 24
     assert all(e["session_key"] is None for e in events)
     assert all("arguments" not in e for e in events)
     assert all(e["response_bytes"] > 0 for e in events if e["status"] == "success")

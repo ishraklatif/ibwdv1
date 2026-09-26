@@ -70,6 +70,35 @@ def ibwd_read(symbol_id_or_path: str, expected_hash: str, range: list[int] | Non
     return read(Path.cwd(), symbol_id_or_path, expected_hash, range, budget_tokens, max_bytes)
 
 
+@mcp.tool()
+def ibwd_impact(targets: list[str] | None = None, direction: str = 'incoming',
+                relations: list[str] | None = None, depth: int = 2, scopes: list[str] | None = None,
+                diff: bool = False, heuristics: bool = True, limit: int = 50,
+                max_bytes: int = 16384, cursor: str | None = None) -> dict:
+    """Bounded source/test impact paths. Incoming is exposure; outgoing is dependencies.
+
+    References and filename heuristics are not verified coverage or proof of breakage.
+    diff compares the previous indexed snapshot with the working tree, preserving old
+    and deleted identities. Scan a baseline before editing. Follow generation-bound
+    next_cursor with the same query. Empty results never establish safe deletion.
+    """
+    from ibwd.retrieval.impact import impact
+    return impact(Path.cwd(), targets, direction, relations, depth, scopes, diff, heuristics, limit, max_bytes, cursor)
+
+
+@mcp.tool()
+def ibwd_compiler_evidence(file: str, line: int, column: int, project: str = 'tsconfig.json',
+                           compiler: str | None = None, max_bytes: int = 16384) -> dict:
+    """Opt-in installed TypeScript checker references at a one-based UTF-16 position.
+
+    Uses repository node_modules/typescript or an explicit installed compiler path.
+    No downloads. Reports compiler version, project, diagnostics and possible targets
+    separately from syntax edges. Missing/incomplete environments remain unknown.
+    """
+    from ibwd.retrieval.compiler import compiler_evidence
+    return compiler_evidence(Path.cwd(), file, line, column, project, compiler, max_bytes)
+
+
 def _connect_index():
     root = Path.cwd()
     if not (root / ".ibwd" / "graph.db").is_file() or not (root / ".ibwd" / "manifest.json").is_file():

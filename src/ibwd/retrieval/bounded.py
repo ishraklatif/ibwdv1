@@ -208,6 +208,8 @@ def execute(conn, operation, args, generation, limit=50, max_bytes=16384, cursor
     offset = cursor_offset(cursor, generation, signature)
     envelope = {'schema_version': 2, 'index_generation': generation, 'scope': SCOPE,
                 'items': [], 'files': {}, 'truncated': False, 'limit_reason': None, 'next_cursor': None}
+    if args.get('scope') in ('test', 'all'):
+        envelope['scope'] = 'source/test symbols; explicit discovery scope=' + args['scope']
     work = Work()
     conn.set_progress_handler(lambda: int(time.monotonic() > work.deadline), 1000)
     try:
@@ -233,6 +235,8 @@ def execute(conn, operation, args, generation, limit=50, max_bytes=16384, cursor
                     params.append(args['name_pattern'])
             else:
                 sql = "SELECT * FROM nodes WHERE node_type IN ('Class','Function','Method')"
+                if args.get('scope') == 'test':
+                    sql += " AND file_path IN (SELECT file_path FROM nodes WHERE node_type='File' AND kind='test')"
                 if operation == 'list_symbols':
                     sql += ' AND file_path=?'
                     params.append(args['file'])

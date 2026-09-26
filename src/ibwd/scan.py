@@ -136,6 +136,9 @@ def _scan_into(repo_root, database_path, scanned, previous_manifest, inputs) -> 
         if source_changed or removed_source or stale_edges or config_changed or stale_symbols or old_inputs != inputs:
             rebuild_reference_edges(conn, repo_root)
 
+        from ibwd.graph.scoped import rebuild_scoped
+        rebuild_scoped(conn, repo_root, scanned, previous_manifest, previous_kinds,
+                       source_changed or removed_source or stale_edges or config_changed or stale_symbols or old_inputs != inputs)
         rebuild_lexical(conn, repo_root, scanned)
 
         placeholders = ",".join("?" * len(REFERENCE_RELATIONS))

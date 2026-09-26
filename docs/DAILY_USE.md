@@ -102,8 +102,8 @@ results are scoped, never proof of no uses. If tools are unavailable or fail,
 explain the fallback briefly. Do not run paid benchmarks.
 ```
 
-Python and JS/JSX/TS/TSX production code are the current symbol/edge scope. Test files, dynamic dispatch and type-inferred receivers
-are not fully represented. IBWD does not replace source inspection or tests. See [known limitations](../KNOWN_LIMITATIONS.md).
+Python and JS/JSX/TS/TSX production code remain the default symbol/edge scope. [Sprint 5](SPRINT_5.md) adds explicit test discovery,
+impact paths and optional installed TypeScript evidence. Dynamic dispatch and type-inferred receivers remain incomplete. IBWD does not replace source inspection or tests. See [known limitations](../KNOWN_LIMITATIONS.md).
 
 ## 4. Work normally
 

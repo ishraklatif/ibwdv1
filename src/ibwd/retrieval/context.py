@@ -55,6 +55,9 @@ def read(root, symbol_id_or_path, expected_hash, line_range=None, budget_tokens=
     def query(conn, generation):
         symbol = conn.execute("SELECT * FROM nodes WHERE qualified_name=? AND node_type IN ('Class','Function','Method')",
                               (symbol_id_or_path,)).fetchone()
+        if symbol is None:
+            symbol = conn.execute("SELECT * FROM scoped_nodes WHERE qualified_name=? AND node_type IN ('Class','Function','Method')",
+                                  (symbol_id_or_path,)).fetchone()
         path = symbol['file_path'] if symbol else symbol_id_or_path
         file = file_record(conn, path)
         if file['content_hash'] != expected_hash:

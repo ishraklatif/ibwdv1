@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS summaries (
     grader_status      TEXT DEFAULT 'unchecked'  -- unchecked | passed | downgraded | dropped
 );
 
--- Added Sprint 5 (via the sqlite-vec extension):
+-- Historical embedding proposal (now Sprint 6; not active):
 -- CREATE VIRTUAL TABLE vec_nodes USING vec0(node_id INTEGER PRIMARY KEY, embedding FLOAT[1024]);
 
 -- Recursive CTE example, added Sprint 3, "callers of node N up to depth 3":

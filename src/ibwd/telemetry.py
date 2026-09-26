@@ -10,7 +10,7 @@ import time
 import uuid
 
 TOOLS = frozenset({"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
-                   "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read"})
+                   "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence"})
 MAX_EVENTS = 10000
 
 

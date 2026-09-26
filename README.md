@@ -8,7 +8,7 @@ The objective is less model context per correctly completed task. General token 
 
 Sprints 1–4 deliver nine MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
 explicit repository selection, index diagnostics, project setup and automatic local session reports for both clients.
-Symbol/graph support covers production Python and JS/JSX/TS/TSX; lexical evidence also includes tests, documentation and configuration.
+Default symbol/graph support covers production Python and JS/JSX/TS/TSX. Explicit scoped discovery and impact also cover tests; lexical evidence includes documentation and configuration.
 Embeddings, generated summaries and impact analysis are not shipped. Sprint 4's comparative performance acceptance remains pending.
 
 The active plan is [the token-efficiency roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md), revised 2026-09-24.
@@ -59,6 +59,8 @@ Current setup/hooks support macOS, Linux and WSL; native Windows hook generation
 | `ibwd_trace_path` | Find a scoped path; CALLS-only by default |
 | `ibwd_context` | Assemble bounded lexical task evidence and resolved graph links |
 | `ibwd_read` | Read exact source spans using a current expected hash |
+| `ibwd_impact` | Bounded exposure/dependency paths, test relevance and previous-index diff |
+| `ibwd_compiler_evidence` | Opt-in installed TypeScript references with diagnostics and provenance |
 
 Use returned exact identities to disambiguate symbols. Read source before editing.
 Retrieval refreshes automatically after edits or branch changes; concurrent scans and queries share a repository lock.
@@ -89,7 +91,7 @@ it does not turn that historical gate into a pass. See [Sprint 3](SPRINT_3.md) a
 | Sprint 3A | Adoption evidence and accurate automatic usage reporting |
 | Sprint 3B (implemented) | Automatic freshness, locked publication and version-2 bounded results |
 | Sprint 4 (implemented; performance acceptance pending) | [Lexical retrieval, task-context packets and exact source expansion](docs/SPRINT_4.md) |
-| Sprint 5 | Scoped impact analysis, test relevance and optional compiler evidence |
+| Sprint 5 | [Delivered](docs/SPRINT_5.md): scoped impact, test relevance, previous-index diff and optional installed TypeScript evidence |
 | Sprint 6 | Optional local embeddings, justified by retrieval quality |
 | Sprint 7 | Optional local specialists and source-backed reusable memory |
 | Sprint 8 | Portable skills, dual-client packaging and ordinary-work efficiency review |

@@ -14,7 +14,7 @@ fully fixed without running code), **Decision pending** (needs an owner's call).
 
 | # | Limitation | Origin | Status |
 |---|---|---|---|
-| 1 | Test files are excluded from the call graph | Sprint 2 scope + a Sprint 3 choice | Decision pending |
+| 1 | Test files excluded from default production queries | Sprint 2 scope + a Sprint 3 choice | Separate scope delivered in Sprint 5 |
 | 2 | Functions nested inside other functions are not indexed | Sprint 2 scope cut | Open |
 | 3 | Functions passed as values create no `CALLS` edge | Sprint 3 omission | Fixed (`REFERENCES`) |
 | 4 | No dynamic-dispatch handling | Inherent to static analysis | Inherent |
@@ -25,19 +25,12 @@ fully fixed without running code), **Decision pending** (needs an owner's call).
 
 ---
 
-## 1. Test files are excluded from the call graph
-- **What:** files classified as tests (`tests/`, `test_*.py`, `*.test.ts`, …) get no symbol nodes and
-  contribute no `CALLS`/`IMPORTS`/`INHERITS` edges. `ibwd_callers(f)` therefore never lists a test.
-- **Why:** Sprint 2 only extracted symbols for `kind == "source"` files (test fixtures also produced
-  false hits for symbol lookup). In Sprint 3 this was kept on purpose so "callers" stays free of test
-  noise, on the assumption that Sprint 4's test linkage (`TESTED_BY`) would cover tests. That choice was
-  made without asking the owner.
-- **Example:** `CallTracer.stop` in jonga is called from `jonga.py`, 3 example scripts and 1 test; only
-  `jonga.py` is reported.
-- **Effect:** callers/impact answers omit tests; a benchmark that counts test callers as ground truth
-  will record them as "missing edges".
-- **Plan:** decide after multi-repo results whether tests join the graph (probably as a separate,
-  filterable relation) or ground truth is scoped to production code.
+## 1. Tests use a separate graph scope
+Sprint 5 indexes test symbols and references separately. Production defaults remain unchanged; use
+`ibwd_find_symbol`/`ibwd_list_symbols` with `scope="test"` and `response_version=2`, or `ibwd_impact`
+with source/test scopes. Reference paths and filename heuristics establish relevance, not executed test coverage.
+The optional installed TypeScript adapter reports compiler references as possible targets separately from graph edges.
+See [Sprint 5](docs/SPRINT_5.md) for bounds, previous-index diff semantics and incomplete environments.
 
 ## 2. Nested functions are not indexed
 - **What:** a function/closure/callback declared inside another function is not a symbol. Calls made

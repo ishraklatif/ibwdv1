@@ -233,7 +233,7 @@ metadata layered on top of the structural facts in `nodes`/`edges`.
 | `derived_from_hash`  | The `nodes.content_hash` value the summary was generated from; a mismatch on rescan signals the summary is stale and needs regeneration. |
 | `grader_status`      | Quality-check state: `unchecked`, `passed`, `downgraded`, `dropped`. |
 
-## 5. Planned extension: `vec_nodes` (Sprint 5, not yet active)
+## 5. Planned extension: `vec_nodes` (historical plan; now Sprint 6, not active)
 
 ```sql
 -- CREATE VIRTUAL TABLE vec_nodes USING vec0(node_id INTEGER PRIMARY KEY, embedding FLOAT[1024]);
@@ -340,3 +340,14 @@ define *how* it is stored.
 | 3b     | Additive: `file_refs` table (per-file extracted references keyed by content hash, so rescans re-parse only changed files); `REFERENCES` relation; File `kind` gains `vendor` / `generated`; edge-build version 7. |
 | 5      | `vec_nodes` virtual table planned (not yet created). |
 | Future inference | `summaries` storage is already reserved; the generation pipeline remains unimplemented. |
+
+## Sprint 5 scoped snapshots
+
+`scoped_nodes` / `scoped_edges` mirror the columns of `nodes` / `edges`, holding a separately resolved source+test graph.
+Production tables remain unchanged in scope. `previous_nodes` / `previous_edges` retain the last scoped snapshot when
+a changed scan publishes; they are absent before a baseline exists. All tables publish atomically in the staged database.
+
+File kind supplies the source/test scope. Symbol identities and file hashes are stable evidence keys; numeric node IDs
+must not be compared between snapshots. Current scoped identity/file and incoming/outgoing indexes support retrieval.
+These are derived snapshots, not independently mutable foreign-key graphs. No source bodies or compiler edges are stored
+in them. See [Sprint 5 contracts](docs/SPRINT_5.md).

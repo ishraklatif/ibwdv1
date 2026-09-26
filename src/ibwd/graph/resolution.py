@@ -40,7 +40,7 @@ from ibwd.scanner.references import (
 
 # Bump when extraction/resolution logic changes so existing graphs get rebuilt
 # on the next scan (stored in the DB's PRAGMA user_version).
-EDGE_BUILD_VERSION = 27
+EDGE_BUILD_VERSION = 28
 
 REFERENCE_RELATIONS = ("IMPORTS", "CALLS", "INHERITS", "REFERENCES")
 
@@ -533,7 +533,7 @@ def _resolve_class_alias(
     return next(iter(found.values())) if len(found) == 1 else None
 
 
-def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[str, int]:
+def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path, include_tests: bool = False) -> dict[str, int]:
     """Re-derive every IMPORTS/CALLS/INHERITS edge from source. Returns counts by relation.
 
     Resolution depends on the whole repo's symbols and imports (a change in one
@@ -542,7 +542,8 @@ def rebuild_reference_edges(conn: sqlite3.Connection, repo_root: Path) -> dict[s
     """
     file_ids: dict[str, int] = {}
     file_hashes: dict[str, str] = {}
-    for row in conn.execute("SELECT id, file_path, content_hash FROM nodes WHERE node_type = 'File' AND kind = 'source'"):
+    for row in conn.execute("SELECT id, file_path, content_hash FROM nodes WHERE node_type = 'File' AND "
+                            + ("kind IN ('source','test')" if include_tests else "kind = 'source'")):
         if language_of(row["file_path"]) is not None:
             file_ids[row["file_path"]] = row["id"]
             file_hashes[row["file_path"]] = row["content_hash"]

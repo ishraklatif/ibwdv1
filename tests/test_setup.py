@@ -31,7 +31,7 @@ def test_setup_both_preserves_settings_and_instructions_and_is_idempotent(tmp_pa
     assert setup_project(tmp_path)["changed_files"] == []
     assert (tmp_path / "AGENTS.md").read_text().count(START) == 1
     assert (tmp_path / skill_path("codex")).read_text() == (tmp_path / skill_path("claude")).read_text() == skill_source()
-    assert "description: Locate unfamiliar" in skill_source()
+    assert "description: Use IBWD tools" in skill_source()
     assert "override conflicting instructions" in skill_source()
 
 

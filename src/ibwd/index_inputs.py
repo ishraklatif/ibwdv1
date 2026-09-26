@@ -26,7 +26,7 @@ def config_digest(root: Path, scanned) -> str:
             read(path.parent / (parent if parent.endswith('.json') else parent + '.json'), depth + 1)
     directories = set()
     for file in scanned:
-        if file.kind != 'source':
+        if file.kind not in ('source', 'test'):
             continue
         directory = (root / file.path).parent
         while directory.is_relative_to(root):

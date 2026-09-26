@@ -15,6 +15,9 @@ Choose the smallest useful lookup; do not call every tool by default:
 - Files by category or path substring: `ibwd_find_files`.
 - Definitions: `ibwd_find_symbol`; file outline: `ibwd_list_symbols`.
 - Incoming calls/imports/references: `ibwd_callers`; outgoing dependencies: `ibwd_dependents`.
+- Change exposure/test relevance: `ibwd_impact`; select direction, relations and source/test scopes. References are not test coverage.
+- Test definitions: `ibwd_find_symbol`/`ibwd_list_symbols` with `scope="test"` and `response_version=2`.
+- Optional installed TypeScript evidence: `ibwd_compiler_evidence`; preserve diagnostics and possible-target labels.
 - A connection between two endpoints: `ibwd_trace_path`.
 - Unfamiliar task: `ibwd_context` with the task and known targets; select relevant source/test/doc/config scopes.
 - Exact source before editing: `ibwd_read` with the `expected_hash` and range returned by discovery/context.
@@ -28,8 +31,8 @@ if a work limit prevents pagination, narrow the query or use source search. A tr
 Use `ibwd_scan` only for an explicit refresh. Reuse exact `symbol_id` values when names are ambiguous; do not repeatedly search the same unchanged evidence.
 Start graph queries at depth 1 unless the task needs a deeper relationship.
 
-Read the exact source needed for an edit and verify the result with appropriate checks. Current graph coverage is production
-Python and JS/JSX/TS/TSX; tests, dynamic dispatch and type-inferred receivers are incomplete. Confidence is heuristic.
+Read the exact source needed for an edit and verify the result with appropriate checks. Default graph coverage is production
+Python and JS/JSX/TS/TSX; impact adds a separate test scope. Dynamic dispatch and type-inferred receivers remain incomplete. Confidence is heuristic.
 An empty result never establishes no uses or safe deletion. An ambiguous path response means no search was performed.
 
 For exact-text/exhaustive searches or unsupported scope, use ordinary source search. If IBWD errors,

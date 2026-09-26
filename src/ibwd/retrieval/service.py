@@ -70,11 +70,21 @@ def retrieval(operation):
                 raise ValueError('response_version must be 1 or 2')
             if version == 1 and (cursor is not None or limit != 50 or max_bytes != 16384):
                 raise ValueError('Pagination and custom budgets require response_version=2')
+            scope = kwargs.pop('scope', 'source')
+            if scope not in ('source', 'test', 'all'):
+                raise ValueError('scope must be source/test/all')
+            if scope != 'source' and (version != 2 or operation not in ('find_symbol', 'list_symbols')):
+                raise ValueError('Explicit symbol scope requires response_version=2 discovery')
             bound = signature.bind(*args, **kwargs)
             bound.apply_defaults()
             root = Path.cwd().resolve()
             def query(conn, generation):
-                result = (execute(conn, operation, dict(bound.arguments), generation, limit, max_bytes, cursor)
+                arguments = dict(bound.arguments)
+                if scope != 'source':
+                    from ibwd.graph.scoped import select_scope
+                    select_scope(conn)
+                    arguments['scope'] = scope
+                result = (execute(conn, operation, arguments, generation, limit, max_bytes, cursor)
                           if version == 2 else function(*args, **kwargs))
                 if version == 1 and len(json.dumps(result).encode()) * 6 + 2048 > MAX_BYTES:
                     raise ValueError('Legacy output budget exceeded; use response_version=2 with pagination.')
@@ -87,9 +97,13 @@ def retrieval(operation):
             inspect.Parameter('max_bytes', inspect.Parameter.KEYWORD_ONLY, default=16384, annotation=int),
             inspect.Parameter('cursor', inspect.Parameter.KEYWORD_ONLY, default=None, annotation=str | None),
         ]
+        if operation in ('find_symbol', 'list_symbols'):
+            parameters.append(inspect.Parameter('scope', inspect.Parameter.KEYWORD_ONLY, default='source', annotation=str))
         guarded.__signature__ = signature.replace(parameters=parameters, return_annotation=dict | list[dict])
-        guarded.__annotations__ = dict(function.__annotations__, response_version=int, limit=int, max_bytes=int, cursor=str | None)
+        guarded.__annotations__ = dict(function.__annotations__, scope=str, response_version=int, limit=int, max_bytes=int, cursor=str | None)
         guarded.__annotations__['return'] = dict | list[dict]
         guarded.__doc__ = (function.__doc__ or '') + '\nFreshness is checked automatically. response_version=2 returns a bounded envelope with generation, items, files (source hashes), truncation and next_cursor. Use the same query and cursor for the next page. limit=1..200, max_bytes=256..65536. Version 1 preserves legacy shapes but rejects oversized results.'
+        if operation in ('find_symbol', 'list_symbols'):
+            guarded.__doc__ += ' Explicit scope=test/all with response_version=2 includes separately indexed test symbols; source remains the default.'
         return guarded
     return decorate

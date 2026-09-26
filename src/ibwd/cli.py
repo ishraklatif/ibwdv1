@@ -223,5 +223,46 @@ def reduce_output_command(log, format_name, exit_code):
         raise click.exceptions.Exit(exit_code)
 
 
+@main.command('impact')
+@click.argument('targets', nargs=-1)
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--direction', type=click.Choice(['incoming', 'outgoing']), default='incoming')
+@click.option('--relation', 'relations', multiple=True, type=click.Choice(['CALLS', 'IMPORTS', 'INHERITS', 'REFERENCES']))
+@click.option('--scope', 'scopes', multiple=True, type=click.Choice(['source', 'test']))
+@click.option('--depth', default=2, type=int)
+@click.option('--diff', is_flag=True)
+@click.option('--heuristics/--no-heuristics', default=True)
+@click.option('--limit', default=50, type=int)
+@click.option('--max-bytes', default=16384, type=int)
+@click.option('--cursor', default=None)
+def impact_command(targets, repo, direction, relations, scopes, depth, diff, heuristics, limit, max_bytes, cursor):
+    """Show exposure paths and test relevance, optionally across the last indexed change."""
+    from ibwd.retrieval.impact import impact
+    try:
+        result = impact(repo, list(targets), direction, list(relations) or None, depth, list(scopes) or None,
+                        diff, heuristics, limit, max_bytes, cursor)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('compiler-evidence')
+@click.argument('file')
+@click.option('--line', required=True, type=int)
+@click.option('--column', required=True, type=int)
+@click.option('--project', default='tsconfig.json')
+@click.option('--compiler', default=None, type=click.Path(path_type=Path))
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--max-bytes', default=16384, type=int)
+def compiler_evidence_command(file, line, column, project, compiler, repo, max_bytes):
+    """Query an installed TypeScript compiler; no downloads or emitted code."""
+    from ibwd.retrieval.compiler import compiler_evidence
+    try:
+        result = compiler_evidence(repo, file, line, column, project, compiler, max_bytes)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
 if __name__ == "__main__":
     main()

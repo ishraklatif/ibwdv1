@@ -50,7 +50,8 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
 3. **Sprint 4 features delivered:** lexical retrieval, budgeted task-context packets, exact source expansion and saved-output reduction.
    [Contracts and verification](docs/SPRINT_4.md) include 32 fixed retrieval cases. Comparative payload/latency acceptance remains
    unmeasured under the no-benchmark instruction; no savings claim is made.
-4. **Sprint 5:** add scoped impact/test relevance and optional installed compiler evidence. Reference linkage is not verified test coverage.
+4. **Sprint 5 delivered:** scoped impact/test relevance, previous-index diff with deleted identities, and optional installed TypeScript evidence.
+   [Contracts and limits](docs/SPRINT_5.md) describe provenance, bounded queries and deterministic checks. Reference linkage is not verified test coverage.
 5. **Sprints 6–7:** add optional local embeddings, then specialized local models only if separate quality/resource checks justify them.
    Select a device profile from available capabilities; deterministic operation always remains supported.
 6. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.

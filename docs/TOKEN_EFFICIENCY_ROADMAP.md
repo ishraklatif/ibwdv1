@@ -181,6 +181,10 @@ This is a **local payload target**, not a claim of model-token savings or task s
 
 ### Sprint 5 — impact that helps edits
 
+Implementation: [Sprint 5 delivery notes](SPRINT_5.md). Separate test scope, bounded impact paths, previous-index diff,
+reference/filename test relevance and an opt-in installed TypeScript adapter are delivered. Python compiler/SCIP integration
+and coverage-artifact ingestion remain optional future extensions; no test coverage or runtime safety is inferred.
+
 1. Index test symbols and references with a separate test scope. Keep production query defaults compatible.
 2. Add bounded impact traversal with evidence paths and relation filters. Distinguish incoming change exposure from outgoing dependencies;
    neither proves breakage. For a diff, include both changed/deleted old identities and new identities so deletions do not erase their impact.
