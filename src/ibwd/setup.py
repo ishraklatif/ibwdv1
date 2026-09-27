@@ -6,10 +6,13 @@ import os
 from pathlib import Path
 import sys
 import tomllib
+import platform
+from importlib.metadata import version
 from importlib.resources import files
 
 from ibwd.health import inspect_index
 from ibwd.scan import run_scan
+from ibwd.telemetry import TOOLS as OBSERVED_TOOLS
 from ibwd.usage_hooks import _atomic_write, hook_config, merge_hook_config
 
 START = "<!-- ibwd:routing:start -->"
@@ -37,8 +40,7 @@ If IBWD tools are unavailable or fail, say so briefly and use ordinary search;
 do not silently claim IBWD was used. Do not make unrelated calls just to raise usage.
 No paid model jobs or benchmarks. Normal work and local deterministic checks only."""
 BLOCK = f"{START}\n## IBWD repository navigation\n\n{ROUTING}\n{END}"
-TOOLS = {"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
-         "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read"}
+TOOLS = OBSERVED_TOOLS | {"ibwd_artifact_save"}
 
 
 def skill_path(client: str) -> str:
@@ -220,6 +222,10 @@ def inspect_setup(repo: Path, client: str = "both") -> dict:
     index = inspect_index(repo)
     ready = index["status"] == "ready" and all(c["local_status"] == "ready" for c in clients.values())
     return {"repository": str(repo), "status": "ready" if ready else "needs_attention",
+            "runtime": {"python": platform.python_version(), "platform": sys.platform,
+                        "ibwd": version('ibwd'), "mcp": version('mcp'),
+                        "support": "macOS/Linux/WSL; native Windows hooks and locking are unsupported",
+                        "client_versions": "unverified; recorded from ordinary-work transcripts when supplied"},
             "clients": clients, "index": index,
             "next_steps": ["Restart/reconnect both clients and check IBWD in /mcp.",
                            "In Codex, review/trust hooks in /hooks; complete client project/MCP approvals.",

@@ -13,6 +13,7 @@ from ibwd.scanner.filesystem import scan_files
 from ibwd.retrieval.bounded import execute, MAX_BYTES, MAX_SECONDS
 from ibwd.index_inputs import config_digest
 from ibwd.retrieval.lexical import SourceChanged
+from ibwd.telemetry import retrieval_observation
 
 
 def readonly(root):
@@ -26,10 +27,12 @@ def readonly(root):
 def fresh_query(root, query):
     """Run a read against one published generation; validate again before return."""
     root = Path(root).resolve()
+    refreshed = False
     with report_lock(root / '.ibwd/index.lock', timeout=30):
         for attempt in range(2):
             if inspect_index(root)['status'] != 'ready':
                 scan_locked(root)
+                refreshed = True
             conn = readonly(root)
             try:
                 generation = conn.execute("SELECT value FROM index_metadata WHERE key='generation'").fetchone()[0]
@@ -52,6 +55,10 @@ def fresh_query(root, query):
                 if attempt == 0:
                     continue
                 raise ValueError('Sources changed during retrieval twice; retry when edits settle.')
+            observation = retrieval_observation.get()
+            if observation is not None:
+                observation.update(freshness='validated', refreshed=refreshed,
+                                   index_generation=generation)
             return result
 
 

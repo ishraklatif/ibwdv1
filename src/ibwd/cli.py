@@ -138,6 +138,25 @@ def usage_summary(reports: tuple[Path, ...]) -> None:
     click.echo(json.dumps(summary, indent=2))
 
 
+@main.command('usage-label')
+@click.argument('session_key')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default='.')
+@click.option('--client', type=click.Choice(['codex', 'claude']), required=True)
+@click.option('--outcome', type=click.Choice(['passed', 'failed', 'incomplete', 'unknown']), default='unknown')
+@click.option('--task-kind', type=click.Choice(['structural', 'implementation', 'debugging', 'mixed', 'unknown']), default='unknown')
+@click.option('--condition', type=click.Choice(['enabled', 'disabled', 'unknown']), default='unknown')
+@click.option('--rework', type=click.Choice(['yes', 'no', 'unknown']), default='unknown')
+def usage_label(session_key, repo, client, outcome, task_kind, condition, rework):
+    """Record your outcome/rework labels for an existing session snapshot."""
+    from ibwd.usage_hooks import label_session
+    try:
+        path = label_session(repo, client, session_key, outcome=outcome, task_kind=task_kind,
+                             condition=condition, rework=rework)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(str(path))
+
+
 @main.command("usage-setup")
 @click.option("--client", type=click.Choice(["codex", "claude", "both"]), default="both", show_default=True)
 @click.option("--repo", type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)

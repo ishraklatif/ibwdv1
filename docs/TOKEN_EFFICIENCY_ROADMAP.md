@@ -251,6 +251,10 @@ and each enabled role improves its predeclared retrieval metric within the devic
 
 ### Sprint 8 — a portable product with visible value
 
+Implementation delivered in [Sprint 8 notes](SPRINT_8.md): tested fresh/update project setup for both adapters,
+request-linked retrieval evidence, automatic project cohorts and explicit outcome/rework labels.
+Live client-version compatibility and ordinary-work effectiveness remain unverified; no additional model sessions were run.
+
 Package the short skill, shared engine, client adapters and reporting together through the existing setup flow.
 Verify a fresh install and an update for both clients; preserve user instructions/settings and leave trust decisions to the client.
 Record compatibility by tested client/runtime version. Native Windows support needs its own path, locking and hook tests;

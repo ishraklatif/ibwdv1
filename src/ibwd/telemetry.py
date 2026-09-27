@@ -8,6 +8,10 @@ from pathlib import Path
 import sqlite3
 import time
 import uuid
+from contextvars import ContextVar
+
+# The mutable request record also reaches synchronous tools in worker threads.
+retrieval_observation: ContextVar[dict | None] = ContextVar('ibwd_retrieval_observation', default=None)
 
 TOOLS = frozenset({"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
                    "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence", "ibwd_artifact_read"})
@@ -102,12 +106,17 @@ class ObservedServerMixin:
 
         record(event)
         started = time.monotonic()
+        freshness = {}
+        token = retrieval_observation.set(freshness)
         try:
             result = await super().call_tool(name, arguments, *args, **kwargs)
         except BaseException:
             record(event | {"phase": "completed", "status": "error",
                             "duration_ms": round((time.monotonic() - started) * 1000, 3)})
             raise
+        finally:
+            retrieval_observation.reset(token)
+        event.update(freshness)
         status = "error" if getattr(result, "is_error", getattr(result, "isError", False)) else "success"
         try:
             if hasattr(result, "meta"):
@@ -115,11 +124,23 @@ class ObservedServerMixin:
             serialized = result.model_dump(mode="json", by_alias=True, exclude_none=True) if hasattr(result, "model_dump") else None
         except (TypeError, ValueError, AttributeError):
             serialized = None  # SDK variants must not break a successful retrieval.
-        data = serialized.get("structuredContent") if serialized else None
+        data = serialized.get("structuredContent", serialized.get("structured_content")) if serialized else None
+        if data is None and serialized:
+            content = serialized.get('content', [])
+            if len(content) == 1 and content[0].get('type') == 'text':
+                try:
+                    data = json.loads(content[0]['text'])
+                except (ValueError, KeyError, TypeError):
+                    pass
         if isinstance(data, dict) and "result" in data:
             data = data["result"]
         if isinstance(data, dict):
-            event['index_generation'] = data.get('index_generation')
+            event['index_generation'] = data.get('index_generation') or event['index_generation']
+            semantic = data.get('semantic')
+            if isinstance(semantic, dict) and semantic.get('status') in {'ready', 'fallback', 'disabled'}:
+                # Reasons may contain local paths/runtime output; retain only the category.
+                event['semantic_status'] = semantic['status']
+            event['evidence_files'] = len(data['files']) if isinstance(data.get('files'), dict) else None
         if isinstance(data, dict) and data.get('schema_version') == 2:
             budget = (arguments or {}).get('max_bytes', 16384)
             if name in {'ibwd_context', 'ibwd_read'}:

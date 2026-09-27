@@ -163,3 +163,21 @@ allowance. No conversion from these totals to extra subscription messages is est
 
 The next optimization decision should follow evidence: compact a frequently oversized result, fix a stale answer, improve routing,
 or disable IBWD for task types where it adds overhead. No extra model benchmark is required to make those local improvements.
+
+## 6. Automatic Sprint 8 comparisons
+
+The setup-installed hooks now publish `comparison.json` alongside `comparison.md`.
+Automatic cohorts also separate project identities and retain failed/incomplete/unknown
+outcomes, reported rework and provisional sessions. Exact response-ID joins expose
+retrieval freshness, refreshes, semantic fallbacks, returned evidence counts and payload
+bytes. Missing ledger observations remain unknown; byte counts are not token savings.
+
+Record an assessment using the session key in the automatic report:
+
+```bash
+ibwd usage-label SESSION_KEY --repo /path/to/repo --client claude \
+  --task-kind debugging --condition enabled --outcome failed --rework yes
+```
+
+Labels are user-reported and expire when the transcript snapshot changes. They never
+establish final token accounting. See [Sprint 8 contracts and tested compatibility](SPRINT_8.md).

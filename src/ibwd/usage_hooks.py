@@ -13,7 +13,12 @@ import sqlite3
 
 from ibwd.usage_stream import incremental_report
 from ibwd.local_io import atomic_write as _atomic_write, report_lock
-from ibwd.telemetry import read_events
+from ibwd.telemetry import read_events, key
+from ibwd.usage_evidence import retrieval_evidence, evidence_lines, attention
+
+LABEL_OPTIONS = {'outcome': {'passed', 'failed', 'incomplete', 'unknown'},
+                 'task_kind': {'structural', 'implementation', 'debugging', 'mixed', 'unknown'},
+                 'condition': {'enabled', 'disabled', 'unknown'}, 'rework': {'yes', 'no', 'unknown'}}
 
 
 def hook_config(client: str, repo: Path) -> dict:
@@ -69,6 +74,9 @@ def render_report(report: dict) -> str:
     guidance = "observed" if evidence.get("ibwd_mentioned") else "not observed (not proof it was absent)"
     lines = ["# IBWD session report", "",
              f"Client: {report['client']}",
+             f"Session key: {report['session_key']}",
+             f"Outcome: {report['outcome']}; rework: {report.get('rework', 'unknown')} (not inferred)",
+             f"Label evidence: {report.get('label_evidence', 'none')}",
              f"Snapshot: {report['capture_event']} (recorded data may be incomplete)",
              f"Last recorded activity: {report['last_timestamp'] or 'unknown'}", "",
              f"Direct IBWD calls: {report['direct_ibwd_calls']}",
@@ -92,6 +100,7 @@ def render_report(report: dict) -> str:
         lines.append(f"- {name}: {observation['value']} — {observation['source']}")
     lines += ["", "A scan is maintenance, not retrieval. Counts are observed lower bounds, not proof of complete coverage.",
               "See comparison.md for separate client cohorts and unattributed server activity."]
+    lines += ['', *evidence_lines(report)]
     return "\n".join(lines) + "\n"
 
 
@@ -114,9 +123,47 @@ def _configuration(repo, client):
         return {"value": "unknown", "source": "No readable matching project MCP configuration."}
 
 
+def apply_labels(report: dict, labels: dict) -> None:
+    values = {field: labels[field] for field in LABEL_OPTIONS}
+    if any(not isinstance(value, str) or value not in LABEL_OPTIONS[field] for field, value in values.items()):
+        raise ValueError('Invalid labels')
+    current = labels.get('snapshot') == report.get('snapshot_key', [report['records'], report['last_timestamp']])
+    report['label_evidence'] = {'source': 'user_reported', 'status': 'current' if current else 'stale'}
+    if current:
+        report.update(values)
+
+
+def label_session(repo: Path, client: str, session_key: str, *, outcome: str,
+                  task_kind: str, condition: str, rework: str) -> Path:
+    """Attach explicit user labels to one recorded snapshot; never certify tests."""
+    import re
+    if client not in {'codex', 'claude'} or not re.fullmatch(r'[0-9a-f]{20}', session_key):
+        raise ValueError('Expected a client and 20-character session_key from its saved report.')
+    labels = dict(outcome=outcome, task_kind=task_kind, condition=condition, rework=rework)
+    if any(value not in LABEL_OPTIONS[field] for field, value in labels.items()):
+        raise ValueError('Unsupported session label.')
+    base = repo.resolve() / '.ibwd/usage'
+    name = f'{client}-{session_key}'
+    with report_lock(base / '.report.lock'):
+        path = base / 'sessions' / f'{name}.json'
+        report = json.loads(path.read_text())
+        if report['client'] != client or report['session_key'] != session_key:
+            raise ValueError('Saved report identity does not match.')
+        labels['snapshot'] = report.get('snapshot_key', [report['records'], report['last_timestamp']])
+        _atomic_write(base / 'labels' / f'{name}.json', json.dumps(labels) + '\n')
+        apply_labels(report, labels)
+        _atomic_write(path, json.dumps(report, indent=2) + '\n')
+        _atomic_write(path.with_suffix('.md'), render_report(report))
+        latest = base / f'latest-{client}.md'
+        if latest.exists() and f'Session key: {session_key}\n' in latest.read_text():
+            _atomic_write(latest, render_report(report))
+        refresh_comparison(base, read_events(repo.resolve()))
+    return path
+
+
 def refresh_comparison(folder: Path, events: list[dict]) -> None:
     """Display observational cohorts; no automatic savings or outcome inference."""
-    from collections import defaultdict
+    from collections import Counter, defaultdict
     import statistics
     groups = defaultdict(list)
     ids = set()
@@ -124,28 +171,75 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
     for path in sorted((folder / "sessions").glob("*.json")):
         try:
             report = json.loads(path.read_text())
+            if not isinstance(report, dict):
+                raise ValueError('Invalid report')
+            for field in ('models', 'efforts', 'client_versions'):
+                if not isinstance(report.get(field), list) or not all(isinstance(v, str) for v in report[field]):
+                    raise ValueError('Invalid cohort metadata')
+            for field in ('client', 'task_kind', 'condition', 'project_key', 'rework'):
+                if not isinstance(report.get(field, 'unknown'), str):
+                    raise ValueError('Invalid cohort label')
             group = (report["client"], tuple(report["models"]), tuple(report["efforts"]), tuple(report["client_versions"]),
-                     report["task_kind"], report["condition"])
+                     report.get('project_key', 'unknown'), report["task_kind"], report["condition"])
+            if not isinstance(report.get('outcome'), str) or not isinstance(report.get('observations', {}), dict):
+                raise ValueError('Invalid report metadata')
+            observations = report.get('observations', {})
+            if any(not isinstance(v, dict) for v in observations.values()):
+                raise ValueError('Invalid observations')
+            for name in ('scan_calls', 'retrieval_calls'):
+                if type(observations.get(name, {}).get('value', 0)) is not int:
+                    raise ValueError('Invalid observation counter')
+            usage = report.get('usage')
+            if usage is not None and (not isinstance(usage, dict) or type(usage.get('total_tokens')) is not int or usage['total_tokens'] < 0):
+                raise ValueError('Invalid token total')
+            observation_ids = report.get('server_observation_ids', [])
+            if not isinstance(observation_ids, list) or not all(isinstance(oid, str) for oid in observation_ids):
+                raise ValueError('Invalid observation identities')
+            if not isinstance(report.get('server_evidence', {}), dict):
+                raise ValueError('Invalid server evidence')
             groups[group].append(report)
-            ids.update(report.get("server_observation_ids", []))
-        except (OSError, ValueError, KeyError, TypeError):
+            ids.update(observation_ids)
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
             unreadable += 1
     server = {e["observation_id"]: e for e in events}
     unmatched = sum(oid not in ids for oid in server)
     lines = ["# IBWD ordinary-work comparison", "", "Observational snapshots, not matched tasks or measured savings.",
-             "Models, effort, client versions, task kinds and conditions remain separate; unknown labels are not inferred.", "",
+             "Projects, models, effort, client versions, task kinds and conditions remain separate; unknown labels are not inferred.",
+             "No matched baseline is established: adoption and retrieval efficiency only. Failures and rework remain included.", "",
              f"Unreadable reports: {unreadable}", f"Retained server requests: {len(server)}",
              f"Unattributed retained server requests: {unmatched}",
              "Server ledger is a bounded recent window; connection/request IDs are not conversation IDs.", ""]
+    rows = []
     for group, reports in sorted(groups.items()):
         tokens = [r["usage"]["total_tokens"] for r in reports if r.get("usage")]
+        outcomes = dict(sorted(Counter(r['outcome'] for r in reports).items()))
+        cohort_ids = {oid for r in reports for oid in r.get('server_observation_ids', [])}
+        rows.append(dict(zip(('client', 'models', 'efforts', 'client_versions', 'project_key', 'task_kind', 'condition'), group)) | {
+            'sessions': len(reports), 'outcomes': outcomes,
+            'rework': dict(sorted(Counter(r.get('rework', 'unknown') for r in reports).items())),
+            'provisional_sessions': sum(r.get('provisional', True) is not False for r in reports),
+            'missing_token_totals': len(reports) - len(tokens),
+            'median_recorded_tokens': statistics.median(tokens) if tokens else None,
+            'retrieval_evidence': retrieval_evidence([e for e in events if e['observation_id'] in cohort_ids]),
+        })
         lines += [f"## {' / '.join(str(v) for v in group)}", "",
+                  f"Outcomes (reported, not inferred): {json.dumps(outcomes, sort_keys=True)}.",
+                  f"Rework (reported, not inferred): {json.dumps(rows[-1]['rework'], sort_keys=True)}.",
+                  f"Provisional sessions: {rows[-1]['provisional_sessions']}.",
                   f"Sessions: {len(reports)}; missing token totals: {len(reports) - len(tokens)}; "
                   f"unknown outcomes: {sum(r['outcome'] == 'unknown' for r in reports)}.",
                   f"Median recorded tokens (available snapshots, all outcomes): {statistics.median(tokens) if tokens else 'unknown'}.",
                   f"Incomplete/uncertain usage: {sum(r.get('observations', {}).get('usage_incomplete', {}).get('value') != False for r in reports)}.",
                   f"Observed scans: {sum(r.get('observations', {}).get('scan_calls', {}).get('value', 0) for r in reports)}; "
                   f"observed retrieval calls: {sum(r.get('observations', {}).get('retrieval_calls', {}).get('value', 0) for r in reports)}.", ""]
+        lines.extend(f'- {item}' for item in sorted({item for report in reports for item in attention(report)}))
+        lines += ['', *evidence_lines({'server_evidence': rows[-1]['retrieval_evidence']})]
+        lines.append('')
+    _atomic_write(folder / 'comparison.json', json.dumps({
+        'schema_version': 1, 'groups': rows, 'unreadable_reports': unreadable,
+        'unattributed_retained_requests': unmatched,
+        'interpretation': 'Observational adoption and retrieval efficiency only; no matched baseline or savings claim.',
+    }, indent=2) + '\n')
     _atomic_write(folder / "comparison.md", "\n".join(lines) + "\n")
 
 
@@ -182,6 +276,14 @@ def capture_session(event: dict, client: str, repo: Path) -> Path | None:
             raise ValueError("Hook session identity does not match the transcript.")
         report["capture_event"] = event["hook_event_name"]
         report["provisional"] = True  # SessionEnd does not promise final accounting.
+        report['project_key'] = key(repo)
+        report['snapshot_key'] = key({k: v for k, v in state.items() if k != 'parser'})
+        labels_path = base / 'labels' / f'{name}.json'
+        if labels_path.exists():
+            try:
+                apply_labels(report, json.loads(labels_path.read_text()))
+            except (OSError, ValueError, KeyError, TypeError, AttributeError):
+                report['warnings'].append('Saved user labels could not be read; labels remain unknown.')
         report["observations"]["configured"] = _configuration(repo, client)
         try:
             events = read_events(repo)
@@ -189,8 +291,7 @@ def capture_session(event: dict, client: str, repo: Path) -> Path | None:
             events = []
             report["warnings"].append("Server ledger could not be read; attribution remains incomplete.")
         linked = [e for e in events if e["observation_id"] in report["server_observation_ids"]]
-        report["server_evidence"] = {"linked_requests": len({e['observation_id'] for e in linked}),
-                                     "join": "Exact response _meta.ibwd.observation_id only; never timestamps or connection identity."}
+        report["server_evidence"] = retrieval_evidence(linked)
         if linked:
             report["observations"]["connection_observed"] = {"value": True, "source": "Exact response-ID join to local server ledger."}
         folder = base / "sessions"

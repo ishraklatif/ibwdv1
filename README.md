@@ -99,7 +99,7 @@ it does not turn that historical gate into a pass. See [Sprint 3](SPRINT_3.md) a
 | Sprint 5 | [Delivered](docs/SPRINT_5.md): scoped impact, test relevance, previous-index diff and optional installed TypeScript evidence |
 | Sprint 6 | Optional local embeddings, justified by retrieval quality |
 | Sprint 7 | Optional local specialists and source-backed reusable memory |
-| Sprint 8 | Portable skills, dual-client packaging and ordinary-work efficiency review |
+| Sprint 8 (implemented) | [Portable setup, retrieval evidence and ordinary-work comparisons](docs/SPRINT_8.md); savings unverified |
 
 Local deterministic tests establish engineering quality; existing ordinary-work logs provide observational usage evidence.
 Neither establishes a causal savings claim on its own. Local models remain optional and are selected by available resources,

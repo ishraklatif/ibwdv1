@@ -58,7 +58,9 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
    This checkout is explicitly enabled; other repositories stay off.
 6. **Sprint 7 deterministic slice delivered:** [extractive summaries and shared task handoffs](docs/SPRINT_7.md),
    with source/dependency revalidation and CLI/MCP access. Additional model roles remain deferred until separate checks justify them.
-7. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.
+7. **Sprint 8 implemented:** [portable setup and ordinary-work evidence](docs/SPRINT_8.md), with fresh/update adapter tests,
+   request-linked freshness/fallback reporting, project cohorts and explicit snapshot-bound outcome/rework labels.
+   Client model adoption and savings remain unverified; no additional model sessions for evaluation.
 
 Further retrieval improvements remain future work. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
 over tuning to the five development benchmark repositories. Preserve TypeDoc's reserved confirmation role.
