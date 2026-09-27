@@ -156,3 +156,15 @@ the [local M1 screen](SPRINT_6_MEASUREMENT.md) failed the quality gate. No model
 
 After building an optional index, `ibwd semantic-config --repo /path/to/project --enabled` persists the local opt-in
 for CLI/MCP context requests. Use `--disabled` to undo it, or `context --no-semantic` for a deterministic request.
+
+## Reusing evidence and switching clients
+
+Sprint 7 adds `ibwd_artifact_save(kind, payload)` and `ibwd_artifact_read(artifact_id)`.
+Save small cited extracts as `summary` or an explicitly supplied task record as `handoff`.
+Keep the returned ID when switching clients; both clients read the same local store and
+revalidate source/dependency hashes. Stale records return status without obsolete content.
+Commands in handoffs are recorded, never executed or independently certified.
+
+The equivalent CLI is `ibwd artifact-save summary /tmp/payload.json --repo /path/to/project`
+and `ibwd artifact-read ARTIFACT_ID --repo /path/to/project`. See [payload examples and limits](SPRINT_7.md).
+Reconnect an existing MCP server to expose the new tools. No model setup is needed.

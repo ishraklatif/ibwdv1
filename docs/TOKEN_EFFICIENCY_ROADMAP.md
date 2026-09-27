@@ -219,6 +219,10 @@ not current measurements. If the baseline is already strong or the resource cost
 
 ### Sprint 7 — multiple local specialists, with a reason for each
 
+Implementation: [Sprint 7 contracts and limits](SPRINT_7.md). Extractive source references and shared task handoffs
+are delivered with source/dependency freshness checks. No additional model role is implemented or enabled;
+independent quality/resource acceptance remains pending under the no-benchmark instruction.
+
 Multiple on-device models means **specialized optional roles**, not several agents debating every request:
 
 | Role | Input / output | Activation |

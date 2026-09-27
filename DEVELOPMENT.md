@@ -55,8 +55,10 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
 5. **Sprint 6 optional implementation delivered:** local-only embedding adapter, atomic vector generations, incremental cache and
    rank fusion. [Contracts and limits](docs/SPRINT_6.md) document deterministic tests. A subsequently authorized
    [M1 local screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query gain and substantial query latency; the quality gate failed.
-   This checkout is explicitly enabled; other repositories stay off. **Sprint 7:** specialists only if separate checks justify them.
-6. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.
+   This checkout is explicitly enabled; other repositories stay off.
+6. **Sprint 7 deterministic slice delivered:** [extractive summaries and shared task handoffs](docs/SPRINT_7.md),
+   with source/dependency revalidation and CLI/MCP access. Additional model roles remain deferred until separate checks justify them.
+7. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.
 
 Further retrieval improvements remain future work. Prioritize regressions on small Python/TypeScript fixtures and unseen local code
 over tuning to the five development benchmark repositories. Preserve TypeDoc's reserved confirmation role.

@@ -242,6 +242,15 @@ chunk count and query timeout. `vectors(key, vector)` stores normalized JSON vec
 Model/dimension/preprocessing identity is generation-wide; incompatible identity never reuses vectors.
 See [Sprint 6](docs/SPRINT_6.md) for bounds and default-off behavior. This does not add semantic edges to `graph.db`.
 
+Sprint 7 stores durable extractive summaries and supplied handoffs separately in
+`.ibwd/durable/<sha256>.json`. Version 1 records contain `kind`, `payload`, `files`
+(path to source hash, or null for absent changed paths), `extracts`, origin `index_generation`,
+`model_digest` (null), `prompt_version` (`extractive-v1`), `validation_status`
+(`exact_extracts` or `caller_reported`) and `scope`. Summary payloads distinguish evidence
+from declared dependencies, both with hashes/ranges. IDs hash the canonical full record;
+read validates it and rechecks source evidence. These records never populate the reserved
+`summaries` table or create graph edges. See [Sprint 7](docs/SPRINT_7.md) for contracts.
+
 The original extension proposal remains historical:
 
 ```sql

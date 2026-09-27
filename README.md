@@ -6,11 +6,12 @@ The objective is less model context per correctly completed task. General token 
 
 ## Current status
 
-Sprints 1–6 deliver eleven MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
+Sprints 1–7 deliver thirteen MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
 explicit repository selection, index diagnostics, project setup and automatic local session reports for both clients.
 Default symbol/graph support covers production Python and JS/JSX/TS/TSX. Explicit scoped discovery and impact also cover tests; lexical evidence includes documentation and configuration.
 Sprint 5 adds scoped impact and optional compiler evidence. Sprint 6 adds opt-in local embeddings, disabled by default;
-generated summaries are not shipped. The [local M1 semantic screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query gain
+Sprint 7 adds [extractive summaries and shared handoffs](docs/SPRINT_7.md) with dependency-aware freshness checks.
+Generated summaries and rerankers remain deferred. The [local M1 semantic screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query gain
 and substantial latency; independent held-out acceptance remains pending.
 
 The active plan is [the token-efficiency roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md), revised 2026-09-24.
@@ -63,6 +64,8 @@ Current setup/hooks support macOS, Linux and WSL; native Windows hook generation
 | `ibwd_read` | Read exact source spans using a current expected hash |
 | `ibwd_impact` | Bounded exposure/dependency paths, test relevance and previous-index diff |
 | `ibwd_compiler_evidence` | Opt-in installed TypeScript references with diagnostics and provenance |
+| `ibwd_artifact_save` | Save cited extracts or an explicitly supplied task handoff locally |
+| `ibwd_artifact_read` | Retrieve a saved artifact after source/dependency revalidation |
 
 Use returned exact identities to disambiguate symbols. Read source before editing.
 Retrieval refreshes automatically after edits or branch changes; concurrent scans and queries share a repository lock.

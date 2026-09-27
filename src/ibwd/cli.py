@@ -294,5 +294,38 @@ def compiler_evidence_command(file, line, column, project, compiler, repo, max_b
     click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
 
 
+@main.command('artifact-save')
+@click.argument('kind', type=click.Choice(['summary', 'handoff']))
+@click.argument('payload_file', type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--max-bytes', default=16384, type=int)
+def artifact_save_command(kind, payload_file, repo, max_bytes):
+    """Save cited extracts or a supplied handoff from a JSON payload file."""
+    from ibwd.retrieval.durable import save
+    try:
+        with payload_file.open('rb') as stream:
+            raw = stream.read(24001)
+        if len(raw) > 24000:
+            raise ValueError('Artifact input exceeds 24000 bytes.')
+        result = save(repo, kind, json.loads(raw), max_bytes)
+    except (OSError, ValueError, TimeoutError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('artifact-read')
+@click.argument('artifact_id')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--max-bytes', default=16384, type=int)
+def artifact_read_command(artifact_id, repo, max_bytes):
+    """Retrieve a saved artifact only when its source and dependencies are current."""
+    from ibwd.retrieval.durable import retrieve
+    try:
+        result = retrieve(repo, artifact_id, max_bytes)
+    except (OSError, ValueError, TimeoutError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
 if __name__ == "__main__":
     main()

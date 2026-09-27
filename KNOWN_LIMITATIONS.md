@@ -17,6 +17,10 @@ Stale/unavailable/slow models fall back to deterministic retrieval. See [Sprint 
 Status key: **Fixed** (code + tests), **Open** (documented, not fixed), **Inherent** (cannot be
 fully fixed without running code), **Decision pending** (needs an owner's call).
 
+Sprint 7's [extractive artifacts and task handoffs](docs/SPRINT_7.md) validate declared source/dependency
+hashes and ranges. They cannot establish semantic completeness, omitted dependencies, or the truth of
+caller-reported decisions and command results. Generated summaries/rerankers remain unimplemented.
+
 | # | Limitation | Origin | Status |
 |---|---|---|---|
 | 1 | Test files excluded from default production queries | Sprint 2 scope + a Sprint 3 choice | Separate scope delivered in Sprint 5 |
