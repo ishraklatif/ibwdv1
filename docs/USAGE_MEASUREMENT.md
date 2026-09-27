@@ -181,3 +181,66 @@ ibwd usage-label SESSION_KEY --repo /path/to/repo --client claude \
 
 Labels are user-reported and expire when the transcript snapshot changes. They never
 establish final token accounting. See [Sprint 8 contracts and tested compatibility](SPRINT_8.md).
+
+## 7. Compare optional embeddings during ordinary work
+
+Embedding mode is recorded automatically for MCP `ibwd_context` requests, including
+repository defaults, explicit overrides and cached deterministic responses. Modes are
+`disabled`, `used`, `fallback`, or `unknown`. A fallback may happen before inference or
+after an attempted model call; reports distinguish these with `inference_attempts`.
+Freshness retries retain each attempt. Other retrieval tools do not use embeddings.
+No additional model request is made for observation or reporting.
+
+Each observation includes the indexed model's weights/configuration digest and
+preprocessing version when known. The digest identifies the model contents without
+exporting the local installation path; on fallback, it may describe an unusable index.
+Optional elapsed time includes model validation, runtime startup, inference and ranking.
+It excludes the rest of context retrieval; total request duration remains a separate
+counter. Memory usage is not measured. A successful embedding call does not establish
+that its returned evidence helped the task.
+
+Configure the mode for the next ordinary task using the existing commands:
+
+```bash
+ibwd semantic-config --repo /path/to/repo --disabled
+ibwd semantic-config --repo /path/to/repo --enabled
+```
+
+These commands select a repository default; they do not build an index or install a
+model. Enabling requires an existing usable local semantic index to avoid fallback.
+An explicit `semantic` argument on a context request overrides that default. Existing
+client processes can observe a changed default on subsequent requests.
+
+After reviewing the task, record all applicable labels with the session key from its
+report (omitted options become unknown):
+
+```bash
+ibwd usage-label SESSION_KEY --repo /path/to/repo --client codex \
+  --task-kind implementation --condition enabled --outcome passed --rework no \
+  --retrieval-usefulness useful
+```
+
+Use `useful` when the returned evidence materially helped, `partly-useful` when some
+helped but required substantial additional searching, `not-useful` when it did not
+help, and `unknown` when you cannot assess it. This is a user-reported assessment of
+retrieval across the captured session, not an individual-result relevance score or
+proof that embeddings caused success. Mixed-mode sessions are kept separate. Ratings
+expire with their transcript snapshot, just like outcome/rework labels. Older label
+files remain readable with usefulness unknown.
+
+Automatic comparisons separate mode/model/preprocessing profiles in addition to the
+existing project/client/model/effort/version/task/IBWD-condition fields. A partially
+linked session is explicitly grouped as incomplete attribution. Older records lacking
+instrumentation stay unknown. Cohorts show usefulness counts and the number of known
+ratings alongside outcomes, rework, tokens, fallback and timing evidence. Snapshot
+profiles survive ledger eviction; current timing totals cover only retained events.
+Sessions without observed context calls never become an embeddings-disabled baseline.
+
+Before collecting evidence, record the decision criteria: eligible task kinds, the
+minimum number of rated sessions per mode, the improvement in usefulness required,
+acceptable outcome/rework rates, and maximum optional latency and memory. Choose these
+for the project/device before looking at results. Compare comparable ordinary tasks
+using one mode per session where practical, keeping failures and unknowns visible.
+Do not pool fallback or mixed-mode sessions with successful embedding use. Memory
+needs separate local evidence before a memory requirement can pass. The reports do
+not automatically accept a role, create causal savings claims, or run evaluation jobs.

@@ -1,5 +1,51 @@
 """Content-free retrieval evidence and deterministic ordinary-work recommendations."""
 from collections import Counter
+import statistics
+
+
+def embedding_evidence(requests: list[dict]) -> dict:
+    """Only context requests select embeddings; missing instrumentation stays unknown."""
+    contexts = [e for e in requests if e.get('tool') == 'ibwd_context']
+    modes, identities, elapsed = Counter(), set(), []
+    attempted = 0
+    attempts = [data for event in contexts
+                for data in event.get('embedding_attempts', [event.get('embedding', {})])]
+    for data in attempts:
+        mode = data.get('mode', 'unknown')
+        if mode not in {'disabled', 'used', 'fallback'}:
+            mode = 'unknown'
+        modes[mode] += 1
+        identities.add((mode, data.get('model_digest') or 'unknown',
+                        data.get('preprocessing_version') or 'unknown'))
+        attempted += data.get('inference_attempted') is True
+        duration = data.get('elapsed_ms')
+        if mode != 'disabled' and type(duration) in (int, float) and duration >= 0:
+            elapsed.append(duration)
+    return {'context_requests': len(contexts), 'context_attempts': len(attempts), 'modes': dict(sorted(modes.items())),
+            'profiles': [dict(zip(('mode', 'model_digest', 'preprocessing_version'), values))
+                         for values in sorted(identities)],
+            'inference_attempts': attempted, 'timed_optional_attempts': len(elapsed),
+            'optional_elapsed_ms': round(sum(elapsed), 3),
+            'median_optional_elapsed_ms': statistics.median(elapsed) if elapsed else None,
+            'scope': 'Observed context attempts only, including freshness retries. Digest identifies indexed weights/configuration, '
+                     'not a product name; on fallback it may identify an unusable index. '
+                     'Elapsed time includes validation, model startup and ranking. Memory is not measured.'}
+
+
+def embedding_profile(report: dict) -> tuple[str, ...]:
+    evidence = report.get('server_evidence', {})
+    embedding = evidence.get('embedding', {})
+    if not embedding:
+        return ('unknown',)
+    profiles = tuple(sorted(':'.join(p.get(k, 'unknown') for k in
+                            ('mode', 'model_digest', 'preprocessing_version'))
+                            for p in embedding.get('profiles', [])))
+    # A partial ledger must not classify a whole session as a known treatment.
+    observed = report.get('observed_ibwd_calls')
+    complete = (type(observed) is int and observed > 0 and observed == evidence.get('linked_requests'))
+    if not complete:
+        return ('incomplete_attribution', *profiles)
+    return profiles or ('no_observed_context',)
 
 
 def retrieval_evidence(events: list[dict]) -> dict:
@@ -29,6 +75,7 @@ def retrieval_evidence(events: list[dict]) -> dict:
         'duration_ms': round(sum(e['duration_ms'] for e in completed if isinstance(e.get('duration_ms'), (int, float))), 3),
         'duration_known_requests': sum(isinstance(e.get('duration_ms'), (int, float)) for e in completed),
         'tools': dict(sorted(Counter(e.get('tool', 'unknown') for e in retrieval).items())),
+        'embedding': embedding_evidence(retrieval),
         'join': 'Exact response _meta.ibwd.observation_id only; never timestamps or connection identity.',
         'scope': 'Retained linked requests only. Counts are lower bounds; file references are not unique files. '
                  'Freshness validates indexed inputs at retrieval, not completeness or current freshness. '
@@ -64,6 +111,15 @@ def evidence_lines(report: dict) -> list[str]:
                      'duration_ms', 'duration_known_requests'):
             lines.append(f"- {name}: {evidence.get(name, 'unknown')}")
         lines += ['', evidence.get('scope', 'Legacy evidence; freshness and response details are unknown.')]
+        embedding = evidence.get('embedding')
+        if embedding:
+            lines += ['', '## Embedding observations', '',
+                      f"Modes: {embedding['modes']}",
+                      f"Model profiles: {embedding['profiles']}",
+                      f"Inference attempts: {embedding['inference_attempts']}",
+                      f"Timed optional attempts: {embedding['timed_optional_attempts']}",
+                      f"Median optional elapsed ms: {embedding['median_optional_elapsed_ms']}",
+                      embedding['scope']]
     else:
         lines.append('No linked server evidence; freshness and response details are unknown.')
     lines += ['', '## Local attention', '']

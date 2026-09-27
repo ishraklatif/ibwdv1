@@ -78,3 +78,15 @@ recaptured. Older reports remain readable but cannot retroactively gain missing 
 observations. JSON and Markdown are individually atomic; a later hook repairs interrupted
 multi-file publication. Labels detect parser snapshot changes, not all possible edits in
 an append-only transcript's previously consumed middle.
+
+## Embedding evaluation follow-up
+
+Ordinary-work reports now track observed embedding mode, indexed model digest,
+preprocessing version, inference attempts and optional-path latency, including freshness
+retries. Cohorts separate mixed modes, model versions, missing instrumentation and partial
+attribution. `usage-label --retrieval-usefulness useful|partly-useful|not-useful|unknown`
+adds explicit session-wide feedback with the same snapshot invalidation as outcomes.
+See [the workflow and interpretation limits](USAGE_MEASUREMENT.md#7-compare-optional-embeddings-during-ordinary-work).
+`tests/test_embedding_reporting.py` uses deterministic embedding fixtures; no model jobs
+or benchmarks are required to verify this instrumentation. Quality and memory acceptance
+still require evidence; the implementation does not automatically pass either gate.

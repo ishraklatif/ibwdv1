@@ -218,12 +218,23 @@ def build(root, model_path, dimensions, timeout=120, query_timeout=2):
 def ranked(root, conn, generation, task, scopes):
     """Return bounded vector candidates or an explicit deterministic fallback."""
     started = time.monotonic()
+    from ibwd.telemetry import retrieval_observation
+    observation = retrieval_observation.get()
+    tracking = dict(mode='pending', model_digest=None, preprocessing_version=None,
+                    inference_attempted=False, elapsed_ms=None)
     try:
         # Do not queue behind maintenance or another optional query.
         with report_lock(root / '.ibwd/semantic.lock', timeout=0):
             db = open_store(root)
             try:
                 meta = metadata(db)
+                if not isinstance(meta, dict):
+                    raise ValueError('Invalid semantic metadata')
+                digest = meta.get('model_digest')
+                if isinstance(digest, str) and len(digest) == 64 and all(c in '0123456789abcdef' for c in digest):
+                    tracking['model_digest'] = digest
+                if meta.get('preprocessing_version') == VERSION:
+                    tracking['preprocessing_version'] = VERSION
                 if meta['index_generation'] != generation or meta['preprocessing_version'] != VERSION:
                     raise ValueError('Semantic index is stale; run semantic-index explicitly')
                 valid = {(r[0], int(r[1]), int(r[2]), r[3], r[4]) for r in conn.execute(
@@ -240,6 +251,7 @@ def ranked(root, conn, generation, task, scopes):
                     raise ValueError('Invalid semantic query deadline')
                 if model_digest(meta['model_path'], timeout=1) != meta['model_digest']:
                     raise ValueError('Local model changed; rebuild semantic index')
+                tracking['inference_attempted'] = True
                 vector = vectors_checked(embed(meta['model_path'], [task], dimensions, timeout=query_timeout), 1, dimensions)[0]
                 if model_digest(meta['model_path'], timeout=1) != meta['model_digest']:
                     raise ValueError('Local model changed during query')
@@ -258,6 +270,7 @@ def ranked(root, conn, generation, task, scopes):
                     score = sum(a * b for a, b in zip(vector, candidate))
                     scored.append((score, dict(file=row['file'], line=row['line'], end_line=row['end_line'], reason='semantic')))
                 scored.sort(key=lambda pair: (-pair[0], pair[1]['file'], pair[1]['line']))
+                tracking['mode'] = 'used'
                 return [item for _, item in scored[:200]], dict(status='ready', semantic_generation=meta['semantic_generation'],
                     model_digest=meta['model_digest'], dimensions=dimensions, preprocessing_version=VERSION,
                     fusion='reciprocal_rank_60; exact targets first; bounded resolved expansion',
@@ -265,7 +278,12 @@ def ranked(root, conn, generation, task, scopes):
             finally:
                 db.close()
     except (OSError, ValueError, TypeError, KeyError, IndexError, sqlite3.Error) as exc:
+        tracking['mode'] = 'fallback'
         return [], dict(status='fallback', reason=str(exc)[:240])
+    finally:
+        tracking['elapsed_ms'] = round((time.monotonic() - started) * 1000, 3)
+        if observation is not None:
+            observation.setdefault('embedding', {}).update(tracking)
 
 
 def fuse(lexical, semantic, limit=200):

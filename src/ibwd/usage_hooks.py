@@ -14,11 +14,12 @@ import sqlite3
 from ibwd.usage_stream import incremental_report
 from ibwd.local_io import atomic_write as _atomic_write, report_lock
 from ibwd.telemetry import read_events, key
-from ibwd.usage_evidence import retrieval_evidence, evidence_lines, attention
+from ibwd.usage_evidence import retrieval_evidence, evidence_lines, attention, embedding_profile
 
 LABEL_OPTIONS = {'outcome': {'passed', 'failed', 'incomplete', 'unknown'},
                  'task_kind': {'structural', 'implementation', 'debugging', 'mixed', 'unknown'},
-                 'condition': {'enabled', 'disabled', 'unknown'}, 'rework': {'yes', 'no', 'unknown'}}
+                 'condition': {'enabled', 'disabled', 'unknown'}, 'rework': {'yes', 'no', 'unknown'},
+                 'retrieval_usefulness': {'useful', 'partly-useful', 'not-useful', 'unknown'}}
 
 
 def hook_config(client: str, repo: Path) -> dict:
@@ -77,6 +78,7 @@ def render_report(report: dict) -> str:
              f"Session key: {report['session_key']}",
              f"Outcome: {report['outcome']}; rework: {report.get('rework', 'unknown')} (not inferred)",
              f"Label evidence: {report.get('label_evidence', 'none')}",
+             f"Retrieval usefulness: {report.get('retrieval_usefulness', 'unknown')} (user-reported, session-wide)",
              f"Snapshot: {report['capture_event']} (recorded data may be incomplete)",
              f"Last recorded activity: {report['last_timestamp'] or 'unknown'}", "",
              f"Direct IBWD calls: {report['direct_ibwd_calls']}",
@@ -124,7 +126,8 @@ def _configuration(repo, client):
 
 
 def apply_labels(report: dict, labels: dict) -> None:
-    values = {field: labels[field] for field in LABEL_OPTIONS}
+    values = {field: (labels.get(field, 'unknown') if field == 'retrieval_usefulness' else labels[field])
+              for field in LABEL_OPTIONS}
     if any(not isinstance(value, str) or value not in LABEL_OPTIONS[field] for field, value in values.items()):
         raise ValueError('Invalid labels')
     current = labels.get('snapshot') == report.get('snapshot_key', [report['records'], report['last_timestamp']])
@@ -134,12 +137,13 @@ def apply_labels(report: dict, labels: dict) -> None:
 
 
 def label_session(repo: Path, client: str, session_key: str, *, outcome: str,
-                  task_kind: str, condition: str, rework: str) -> Path:
+                  task_kind: str, condition: str, rework: str, retrieval_usefulness: str = 'unknown') -> Path:
     """Attach explicit user labels to one recorded snapshot; never certify tests."""
     import re
     if client not in {'codex', 'claude'} or not re.fullmatch(r'[0-9a-f]{20}', session_key):
         raise ValueError('Expected a client and 20-character session_key from its saved report.')
-    labels = dict(outcome=outcome, task_kind=task_kind, condition=condition, rework=rework)
+    labels = dict(outcome=outcome, task_kind=task_kind, condition=condition, rework=rework,
+                  retrieval_usefulness=retrieval_usefulness)
     if any(value not in LABEL_OPTIONS[field] for field, value in labels.items()):
         raise ValueError('Unsupported session label.')
     base = repo.resolve() / '.ibwd/usage'
@@ -197,6 +201,9 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
                 raise ValueError('Invalid observation identities')
             if not isinstance(report.get('server_evidence', {}), dict):
                 raise ValueError('Invalid server evidence')
+            if report.get('retrieval_usefulness', 'unknown') not in LABEL_OPTIONS['retrieval_usefulness']:
+                raise ValueError('Invalid usefulness label')
+            group = (*group, embedding_profile(report))
             groups[group].append(report)
             ids.update(observation_ids)
         except (OSError, ValueError, KeyError, TypeError, AttributeError):
@@ -204,7 +211,7 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
     server = {e["observation_id"]: e for e in events}
     unmatched = sum(oid not in ids for oid in server)
     lines = ["# IBWD ordinary-work comparison", "", "Observational snapshots, not matched tasks or measured savings.",
-             "Projects, models, effort, client versions, task kinds and conditions remain separate; unknown labels are not inferred.",
+             "Projects, models, effort, client versions, task kinds, conditions and observed embedding profiles remain separate; unknown labels are not inferred.",
              "No matched baseline is established: adoption and retrieval efficiency only. Failures and rework remain included.", "",
              f"Unreadable reports: {unreadable}", f"Retained server requests: {len(server)}",
              f"Unattributed retained server requests: {unmatched}",
@@ -214,8 +221,11 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
         tokens = [r["usage"]["total_tokens"] for r in reports if r.get("usage")]
         outcomes = dict(sorted(Counter(r['outcome'] for r in reports).items()))
         cohort_ids = {oid for r in reports for oid in r.get('server_observation_ids', [])}
-        rows.append(dict(zip(('client', 'models', 'efforts', 'client_versions', 'project_key', 'task_kind', 'condition'), group)) | {
+        usefulness = dict(sorted(Counter(r.get('retrieval_usefulness', 'unknown') for r in reports).items()))
+        rows.append(dict(zip(('client', 'models', 'efforts', 'client_versions', 'project_key', 'task_kind', 'condition', 'embedding_profile'), group)) | {
             'sessions': len(reports), 'outcomes': outcomes,
+            'retrieval_usefulness': usefulness,
+            'usefulness_known_sessions': len(reports) - usefulness.get('unknown', 0),
             'rework': dict(sorted(Counter(r.get('rework', 'unknown') for r in reports).items())),
             'provisional_sessions': sum(r.get('provisional', True) is not False for r in reports),
             'missing_token_totals': len(reports) - len(tokens),
@@ -225,6 +235,7 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
         lines += [f"## {' / '.join(str(v) for v in group)}", "",
                   f"Outcomes (reported, not inferred): {json.dumps(outcomes, sort_keys=True)}.",
                   f"Rework (reported, not inferred): {json.dumps(rows[-1]['rework'], sort_keys=True)}.",
+                  f"Retrieval usefulness (user-reported, session-wide): {json.dumps(usefulness, sort_keys=True)}.",
                   f"Provisional sessions: {rows[-1]['provisional_sessions']}.",
                   f"Sessions: {len(reports)}; missing token totals: {len(reports) - len(tokens)}; "
                   f"unknown outcomes: {sum(r['outcome'] == 'unknown' for r in reports)}.",

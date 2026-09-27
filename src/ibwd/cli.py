@@ -146,12 +146,13 @@ def usage_summary(reports: tuple[Path, ...]) -> None:
 @click.option('--task-kind', type=click.Choice(['structural', 'implementation', 'debugging', 'mixed', 'unknown']), default='unknown')
 @click.option('--condition', type=click.Choice(['enabled', 'disabled', 'unknown']), default='unknown')
 @click.option('--rework', type=click.Choice(['yes', 'no', 'unknown']), default='unknown')
-def usage_label(session_key, repo, client, outcome, task_kind, condition, rework):
+@click.option('--retrieval-usefulness', type=click.Choice(['useful', 'partly-useful', 'not-useful', 'unknown']), default='unknown')
+def usage_label(session_key, repo, client, outcome, task_kind, condition, rework, retrieval_usefulness):
     """Record your outcome/rework labels for an existing session snapshot."""
     from ibwd.usage_hooks import label_session
     try:
         path = label_session(repo, client, session_key, outcome=outcome, task_kind=task_kind,
-                             condition=condition, rework=rework)
+                             condition=condition, rework=rework, retrieval_usefulness=retrieval_usefulness)
     except (OSError, ValueError, KeyError, TypeError) as exc:
         raise click.ClickException(str(exc)) from exc
     click.echo(str(path))

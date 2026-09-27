@@ -111,7 +111,7 @@ class ObservedServerMixin:
         try:
             result = await super().call_tool(name, arguments, *args, **kwargs)
         except BaseException:
-            record(event | {"phase": "completed", "status": "error",
+            record(event | freshness | {"phase": "completed", "status": "error",
                             "duration_ms": round((time.monotonic() - started) * 1000, 3)})
             raise
         finally:

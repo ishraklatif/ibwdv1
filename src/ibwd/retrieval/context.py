@@ -207,6 +207,13 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
     signature = query_key('context', [VERSION, task, targets, scopes, detail])
 
     def query(conn, generation):
+        from ibwd.telemetry import retrieval_observation
+        observation = retrieval_observation.get()
+        if observation is not None:
+            observation['embedding'] = {'mode': 'pending' if semantic else 'disabled',
+                                        'model_digest': None, 'preprocessing_version': None,
+                                        'inference_attempted': False, 'elapsed_ms': None if semantic else 0.0}
+            observation.setdefault('embedding_attempts', []).append(observation['embedding'])
         semantic_status = None
         packet_signature = signature
         if semantic:

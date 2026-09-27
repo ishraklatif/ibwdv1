@@ -56,6 +56,10 @@ def test_fresh_setup_update_and_transport_evidence(tmp_path, client):
                     event = next(e for e in read_events(repo) if e['observation_id'] == oid and e['phase'] == 'completed')
                     assert event['freshness'] == 'validated' and event['refreshed'] is True
                     assert event['semantic_status'] == 'fallback'
+                    assert event['embedding']['mode'] == 'fallback'
+                    assert not event['embedding']['inference_attempted']
+                    assert event['embedding']['elapsed_ms'] >= 0
+                    assert event['embedding_attempts'] == [event['embedding']]
                     assert event['evidence_files'] >= 1
                     assert event['result_count'] >= 1 and event['response_bytes'] > 0
                     assert event['index_generation']
@@ -65,6 +69,10 @@ def test_fresh_setup_update_and_transport_evidence(tmp_path, client):
                     assert next_event['freshness'] == 'validated' and next_event['refreshed'] is False
                     assert next_event['result_count'] == 1 and next_event['index_generation']
                     assert 'semantic_status' not in next_event
+                    assert 'embedding' not in next_event
+                    await session.call_tool('ibwd_context', {'task': 'changed', 'semantic': False})
+                    disabled = read_events(repo)[-1]
+                    assert disabled['embedding']['mode'] == 'disabled'
                     await session.call_tool('ibwd_read', {'symbol_id_or_path': 'app.py', 'expected_hash': 'wrong'})
                     failed_event = read_events(repo)[-1]
                     assert failed_event['status'] == 'error'
@@ -86,6 +94,7 @@ def test_fresh_setup_update_and_transport_evidence(tmp_path, client):
     assert report['server_evidence']['linked_requests'] == 1
     assert report['server_evidence']['freshness_validated'] == 1
     assert report['server_evidence']['semantic_fallbacks'] == 1
+    assert report['server_evidence']['embedding']['modes'] == {'fallback': 1}
     comparison = json.loads((repo / '.ibwd/usage/comparison.json').read_text())
     assert comparison['groups'][0]['retrieval_evidence']['freshness_validated'] == 1
 
