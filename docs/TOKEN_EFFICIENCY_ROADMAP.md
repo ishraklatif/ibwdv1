@@ -201,6 +201,10 @@ environments. No `safe_to_delete` claims from empty graphs. No new precision reg
 
 ### Sprint 6 — local semantics only when necessary
 
+Implementation: [Sprint 6 contracts and limits](SPRINT_6.md). The opt-in local adapter, vector cache and rank fusion are implemented;
+[local screening](SPRINT_6_MEASUREMENT.md) subsequently measured quality/resources but failed the proposed vague-query quality gate.
+Independent held-out acceptance remains unmeasured. The layer stays off until a repository explicitly opts in.
+
 1. Establish lexical+graph performance first. Offer an opt-in embedding adapter for vague queries that lexical retrieval misses.
 2. Embed bounded source/doc chunks and signatures using local weights. Cache by content, model digest, dimensions and preprocessing version.
    On incompatible changes, rebuild a separate generation before switching it into service. A no-op refresh performs zero embedding calls.

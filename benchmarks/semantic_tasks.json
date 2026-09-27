@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "purpose": "Predeclared local screening queries; not independent human-adjudicated held-out validation. No ranking tuning on these results.",
+  "metric": "Relevant-file recall among the first five evidence items; exact cases also require the named symbol first.",
+  "cases": [
+    {"id":"exact-1","category":"exact","query":"inspect_index","relevant":["src/ibwd/health.py"],"symbol":"src/ibwd/health.py::inspect_index"},
+    {"id":"exact-2","category":"exact","query":"cursor_offset","relevant":["src/ibwd/retrieval/bounded.py"],"symbol":"src/ibwd/retrieval/bounded.py::cursor_offset"},
+    {"id":"exact-3","category":"exact","query":"atomic_write","relevant":["src/ibwd/local_io.py"],"symbol":"src/ibwd/local_io.py::atomic_write"},
+    {"id":"exact-4","category":"exact","query":"reduce_output","relevant":["src/ibwd/retrieval/output.py"],"symbol":"src/ibwd/retrieval/output.py::reduce_output"},
+    {"id":"exact-5","category":"exact","query":"source_text","relevant":["src/ibwd/retrieval/lexical.py"],"symbol":"src/ibwd/retrieval/lexical.py::source_text"},
+    {"id":"exact-6","category":"exact","query":"scan_files","relevant":["src/ibwd/scanner/filesystem.py"],"symbol":"src/ibwd/scanner/filesystem.py::scan_files"},
+    {"id":"synonym-1","category":"synonym","query":"detect whether the saved repository map has gone out of date","relevant":["src/ibwd/health.py"]},
+    {"id":"synonym-2","category":"synonym","query":"reject a continuation token from an earlier version of the project","relevant":["src/ibwd/retrieval/bounded.py"]},
+    {"id":"synonym-3","category":"synonym","query":"save a report without readers observing a half-written document","relevant":["src/ibwd/local_io.py"]},
+    {"id":"synonym-4","category":"synonym","query":"shorten terminal test chatter while keeping the useful failure diagnostics","relevant":["src/ibwd/retrieval/output.py"]},
+    {"id":"synonym-5","category":"synonym","query":"retrieve original code only if its fingerprint still agrees","relevant":["src/ibwd/retrieval/lexical.py"]},
+    {"id":"synonym-6","category":"synonym","query":"skip dependency folders and generated bundles when walking a project","relevant":["src/ibwd/scanner/filesystem.py"]},
+    {"id":"behavior-1","category":"behavior","query":"What retries a read when a developer edits the repository halfway through answering?","relevant":["src/ibwd/retrieval/service.py"]},
+    {"id":"behavior-2","category":"behavior","query":"Where are old and new symbol identities retained so removing a function still exposes its callers?","relevant":["src/ibwd/retrieval/impact.py","src/ibwd/scan.py"]},
+    {"id":"behavior-3","category":"behavior","query":"Where does a large function body get omitted from a response rather than silently chopped into an incomplete excerpt?","relevant":["src/ibwd/retrieval/context.py"]},
+    {"id":"behavior-4","category":"behavior","query":"Where is a missing JavaScript compiler reported as unknown without installing anything?","relevant":["src/ibwd/retrieval/compiler.py"]},
+    {"id":"behavior-5","category":"behavior","query":"How are fresh index files swapped into place while other readers are kept out?","relevant":["src/ibwd/scan.py","src/ibwd/local_io.py"]},
+    {"id":"behavior-6","category":"behavior","query":"Which code keeps successful test progress quiet but retains unfamiliar log lines?","relevant":["src/ibwd/retrieval/output.py"]},
+    {"id":"doc-1","category":"documentation","query":"How do I move this tool onto another laptop without copying the virtual environment?","relevant":["docs/NEW_DEVICE_SETUP.md"]},
+    {"id":"doc-2","category":"documentation","query":"How can I compare recorded coding assistant usage without launching additional model sessions?","relevant":["docs/USAGE_MEASUREMENT.md"]},
+    {"id":"doc-3","category":"documentation","query":"Why is an empty caller search insufficient evidence that deleting a function is safe?","relevant":["KNOWN_LIMITATIONS.md","README.md"]},
+    {"id":"doc-4","category":"documentation","query":"What does a test reference tell us, and why is it different from executed test coverage?","relevant":["docs/SPRINT_5.md","KNOWN_LIMITATIONS.md"]},
+    {"id":"doc-5","category":"documentation","query":"Which setup steps reconnect both coding clients to the repository tools for everyday work?","relevant":["docs/DAILY_USE.md","docs/NEW_DEVICE_SETUP.md"]},
+    {"id":"doc-6","category":"documentation","query":"How do bounded result pages and exact source expansion fit together?","relevant":["docs/SPRINT_4.md","docs/SPRINT_3B.md"]}
+  ]
+}

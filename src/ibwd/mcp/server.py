@@ -43,7 +43,7 @@ mcp = ObservedMCPServer("ibwd", instructions=ROUTING)
 @mcp.tool()
 def ibwd_context(task: str, targets: list[str] | None = None, budget_tokens: int = 2000,
                  detail: str = 'outline', cursor: str | None = None,
-                 scopes: list[str] | None = None, max_bytes: int = 16384) -> dict:
+                 scopes: list[str] | None = None, max_bytes: int = 16384, semantic: bool | None = None) -> dict:
     """Find task evidence using lexical search and exact targets, with resolved graph links.
 
     scopes selects source/test/doc/config (all by default). detail is outline or source.
@@ -51,9 +51,13 @@ def ibwd_context(task: str, targets: list[str] | None = None, budget_tokens: int
     narrowing or source search. budget_tokens is a four-byte estimate, not provider tokens.
     Source omitted to fit a packet remains available via ibwd_read and its exact hash/range.
     Test matches are verification pointers, not proof of coverage. Freshness is automatic.
+    semantic=True opts into a separately built local vector index, with lexical fallback
+    on absent/stale/busy/slow models. Exact targets stay first. No downloads or cloud calls.
+    Keep semantic unchanged across pages. Omitted semantic uses the repository opt-in
+    setting (off until enabled); semantic=False always uses deterministic retrieval.
     """
     from ibwd.retrieval.context import context
-    return context(Path.cwd(), task, targets, budget_tokens, detail, cursor, scopes, max_bytes)
+    return context(Path.cwd(), task, targets, budget_tokens, detail, cursor, scopes, max_bytes, semantic)
 
 
 @mcp.tool()

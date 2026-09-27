@@ -52,8 +52,10 @@ IBWD itself; use of a host coding agent remains subject to that agent's own acco
    unmeasured under the no-benchmark instruction; no savings claim is made.
 4. **Sprint 5 delivered:** scoped impact/test relevance, previous-index diff with deleted identities, and optional installed TypeScript evidence.
    [Contracts and limits](docs/SPRINT_5.md) describe provenance, bounded queries and deterministic checks. Reference linkage is not verified test coverage.
-5. **Sprints 6–7:** add optional local embeddings, then specialized local models only if separate quality/resource checks justify them.
-   Select a device profile from available capabilities; deterministic operation always remains supported.
+5. **Sprint 6 optional implementation delivered:** local-only embedding adapter, atomic vector generations, incremental cache and
+   rank fusion. [Contracts and limits](docs/SPRINT_6.md) document deterministic tests. A subsequently authorized
+   [M1 local screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query gain and substantial query latency; the quality gate failed.
+   This checkout is explicitly enabled; other repositories stay off. **Sprint 7:** specialists only if separate checks justify them.
 6. **Sprint 8:** package portable skills/client adapters and automatic comparison summaries. No additional model sessions for evaluation.
 
 Further retrieval improvements remain future work. Prioritize regressions on small Python/TypeScript fixtures and unseen local code

@@ -9,6 +9,11 @@ Sprint 4 adds separate lexical test/doc/config retrieval and hash-checked source
 limitations below or establish test coverage. See [Sprint 4 limits](docs/SPRINT_4.md) for exclusions, candidate caps,
 bounded source expansion and the unmeasured comparative performance target.
 
+Sprint 6's optional local embedding layer stays disabled until a repository opts in. The authorized
+[M1 screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query recall improvement and roughly 6.9-second query latency;
+independent held-out validation remains unmeasured.
+Stale/unavailable/slow models fall back to deterministic retrieval. See [Sprint 6 limits](docs/SPRINT_6.md) for corpus and device bounds.
+
 Status key: **Fixed** (code + tests), **Open** (documented, not fixed), **Inherent** (cannot be
 fully fixed without running code), **Decision pending** (needs an owner's call).
 

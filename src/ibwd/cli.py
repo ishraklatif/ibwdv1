@@ -180,14 +180,44 @@ def usage_hook(client: str, repo: Path) -> None:
 @click.option('--max-bytes', default=16384, type=int)
 @click.option('--detail', default='outline', type=click.Choice(['outline', 'source']))
 @click.option('--cursor', default=None)
-def context_command(task, repo, targets, scopes, budget_tokens, max_bytes, detail, cursor):
-    """Return a bounded task-evidence packet without calling a model."""
+@click.option('--semantic/--no-semantic', default=None, help='Override the repository semantic setting.')
+def context_command(task, repo, targets, scopes, budget_tokens, max_bytes, detail, cursor, semantic):
+    """Return task evidence, using the repository semantic setting unless overridden."""
     from ibwd.retrieval.context import context
     try:
-        result = context(repo, task, list(targets), budget_tokens, detail, cursor, list(scopes) or None, max_bytes)
+        result = context(repo, task, list(targets), budget_tokens, detail, cursor, list(scopes) or None, max_bytes, semantic)
     except (OSError, ValueError) as exc:
         raise click.ClickException(str(exc)) from exc
     click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('semantic-index')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--model-path', required=True, type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.option('--dimensions', required=True, type=int)
+@click.option('--timeout', default=120.0, type=float, help='Indexing inference deadline in seconds.')
+@click.option('--query-timeout', default=2.0, type=float, help='Optional query inference deadline (1..30 seconds).')
+def semantic_index_command(repo, model_path, dimensions, timeout, query_timeout):
+    """Explicitly embed source/docs using already installed local weights and runtime."""
+    from ibwd.retrieval.semantic import build
+    try:
+        result = build(repo, model_path, dimensions, timeout, query_timeout)
+    except (OSError, ValueError, TimeoutError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('semantic-config')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--enabled/--disabled', 'enable', required=True)
+def semantic_config_command(repo, enable):
+    """Persist the repository's local semantic opt-in. No inference or downloads."""
+    from ibwd.retrieval.semantic import configure
+    try:
+        result = configure(repo, enable)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result))
 
 
 @main.command('read')

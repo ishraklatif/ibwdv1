@@ -186,8 +186,11 @@ def enrich(conn, root, item, detail):
 
 
 def context(root, task, targets=None, budget_tokens=2000, detail='outline', cursor=None,
-            scopes=None, max_bytes=16384):
+            scopes=None, max_bytes=16384, semantic=None):
     root = Path(root).resolve()
+    if semantic is None:
+        from ibwd.retrieval.semantic import enabled
+        semantic = enabled(root)
     budget = budget_bytes(budget_tokens, max_bytes)
     if not isinstance(task, str) or not task.strip() or len(task) > 4096:
         raise ValueError('task must contain 1..4096 characters.')
@@ -199,27 +202,45 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
         raise ValueError('scopes must select source, test, doc or config.')
     if detail not in ('outline', 'source'):
         raise ValueError('detail must be outline or source.')
+    if type(semantic) is not bool:
+        raise ValueError('semantic must be a boolean.')
     signature = query_key('context', [VERSION, task, targets, scopes, detail])
 
     def query(conn, generation):
+        semantic_status = None
+        packet_signature = signature
+        if semantic:
+            choices, capped, missing = candidates(conn, task, targets, scopes)
+            from ibwd.retrieval.semantic import ranked, fuse
+            optional, semantic_status = ranked(root, conn, generation, task, scopes)
+            choices, fusion_capped = fuse(choices, optional)
+            capped = capped or fusion_capped or semantic_status.get('truncated', False)
+            packet_signature = query_key('semantic-context', [signature, semantic_status.get('semantic_generation'),
+                                                               semantic_status['status']])
         deadline = time.monotonic() + MAX_SECONDS
-        offset = cursor_offset(cursor, generation, signature)
+        # Optional inference has its own subprocess deadline; preserve the deterministic SQL budget.
+        if semantic:
+            conn.set_progress_handler(lambda: int(time.monotonic() > deadline), 1000)
+        offset = cursor_offset(cursor, generation, packet_signature)
         # Cache is repository-local, generation/query/budget-bound, never client-bound.
         cache = root / '.ibwd/context-cache'
         cache.mkdir(exist_ok=True)
-        key = query_key('packet', [generation, signature, offset, budget])
+        key = query_key('packet', [generation, packet_signature, offset, budget])
         cached = cache / (key + '.json')
-        if cached.is_file():
+        if not semantic and cached.is_file():
             try:
                 result = json.loads(cached.read_text())
                 if result['index_generation'] == generation and encoded_size(result) <= budget:
                     return result
             except (ValueError, KeyError):
                 pass
-        choices, capped, missing = candidates(conn, task, targets, scopes)
+        if not semantic:
+            choices, capped, missing = candidates(conn, task, targets, scopes)
         if offset > len(choices):
             raise ValueError('Invalid context cursor offset.')
         result = envelope(generation)
+        if semantic_status is not None:
+            result['semantic'] = semantic_status
         result.update(scope_gaps=GAPS, unresolved_targets=missing,
                       budget_basis='serialized MCP bytes <= min(max_bytes, 4 * budget_tokens); not provider token counts')
         # Surface ancestor instruction locations without replacing their authority.
@@ -255,7 +276,7 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
                 item['source_omitted'] = 'Overlapping source already included; read the complete span if needed.'
             more = index + 1 < len(choices)
             proposed.update(truncated=more or capped, limit_reason='packet_budget' if more else ('candidate_limit' if capped else None),
-                            next_cursor=cursor_encode(generation, signature, index + 1) if more else None)
+                            next_cursor=cursor_encode(generation, packet_signature, index + 1) if more else None)
             if encoded_size(proposed) > budget and 'text' in item:
                 del item['text']
                 item['source_omitted'] = 'Complete span does not fit; use read with the supplied hash/range.'
@@ -272,7 +293,8 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
             raise ValueError('Budget cannot fit the context envelope; increase budget.')
         if time.monotonic() > deadline:
             raise ValueError('Context work budget exceeded; narrow the query or use source search.')
-        atomic_write(cached, compact(result))
+        if not semantic:
+            atomic_write(cached, compact(result))
         for old in sorted(cache.glob('*.json'), key=lambda p: p.stat().st_mtime, reverse=True)[64:]:
             old.unlink()
         return result

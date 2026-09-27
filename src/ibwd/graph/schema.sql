@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS file_refs (
     refs_json    TEXT NOT NULL
 );
 
--- Added Sprint 6:
+-- Reserved historical summary schema; no model-generated summaries are populated.
 CREATE TABLE IF NOT EXISTS summaries (
     node_id            INTEGER PRIMARY KEY REFERENCES nodes(id),
     summary            TEXT,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS summaries (
     grader_status      TEXT DEFAULT 'unchecked'  -- unchecked | passed | downgraded | dropped
 );
 
--- Historical embedding proposal (now Sprint 6; not active):
+-- Historical embedding proposal; Sprint 6 instead uses a separate semantic.db:
 -- CREATE VIRTUAL TABLE vec_nodes USING vec0(node_id INTEGER PRIMARY KEY, embedding FLOAT[1024]);
 
 -- Recursive CTE example, added Sprint 3, "callers of node N up to depth 3":

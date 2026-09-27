@@ -69,8 +69,10 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                                           ensure_ascii=False, separators=(',', ':')).encode()) <= 16384
                     compiler_result = await session.call_tool('ibwd_compiler_evidence', {'file': 'app.py', 'line': 1, 'column': 1})
                     assert payload(compiler_result)['status'] == 'unknown'
-                    packet_result = await session.call_tool('ibwd_context', {'task': 'finish', 'targets': ['app.py::finish']})
+                    packet_result = await session.call_tool('ibwd_context', {'task': 'finish', 'targets': ['app.py::finish'],
+                                                                            'semantic': True})
                     packet = payload(packet_result)
+                    assert packet['semantic']['status'] == 'fallback'  # optional runtime/index absent
                     assert packet['items'][0]['symbol_id'] == 'app.py::finish'
                     assert len(json.dumps(packet_result.model_dump(mode='json', by_alias=True, exclude_none=True),
                                           ensure_ascii=False, separators=(',', ':')).encode()) <= 8000

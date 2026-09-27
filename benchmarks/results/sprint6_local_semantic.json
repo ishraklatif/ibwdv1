@@ -1,0 +1,5159 @@
+{
+  "cases_sha256": "0ff1b7ac1b26df5a26217f9bffc1e16baec4afeff44c76a3f3d3c3fcd7f18237",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "python": "3.13.9 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 19:11:29) [Clang 20.1.8 ]",
+  "versions": {
+    "sentence-transformers": "6.1.0",
+    "transformers": "5.17.0",
+    "torch": "2.14.0"
+  },
+  "metric": "Relevant-file recall in first five emitted evidence items; 32000-byte estimated MCP budget",
+  "memory_method": "getrusage peak RSS, parent and worker separately; not simultaneous process-tree peak",
+  "latency_method": "Each case/mode gets a fresh parent; two repetitions. Workers reload weights every query. Repeated latency is OS-cache warm, not resident-model warm.",
+  "cases": [
+    {
+      "id": "exact-1",
+      "category": "exact",
+      "baseline": {
+        "id": "exact-1",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09211629199853633,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/health.py",
+                "line": 14,
+                "end_line": 78,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/retrieval/service.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/SPRINT3_protocol.md",
+                "line": 51,
+                "end_line": 52,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 189,
+                "end_line": 203,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31634,
+            "packet_json_bytes": 11821,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 29933568,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04651062499760883,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/health.py",
+                "line": 14,
+                "end_line": 78,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/retrieval/service.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/SPRINT3_protocol.md",
+                "line": 51,
+                "end_line": 52,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 189,
+                "end_line": 203,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31634,
+            "packet_json_bytes": 11821,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 29949952,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "exact-1",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 7.685367541998858,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/health.py",
+                "line": 14,
+                "end_line": 78,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/health.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SCHEMA.md",
+                "line": 80,
+                "end_line": 92,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 7.5826
+            },
+            "packet_budget_bytes": 31369,
+            "packet_json_bytes": 11602,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 36831232,
+            "worker_peak_rss_bytes": 795557888
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.8578899999993155,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/health.py",
+                "line": 14,
+                "end_line": 78,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/health.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SCHEMA.md",
+                "line": 80,
+                "end_line": 92,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7642
+            },
+            "packet_budget_bytes": 31369,
+            "packet_json_bytes": 11602,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 43352064,
+            "worker_peak_rss_bytes": 803717120
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-2",
+      "category": "exact",
+      "semantic": {
+        "id": "exact-2",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.914732624998578,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 60,
+                "end_line": 71,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 129,
+                "end_line": 142,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/graph/queries.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_stream.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8134
+            },
+            "packet_budget_bytes": 29448,
+            "packet_json_bytes": 10910,
+            "returned_items": 11,
+            "parent_peak_rss_bytes": 37208064,
+            "worker_peak_rss_bytes": 825360384
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.9010253330015985,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 60,
+                "end_line": 71,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 129,
+                "end_line": 142,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/graph/queries.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_stream.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8086
+            },
+            "packet_budget_bytes": 29448,
+            "packet_json_bytes": 10910,
+            "returned_items": 11,
+            "parent_peak_rss_bytes": 40091648,
+            "worker_peak_rss_bytes": 825360384
+          }
+        ]
+      },
+      "baseline": {
+        "id": "exact-2",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.08077649999904679,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 60,
+                "end_line": 71,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 129,
+                "end_line": 142,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/context.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/usage_stream.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30755,
+            "packet_json_bytes": 11437,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 30064640,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04717800000071293,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 60,
+                "end_line": 71,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 129,
+                "end_line": 142,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/context.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/usage_stream.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30755,
+            "packet_json_bytes": 11437,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 32161792,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-3",
+      "category": "exact",
+      "baseline": {
+        "id": "exact-3",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.08461899999747402,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 9,
+                "end_line": 18,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 193,
+                "end_line": 204,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/ab/store.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/context.py",
+                "line": 289,
+                "end_line": 301,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31484,
+            "packet_json_bytes": 11666,
+            "returned_items": 15,
+            "parent_peak_rss_bytes": 28999680,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04642675000286545,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 9,
+                "end_line": 18,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 193,
+                "end_line": 204,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/ab/store.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/context.py",
+                "line": 289,
+                "end_line": 301,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31484,
+            "packet_json_bytes": 11666,
+            "returned_items": 15,
+            "parent_peak_rss_bytes": 29065216,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "exact-3",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.898022332999972,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 9,
+                "end_line": 18,
+                "reason": "exact"
+              },
+              {
+                "file": "benchmarks/ab/store.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 49,
+                "end_line": 59,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 193,
+                "end_line": 204,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8033
+            },
+            "packet_budget_bytes": 28541,
+            "packet_json_bytes": 10571,
+            "returned_items": 9,
+            "parent_peak_rss_bytes": 39911424,
+            "worker_peak_rss_bytes": 804601856
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.902206541999476,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 9,
+                "end_line": 18,
+                "reason": "exact"
+              },
+              {
+                "file": "benchmarks/ab/store.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 49,
+                "end_line": 59,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 193,
+                "end_line": 204,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8168
+            },
+            "packet_budget_bytes": 28541,
+            "packet_json_bytes": 10571,
+            "returned_items": 9,
+            "parent_peak_rss_bytes": 46612480,
+            "worker_peak_rss_bytes": 804601856
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-4",
+      "category": "exact",
+      "semantic": {
+        "id": "exact-4",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.953737916999671,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 6,
+                "end_line": 37,
+                "reason": "exact"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 129,
+                "end_line": 160,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8565
+            },
+            "packet_budget_bytes": 29880,
+            "packet_json_bytes": 11178,
+            "returned_items": 12,
+            "parent_peak_rss_bytes": 38682624,
+            "worker_peak_rss_bytes": 801554432
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.850398541999311,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 6,
+                "end_line": 37,
+                "reason": "exact"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/bounded.py",
+                "line": 129,
+                "end_line": 160,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7615
+            },
+            "packet_budget_bytes": 29880,
+            "packet_json_bytes": 11178,
+            "returned_items": 12,
+            "parent_peak_rss_bytes": 44400640,
+            "worker_peak_rss_bytes": 801554432
+          }
+        ]
+      },
+      "baseline": {
+        "id": "exact-4",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.08608337500118068,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 6,
+                "end_line": 37,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 129,
+                "end_line": 142,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DOCUMENTATION_REVIEW.md",
+                "line": 36,
+                "end_line": 47,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 29064,
+            "packet_json_bytes": 10901,
+            "returned_items": 17,
+            "parent_peak_rss_bytes": 28999680,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046484457998303697,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 6,
+                "end_line": 37,
+                "reason": "exact"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 129,
+                "end_line": 142,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DOCUMENTATION_REVIEW.md",
+                "line": 36,
+                "end_line": 47,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 29064,
+            "packet_json_bytes": 10901,
+            "returned_items": 17,
+            "parent_peak_rss_bytes": 29081600,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-5",
+      "category": "exact",
+      "baseline": {
+        "id": "exact-5",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.10204149999844958,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/lexical.py",
+                "line": 35,
+                "end_line": 53,
+                "reason": "exact"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 452,
+                "end_line": 483,
+                "reason": "lexical"
+              },
+              {
+                "file": "SCHEMA.md",
+                "line": 129,
+                "end_line": 143,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/build_task_specs.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/qualify_tasks.py",
+                "line": 97,
+                "end_line": 128,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30769,
+            "packet_json_bytes": 11507,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 29212672,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04703916600192315,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/lexical.py",
+                "line": 35,
+                "end_line": 53,
+                "reason": "exact"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 452,
+                "end_line": 483,
+                "reason": "lexical"
+              },
+              {
+                "file": "SCHEMA.md",
+                "line": 129,
+                "end_line": 143,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/build_task_specs.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/qualify_tasks.py",
+                "line": 97,
+                "end_line": 128,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30769,
+            "packet_json_bytes": 11507,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 29212672,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "exact-5",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.907008624999435,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/lexical.py",
+                "line": 35,
+                "end_line": 53,
+                "reason": "exact"
+              },
+              {
+                "file": "compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md",
+                "line": 103,
+                "end_line": 107,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 33,
+                "end_line": 37,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/lexical.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/config.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8041
+            },
+            "packet_budget_bytes": 31347,
+            "packet_json_bytes": 11743,
+            "returned_items": 11,
+            "parent_peak_rss_bytes": 35094528,
+            "worker_peak_rss_bytes": 802226176
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.896637957997882,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/lexical.py",
+                "line": 35,
+                "end_line": 53,
+                "reason": "exact"
+              },
+              {
+                "file": "compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md",
+                "line": 103,
+                "end_line": 107,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 33,
+                "end_line": 37,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/lexical.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/config.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8034
+            },
+            "packet_budget_bytes": 31347,
+            "packet_json_bytes": 11743,
+            "returned_items": 11,
+            "parent_peak_rss_bytes": 40632320,
+            "worker_peak_rss_bytes": 802226176
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-6",
+      "category": "exact",
+      "semantic": {
+        "id": "exact-6",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.906254832996638,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 114,
+                "end_line": 149,
+                "reason": "exact"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 28,
+                "end_line": 30,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/graph/manifest.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/run_sprint3_offline.py",
+                "line": 129,
+                "end_line": 160,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8031
+            },
+            "packet_budget_bytes": 29117,
+            "packet_json_bytes": 10753,
+            "returned_items": 11,
+            "parent_peak_rss_bytes": 39829504,
+            "worker_peak_rss_bytes": 802471936
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.928401208999276,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 114,
+                "end_line": 149,
+                "reason": "exact"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 28,
+                "end_line": 30,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/graph/manifest.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/run_sprint3_offline.py",
+                "line": 129,
+                "end_line": 160,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8342
+            },
+            "packet_budget_bytes": 29117,
+            "packet_json_bytes": 10753,
+            "returned_items": 11,
+            "parent_peak_rss_bytes": 47972352,
+            "worker_peak_rss_bytes": 802471936
+          }
+        ]
+      },
+      "baseline": {
+        "id": "exact-6",
+        "category": "exact",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.0953202919990872,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 114,
+                "end_line": 149,
+                "reason": "exact"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 28,
+                "end_line": 30,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/run_sprint3_offline.py",
+                "line": 129,
+                "end_line": 160,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30065,
+            "packet_json_bytes": 10984,
+            "returned_items": 12,
+            "parent_peak_rss_bytes": 29130752,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04660591699939687,
+            "recall_at_5": 1.0,
+            "exact_first": true,
+            "top5": [
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 114,
+                "end_line": 149,
+                "reason": "exact"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 28,
+                "end_line": 30,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/run_sprint3_offline.py",
+                "line": 129,
+                "end_line": 160,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30065,
+            "packet_json_bytes": 10984,
+            "returned_items": 12,
+            "parent_peak_rss_bytes": 29163520,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "synonym-1",
+      "category": "synonym",
+      "baseline": {
+        "id": "synonym-1",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09365654200155404,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "benchmarks/runtime/run_tests.sh",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical"
+              },
+              {
+                "file": "ibwd-sprint3-kit/verify_repo.py",
+                "line": 65,
+                "end_line": 83,
+                "reason": "lexical"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 11,
+                "end_line": 16,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/ts_oracle.js",
+                "line": 289,
+                "end_line": 320,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/export.py",
+                "line": 97,
+                "end_line": 115,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30970,
+            "packet_json_bytes": 12076,
+            "returned_items": 15,
+            "parent_peak_rss_bytes": 28786688,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04678283400062355,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "benchmarks/runtime/run_tests.sh",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical"
+              },
+              {
+                "file": "ibwd-sprint3-kit/verify_repo.py",
+                "line": 65,
+                "end_line": 83,
+                "reason": "lexical"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 11,
+                "end_line": 16,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/ts_oracle.js",
+                "line": 289,
+                "end_line": 320,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/export.py",
+                "line": 97,
+                "end_line": 115,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30970,
+            "packet_json_bytes": 12076,
+            "returned_items": 15,
+            "parent_peak_rss_bytes": 28786688,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "synonym-1",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.90887579199989,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "ibwd-sprint3-kit/verify_repo.py",
+                "line": 65,
+                "end_line": 83,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/export.py",
+                "line": 97,
+                "end_line": 115,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/make_semantic_summary.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab_prepare.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/health.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8091
+            },
+            "packet_budget_bytes": 31551,
+            "packet_json_bytes": 11832,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 37617664,
+            "worker_peak_rss_bytes": 791887872
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.885925957998552,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "ibwd-sprint3-kit/verify_repo.py",
+                "line": 65,
+                "end_line": 83,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/export.py",
+                "line": 97,
+                "end_line": 115,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/make_semantic_summary.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab_prepare.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/health.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7912
+            },
+            "packet_budget_bytes": 31551,
+            "packet_json_bytes": 11832,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 40222720,
+            "worker_peak_rss_bytes": 791887872
+          }
+        ]
+      }
+    },
+    {
+      "id": "synonym-2",
+      "category": "synonym",
+      "semantic": {
+        "id": "synonym-2",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.938704042000609,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "DEVELOPMENT.md",
+                "line": 67,
+                "end_line": 73,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/DOCUMENTATION_REVIEW.md",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.834
+            },
+            "packet_budget_bytes": 31768,
+            "packet_json_bytes": 12050,
+            "returned_items": 27,
+            "parent_peak_rss_bytes": 36257792,
+            "worker_peak_rss_bytes": 791707648
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.900006833999214,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "DEVELOPMENT.md",
+                "line": 67,
+                "end_line": 73,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/DOCUMENTATION_REVIEW.md",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7995
+            },
+            "packet_budget_bytes": 31770,
+            "packet_json_bytes": 12051,
+            "returned_items": 27,
+            "parent_peak_rss_bytes": 38846464,
+            "worker_peak_rss_bytes": 791707648
+          }
+        ]
+      },
+      "baseline": {
+        "id": "synonym-2",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09553424999830895,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30500,
+            "packet_json_bytes": 11468,
+            "returned_items": 21,
+            "parent_peak_rss_bytes": 29786112,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046551542000088375,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30500,
+            "packet_json_bytes": 11468,
+            "returned_items": 21,
+            "parent_peak_rss_bytes": 29786112,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "synonym-3",
+      "category": "synonym",
+      "baseline": {
+        "id": "synonym-3",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09567945799790323,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "benchmarks/ab/store.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 321,
+                "end_line": 340,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/SPRINT3_free_stage_report.md",
+                "line": 10,
+                "end_line": 17,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 51,
+                "end_line": 81,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31986,
+            "packet_json_bytes": 11964,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 28459008,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046429124999121996,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "benchmarks/ab/store.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 321,
+                "end_line": 340,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/SPRINT3_free_stage_report.md",
+                "line": 10,
+                "end_line": 17,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 51,
+                "end_line": 81,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31986,
+            "packet_json_bytes": 11964,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 28475392,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "synonym-3",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.9170357909970335,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 161,
+                "end_line": 192,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 33,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 51,
+                "end_line": 81,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8173
+            },
+            "packet_budget_bytes": 31999,
+            "packet_json_bytes": 11993,
+            "returned_items": 17,
+            "parent_peak_rss_bytes": 36372480,
+            "worker_peak_rss_bytes": 790511616
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.904609834000439,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/cli.py",
+                "line": 161,
+                "end_line": 192,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/local_io.py",
+                "line": 33,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 51,
+                "end_line": 81,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8092
+            },
+            "packet_budget_bytes": 31999,
+            "packet_json_bytes": 11993,
+            "returned_items": 17,
+            "parent_peak_rss_bytes": 42811392,
+            "worker_peak_rss_bytes": 794443776
+          }
+        ]
+      }
+    },
+    {
+      "id": "synonym-4",
+      "category": "synonym",
+      "semantic": {
+        "id": "synonym-4",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.869683500000974,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/diagnostics.py",
+                "line": 97,
+                "end_line": 100,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/mock.py",
+                "line": 65,
+                "end_line": 75,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/summarize_sprint3_ab.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/run_sprint2_demo.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7662
+            },
+            "packet_budget_bytes": 31058,
+            "packet_json_bytes": 11741,
+            "returned_items": 24,
+            "parent_peak_rss_bytes": 37404672,
+            "worker_peak_rss_bytes": 788119552
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.835828374998528,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/diagnostics.py",
+                "line": 97,
+                "end_line": 100,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/mock.py",
+                "line": 65,
+                "end_line": 75,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/summarize_sprint3_ab.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/run_sprint2_demo.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.737
+            },
+            "packet_budget_bytes": 31056,
+            "packet_json_bytes": 11740,
+            "returned_items": 24,
+            "parent_peak_rss_bytes": 42237952,
+            "worker_peak_rss_bytes": 789364736
+          }
+        ]
+      },
+      "baseline": {
+        "id": "synonym-4",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09780775000035646,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 232,
+                "end_line": 235,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 33,
+                "end_line": 37,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 148,
+                "end_line": 179,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 323,
+                "end_line": 325,
+                "reason": "lexical"
+              },
+              {
+                "file": "ibwd-sprint3-kit/SPRINT_3_FINISH_PLAN.md",
+                "line": 323,
+                "end_line": 325,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31880,
+            "packet_json_bytes": 11988,
+            "returned_items": 25,
+            "parent_peak_rss_bytes": 28360704,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04634675000124844,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 232,
+                "end_line": 235,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 33,
+                "end_line": 37,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 148,
+                "end_line": 179,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 323,
+                "end_line": 325,
+                "reason": "lexical"
+              },
+              {
+                "file": "ibwd-sprint3-kit/SPRINT_3_FINISH_PLAN.md",
+                "line": 323,
+                "end_line": 325,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31880,
+            "packet_json_bytes": 11988,
+            "returned_items": 25,
+            "parent_peak_rss_bytes": 28409856,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "synonym-5",
+      "category": "synonym",
+      "baseline": {
+        "id": "synonym-5",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09127212499879533,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md",
+                "line": 21,
+                "end_line": 22,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 46,
+                "end_line": 67,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 1,
+                "end_line": 5,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 219,
+                "end_line": 246,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31520,
+            "packet_json_bytes": 12142,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 28377088,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04644779199952609,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "compass_artifact_wf-986c57d9-dd01-5ddb-b7d2-5e0ca7444c11_text_markdown.md",
+                "line": 21,
+                "end_line": 22,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 46,
+                "end_line": 67,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 1,
+                "end_line": 5,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 219,
+                "end_line": 246,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31520,
+            "packet_json_bytes": 12142,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 28377088,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "synonym-5",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.9332275000015215,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 33,
+                "end_line": 37,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/index_inputs.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/graph/manifest.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 27,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8319
+            },
+            "packet_budget_bytes": 31275,
+            "packet_json_bytes": 11725,
+            "returned_items": 17,
+            "parent_peak_rss_bytes": 36470784,
+            "worker_peak_rss_bytes": 792346624
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.959621665999293,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 33,
+                "end_line": 37,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/index_inputs.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/graph/manifest.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 27,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8624
+            },
+            "packet_budget_bytes": 31275,
+            "packet_json_bytes": 11725,
+            "returned_items": 17,
+            "parent_peak_rss_bytes": 42827776,
+            "worker_peak_rss_bytes": 792346624
+          }
+        ]
+      }
+    },
+    {
+      "id": "synonym-6",
+      "category": "synonym",
+      "semantic": {
+        "id": "synonym-6",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.904473125003278,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 115,
+                "end_line": 128,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 68,
+                "end_line": 90,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/resources/ibwd-navigation/SKILL.md",
+                "line": 8,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": ".claude/skills/ibwd-navigation/SKILL.md",
+                "line": 8,
+                "end_line": 38,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8065
+            },
+            "packet_budget_bytes": 31457,
+            "packet_json_bytes": 11835,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 36356096,
+            "worker_peak_rss_bytes": 787365888
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.841029999999591,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 115,
+                "end_line": 128,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 68,
+                "end_line": 90,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/resources/ibwd-navigation/SKILL.md",
+                "line": 8,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scanner/filesystem.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": ".claude/skills/ibwd-navigation/SKILL.md",
+                "line": 8,
+                "end_line": 38,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7479
+            },
+            "packet_budget_bytes": 31457,
+            "packet_json_bytes": 11835,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 43958272,
+            "worker_peak_rss_bytes": 792035328
+          }
+        ]
+      },
+      "baseline": {
+        "id": "synonym-6",
+        "category": "synonym",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09547479200045927,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 115,
+                "end_line": 128,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 68,
+                "end_line": 78,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 219,
+                "end_line": 246,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 68,
+                "end_line": 90,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 231,
+                "end_line": 242,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 28662,
+            "packet_json_bytes": 10949,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 28508160,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04622970899799839,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 115,
+                "end_line": 128,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 68,
+                "end_line": 78,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 219,
+                "end_line": 246,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 68,
+                "end_line": 90,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 231,
+                "end_line": 242,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 28662,
+            "packet_json_bytes": 10949,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 28508160,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "behavior-1",
+      "category": "behavior",
+      "baseline": {
+        "id": "behavior-1",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.0913273330006632,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 95,
+                "end_line": 103,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 49,
+                "end_line": 71,
+                "reason": "lexical"
+              },
+              {
+                "file": "AGENTS.override.md",
+                "line": 2,
+                "end_line": 24,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 80,
+                "end_line": 86,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 29434,
+            "packet_json_bytes": 10993,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 28393472,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04618970900264685,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 95,
+                "end_line": 103,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 49,
+                "end_line": 71,
+                "reason": "lexical"
+              },
+              {
+                "file": "AGENTS.override.md",
+                "line": 2,
+                "end_line": 24,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 80,
+                "end_line": 86,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 29434,
+            "packet_json_bytes": 10993,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 28442624,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "behavior-1",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.887832749998779,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "DEVELOPMENT.md",
+                "line": 9,
+                "end_line": 22,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/config.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "AGENTS.override.md",
+                "line": 2,
+                "end_line": 24,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 49,
+                "end_line": 71,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7931
+            },
+            "packet_budget_bytes": 28192,
+            "packet_json_bytes": 10494,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 37109760,
+            "worker_peak_rss_bytes": 800735232
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.884653208002419,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "DEVELOPMENT.md",
+                "line": 9,
+                "end_line": 22,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/config.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "AGENTS.override.md",
+                "line": 2,
+                "end_line": 24,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 49,
+                "end_line": 71,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7932
+            },
+            "packet_budget_bytes": 28192,
+            "packet_json_bytes": 10494,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 42434560,
+            "worker_peak_rss_bytes": 800735232
+          }
+        ]
+      }
+    },
+    {
+      "id": "behavior-2",
+      "category": "behavior",
+      "semantic": {
+        "id": "behavior-2",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.94443320800201,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 193,
+                "end_line": 197,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/ts_oracle.js",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 27,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 5,
+                "end_line": 12,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.843
+            },
+            "packet_budget_bytes": 31340,
+            "packet_json_bytes": 11711,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 37470208,
+            "worker_peak_rss_bytes": 788709376
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.907756833999883,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 193,
+                "end_line": 197,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/ts_oracle.js",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 27,
+                "end_line": 39,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 5,
+                "end_line": 12,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8113
+            },
+            "packet_budget_bytes": 31342,
+            "packet_json_bytes": 11712,
+            "returned_items": 18,
+            "parent_peak_rss_bytes": 42041344,
+            "worker_peak_rss_bytes": 789610496
+          }
+        ]
+      },
+      "baseline": {
+        "id": "behavior-2",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09890208399883704,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 27,
+                "end_line": 39,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 5,
+                "end_line": 12,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 193,
+                "end_line": 197,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31117,
+            "packet_json_bytes": 11613,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 29130752,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046624041999166366,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 27,
+                "end_line": 39,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/impact.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 5,
+                "end_line": 12,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 193,
+                "end_line": 197,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31117,
+            "packet_json_bytes": 11613,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 29163520,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "behavior-3",
+      "category": "behavior",
+      "baseline": {
+        "id": "behavior-3",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09875224999996135,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "SPRINT_3_ADDENDUM_PATHFINDING.md",
+                "line": 77,
+                "end_line": 85,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 61,
+                "end_line": 79,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/context.py",
+                "line": 257,
+                "end_line": 288,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31778,
+            "packet_json_bytes": 12030,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 28606464,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04685204099951079,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "SPRINT_3_ADDENDUM_PATHFINDING.md",
+                "line": 77,
+                "end_line": 85,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 61,
+                "end_line": 79,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/context.py",
+                "line": 257,
+                "end_line": 288,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31778,
+            "packet_json_bytes": 12030,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 28639232,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "behavior-3",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.939459416000318,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 49,
+                "end_line": 59,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 174,
+                "end_line": 181,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 46,
+                "end_line": 69,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 7,
+                "end_line": 38,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8396
+            },
+            "packet_budget_bytes": 31926,
+            "packet_json_bytes": 12086,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 36569088,
+            "worker_peak_rss_bytes": 784515072
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.942213916998298,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 49,
+                "end_line": 59,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 174,
+                "end_line": 181,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 46,
+                "end_line": 69,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 7,
+                "end_line": 38,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8491
+            },
+            "packet_budget_bytes": 31926,
+            "packet_json_bytes": 12086,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 39321600,
+            "worker_peak_rss_bytes": 790953984
+          }
+        ]
+      }
+    },
+    {
+      "id": "behavior-4",
+      "category": "behavior",
+      "semantic": {
+        "id": "behavior-4",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.9033351660000335,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 46,
+                "end_line": 67,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "ibwd-sprint3-kit/SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 70,
+                "end_line": 75,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/build_manifest.py",
+                "line": 65,
+                "end_line": 88,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8064
+            },
+            "packet_budget_bytes": 31118,
+            "packet_json_bytes": 11691,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 38797312,
+            "worker_peak_rss_bytes": 791052288
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.844899499999883,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 46,
+                "end_line": 67,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "ibwd-sprint3-kit/SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3.md",
+                "line": 70,
+                "end_line": 75,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/build_manifest.py",
+                "line": 65,
+                "end_line": 88,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7524
+            },
+            "packet_budget_bytes": 31118,
+            "packet_json_bytes": 11691,
+            "returned_items": 14,
+            "parent_peak_rss_bytes": 41238528,
+            "worker_peak_rss_bytes": 792788992
+          }
+        ]
+      },
+      "baseline": {
+        "id": "behavior-4",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09238541699960479,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical"
+              },
+              {
+                "file": "ibwd-sprint3-kit/SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/compiler.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 46,
+                "end_line": 67,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31248,
+            "packet_json_bytes": 11666,
+            "returned_items": 13,
+            "parent_peak_rss_bytes": 28491776,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04656254200017429,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical"
+              },
+              {
+                "file": "ibwd-sprint3-kit/SPRINT_3_FINISH_PLAN.md",
+                "line": 163,
+                "end_line": 171,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/compiler.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 46,
+                "end_line": 67,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31248,
+            "packet_json_bytes": 11666,
+            "returned_items": 13,
+            "parent_peak_rss_bytes": 28508160,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "behavior-5",
+      "category": "behavior",
+      "baseline": {
+        "id": "behavior-5",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09742099999857601,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "src/ibwd/mcp/server.py",
+                "line": 289,
+                "end_line": 320,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/build_manifest.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_1.md",
+                "line": 63,
+                "end_line": 81,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/apply_manifest.py",
+                "line": 1,
+                "end_line": 22,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31493,
+            "packet_json_bytes": 11771,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 28540928,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04678441600117367,
+            "recall_at_5": 0.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "src/ibwd/mcp/server.py",
+                "line": 289,
+                "end_line": 320,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/build_manifest.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_1.md",
+                "line": 63,
+                "end_line": 81,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/apply_manifest.py",
+                "line": 1,
+                "end_line": 22,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31493,
+            "packet_json_bytes": 11771,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 28540928,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "behavior-5",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.857572124998114,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 65,
+                "end_line": 68,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/service.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.757
+            },
+            "packet_budget_bytes": 31352,
+            "packet_json_bytes": 11739,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 37666816,
+            "worker_peak_rss_bytes": 786907136
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.870521332999488,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 9,
+                "end_line": 25,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/scan.py",
+                "line": 33,
+                "end_line": 64,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 65,
+                "end_line": 68,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/service.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7743
+            },
+            "packet_budget_bytes": 31354,
+            "packet_json_bytes": 11740,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 43089920,
+            "worker_peak_rss_bytes": 790659072
+          }
+        ]
+      }
+    },
+    {
+      "id": "behavior-6",
+      "category": "behavior",
+      "semantic": {
+        "id": "behavior-6",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.89848400000119,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/runtime/run_tests.sh",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 25,
+                "end_line": 48,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 38,
+                "end_line": 45,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7992
+            },
+            "packet_budget_bytes": 30610,
+            "packet_json_bytes": 11498,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 36470784,
+            "worker_peak_rss_bytes": 792215552
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.899900042000809,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/runtime/run_tests.sh",
+                "line": 1,
+                "end_line": 12,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 25,
+                "end_line": 48,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_2.md",
+                "line": 38,
+                "end_line": 45,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8056
+            },
+            "packet_budget_bytes": 30610,
+            "packet_json_bytes": 11498,
+            "returned_items": 19,
+            "parent_peak_rss_bytes": 43237376,
+            "worker_peak_rss_bytes": 798261248
+          }
+        ]
+      },
+      "baseline": {
+        "id": "behavior-6",
+        "category": "behavior",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.0950886669997999,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 94,
+                "end_line": 101,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 144,
+                "end_line": 150,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/scip_python_to_graph.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30244,
+            "packet_json_bytes": 11410,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 28508160,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046324499999172986,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 73,
+                "end_line": 84,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/output.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 94,
+                "end_line": 101,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 144,
+                "end_line": 150,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/scip_python_to_graph.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30244,
+            "packet_json_bytes": 11410,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 28524544,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "doc-1",
+      "category": "documentation",
+      "baseline": {
+        "id": "doc-1",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09606100000019069,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 1,
+                "end_line": 11,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 6,
+                "end_line": 24,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_ADDENDUM_PATHFINDING.md",
+                "line": 120,
+                "end_line": 151,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 108,
+                "end_line": 122,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31963,
+            "packet_json_bytes": 12020,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 28459008,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04670879200057243,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 1,
+                "end_line": 11,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 6,
+                "end_line": 24,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_ADDENDUM_PATHFINDING.md",
+                "line": 120,
+                "end_line": 151,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 108,
+                "end_line": 122,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31963,
+            "packet_json_bytes": 12020,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 28459008,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "doc-1",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.89146612499826,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 6,
+                "end_line": 24,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 1,
+                "end_line": 11,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 71,
+                "end_line": 101,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 32,
+                "end_line": 36,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7874
+            },
+            "packet_budget_bytes": 31869,
+            "packet_json_bytes": 12158,
+            "returned_items": 27,
+            "parent_peak_rss_bytes": 35536896,
+            "worker_peak_rss_bytes": 793493504
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.907023542000388,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 6,
+                "end_line": 24,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 1,
+                "end_line": 11,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 71,
+                "end_line": 101,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 32,
+                "end_line": 36,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8076
+            },
+            "packet_budget_bytes": 31869,
+            "packet_json_bytes": 12158,
+            "returned_items": 27,
+            "parent_peak_rss_bytes": 40681472,
+            "worker_peak_rss_bytes": 793493504
+          }
+        ]
+      }
+    },
+    {
+      "id": "doc-2",
+      "category": "documentation",
+      "semantic": {
+        "id": "doc-2",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.900829541998974,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 11,
+                "end_line": 35,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/transcript.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8024
+            },
+            "packet_budget_bytes": 31424,
+            "packet_json_bytes": 11994,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 38551552,
+            "worker_peak_rss_bytes": 788987904
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.898298624997551,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "src/ibwd/usage_hooks.py",
+                "line": 65,
+                "end_line": 96,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "SPRINT_3_FINISH_PLAN.md",
+                "line": 11,
+                "end_line": 35,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/ab/transcript.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8038
+            },
+            "packet_budget_bytes": 31424,
+            "packet_json_bytes": 11994,
+            "returned_items": 20,
+            "parent_peak_rss_bytes": 40894464,
+            "worker_peak_rss_bytes": 788987904
+          }
+        ]
+      },
+      "baseline": {
+        "id": "doc-2",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09666870799992466,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 200,
+                "end_line": 218,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/usage.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 91,
+                "end_line": 120,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DOCUMENTATION_REVIEW.md",
+                "line": 48,
+                "end_line": 56,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30131,
+            "packet_json_bytes": 11469,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 31571968,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.04651558299883618,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 200,
+                "end_line": 218,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/usage.py",
+                "line": 225,
+                "end_line": 256,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 91,
+                "end_line": 120,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 82,
+                "end_line": 103,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/DOCUMENTATION_REVIEW.md",
+                "line": 48,
+                "end_line": 56,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 30131,
+            "packet_json_bytes": 11469,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 31588352,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "doc-3",
+      "category": "documentation",
+      "baseline": {
+        "id": "doc-3",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09850224999900092,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 50,
+                "end_line": 68,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 33,
+                "end_line": 48,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 219,
+                "end_line": 231,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/diagnostics.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "README.md",
+                "line": 75,
+                "end_line": 87,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31460,
+            "packet_json_bytes": 11817,
+            "returned_items": 24,
+            "parent_peak_rss_bytes": 28508160,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046894291997887194,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 50,
+                "end_line": 68,
+                "reason": "lexical"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 33,
+                "end_line": 48,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 219,
+                "end_line": 231,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/tools/diagnostics.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical"
+              },
+              {
+                "file": "README.md",
+                "line": 75,
+                "end_line": 87,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31460,
+            "packet_json_bytes": 11817,
+            "returned_items": 24,
+            "parent_peak_rss_bytes": 28557312,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "doc-3",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.959372541998164,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 50,
+                "end_line": 68,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/diagnostics.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 33,
+                "end_line": 48,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/adjudicate.py",
+                "line": 353,
+                "end_line": 384,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/SPRINT3_free_stage_report.md",
+                "line": 97,
+                "end_line": 121,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8566
+            },
+            "packet_budget_bytes": 31203,
+            "packet_json_bytes": 11781,
+            "returned_items": 21,
+            "parent_peak_rss_bytes": 33259520,
+            "worker_peak_rss_bytes": 790151168
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.906047708998813,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 50,
+                "end_line": 68,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/diagnostics.py",
+                "line": 1,
+                "end_line": 32,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "CLAUDE.md",
+                "line": 33,
+                "end_line": 48,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/tools/adjudicate.py",
+                "line": 353,
+                "end_line": 384,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "benchmarks/SPRINT3_free_stage_report.md",
+                "line": 97,
+                "end_line": 121,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8085
+            },
+            "packet_budget_bytes": 31203,
+            "packet_json_bytes": 11781,
+            "returned_items": 21,
+            "parent_peak_rss_bytes": 40927232,
+            "worker_peak_rss_bytes": 791756800
+          }
+        ]
+      }
+    },
+    {
+      "id": "doc-4",
+      "category": "documentation",
+      "semantic": {
+        "id": "doc-4",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.882755040998745,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 31,
+                "end_line": 37,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 5,
+                "end_line": 26,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 7,
+                "end_line": 38,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 1,
+                "end_line": 30,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.781
+            },
+            "packet_budget_bytes": 30263,
+            "packet_json_bytes": 11746,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 36569088,
+            "worker_peak_rss_bytes": 790249472
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.907106374997966,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 31,
+                "end_line": 37,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_5.md",
+                "line": 5,
+                "end_line": 26,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 7,
+                "end_line": 38,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 182,
+                "end_line": 201,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 1,
+                "end_line": 30,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.8125
+            },
+            "packet_budget_bytes": 30265,
+            "packet_json_bytes": 11747,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 42991616,
+            "worker_peak_rss_bytes": 790249472
+          }
+        ]
+      },
+      "baseline": {
+        "id": "doc-4",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.09530820900181425,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 31,
+                "end_line": 37,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 200,
+                "end_line": 218,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_ADDENDUM_PATHFINDING.md",
+                "line": 95,
+                "end_line": 119,
+                "reason": "lexical"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 11,
+                "end_line": 16,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/SPRINT3_protocol.md",
+                "line": 53,
+                "end_line": 84,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31646,
+            "packet_json_bytes": 12076,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 28491776,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046731624999665655,
+            "recall_at_5": 0.5,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 31,
+                "end_line": 37,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 200,
+                "end_line": 218,
+                "reason": "lexical"
+              },
+              {
+                "file": "SPRINT_3_ADDENDUM_PATHFINDING.md",
+                "line": 95,
+                "end_line": 119,
+                "reason": "lexical"
+              },
+              {
+                "file": "IBWD_v1_EXECUTION_PLAN.md",
+                "line": 11,
+                "end_line": 16,
+                "reason": "lexical"
+              },
+              {
+                "file": "benchmarks/SPRINT3_protocol.md",
+                "line": 53,
+                "end_line": 84,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31646,
+            "packet_json_bytes": 12076,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 28508160,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "doc-5",
+      "category": "documentation",
+      "baseline": {
+        "id": "doc-5",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.10154699999839067,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 123,
+                "end_line": 136,
+                "reason": "lexical"
+              },
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 289,
+                "end_line": 309,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 19,
+                "end_line": 50,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 1,
+                "end_line": 8,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31899,
+            "packet_json_bytes": 12080,
+            "returned_items": 26,
+            "parent_peak_rss_bytes": 28409856,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046500374999595806,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 123,
+                "end_line": 136,
+                "reason": "lexical"
+              },
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 289,
+                "end_line": 309,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/USAGE_MEASUREMENT.md",
+                "line": 19,
+                "end_line": 50,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 1,
+                "end_line": 8,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31899,
+            "packet_json_bytes": 12080,
+            "returned_items": 26,
+            "parent_peak_rss_bytes": 28442624,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      },
+      "semantic": {
+        "id": "doc-5",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 6.883818958998745,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 289,
+                "end_line": 309,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 6,
+                "end_line": 24,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "DEVELOPMENT.md",
+                "line": 23,
+                "end_line": 42,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 123,
+                "end_line": 136,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7774
+            },
+            "packet_budget_bytes": 31457,
+            "packet_json_bytes": 11813,
+            "returned_items": 28,
+            "parent_peak_rss_bytes": 37437440,
+            "worker_peak_rss_bytes": 792543232
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 8.320379666998633,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "README.md",
+                "line": 22,
+                "end_line": 49,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/NEW_DEVICE_SETUP.md",
+                "line": 289,
+                "end_line": 309,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3A.md",
+                "line": 6,
+                "end_line": 24,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "DEVELOPMENT.md",
+                "line": 23,
+                "end_line": 42,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/DAILY_USE.md",
+                "line": 123,
+                "end_line": 136,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 8.2214
+            },
+            "packet_budget_bytes": 31457,
+            "packet_json_bytes": 11813,
+            "returned_items": 28,
+            "parent_peak_rss_bytes": 48349184,
+            "worker_peak_rss_bytes": 795443200
+          }
+        ]
+      }
+    },
+    {
+      "id": "doc-6",
+      "category": "documentation",
+      "semantic": {
+        "id": "doc-6",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 8.2910221250022,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 47,
+                "end_line": 72,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_6.md",
+                "line": 30,
+                "end_line": 47,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 1,
+                "end_line": 30,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 8.1818
+            },
+            "packet_budget_bytes": 31284,
+            "packet_json_bytes": 11818,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 51363840,
+            "worker_peak_rss_bytes": 801177600
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 6.881190208001499,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 47,
+                "end_line": 72,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "docs/SPRINT_6.md",
+                "line": 30,
+                "end_line": 47,
+                "reason": "lexical+semantic"
+              },
+              {
+                "file": "KNOWN_LIMITATIONS.md",
+                "line": 1,
+                "end_line": 30,
+                "reason": "lexical+semantic"
+              }
+            ],
+            "semantic": {
+              "status": "ready",
+              "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+              "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+              "dimensions": 768,
+              "preprocessing_version": "1",
+              "fusion": "reciprocal_rank_60; exact targets first; bounded resolved expansion",
+              "truncated": true,
+              "elapsed_seconds": 6.7844
+            },
+            "packet_budget_bytes": 31284,
+            "packet_json_bytes": 11818,
+            "returned_items": 22,
+            "parent_peak_rss_bytes": 53313536,
+            "worker_peak_rss_bytes": 801177600
+          }
+        ]
+      },
+      "baseline": {
+        "id": "doc-6",
+        "category": "documentation",
+        "measurements": [
+          {
+            "repeat": 0,
+            "wall_seconds": 0.1000316660029057,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 47,
+                "end_line": 72,
+                "reason": "lexical"
+              },
+              {
+                "file": "README.md",
+                "line": 50,
+                "end_line": 74,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/semantic.py",
+                "line": 257,
+                "end_line": 286,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31467,
+            "packet_json_bytes": 11748,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 28114944,
+            "worker_peak_rss_bytes": 0
+          },
+          {
+            "repeat": 1,
+            "wall_seconds": 0.046485750001011183,
+            "recall_at_5": 1.0,
+            "exact_first": null,
+            "top5": [
+              {
+                "file": "docs/SPRINT_3B.md",
+                "line": 26,
+                "end_line": 53,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/TOKEN_EFFICIENCY_ROADMAP.md",
+                "line": 121,
+                "end_line": 147,
+                "reason": "lexical"
+              },
+              {
+                "file": "docs/SPRINT_4.md",
+                "line": 47,
+                "end_line": 72,
+                "reason": "lexical"
+              },
+              {
+                "file": "README.md",
+                "line": 50,
+                "end_line": 74,
+                "reason": "lexical"
+              },
+              {
+                "file": "src/ibwd/retrieval/semantic.py",
+                "line": 257,
+                "end_line": 286,
+                "reason": "lexical"
+              }
+            ],
+            "semantic": null,
+            "packet_budget_bytes": 31467,
+            "packet_json_bytes": 11748,
+            "returned_items": 23,
+            "parent_peak_rss_bytes": 28131328,
+            "worker_peak_rss_bytes": 0
+          }
+        ]
+      }
+    }
+  ],
+  "initial_build": {
+    "result": {
+      "status": "ready",
+      "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+      "dimensions": 768,
+      "preprocessing_version": "1",
+      "model_path": "/Users/ishraklatif/Documents/claude_codex_skill/ibwd/.ibwd/models/all-mpnet-base-v2",
+      "index_generation": "6e537d232eb04acaa38dbd5e99f21d52",
+      "semantic_generation": "de2e99bb5b8e4700be143455b2a1f581",
+      "chunks": 766,
+      "query_timeout": 30,
+      "embedded_chunks": 766,
+      "reused_chunks": 0,
+      "elapsed_seconds": 209.6891,
+      "index_bytes": 13361152
+    },
+    "wall_seconds": 209.77890429200124,
+    "parent_peak_rss_bytes": 127172608,
+    "worker_peak_rss_bytes": 1511358464
+  },
+  "noop_build": {
+    "result": {
+      "status": "ready",
+      "model_digest": "e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4",
+      "dimensions": 768,
+      "preprocessing_version": "1",
+      "model_path": "/Users/ishraklatif/Documents/claude_codex_skill/ibwd/.ibwd/models/all-mpnet-base-v2",
+      "index_generation": "6e537d232eb04acaa38dbd5e99f21d52",
+      "semantic_generation": "8992c38dde1c4410acc9b9279041476e",
+      "chunks": 766,
+      "query_timeout": 30,
+      "embedded_chunks": 0,
+      "reused_chunks": 766,
+      "elapsed_seconds": 2.2724,
+      "index_bytes": 13361152
+    },
+    "wall_seconds": 2.327030000000377,
+    "parent_peak_rss_bytes": 65388544,
+    "worker_peak_rss_bytes": 0
+  },
+  "summary": {
+    "exact": {
+      "baseline": 1.0,
+      "semantic": 1.0
+    },
+    "synonym": {
+      "baseline": 0.16666666666666666,
+      "semantic": 0.5
+    },
+    "behavior": {
+      "baseline": 0.5833333333333334,
+      "semantic": 0.25
+    },
+    "documentation": {
+      "baseline": 0.9166666666666666,
+      "semantic": 0.9166666666666666
+    },
+    "vague": {
+      "baseline": 0.375,
+      "semantic": 0.375
+    },
+    "all": {
+      "baseline": 0.6666666666666666,
+      "semantic": 0.6666666666666666
+    }
+  },
+  "semantic_fallbacks": 0,
+  "exact_preserved": true,
+  "screening_quality_gate_passed": false,
+  "corpus_manifest_sha256": "4e2695757baf2e3c77614393f90aa083ec3ae1979372fbb760498d084bf25655",
+  "corpus_files": 114,
+  "hardware": {
+    "chip": "Apple M1",
+    "ram_bytes": 17179869184,
+    "model": "MacBookPro17,1"
+  },
+  "resources": {
+    "baseline": {
+      "median_seconds": 0.06397724999987986,
+      "p95_seconds": 0.1000316660029057,
+      "first_request_median_seconds": 0.09550452099938411,
+      "repeated_request_median_seconds": 0.04653356249946228,
+      "max_parent_peak_rss_bytes": 32161792,
+      "max_worker_peak_rss_bytes": 0,
+      "median_packet_budget_bytes": 31354.0,
+      "max_packet_budget_bytes": 31986
+    },
+    "semantic": {
+      "median_seconds": 6.902770853999755,
+      "p95_seconds": 7.685367541998858,
+      "first_request_median_seconds": 6.906631728998036,
+      "repeated_request_median_seconds": 6.899953438000011,
+      "max_parent_peak_rss_bytes": 53313536,
+      "max_worker_peak_rss_bytes": 825360384,
+      "median_packet_budget_bytes": 31312.0,
+      "max_packet_budget_bytes": 31999
+    }
+  },
+  "repeat_top5_stable": true,
+  "measurement_caveats": [
+    "First index build overlapped an 8.4-second focused test run during startup; ordinary workstation, no isolation or cache flush.",
+    "Query labels were authored for local screening, not independently adjudicated; relevance is file-level.",
+    "No ranking or model selection tuning was performed against these outcomes."
+  ]
+}

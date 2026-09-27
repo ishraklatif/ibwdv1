@@ -233,15 +233,22 @@ metadata layered on top of the structural facts in `nodes`/`edges`.
 | `derived_from_hash`  | The `nodes.content_hash` value the summary was generated from; a mismatch on rescan signals the summary is stale and needs regeneration. |
 | `grader_status`      | Quality-check state: `unchecked`, `passed`, `downgraded`, `dropped`. |
 
-## 5. Planned extension: `vec_nodes` (historical plan; now Sprint 6, not active)
+## 5. Optional semantic store (Sprint 6)
+
+The implemented store is a separate disposable `.ibwd/semantic.db`, atomically replaced after explicit successful indexing.
+`metadata(value)` stores JSON model digest/path, native dimensions, preprocessing version, graph generation, semantic generation,
+chunk count and query timeout. `vectors(key, vector)` stores normalized JSON vectors keyed by SHA-256 of the exact model input.
+`chunks(file, line, end_line, scope, content_hash, key)` ties each vector to current source evidence.
+Model/dimension/preprocessing identity is generation-wide; incompatible identity never reuses vectors.
+See [Sprint 6](docs/SPRINT_6.md) for bounds and default-off behavior. This does not add semantic edges to `graph.db`.
+
+The original extension proposal remains historical:
 
 ```sql
 -- CREATE VIRTUAL TABLE vec_nodes USING vec0(node_id INTEGER PRIMARY KEY, embedding FLOAT[1024]);
 ```
 
-Reserved for embedding-based similarity search over nodes via the
-`sqlite-vec` extension. Present in `schema.sql` as a comment; not created
-by the current schema.
+`sqlite-vec` is not required or created by the current schema.
 
 ## 6. Query pattern: transitive traversal
 

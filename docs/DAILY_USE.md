@@ -147,3 +147,12 @@ Sprint 4 adds `ibwd_context` for unfamiliar tasks and `ibwd_read` for exact sour
 Reconnect the server after updating; rerun setup to refresh installed routing instructions. Known symbols still use the
 existing exact discovery tools. See [Sprint 4](SPRINT_4.md) for MCP/CLI examples, scope limits, pagination and opt-in saved-log
 reduction. A `budget_tokens` value is a byte-based estimate, not a provider token count.
+
+## Optional local semantic retrieval
+
+Sprint 6 adds an explicit `semantic-index` command for already installed weights/runtime, and `context --semantic`
+(`ibwd_context` with `semantic=True`). Default work remains deterministic. See [Sprint 6 setup and limits](SPRINT_6.md);
+the [local M1 screen](SPRINT_6_MEASUREMENT.md) failed the quality gate. No model download or evaluation is required for ordinary use.
+
+After building an optional index, `ibwd semantic-config --repo /path/to/project --enabled` persists the local opt-in
+for CLI/MCP context requests. Use `--disabled` to undo it, or `context --no-semantic` for a deterministic request.

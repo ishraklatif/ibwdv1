@@ -6,10 +6,12 @@ The objective is less model context per correctly completed task. General token 
 
 ## Current status
 
-Sprints 1–4 deliver nine MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
+Sprints 1–6 deliver eleven MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
 explicit repository selection, index diagnostics, project setup and automatic local session reports for both clients.
 Default symbol/graph support covers production Python and JS/JSX/TS/TSX. Explicit scoped discovery and impact also cover tests; lexical evidence includes documentation and configuration.
-Embeddings, generated summaries and impact analysis are not shipped. Sprint 4's comparative performance acceptance remains pending.
+Sprint 5 adds scoped impact and optional compiler evidence. Sprint 6 adds opt-in local embeddings, disabled by default;
+generated summaries are not shipped. The [local M1 semantic screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query gain
+and substantial latency; independent held-out acceptance remains pending.
 
 The active plan is [the token-efficiency roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md), revised 2026-09-24.
 It prioritizes trustworthy reporting, bounded retrieval and context assembly before optional local AI.
@@ -57,7 +59,7 @@ Current setup/hooks support macOS, Linux and WSL; native Windows hook generation
 | `ibwd_callers` | Find incoming calls, imports, inheritance and value references |
 | `ibwd_dependents` | Find outgoing relationships |
 | `ibwd_trace_path` | Find a scoped path; CALLS-only by default |
-| `ibwd_context` | Assemble bounded lexical task evidence and resolved graph links |
+| `ibwd_context` | Assemble bounded task evidence and graph links; optional local vector fusion |
 | `ibwd_read` | Read exact source spans using a current expected hash |
 | `ibwd_impact` | Bounded exposure/dependency paths, test relevance and previous-index diff |
 | `ibwd_compiler_evidence` | Opt-in installed TypeScript references with diagnostics and provenance |
