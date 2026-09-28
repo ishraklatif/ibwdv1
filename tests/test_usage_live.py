@@ -61,6 +61,48 @@ def test_response_blocks_receipts_and_legacy_envelopes_are_recovered(tmp_path):
     assert analyze_log(path, 'codex')['observed_ibwd_calls'] == 2
 
 
+def test_codex_completed_mcp_items_recover_receipts_and_deduplicate(tmp_path):
+    path = tmp_path / 'session.jsonl'
+    oid = 'b' * 32
+    result = dict(content=[dict(type='text', text=json.dumps(packet()))],
+                  _meta={'ibwd': dict(schema_version=1, observation_id=oid)}, isError=False)
+    mcp_item = dict(type='McpToolCall', id='native-call', server='ibwd', tool='ibwd_context',
+                    arguments={'task': 'private task'}, status='completed', result=result)
+    started = dict(type='event_msg', payload=dict(type='item_started', thread_id='one', item=mcp_item))
+    completed = dict(type='event_msg', payload=dict(type='item_completed', thread_id='one', item=mcp_item))
+    append(path, dict(type='session_meta', payload=dict(id='one')), started, completed, completed,
+           item('function_call', name='mcp__ibwd__ibwd_context', call_id='second-wrapper'),
+           item('function_call_output', call_id='second-wrapper', output=result))
+    state = {}
+    report = analyze_log(path, 'codex', state=state)
+    assert report['server_observation_ids'] == [oid]
+    assert report['observed_ibwd_calls'] == 1
+    assert report['response_evidence']['items'] == 1
+    assert 'private task' not in json.dumps(state)
+    assert 'private.py' not in json.dumps(state)
+    append(path, dict(type='event_msg', payload=dict(type='item_completed', thread_id='child',
+        item=dict(mcp_item, id='child-call', result=dict(_meta={'ibwd': dict(schema_version=1, observation_id='c' * 32)})))))
+    assert analyze_log(path, 'codex')['server_observation_ids'] == [oid]
+
+
+def test_item_receipts_are_recovered_after_checkpoint_upgrade(tmp_path):
+    from ibwd.usage_stream import incremental_report, STATE_VERSION
+    path = tmp_path / 'log.jsonl'
+    checkpoint = tmp_path / 'checkpoint.json'
+    append(path, dict(type='session_meta', payload=dict(id='one')),
+           dict(type='event_msg', payload=dict(type='item_completed', item=dict(type='McpToolCall',
+               server='ibwd', tool='ibwd_read', id='call', result=dict(isError=True,
+                   _meta={'ibwd': dict(schema_version=1, observation_id='d' * 32)})))))
+    _, saved = incremental_report(path, 'codex', checkpoint)
+    saved['version'] = STATE_VERSION - 1
+    saved['parser']['calls'] = {}
+    checkpoint.write_text(json.dumps(saved))
+    report, _ = incremental_report(path, 'codex', checkpoint)
+    assert not report['parser']['resumed']
+    assert report['server_observation_ids'] == ['d' * 32]
+    assert report['observations']['retrieval_errors']['value'] == 1
+
+
 def test_refresh_discovers_exact_repo_and_reads_active_append_without_stop(tmp_path, monkeypatch):
     repo = tmp_path / 'project'
     repo.mkdir()

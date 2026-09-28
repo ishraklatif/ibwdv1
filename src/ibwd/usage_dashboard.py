@@ -96,7 +96,9 @@ def _bar(width: float, label: str, css_class: str = "") -> str:
 
 
 def _dashboard_html(repo: Path, folder: Path, sessions: list[tuple[Path, dict]],
-                    current: tuple[Path, dict] | None, comparison: dict, selected=False, live_seconds=0) -> str:
+                    current: tuple[Path, dict] | None, comparison: dict, selected=False, live_seconds=0, client='auto') -> str:
+    from ibwd.evaluation_dashboard import evaluation_panel
+    evaluation_html = evaluation_panel(folder, current[1] if current else None, client)
     reports = [report for _, report in sessions]
     tokens = [_tokens(report) for report in reports if _tokens(report) is not None]
     modes = Counter()
@@ -240,6 +242,21 @@ def _dashboard_html(repo: Path, folder: Path, sessions: list[tuple[Path, dict]],
     .grid > div {{ min-width: 0; }}
     .panel {{ padding: 16px 0; margin-bottom: 16px; min-width: 0; border-top: 1px solid var(--line); }}
     .table-scroll {{ overflow-x: auto; max-width: 100%; }}
+    .evaluation-counts {{ display: flex; flex-wrap: wrap; gap: 20px; font-weight: 600; margin: 12px 0; }}
+    .evaluation-methods {{ min-width: 650px; }}
+    .evaluation-run-grid {{ display: inline-grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 110px;
+      gap: 12px; width: calc(100% - 20px); vertical-align: top; overflow-wrap: anywhere; }}
+    .evaluation-run-heading {{ font-weight: 600; margin-left: 20px; padding: 10px 0; }}
+    .evaluation-runs details {{ border-bottom: 1px solid var(--line); padding: 10px 0; }}
+    @media (max-width: 600px) {{ .evaluation-run-grid {{ grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 85px; gap: 8px; }} }}
+    .evaluation-report pre {{ white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; max-height: 360px; overflow: auto; }}
+    .evaluation-report details {{ margin: 10px 0; }}
+    .evaluation-report summary {{ cursor: pointer; }}
+    .eval-passed {{ color: #166534; }}
+    .eval-failed {{ color: #b91c1c; }}
+    .eval-not_evaluated {{ color: var(--muted); }}
+    #evaluation-select {{ max-width: 100%; }}
+    #agent-evaluations .toolbar label {{ min-width: 0; max-width: 100%; }}
     .cohorts {{ min-width: 1800px; table-layout: fixed; }}
     .labels {{ min-width: 850px; table-layout: fixed; }}
     .labels th:nth-child(1) {{ width: 70px; }}
@@ -283,6 +300,7 @@ def _dashboard_html(repo: Path, folder: Path, sessions: list[tuple[Path, dict]],
           <h2>{'Selected saved session' if selected else 'Latest saved session'}</h2>
           {current_html}
         </section>
+        {evaluation_html}
         <section class="panel">
           <div class="toolbar"><h2>Comparison Cohorts</h2>
             <label>Client <select id="cohort-client"><option value="">All clients</option><option value="codex">Codex</option><option value="claude">Claude</option></select></label>
@@ -302,10 +320,12 @@ def _dashboard_html(repo: Path, folder: Path, sessions: list[tuple[Path, dict]],
           <h2>Evidence Quality</h2>
           <div class="quality">
             <span class="pill{' warn' if unreadable else ''}">Unreadable reports: {_escape(unreadable)}</span>
-            <span class="pill{' warn' if missing else ''}">Unattributed requests: {_escape(missing)}</span>
+            <span class="pill{' warn' if missing else ''}">Unattributed requests (repository history): {_escape(missing)}</span>
+            <span class="pill">Linked requests: {_escape(comparison.get('attributed_retained_requests', 'Not recorded'))} / {_escape(comparison.get('retained_server_requests', 'Not recorded'))}</span>
             <span class="pill">Automatic activity summaries: {_escape(len(reports))}</span>
           </div>
           <p class="fine">Observational snapshots; no matched savings baseline. Missing usage remains unknown.</p>
+          <p class="fine">Request attribution uses exact receipt IDs across saved sessions. Older or uncaptured receipts remain unlinked; this is not a failed-request count.</p>
         </section>
       </div>
     </section>
@@ -327,6 +347,16 @@ def _dashboard_html(repo: Path, folder: Path, sessions: list[tuple[Path, dict]],
       }});
     }});
     clientFilter.dispatchEvent(new Event('change'));
+    const evaluationSelect = document.getElementById('evaluation-select');
+    if (evaluationSelect) {{
+      const applyEvaluation = () => {{
+        document.querySelectorAll('.evaluation-report').forEach(report => {{
+          report.hidden = report.id !== evaluationSelect.value;
+        }});
+      }};
+      evaluationSelect.addEventListener('change', applyEvaluation);
+      applyEvaluation();
+    }}
     if ({int(live_seconds)} > 0) setTimeout(() => location.reload(), {int(live_seconds)} * 1000);
   </script>
 </body>
@@ -354,7 +384,7 @@ def build_dashboard(repo: Path, client: str = "auto", session_key: str | None = 
         current = _selected_session(sessions, client, session_key)
         comparison = _read_json(folder / "comparison.json") or {}
     output = folder / "dashboard.html"
-    page = _dashboard_html(repo, folder, sessions, current, comparison, selected=session_key is not None, live_seconds=live_seconds)
+    page = _dashboard_html(repo, folder, sessions, current, comparison, selected=session_key is not None, live_seconds=live_seconds, client=client)
     if status['warnings']:
         page = page.replace('<main>', '<main><p role="status">' + _escape(' '.join(status['warnings'])) + '</p>')
     atomic_write(output, page)

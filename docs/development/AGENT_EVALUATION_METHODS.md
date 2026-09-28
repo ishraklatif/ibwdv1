@@ -1,9 +1,10 @@
 # Agent evaluation methods for IBWD
 
-This guide describes ways to evaluate how coding agents use IBWD. These are
-evaluation methods, not claims that the current usage report or test suite
-already measures them. Start with deterministic, offline tests and a small set
-of representative tasks; expand only when the results answer a real question.
+This guide describes evaluation methods and the local `eval-agent` trace scorer.
+The scorer implements deterministic checks using supplied cases and recorded
+outcomes, and saves results for the usage dashboard. Methods requiring missing
+gold labels, repeated trials, or measurements remain explicitly not evaluated.
+It does not run a live agent, an LLM equivalence judge, or an injection benchmark.
 
 ## 1. Schema validation
 
@@ -195,3 +196,119 @@ retrieval quality, or test infrastructure.
 These tests can run locally without paid model jobs by validating recorded
 tool-call traces and executing calls against deterministic fixtures. Live-agent
 benchmarking is a separate step and should be clearly labeled as such.
+
+## Running the trace evaluator
+
+`ibwd eval-agent CASES.json TRACES.json` scores recorded traces against the
+installed IBWD tool schemas. It does not start Codex, Claude Code, or another
+model. The evaluator reports schema validity, exact and normalized argument
+matches, lexical grounding hints, execution status and expected evidence,
+trajectory precision/recall, abstention, recovery, safety, dependencies,
+multi-turn state checks, repeatability, robustness groups, and supplied cost
+metadata. It also lists limitations in the JSON report. Tool schemas are read
+through the MCP SDK's public API; both `input_schema` and `inputSchema` are supported.
+
+Every run automatically saves a version-2 report under
+`.ibwd/usage/evaluations/` and rebuilds `.ibwd/usage/dashboard.html`.
+The dashboard's **Agent Evaluations** section contains a report selector, all
+14 method summaries, per-run outcomes and expandable evidence. Reports without
+a session association are explicitly labeled as repository evaluations.
+
+```bash
+.venv/bin/python -m ibwd.cli eval-agent cases.json traces.json --repo "$TARGET_REPO"
+.venv/bin/python -m ibwd.cli usage-dashboard --repo "$TARGET_REPO"
+```
+
+To associate results with the session key displayed in the dashboard, provide
+both `--client codex` (or `claude`) and `--session-key "$SESSION_KEY"` on
+`eval-agent`. This association is explicit; the evaluator never guesses a
+session from the newest transcript. Session-specific views show that session's
+evaluations plus separately labeled repository evaluations.
+
+Case and trace files use schema version 1. A minimal pair looks like this:
+
+```json
+{
+  "schema_version": 1,
+  "cases": [{
+    "id": "find-symbol",
+    "messages": ["Find the definition of Widget"],
+    "expected_calls": [{
+      "tool": "ibwd_find_symbol",
+      "arguments": {"name": "Widget"}
+    }],
+    "expected_evidence": ["src/widget.py"],
+    "allowed_tools": ["ibwd_find_symbol"],
+    "scope_paths": ["src"]
+  }]
+}
+```
+
+```json
+{
+  "schema_version": 1,
+  "runs": [{
+    "case_id": "find-symbol",
+    "run_id": "trial-1",
+    "tokens": {"input": 1200, "output": 80},
+    "latency_ms": 340,
+    "calls": [{
+      "tool": "ibwd_find_symbol",
+      "arguments": {"name": "Widget"},
+      "result": [{"file": "src/widget.py", "symbol_id": "src/widget.py::Widget"}]
+    }]
+  }]
+}
+```
+
+`expected_calls` can have alternatives in `acceptable_call_sequences`.
+`dependencies` checks that a value produced by one result is passed into a
+later call; `expected_latest_arguments` checks corrected or latest-turn values.
+`should_abstain`, `expected_evidence`, `expected_state`, `recovery`,
+`robustness_group`, and `requires_confirmation` enable the corresponding
+checks. `clarification_required: true` with `should_abstain: true` requires a
+nonempty `clarification` string on the run. Put repeated trials in `runs` with
+the same `case_id` and distinct `run_id` values to get empirical pass@1 (the
+observed pass fraction), any-pass across k recorded trials, and all-pass across
+k recorded trials. `settings` objects separate different models, temperatures,
+or other recorded conditions; supply these when comparing agents. Missing
+outcomes leave reliability unscored. Robustness counts distinct case IDs,
+not repeated runs of a single case. Cases without runs are listed separately.
+
+Matching preserves case and types for identifiers, paths, and hashes. An
+expected call may list `semantic_arguments: ["task"]` to enable whitespace
+and case normalization for explicit free-text task/query/text/description
+fields. This is deterministic normalization, not embedding or LLM equivalence.
+Missing calls remain in the argument denominator; extra calls do not shift
+every later comparison. Schema defaults may be supplied without penalty.
+
+Retrieval recall compares exact string values, never dictionary keys or
+substrings. For true set precision, supply a curated `returned_evidence` array
+on the run alongside the case's `expected_evidence`. Without it precision is
+not evaluated. Grounding flags are lexical review hints, excluded from the
+pass/fail gate. They do not prove hallucination. Safety covers supplied tool,
+path and confirmation rules; it does not establish injection resistance.
+
+For multi-turn traces, messages may be `{ "content": "...", "turn": 2 }`
+objects and calls may carry a zero-based `turn`. Plain message strings are
+initial context. Later messages cannot ground earlier arguments. Dependency
+checks reject future producers and calls sharing the same `parallel_group`.
+Latest argument checks are exact and case-sensitive.
+
+The report is JSON on stdout; `--output report.json` writes an additional copy.
+Raw session usage reports are not automatically converted into gold-labeled
+evaluations. Supply task expectations and recorded traces to score correctness.
+
+By default, outcomes are read from the recorded trace. To re-run calls against
+a local repository, use `--replay-read-only --repo PATH`. Replay is explicit
+and restricted to read-only retrieval tools; scan, artifact, assist, and other
+non-allowlisted calls are blocked. Replay checks current behavior, not the
+historical result the agent saw. It validates the full input before executing
+calls and preserves MCP error responses. For `ibwd_context`, explicitly set
+both `semantic` and `helper` to `false`; replay cannot invoke a model helper.
+Retrieval may refresh the repository's local `.ibwd` index. Paths outside the
+selected repository (including symlink escapes) are blocked. Old outcome,
+token, final-state and evidence labels are cleared when replaying, so they
+cannot be mistaken for fresh observations. Use disposable fixtures for repeatable
+retrieval labels. No live-agent quality, model savings, or billing claim can
+be inferred from a trace evaluation alone.

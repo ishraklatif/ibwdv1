@@ -16,6 +16,37 @@ from ibwd.usage_hooks import capture_session, refresh_comparison
 from tests.test_usage_hooks import transcript
 
 
+def test_oversized_response_keeps_error_receipt(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    from mcp.types import CallToolResult, TextContent
+    from ibwd.telemetry import ObservedServerMixin
+
+    class Base:
+        async def call_tool(self, *args, **kwargs):
+            return CallToolResult(content=[TextContent(type='text', text=json.dumps({
+                'schema_version': 2, 'items': [{'text': 'large private source' * 100}],
+            }))])
+
+    class Server(ObservedServerMixin, Base):
+        pass
+
+    monkeypatch.chdir(tmp_path)
+    context = SimpleNamespace(request_context=SimpleNamespace(
+        session=SimpleNamespace(client_params=None), request_id='request'))
+
+    async def run():
+        return await Server().call_tool('ibwd_read', {'max_bytes': 256, 'budget_tokens': 64}, context=context)
+
+    response = anyio.run(run)
+    receipt = json.loads(response.content[-1].text)['ibwd_observation']
+    assert receipt['status'] == 'error'
+    assert response.meta['ibwd']['observation_id'] == receipt['observation_id']
+    assert 'large private source' not in str(response)
+    event = read_events(tmp_path)[-1]
+    assert event['observation_id'] == receipt['observation_id']
+    assert event['status'] == 'error' and event['response_bytes'] > 0
+
+
 @pytest.mark.parametrize('client', ['codex', 'claude'])
 def test_fresh_setup_update_and_transport_evidence(tmp_path, client):
     repo = tmp_path / "project with 'quotes'"

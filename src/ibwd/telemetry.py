@@ -160,9 +160,18 @@ class ObservedServerMixin:
             if name in {'ibwd_context', 'ibwd_read'}:
                 budget = min(budget, 4 * (arguments or {}).get('budget_tokens', 2000 if name == 'ibwd_context' else 1000))
             if len(json.dumps(serialized, separators=(',', ':'), ensure_ascii=False).encode()) > budget:
-                record(event | {'phase': 'completed', 'status': 'error',
-                                'duration_ms': round((time.monotonic() - started) * 1000, 3)})
-                raise ValueError('Serialized MCP response exceeds max_bytes; narrow the query or increase the budget.')
+                from mcp.types import CallToolResult, TextContent
+                status = 'error'
+                receipt['status'] = status
+                result = CallToolResult(content=[
+                    TextContent(type='text', text='Serialized MCP response exceeds max_bytes; narrow the query or increase the budget.'),
+                    TextContent(type='text', text=json.dumps({'ibwd_observation': receipt}, separators=(',', ':'))),
+                ], isError=True)
+                if hasattr(result, 'meta'):
+                    result.meta = {'ibwd': receipt}
+                serialized = result.model_dump(mode='json', by_alias=True, exclude_none=True)
+                event['evidence_files'] = None
+                data = None
         count = len(data) if isinstance(data, list) else (len(data['items']) if isinstance(data, dict) and isinstance(data.get('items'), list) else None)
         if isinstance(data, list) and len(data) == 1 and isinstance(data[0], dict) and data[0].get("empty_result"):
             count = 0

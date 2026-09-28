@@ -437,5 +437,63 @@ def artifact_read_command(artifact_id, repo, max_bytes):
     click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
 
 
+@main.command('eval-agent')
+@click.argument('cases_file', type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.argument('traces_file', type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option('--replay-read-only', is_flag=True, help='Replay allowlisted read-only IBWD calls in --repo.')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--output', type=click.Path(dir_okay=False, path_type=Path), help='Write JSON report to this path.')
+@click.option('--client', type=click.Choice(['codex', 'claude']), help='Client for an explicit session association.')
+@click.option('--session-key', help='Session key shown in the usage dashboard; requires --client.')
+def eval_agent(cases_file: Path, traces_file: Path, replay_read_only: bool, repo: Path, output: Path | None,
+               client: str | None, session_key: str | None) -> None:
+    """Score recorded agent tool traces locally; does not run an agent or model."""
+    from copy import deepcopy
+    from ibwd.evaluation import EvaluationInputError, evaluate, replay_read_only as replay, save_evaluation, validate_inputs
+    from ibwd.local_io import atomic_write
+
+    try:
+        cases = json.loads(cases_file.read_text(encoding='utf-8'))
+        traces = json.loads(traces_file.read_text(encoding='utf-8'))
+        validate_inputs(cases, traces)
+        if bool(client) != bool(session_key):
+            raise EvaluationInputError('Supply both --client and --session-key to link a session')
+        if session_key:
+            import re
+            if not re.fullmatch(r'[A-Za-z0-9_-]{1,128}', session_key):
+                raise EvaluationInputError('Invalid session key')
+        original_traces = deepcopy(traces)
+        if replay_read_only:
+            for run in traces.get('runs', []):
+                replay_result = replay(run, repo)
+                for call, item in zip(run['calls'], replay_result['calls']):
+                    for field in ('result', 'output', 'error', 'is_error', 'isError', 'blocked', 'latency_ms'):
+                        call.pop(field, None)
+                    call.update(item)
+                for field in ('final_state', 'returned_evidence', 'tokens', 'cost_usd'):
+                    run.pop(field, None)
+                run['latency_ms'] = sum(call.get('latency_ms', 0) for call in run['calls'])
+        report = evaluate(cases, traces)
+        report['execution_mode'] = 'read-only-replay' if replay_read_only else 'recorded-outcomes'
+        save_evaluation(report, repo, client=client, session_key=session_key,
+                        cases_data=cases, traces_data=original_traces)
+    except (OSError, UnicodeError, json.JSONDecodeError, EvaluationInputError, KeyError, TypeError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    rendered = json.dumps(report, indent=2, ensure_ascii=False) + '\n'
+    if output:
+        try:
+            atomic_write(output, rendered)
+        except OSError as exc:
+            raise click.ClickException(str(exc)) from exc
+        click.echo(str(output))
+    else:
+        click.echo(rendered, nl=False)
+    from ibwd.usage_dashboard import build_dashboard
+    try:
+        build_dashboard(repo, refresh=False)
+    except (OSError, ValueError, TimeoutError) as exc:
+        click.echo(f'Evaluation saved; dashboard refresh failed: {exc}', err=True)
+
+
 if __name__ == "__main__":
     main()

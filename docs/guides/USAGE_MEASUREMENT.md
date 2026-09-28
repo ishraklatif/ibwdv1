@@ -82,6 +82,16 @@ join requests to the local ledger. Reconnect the MCP server once after updating 
 Old responses without a receipt retain packet counts and fallback observations, but missing server timing/freshness
 is displayed as unavailable. It is never matched by timestamps.
 
+"Unattributed requests (repository history)" counts retained server request IDs
+that are absent from every saved session report, not just the selected session.
+It is not a failed-request count. Codex `item_completed` / `McpToolCall` events
+are supported alongside older MCP events and response wrappers. Updated parser
+checkpoints rebuild automatically, recovering existing receipts from earlier
+transcript records. Opening `usage-dashboard` refreshes those snapshots; no
+manual labels or session-end event is required. Historical failures whose
+receipts never reached a transcript cannot be assigned safely. New response-size
+errors preserve their receipt; reconnect the MCP server to load that fix.
+
 It refreshes comparisons from saved reports and the retained local event ledger, highlights the latest saved session, shows cohort tables,
 embedding modes and automatic activity summaries, and opens the generated local HTML in your browser. Use `--no-open` for terminals or tests,
 `--client codex|claude` to choose the latest session for one client, or `--session-key KEY` to focus a specific session.

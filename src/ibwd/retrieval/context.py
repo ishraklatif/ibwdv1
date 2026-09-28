@@ -10,7 +10,7 @@ from ibwd.retrieval.bounded import MAX_SECONDS, compact, cursor_encode, cursor_o
 from ibwd.retrieval.lexical import SCOPES, declaration, source_text, words
 from ibwd.retrieval.service import fresh_query
 
-VERSION = 2
+VERSION = 3
 MAX_CANDIDATES = 200
 GAPS = ('Lexical matches are relevance hints; test matches are not verified coverage. '
         'Graph links cover resolved production Python/JS/TS only. Ignored, secret-named, binary, '
@@ -191,6 +191,26 @@ def enrich(conn, root, item, detail):
     return item, file['content_hash']
 
 
+def fit_first_item(packet, budget):
+    """Keep a readable candidate when optional enrichment would block pagination."""
+    item = packet['items'][0]
+    for field in ('relationships', 'definitions', 'signature', 'outline', 'heading'):
+        if encoded_size(packet) <= budget:
+            break
+        if not item.get(field):
+            continue
+        if field in ('relationships', 'definitions'):
+            item[field] = []
+            item[field + '_truncated'] = True
+        else:
+            del item[field]
+        item.setdefault('budget_omissions', []).append(field)
+        if field == 'relationships':
+            needed = {item['file'], *packet['instructions']}
+            packet['files'] = {path: value for path, value in packet['files'].items() if path in needed}
+    return packet
+
+
 def context(root, task, targets=None, budget_tokens=2000, detail='outline', cursor=None,
             scopes=None, max_bytes=16384, semantic=None, helper=None):
     root = Path(root).resolve()
@@ -337,9 +357,15 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
                 del item['text']
                 item['source_omitted'] = 'Complete span does not fit; use read with the supplied hash/range.'
                 proposed['items'][-1] = item
+            if encoded_size(proposed) > budget and not result['items']:
+                proposed = fit_first_item(proposed, budget)
             if encoded_size(proposed) > budget:
                 if not result['items']:
-                    raise ValueError('Budget cannot fit one context item; increase budget or narrow targets/scopes.')
+                    required = encoded_size(proposed)
+                    raise ValueError(
+                        f'Budget cannot fit one context item: requires {required} serialized MCP bytes; '
+                        f'effective budget is {budget} bytes (min(max_bytes, 4 * budget_tokens)). '
+                        'Increase both max_bytes and budget_tokens as needed, or narrow targets/scopes.')
                 break
             result = proposed
             index += 1

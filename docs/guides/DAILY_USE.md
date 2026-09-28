@@ -153,6 +153,23 @@ This configures reporting only, so complete the MCP connection and routing steps
 See [USAGE_MEASUREMENT.md](./USAGE_MEASUREMENT.md) for limitations, disabling hooks and optional manual comparisons.
 The analyzer reads local logs; it does not start Codex, Claude Code, API calls, or benchmark runs.
 
+### Agent evaluations on the dashboard
+
+Score an existing case/trace pair locally:
+
+```bash
+"$IBWD_PY" -m ibwd.cli eval-agent cases.json traces.json --repo "$TARGET_REPO"
+"$IBWD_PY" -m ibwd.cli usage-dashboard --repo "$TARGET_REPO"
+```
+
+Results save automatically in `.ibwd/usage/evaluations/` and appear in the
+**Agent Evaluations** section, with method scores and per-run details. Add
+`--client codex --session-key "$SESSION_KEY"` to `eval-agent` to link results
+to the session key shown in the dashboard; omit both for repository results.
+Missing expectations or recorded outcomes remain **Not evaluated**. Ordinary
+usage totals alone do not establish task correctness. See
+[evaluation input formats and scoring](../development/AGENT_EVALUATION_METHODS.md#running-the-trace-evaluator).
+
 ## Sprint 3B update
 
 After updating IBWD, rerun `python -m ibwd.cli setup --repo /absolute/path/to/work-project` with your installed environment,
@@ -166,6 +183,16 @@ Sprint 4 adds `ibwd_context` for unfamiliar tasks and `ibwd_read` for exact sour
 Reconnect the server after updating; rerun setup to refresh installed routing instructions. Known symbols still use the
 existing exact discovery tools. See [Sprint 4](../development/SPRINT_4.md) for MCP/CLI examples, scope limits, pagination and opt-in saved-log
 reduction. A `budget_tokens` value is a byte-based estimate, not a provider token count.
+
+Context packets default to an effective 8,000-byte budget: the smaller of `4 * budget_tokens`
+and `max_bytes`, including MCP serialization overhead. This keeps repository evidence from consuming
+the whole agent context. Follow `next_cursor` with the same query to retrieve subsequent candidates.
+Oversized first candidates now shed optional enrichment, marked by `budget_omissions` and graph/definition
+truncation flags, while preserving the hash-checked `read` reference. Instruction locations remain intact.
+For richer packets, pass `budget_tokens: 8000` and `max_bytes: 32768` to `ibwd_context`;
+raising only one may leave the other limit active. Supported maxima are 16000 tokens and 65536 bytes.
+An irreducible oversized packet reports its required bytes. Exact `ibwd_read` source spans are never
+silently shortened: increase both budgets or request a smaller explicit line range.
 
 ## Optional local semantic retrieval
 

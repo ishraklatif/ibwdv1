@@ -79,6 +79,41 @@ def test_pages_bound_to_generation_filters_and_details(repo):
         context(repo, 'shared', cursor=first['next_cursor'])
 
 
+def test_large_enrichment_does_not_block_first_candidate(repo, monkeypatch):
+    import importlib
+    module = importlib.import_module('ibwd.retrieval.context')
+    original = module.enrich
+
+    def verbose(*args):
+        item, hash_value = original(*args)
+        item['relationships'] = [dict(symbol_id='large_' * 800, file=item['file'],
+                                      line=1, end_line=2, relation='CALLS', direction='incoming')]
+        item['signature'] = 'def example(' + 'argument, ' * 800 + '):'
+        return item, hash_value
+
+    monkeypatch.setattr(module, 'enrich', verbose)
+    results = list(pages(repo, task='renew credential', targets=['src/auth.py'],
+                         budget_tokens=1200, semantic=False, helper=False))
+    items = [item for packet in results for item in packet['items']]
+    assert len(items) == len({(item['file'], item['line'], item['end_line']) for item in items})
+    assert {'src/auth.py::refreshAccessToken', 'src/auth.py::validate'} <= {
+        item.get('symbol_id') for item in items}
+    assert all(encoded_size(packet) <= 4800 for packet in results)
+    first = items[0]
+    assert 'relationships' in first['budget_omissions']
+    assert 'signature' in first['budget_omissions']
+    assert first['relationships_truncated']
+    assert read(repo, first['read']['symbol_id_or_path'], first['read']['expected_hash'],
+                first['read']['range'])['items'][0]['text'].startswith('def refreshAccessToken')
+    assert results[0]['instructions'] == ['AGENTS.md']
+
+
+def test_impossibly_small_context_budget_reports_required_bytes(repo):
+    with pytest.raises(ValueError, match=r'requires \d+ serialized MCP bytes; effective budget is 256'):
+        context(repo, 'renew credential', targets=['src/auth.py'], max_bytes=256,
+                semantic=False, helper=False)
+
+
 def test_exact_read_rejects_stale_hash_and_preserves_crlf_unicode(repo):
     source = repo / 'unicode.py'
     source.write_bytes('def hello():\r\n    return "世界"\r\n'.encode())

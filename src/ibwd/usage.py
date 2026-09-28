@@ -210,6 +210,22 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                         child_seen = True
                 if event.get("type") == "response_item" and payload.get("type") in ("function_call_output", "custom_tool_call_output"):
                     complete(payload.get("call_id"), payload.get("output"))
+                if event.get('type') == 'event_msg' and payload.get('type') in {'item_started', 'item_completed'}:
+                    item = payload.get('item')
+                    if (isinstance(item, dict) and item.get('type') == 'McpToolCall'
+                            and item.get('server') == 'ibwd' and tool_name(item.get('tool'))
+                            and isinstance(item.get('id'), str) and item['id']):
+                        thread = payload.get('thread_id')
+                        if thread and session_ids and hashlib.sha256((client + ':' + str(thread)).encode()).hexdigest()[:20] not in session_ids:
+                            child_seen = True
+                            continue
+                        call('mcp__ibwd__' + tool_name(item['tool']), item['id'], 'structured_mcp')
+                        if payload['type'] == 'item_completed':
+                            result = item.get('result')
+                            if isinstance(result, dict):
+                                complete(item['id'], result)
+                            elif item.get('status') == 'failed' or item.get('error'):
+                                complete(item['id'], {}, 'transport_error')
                 if event.get("type") == "event_msg" and payload.get("type") in ("mcp_tool_call_begin", "mcp_tool_call_end"):
                     invocation = payload.get("invocation", {})
                     if isinstance(invocation, dict) and invocation.get("server") == "ibwd" and tool_name(invocation.get("tool")):

@@ -268,6 +268,8 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
     _atomic_write(folder / 'comparison.json', json.dumps({
         'schema_version': 1, 'groups': rows, 'unreadable_reports': unreadable,
         'unattributed_retained_requests': unmatched,
+        'retained_server_requests': len(server),
+        'attributed_retained_requests': len(server) - unmatched,
         'interpretation': 'Observational adoption and retrieval efficiency only; no matched baseline or savings claim.',
     }, indent=2) + '\n')
     _atomic_write(folder / "comparison.md", "\n".join(lines) + "\n")
