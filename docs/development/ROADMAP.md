@@ -1,7 +1,7 @@
 # IBWD roadmap: less context, reliable work, no additional spending
 
 Updated 2026-09-24. This is the active plan from Sprint 3 onward for **both Codex and Claude Code**.
-It supersedes the future sprint order in [the original plan](../IBWD_v1_EXECUTION_PLAN.md), not the historical results or frozen experiment.
+It supersedes the future sprint order in [the original plan](../archive/sprints/IBWD_v1_EXECUTION_PLAN.md), not the historical results or frozen experiment.
 This revision is a documentation/design change. Capabilities below are **proposed unless explicitly marked shipped**.
 
 ## 1. Product decision
@@ -22,7 +22,7 @@ No automated fallback may start a billable model. Stop when the existing client 
 
 ## 2. What the evidence actually says
 
-The [documentation review](DOCUMENTATION_REVIEW.md) inventories all 22 project Markdown paths and records the conflicts behind this pivot.
+The dated documentation review records the conflicts behind this pivot; the repository [README](../../README.md) is the current navigation entry point.
 Source inspection also checked `setup.py`, `usage.py`, `usage_hooks.py`, `scan.py`, `health.py`, graph storage and MCP/traversal implementations.
 
 | Finding | Consequence |
@@ -90,7 +90,7 @@ Complete one reviewable slice at a time. Do not implement all eight stages as on
 
 ### Sprint 3A — trustworthy usage and adoption
 
-Implementation: [Sprint 3A delivery notes](SPRINT_3A.md). Local instrumentation is delivered; live model adoption and savings
+Implementation: [Sprint 3A delivery notes](./SPRINT_3A.md). Local instrumentation is delivered; live model adoption and savings
 remain unverified. Child records are explicitly excluded, not merged into parent totals; no supported disjoint child accounting
 contract is assumed. The criteria below remain the design/acceptance reference.
 
@@ -120,7 +120,7 @@ is unavailable, release instrumentation but label model adoption unverified. No 
 
 ### Sprint 3B — inexpensive and reliable retrieval
 
-Implementation and measured local profile: [Sprint 3B delivery notes](SPRINT_3B.md). Automatic freshness is now active;
+Implementation and measured local profile: [Sprint 3B delivery notes](./SPRINT_3B.md). Automatic freshness is now active;
 version 1 keeps legacy shapes with hard failure on oversized queries, while version 2 provides bounded envelopes and pages.
 The criteria below remain the design/acceptance reference. Other laptops need their own measurements using the same frozen profile.
 
@@ -147,7 +147,7 @@ do not retune the limits after seeing a failure without recording the revision.
 
 ### Sprint 4 — useful evidence in one request
 
-Implemented interfaces and limits: [Sprint 4 delivery notes](SPRINT_4.md). Comparative performance acceptance remains pending;
+Implemented interfaces and limits: [Sprint 4 delivery notes](./SPRINT_4.md). Comparative performance acceptance remains pending;
 no benchmarks were run under the repository restriction. The criteria below remain the acceptance reference.
 
 ```text
@@ -181,7 +181,7 @@ This is a **local payload target**, not a claim of model-token savings or task s
 
 ### Sprint 5 — impact that helps edits
 
-Implementation: [Sprint 5 delivery notes](SPRINT_5.md). Separate test scope, bounded impact paths, previous-index diff,
+Implementation: [Sprint 5 delivery notes](./SPRINT_5.md). Separate test scope, bounded impact paths, previous-index diff,
 reference/filename test relevance and an opt-in installed TypeScript adapter are delivered. Python compiler/SCIP integration
 and coverage-artifact ingestion remain optional future extensions; no test coverage or runtime safety is inferred.
 
@@ -201,8 +201,8 @@ environments. No `safe_to_delete` claims from empty graphs. No new precision reg
 
 ### Sprint 6 — local semantics only when necessary
 
-Implementation: [Sprint 6 contracts and limits](SPRINT_6.md). The opt-in local adapter, vector cache and rank fusion are implemented;
-[local screening](SPRINT_6_MEASUREMENT.md) subsequently measured quality/resources but failed the proposed vague-query quality gate.
+Implementation: [Sprint 6 contracts and limits](./SPRINT_6.md). The opt-in local adapter, vector cache and rank fusion are implemented;
+[local screening](./SPRINT_6_MEASUREMENT.md) subsequently measured quality/resources but failed the proposed vague-query quality gate.
 Independent held-out acceptance remains unmeasured. The layer stays off until a repository explicitly opts in.
 
 1. Establish lexical+graph performance first. Offer an opt-in embedding adapter for vague queries that lexical retrieval misses.
@@ -219,7 +219,7 @@ not current measurements. If the baseline is already strong or the resource cost
 
 ### Sprint 7 — multiple local specialists, with a reason for each
 
-Implementation: [Sprint 7 contracts and limits](SPRINT_7.md). Extractive source references and shared task handoffs
+Implementation: [Sprint 7 contracts and limits](./SPRINT_7.md). Extractive source references and shared task handoffs
 are delivered with source/dependency freshness checks. No additional model role is implemented or enabled;
 independent quality/resource acceptance remains pending under the no-benchmark instruction.
 
@@ -251,7 +251,7 @@ and each enabled role improves its predeclared retrieval metric within the devic
 
 ### Sprint 8 — a portable product with visible value
 
-Implementation delivered in [Sprint 8 notes](SPRINT_8.md): tested fresh/update project setup for both adapters,
+Implementation delivered in [Sprint 8 notes](./SPRINT_8.md): tested fresh/update project setup for both adapters,
 request-linked retrieval evidence, automatic project cohorts and explicit outcome/rework labels.
 Live client-version compatibility and ordinary-work effectiveness remain unverified; no additional model sessions were run.
 
@@ -338,7 +338,7 @@ Maintain three separate ledgers:
 3. **Work outcomes:** verification evidence, completion/failure/unfinished status, corrections and elapsed work. Reduced output with more rework fails.
 
 Total context processed is not peak context, billed dollars or subscription allowance. Existing accounting conventions in
-[USAGE_MEASUREMENT.md](USAGE_MEASUREMENT.md) remain in force. Never sum overlapping cache/reasoning counters twice.
+[USAGE_MEASUREMENT.md](../guides/USAGE_MEASUREMENT.md) remain in force. Never sum overlapping cache/reasoning counters twice.
 Do not compare raw Codex and Claude totals as a savings experiment; compare each against its own comparable task cohorts.
 Current [Claude cost guidance](https://code.claude.com/docs/en/costs) distinguishes plan usage and token estimates and notes that
 `/insights` itself uses model tokens. IBWD's automatic analysis should remain deterministic.

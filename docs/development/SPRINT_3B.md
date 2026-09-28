@@ -74,7 +74,7 @@ Measured on this available device (Darwin arm64, Python 3.13.9, five samples, ne
 All preset ceilings passed. The profile measures Python service calls through the same locking/freshness path; independent
 stdio MCP tests verify transport. Other OS/device profiles remain unmeasured; run the same script on each laptop. These small
 fixture results do not establish large-repository latency, token savings or whole-system memory. Raw samples:
-[`benchmarks/sprint3b_profile_darwin_arm64.json`](../benchmarks/sprint3b_profile_darwin_arm64.json).
+[`benchmarks/sprint3b_profile_darwin_arm64.json`](../../benchmarks/sprint3b_profile_darwin_arm64.json).
 
 ```sh
 python benchmarks/sprint3b_profile.py

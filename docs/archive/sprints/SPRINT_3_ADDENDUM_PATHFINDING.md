@@ -1,7 +1,7 @@
 # Addendum — Path Finding (`ibwd_trace_path`)
 
-> **Historical design note.** Current path semantics and limitations are in [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md);
-> future work follows [the revised roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md).
+> **Historical design note.** Current path semantics and limitations are in [KNOWN_LIMITATIONS.md](../../reference/KNOWN_LIMITATIONS.md);
+> future work follows [the revised roadmap](../../development/ROADMAP.md).
 > Empty graph results never establish deletion safety. The cosine-A* proposal below is not an accepted relevance guarantee;
 > an admissible heuristic preserves the existing objective, while an arbitrary one may lose optimality.
 

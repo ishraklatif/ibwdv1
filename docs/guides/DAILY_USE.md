@@ -1,7 +1,8 @@
 # Use IBWD with Codex and Claude Code
 
 IBWD is a local MCP server. One installation serves both clients; each work repository gets its own `.ibwd` index.
-It does not call a model. Your normal agent conversations still use your existing plan allowance. No paid benchmark is needed.
+Default retrieval does not call a model. Optional embeddings and local assistance require explicit configuration.
+Your normal agent conversations still use your existing plan allowance. No paid benchmark is needed.
 
 ## Recommended: one project setup for both clients
 
@@ -21,6 +22,21 @@ normal project/MCP approval prompts. IBWD does not grant trust or bypass policie
 Thereafter work normally. Retrieval refreshes automatically; agents use IBWD
 first for supported navigation (including implementation/UI work), and explain an unavailable/failed fallback. Read automatic
 reports at `.ibwd/usage/latest-codex.md` and `.ibwd/usage/latest-claude.md`; no per-session command is needed.
+For a visual local dashboard of the latest saved session plus comparison cohorts, run:
+
+```bash
+.venv/bin/python -m ibwd.cli usage-dashboard --repo /absolute/path/to/work-project
+```
+
+This writes `.ibwd/usage/dashboard.html` and opens it in your browser. Use `--no-open` to generate the file without opening a
+window, `--client codex|claude` to choose a client, or `--session-key KEY` to focus a specific saved report.
+The command refreshes the captured transcript before opening the report. You do not need to end the conversation.
+For a browser window that keeps updating, add `--watch` (every five seconds; Ctrl+C stops it).
+For current totals directly in the terminal, run `.venv/bin/python -m ibwd.cli usage-refresh --repo "$TARGET_REPO" --client codex`.
+Automatic summaries show activity, tool failures, recorded checks, and returned evidence without manual labels.
+Check results and completed replies do not independently establish task success or retrieval usefulness.
+Comparison rows display model, effort, client version, sample size, provisional reports and missing usage.
+The table scrolls horizontally on smaller screens; the client selector filters comparison rows.
 
 Use `--dry-run` to validate/list proposed file changes without writing/scanning. Use `--client codex` or `--client claude` for one
 client. Repeated setup does not duplicate routing sections or identical hooks. Existing changed files receive a first-install backup
@@ -39,12 +55,15 @@ For troubleshooting only, one read-only command checks configuration, instructio
 
 Local readiness does not prove client connection or adoption. Global policies, trust and nested instruction overrides are outside
 this check. Verify selection during the next ordinary coding task: look for a supported navigation call or an explained fallback.
-Do not start extra paid sessions or benchmarks. See [usage measurement](USAGE_MEASUREMENT.md) for evidence limits.
+Do not start extra paid sessions or benchmarks. See [usage measurement](./USAGE_MEASUREMENT.md) for evidence limits.
 
 The remaining sections describe first installation and optional manual configuration. Existing users should prefer the single
 setup command above; `client-config` and reporting-only `usage-setup` remain available for advanced use.
 
 ## 1. Install once
+
+For optional resident embeddings, local candidate selection, summaries, handoffs and log condensation, see
+[local assistance](./LOCAL_ASSISTANCE.md). It includes enable/disable commands and the MCP/CLI payload contracts.
 
 ```bash
 git clone https://github.com/ishraklatif/ibwdv1.git
@@ -102,8 +121,8 @@ results are scoped, never proof of no uses. If tools are unavailable or fail,
 explain the fallback briefly. Do not run paid benchmarks.
 ```
 
-Python and JS/JSX/TS/TSX production code remain the default symbol/edge scope. [Sprint 5](SPRINT_5.md) adds explicit test discovery,
-impact paths and optional installed TypeScript evidence. Dynamic dispatch and type-inferred receivers remain incomplete. IBWD does not replace source inspection or tests. See [known limitations](../KNOWN_LIMITATIONS.md).
+Python and JS/JSX/TS/TSX production code remain the default symbol/edge scope. [Sprint 5](../development/SPRINT_5.md) adds explicit test discovery,
+impact paths and optional installed TypeScript evidence. Dynamic dispatch and type-inferred receivers remain incomplete. IBWD does not replace source inspection or tests. See [known limitations](../reference/KNOWN_LIMITATIONS.md).
 
 ## 4. Work normally
 
@@ -131,7 +150,7 @@ Enable automatic reports once per work project:
 Reconnect the clients; in Codex, review and trust the new hooks in `/hooks` once. Thereafter reports update after replies and at
 normal session end. Open `.ibwd/usage/latest-codex.md` or `.ibwd/usage/latest-claude.md`; no per-session command is needed.
 This configures reporting only, so complete the MCP connection and routing steps above as well.
-See [USAGE_MEASUREMENT.md](USAGE_MEASUREMENT.md) for limitations, disabling hooks and optional manual comparisons.
+See [USAGE_MEASUREMENT.md](./USAGE_MEASUREMENT.md) for limitations, disabling hooks and optional manual comparisons.
 The analyzer reads local logs; it does not start Codex, Claude Code, API calls, or benchmark runs.
 
 ## Sprint 3B update
@@ -139,23 +158,55 @@ The analyzer reads local logs; it does not start Codex, Claude Code, API calls, 
 After updating IBWD, rerun `python -m ibwd.cli setup --repo /absolute/path/to/work-project` with your installed environment,
 then reconnect both clients so they load the updated tool schemas and shared navigation skill. Retrieval now checks and refreshes
 the index automatically. Prefer `response_version=2`; use `next_cursor` with the same query for additional results.
-See [Sprint 3B](SPRINT_3B.md) for response budgets, compatibility and measured performance.
+See [Sprint 3B](../development/SPRINT_3B.md) for response budgets, compatibility and measured performance.
 
 ## Task evidence and source reads
 
 Sprint 4 adds `ibwd_context` for unfamiliar tasks and `ibwd_read` for exact source spans checked against a current hash.
 Reconnect the server after updating; rerun setup to refresh installed routing instructions. Known symbols still use the
-existing exact discovery tools. See [Sprint 4](SPRINT_4.md) for MCP/CLI examples, scope limits, pagination and opt-in saved-log
+existing exact discovery tools. See [Sprint 4](../development/SPRINT_4.md) for MCP/CLI examples, scope limits, pagination and opt-in saved-log
 reduction. A `budget_tokens` value is a byte-based estimate, not a provider token count.
 
 ## Optional local semantic retrieval
 
 Sprint 6 adds an explicit `semantic-index` command for already installed weights/runtime, and `context --semantic`
-(`ibwd_context` with `semantic=True`). Default work remains deterministic. See [Sprint 6 setup and limits](SPRINT_6.md);
-the [local M1 screen](SPRINT_6_MEASUREMENT.md) failed the quality gate. No model download or evaluation is required for ordinary use.
+(`ibwd_context` with `semantic=True`). Default work remains deterministic. See [Sprint 6 setup and limits](../development/SPRINT_6.md);
+the [local M1 screen](../development/SPRINT_6_MEASUREMENT.md) failed the quality gate. No model download or evaluation is required for ordinary use.
 
-After building an optional index, `ibwd semantic-config --repo /path/to/project --enabled` persists the local opt-in
-for CLI/MCP context requests. Use `--disabled` to undo it, or `context --no-semantic` for a deterministic request.
+Build or rebuild the optional local vector index explicitly when you want semantic retrieval, or after source/index
+generation changes make the old semantic index stale:
+
+```bash
+"$IBWD_PY" -m ibwd.cli semantic-index \
+  --repo "$TARGET_REPO" \
+  --model-path "$TARGET_REPO/.ibwd/models/all-mpnet-base-v2" \
+  --dimensions 768
+```
+
+Use the model path and dimensions that match the local model you already installed. `setup`, `scan`, reporting hooks and
+normal `ibwd_context` requests do not build embeddings or download weights automatically. If no usable semantic index exists,
+semantic requests fall back to deterministic retrieval.
+
+After building the optional index, `ibwd semantic-config --repo /path/to/project --enabled` persists the local opt-in
+for CLI/MCP context requests. Use `--disabled` to undo it, or `context --no-semantic --no-helper` for a deterministic request.
+
+To reuse an embedding worker within each MCP server, use
+`ibwd semantic-config --repo "$TARGET_REPO" --enabled --resident`. Its startup shares the index's configured query deadline;
+allow enough cold-start time with `semantic-index --query-timeout 15` when building the index.
+
+Optional local candidate selection is independent of embeddings. With an already installed local Ollama model:
+
+```bash
+"$IBWD_PY" -m ibwd.cli helper-config --repo "$TARGET_REPO" \
+  --enabled --model qwen2.5-coder:7b --timeout 10
+"$IBWD_PY" -m ibwd.cli context "where is session usage collected" --repo "$TARGET_REPO"
+"$IBWD_PY" -m ibwd.cli helper-config --repo "$TARGET_REPO" --disabled
+```
+
+The helper returns validated existing candidate IDs; exact targets remain first and source hashes are revalidated.
+It falls back on missing models, deadlines or invalid responses, with no downloads or hosted-model fallback.
+Reconnect clients for `ibwd_local_assist`, which accepts cited summary/handoff payloads and bounded caller-supplied logs.
+See [local assistance](./LOCAL_ASSISTANCE.md) for all payloads, limits and cache behavior.
 
 ## Reusing evidence and switching clients
 
@@ -166,5 +217,5 @@ revalidate source/dependency hashes. Stale records return status without obsolet
 Commands in handoffs are recorded, never executed or independently certified.
 
 The equivalent CLI is `ibwd artifact-save summary /tmp/payload.json --repo /path/to/project`
-and `ibwd artifact-read ARTIFACT_ID --repo /path/to/project`. See [payload examples and limits](SPRINT_7.md).
+and `ibwd artifact-read ARTIFACT_ID --repo /path/to/project`. See [payload examples and limits](../development/SPRINT_7.md).
 Reconnect an existing MCP server to expose the new tools. No model setup is needed.

@@ -135,19 +135,23 @@ def _bounded(result, max_bytes):
     return result
 
 
-def save(root, kind, payload, max_bytes=16384):
+def save(root, kind, payload, max_bytes=16384, *, local_helper=None, expected_files=None):
     """Save an immutable, content-addressed reference after validating its evidence."""
     root = Path(root).resolve()
     _payload(kind, payload)
 
     def query(conn, generation):
         files, extracts = _capture(conn, root, payload, kind)
+        if expected_files is not None and files != expected_files:
+            raise ValueError('Evidence changed during local assistance; retrieve current evidence')
         artifact = dict(schema_version=VERSION, kind=kind, payload=payload, files=files,
                         extracts=extracts, model_digest=None, prompt_version='extractive-v1',
                         validation_status='exact_extracts' if kind == 'summary' else 'caller_reported',
                         index_generation=generation, scope=SCOPE)
         identifier = hashlib.sha256(_json(artifact).encode()).hexdigest()
         response = dict(status='ready', artifact_id=identifier, artifact=artifact)
+        if local_helper is not None:
+            response['local_helper'] = local_helper
         _bounded(response, max_bytes)
         return response
 

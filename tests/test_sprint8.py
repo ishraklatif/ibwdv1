@@ -53,6 +53,8 @@ def test_fresh_setup_update_and_transport_evidence(tmp_path, client):
                     response = await session.call_tool('ibwd_context', {'task': 'changed', 'semantic': True})
                     assert not getattr(response, 'is_error', getattr(response, 'isError', False))
                     oid = response.meta['ibwd']['observation_id']
+                    receipt = json.loads(response.content[-1].text)['ibwd_observation']
+                    assert receipt['observation_id'] == oid and receipt['tool'] == 'ibwd_context'
                     event = next(e for e in read_events(repo) if e['observation_id'] == oid and e['phase'] == 'completed')
                     assert event['freshness'] == 'validated' and event['refreshed'] is True
                     assert event['semantic_status'] == 'fallback'
@@ -73,10 +75,11 @@ def test_fresh_setup_update_and_transport_evidence(tmp_path, client):
                     await session.call_tool('ibwd_context', {'task': 'changed', 'semantic': False})
                     disabled = read_events(repo)[-1]
                     assert disabled['embedding']['mode'] == 'disabled'
-                    await session.call_tool('ibwd_read', {'symbol_id_or_path': 'app.py', 'expected_hash': 'wrong'})
+                    failure = await session.call_tool('ibwd_read', {'symbol_id_or_path': 'app.py', 'expected_hash': 'wrong'})
                     failed_event = read_events(repo)[-1]
                     assert failed_event['status'] == 'error'
                     assert 'freshness' not in failed_event
+                    assert json.loads(failure.content[-1].text)['ibwd_observation']['observation_id'] == failed_event['observation_id']
                     return oid
 
     oid = anyio.run(exercise)

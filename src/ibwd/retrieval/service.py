@@ -57,8 +57,9 @@ def fresh_query(root, query):
                 raise ValueError('Sources changed during retrieval twice; retry when edits settle.')
             observation = retrieval_observation.get()
             if observation is not None:
-                observation.update(freshness='validated', refreshed=refreshed,
+                observation.update(freshness='validated', refreshed=refreshed or observation.get('refreshed', False),
                                    index_generation=generation)
+                observation['freshness_retries'] = observation.get('freshness_retries', 0) + attempt
             return result
 
 

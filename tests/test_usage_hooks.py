@@ -131,3 +131,27 @@ def test_hook_error_is_advisory_and_never_requests_continuation(tmp_path):
     assert result.exit_code == 1
     assert result.stdout == ""
     assert "report not saved" in result.stderr
+
+
+def test_usage_dashboard_generates_local_html_without_opening(tmp_path):
+    _, event = transcript(tmp_path)
+    saved = capture_session(event, "codex", tmp_path)
+    report = json.loads(saved.read_text())
+    label = CliRunner().invoke(main, ["usage-label", report["session_key"], "--client", "codex",
+                                      "--repo", str(tmp_path), "--outcome", "passed",
+                                      "--task-kind", "implementation", "--rework", "no",
+                                      "--retrieval-usefulness", "useful"])
+    assert label.exit_code == 0, label.output
+    result = CliRunner().invoke(main, ["usage-dashboard", "--repo", str(tmp_path), "--no-open"])
+    assert result.exit_code == 0, result.output
+    path = Path(result.output.strip())
+    assert path == tmp_path / ".ibwd/usage/dashboard.html"
+    html = path.read_text()
+    assert "IBWD Usage Dashboard" in html
+    assert "Latest saved session" in html
+    assert report["session_key"] in html
+    assert "Comparison Cohorts" in html
+    assert "Evidence Items" in html
+    assert "Sessions Needing Labels" not in html
+    assert "SECRET SOURCE" not in html
+    assert "private-session" not in html

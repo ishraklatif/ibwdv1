@@ -1,7 +1,7 @@
 # Sprint 6 — optional local semantic retrieval
 
 The optional adapter and retrieval path are implemented. Deterministic lexical/graph retrieval remains the default.
-The layer stays off unless explicitly requested. A subsequently authorized [local quality/resource screen](SPRINT_6_MEASUREMENT.md)
+The layer stays off unless explicitly requested. A subsequently authorized [local quality/resource screen](./SPRINT_6_MEASUREMENT.md)
 found no net vague-query recall gain and roughly 6.9-second semantic queries on this M1 device. The quality gate was not met.
 Independent held-out validation remains unmeasured. Initial implementation used only deterministic tests; the later screen used
 existing local weights and no paid calls.

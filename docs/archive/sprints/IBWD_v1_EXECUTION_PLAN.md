@@ -1,7 +1,7 @@
 # IBWD v1 — Agile Execution Plan (Sprint-Based)
 
 > **Historical plan; future sequencing superseded 2026-09-24.** Use
-> [the active device-agnostic roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md) for Sprint 3 hardening and later work.
+> [the active device-agnostic roadmap](../../development/ROADMAP.md) for Sprint 3 hardening and later work.
 > Its no-spend, dual-client direction overrides paid demo instructions and mandatory model choices below.
 > This body is preserved as design history; the old token gate remains untested, not passed.
 

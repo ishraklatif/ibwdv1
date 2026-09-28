@@ -1,7 +1,7 @@
 # Graph Schema Reference
 
 Future sprint numbers in this reference originated in the historical plan; see
-[the active roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md) for current sequencing.
+[the active roadmap](../development/ROADMAP.md) for current sequencing.
 The `summaries` table exists as reserved storage, but no shipped local-model summarization pipeline populates it.
 
 **File:** `src/ibwd/graph/schema.sql`
@@ -11,13 +11,13 @@ The `summaries` table exists as reserved storage, but no shipped local-model sum
 Sprint 3B adds `index_metadata(key TEXT PRIMARY KEY, value TEXT NOT NULL)` during staged publication.
 `generation` identifies the published snapshot; `config_digest` fingerprints import-resolution inputs. A per-repository
 lock coordinates graph/manifest/generation publication and retrieval. A publication marker makes interrupted updates explicitly
-stale. See [Sprint 3B](docs/SPRINT_3B.md) for the version-2 retrieval envelope and cursor contract.
+stale. See [Sprint 3B](../development/SPRINT_3B.md) for the version-2 retrieval envelope and cursor contract.
 
 Sprint 4 adds `lexical_version` to index metadata, plus `evidence_files(path PRIMARY KEY, scope, content_hash, omission)`
 and the FTS5 virtual table `evidence_fts(path, scope, start_line, end_line, heading, terms)`. Only `terms` is searchable;
 other columns retain exact evidence locations and scope. Lexical evidence is incrementally updated in the staged graph DB
 and published in the same generation. Test/doc/config evidence does not create production graph nodes or edges.
-See [Sprint 4](docs/SPRINT_4.md) for chunk/exclusion limits and the separate generation-bound packet cache.
+See [Sprint 4](../development/SPRINT_4.md) for chunk/exclusion limits and the separate generation-bound packet cache.
 
 ## 1. Overview
 
@@ -240,7 +240,7 @@ The implemented store is a separate disposable `.ibwd/semantic.db`, atomically r
 chunk count and query timeout. `vectors(key, vector)` stores normalized JSON vectors keyed by SHA-256 of the exact model input.
 `chunks(file, line, end_line, scope, content_hash, key)` ties each vector to current source evidence.
 Model/dimension/preprocessing identity is generation-wide; incompatible identity never reuses vectors.
-See [Sprint 6](docs/SPRINT_6.md) for bounds and default-off behavior. This does not add semantic edges to `graph.db`.
+See [Sprint 6](../development/SPRINT_6.md) for bounds and default-off behavior. This does not add semantic edges to `graph.db`.
 
 Sprint 7 stores durable extractive summaries and supplied handoffs separately in
 `.ibwd/durable/<sha256>.json`. Version 1 records contain `kind`, `payload`, `files`
@@ -249,7 +249,7 @@ Sprint 7 stores durable extractive summaries and supplied handoffs separately in
 (`exact_extracts` or `caller_reported`) and `scope`. Summary payloads distinguish evidence
 from declared dependencies, both with hashes/ranges. IDs hash the canonical full record;
 read validates it and rechecks source evidence. These records never populate the reserved
-`summaries` table or create graph edges. See [Sprint 7](docs/SPRINT_7.md) for contracts.
+`summaries` table or create graph edges. See [Sprint 7](../development/SPRINT_7.md) for contracts.
 
 The original extension proposal remains historical:
 
@@ -366,4 +366,4 @@ a changed scan publishes; they are absent before a baseline exists. All tables p
 File kind supplies the source/test scope. Symbol identities and file hashes are stable evidence keys; numeric node IDs
 must not be compared between snapshots. Current scoped identity/file and incoming/outgoing indexes support retrieval.
 These are derived snapshots, not independently mutable foreign-key graphs. No source bodies or compiler edges are stored
-in them. See [Sprint 5 contracts](docs/SPRINT_5.md).
+in them. See [Sprint 5 contracts](../development/SPRINT_5.md).

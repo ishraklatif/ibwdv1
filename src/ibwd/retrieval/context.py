@@ -10,7 +10,7 @@ from ibwd.retrieval.bounded import MAX_SECONDS, compact, cursor_encode, cursor_o
 from ibwd.retrieval.lexical import SCOPES, declaration, source_text, words
 from ibwd.retrieval.service import fresh_query
 
-VERSION = 1
+VERSION = 2
 MAX_CANDIDATES = 200
 GAPS = ('Lexical matches are relevance hints; test matches are not verified coverage. '
         'Graph links cover resolved production Python/JS/TS only. Ignored, secret-named, binary, '
@@ -72,8 +72,12 @@ def read(root, symbol_id_or_path, expected_hash, line_range=None, budget_tokens=
                                 text=''.join(lines[start-1:end]))]
         if symbol:
             result['items'][0]['symbol_id'] = symbol['qualified_name']
-        if encoded_size(result) > budget:
-            raise ValueError('Budget cannot fit the complete source span; increase budget or request an explicit smaller range.')
+        required_bytes = encoded_size(result)
+        if required_bytes > budget:
+            raise ValueError(
+                f'Budget cannot fit the complete source span: requires {required_bytes} serialized MCP bytes; '
+                f'effective budget is {budget} bytes (min(max_bytes, 4 * budget_tokens)). '
+                'Increase both max_bytes and budget_tokens as needed, or request an explicit smaller range.')
         return result
     return fresh_query(root, query)
 
@@ -98,8 +102,9 @@ def candidates(conn, task, targets, scopes):
             output.append(item)
 
     missing = []
+    symbol_table = 'scoped_nodes' if 'test' in scopes else 'nodes'
     for target in dict.fromkeys([*targets, task]):
-        rows = conn.execute(f"SELECT n.* FROM nodes n JOIN evidence_files f ON f.path=n.file_path "
+        rows = conn.execute(f"SELECT n.* FROM {symbol_table} n JOIN evidence_files f ON f.path=n.file_path "
                             f"WHERE f.omission IS NULL AND f.scope IN ({placeholders}) "
                             "AND n.node_type IN ('Class','Function','Method') "
                             "AND (n.qualified_name=? OR n.name=? OR n.file_path=?) "
@@ -160,7 +165,8 @@ def enrich(conn, root, item, detail):
             item['signature'] = signature
         else:
             item['signature_omitted'] = 'No bounded declaration available; use exact source read.'
-    symbols = conn.execute("SELECT qualified_name,start_line,end_line FROM nodes WHERE file_path=? "
+    symbol_table = 'scoped_nodes' if file['scope'] == 'test' else 'nodes'
+    symbols = conn.execute(f"SELECT qualified_name,start_line,end_line FROM {symbol_table} WHERE file_path=? "
                            "AND node_type IN ('Class','Function','Method') AND start_line BETWEEN ? AND ? "
                            "ORDER BY start_line,qualified_name LIMIT 7",
                            (item['file'], item['line'], item['end_line'])).fetchall()
@@ -186,7 +192,7 @@ def enrich(conn, root, item, detail):
 
 
 def context(root, task, targets=None, budget_tokens=2000, detail='outline', cursor=None,
-            scopes=None, max_bytes=16384, semantic=None):
+            scopes=None, max_bytes=16384, semantic=None, helper=None):
     root = Path(root).resolve()
     if semantic is None:
         from ibwd.retrieval.semantic import enabled
@@ -204,23 +210,53 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
         raise ValueError('detail must be outline or source.')
     if type(semantic) is not bool:
         raise ValueError('semantic must be a boolean.')
+    from ibwd.retrieval.local_helper import settings, rerank, select
+    if helper is None:
+        helper = settings(root) is not None
+    if type(helper) is not bool:
+        raise ValueError('helper must be a boolean.')
     signature = query_key('context', [VERSION, task, targets, scopes, detail])
 
+    from ibwd.telemetry import retrieval_observation
+    observation = retrieval_observation.get()
+    if observation is not None:
+        observation['local_helper'] = dict(status='pending' if helper else 'disabled',
+                                          model_digest=None, prompt_version='selection-v1',
+                                          inference_attempted=False, cache_hit=False, elapsed_ms=0.0)
+        observation['embedding'] = {'mode': 'pending' if semantic else 'disabled',
+                                    'model_digest': None, 'preprocessing_version': None,
+                                    'inference_attempted': False, 'elapsed_ms': None if semantic else 0.0}
+        observation.setdefault('embedding_attempts', []).append(observation['embedding'])
+    if semantic:
+        from ibwd.retrieval.semantic import prepare, ranked
+        semantic_generation, valid = prepare(root)
+        optional, prepared_status = ranked(root, valid, semantic_generation, task, scopes)
+    if helper:
+        def prepare_helper(conn, generation):
+            choices, _, _ = candidates(conn, task, targets, scopes)
+            if semantic and semantic_generation == generation:
+                from ibwd.retrieval.semantic import fuse
+                choices, _ = fuse(choices, optional)
+            return generation, rerank(root, choices, conn)
+        helper_generation, (exact, others, descriptions) = fresh_query(root, prepare_helper)
+        ids, helper_status = select(root, task, descriptions)
+        helper_choices = exact + [others[i] for i in ids] + [c for i, c in enumerate(others) if i not in ids]
+
     def query(conn, generation):
-        from ibwd.telemetry import retrieval_observation
-        observation = retrieval_observation.get()
-        if observation is not None:
-            observation['embedding'] = {'mode': 'pending' if semantic else 'disabled',
-                                        'model_digest': None, 'preprocessing_version': None,
-                                        'inference_attempted': False, 'elapsed_ms': None if semantic else 0.0}
-            observation.setdefault('embedding_attempts', []).append(observation['embedding'])
         semantic_status = None
         packet_signature = signature
         if semantic:
             choices, capped, missing = candidates(conn, task, targets, scopes)
-            from ibwd.retrieval.semantic import ranked, fuse
-            optional, semantic_status = ranked(root, conn, generation, task, scopes)
-            choices, fusion_capped = fuse(choices, optional)
+            from ibwd.retrieval.semantic import fuse
+            semantic_status = prepared_status
+            if semantic_generation != generation:
+                semantic_status = dict(status='fallback', reason='Sources changed during optional retrieval; retry for semantic evidence')
+                if observation is not None:
+                    if observation['embedding']['mode'] != 'fallback':
+                        observation['embedding'] = dict(observation['embedding'], mode='fallback',
+                                                        inference_attempted=False, elapsed_ms=0.0)
+                        observation['embedding_attempts'].append(observation['embedding'])
+            choices, fusion_capped = fuse(choices, optional if semantic_generation == generation else [])
             capped = capped or fusion_capped or semantic_status.get('truncated', False)
             packet_signature = query_key('semantic-context', [signature, semantic_status.get('semantic_generation'),
                                                                semantic_status['status']])
@@ -228,13 +264,22 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
         # Optional inference has its own subprocess deadline; preserve the deterministic SQL budget.
         if semantic:
             conn.set_progress_handler(lambda: int(time.monotonic() > deadline), 1000)
+        if helper:
+            status = helper_status if generation == helper_generation else dict(
+                status='fallback', reason='Sources changed during local assistance')
+            if observation is not None and generation != helper_generation:
+                observation['local_helper'] = dict(observation['local_helper'], status='fallback')
+            # Timings/cache hits are observations, not pagination identity.
+            packet_signature = query_key('helper-context', [packet_signature,
+                status.get('status'), status.get('model_digest'),
+                [(c['file'], c['line'], c['end_line']) for c in helper_choices]])
         offset = cursor_offset(cursor, generation, packet_signature)
         # Cache is repository-local, generation/query/budget-bound, never client-bound.
         cache = root / '.ibwd/context-cache'
         cache.mkdir(exist_ok=True)
         key = query_key('packet', [generation, packet_signature, offset, budget])
         cached = cache / (key + '.json')
-        if not semantic and cached.is_file():
+        if not semantic and not helper and cached.is_file():
             try:
                 result = json.loads(cached.read_text())
                 if result['index_generation'] == generation and encoded_size(result) <= budget:
@@ -243,11 +288,15 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
                 pass
         if not semantic:
             choices, capped, missing = candidates(conn, task, targets, scopes)
+        if helper and generation == helper_generation:
+            choices = helper_choices
         if offset > len(choices):
             raise ValueError('Invalid context cursor offset.')
         result = envelope(generation)
         if semantic_status is not None:
             result['semantic'] = semantic_status
+        if helper:
+            result['local_helper'] = status
         result.update(scope_gaps=GAPS, unresolved_targets=missing,
                       budget_basis='serialized MCP bytes <= min(max_bytes, 4 * budget_tokens); not provider token counts')
         # Surface ancestor instruction locations without replacing their authority.
@@ -300,7 +349,7 @@ def context(root, task, targets=None, budget_tokens=2000, detail='outline', curs
             raise ValueError('Budget cannot fit the context envelope; increase budget.')
         if time.monotonic() > deadline:
             raise ValueError('Context work budget exceeded; narrow the query or use source search.')
-        if not semantic:
+        if not semantic and not helper:
             atomic_write(cached, compact(result))
         for old in sorted(cache.glob('*.json'), key=lambda p: p.stat().st_mtime, reverse=True)[64:]:
             old.unlink()

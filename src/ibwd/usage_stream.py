@@ -7,7 +7,7 @@ from pathlib import Path
 
 from ibwd.usage import analyze_log
 
-STATE_VERSION = 1
+STATE_VERSION = 3
 MAX_LINE_BYTES = 8 * 1024 * 1024
 
 

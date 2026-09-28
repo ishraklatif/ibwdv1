@@ -191,6 +191,59 @@ def usage_hook(client: str, repo: Path) -> None:
         raise click.ClickException(f"IBWD session report not saved: {exc}") from exc
 
 
+@main.command("usage-dashboard")
+@click.option("--repo", type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option("--client", type=click.Choice(["auto", "codex", "claude"]), default="auto", show_default=True)
+@click.option("--session-key", default=None, help="Open a specific saved session key instead of the latest report.")
+@click.option("--open/--no-open", "open_browser", default=True, help="Open the generated local dashboard in a browser window.")
+@click.option('--watch', is_flag=True, help='Keep refreshing the browser snapshot until Ctrl+C.')
+@click.option('--interval', type=click.IntRange(2, 60), default=5, show_default=True)
+def usage_dashboard(repo: Path, client: str, session_key: str | None, open_browser: bool, watch: bool, interval: int) -> None:
+    """Refresh current transcript totals and open the local dashboard mid-session."""
+    from ibwd.usage_dashboard import build_dashboard, open_dashboard
+
+    try:
+        path = build_dashboard(repo, client, session_key, live_seconds=interval if watch else 0)
+        opened = open_dashboard(path) if open_browser else False
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(str(path))
+    if open_browser and not opened:
+        click.echo("Dashboard generated, but the browser did not report a successful open.", err=True)
+    if watch:
+        import time
+        click.echo('Refreshing current transcript totals. Press Ctrl+C to stop.', err=True)
+        try:
+            while True:
+                time.sleep(interval)
+                build_dashboard(repo, client, session_key, live_seconds=interval)
+        except KeyboardInterrupt:
+            build_dashboard(repo, client, session_key, refresh=False)
+
+
+@main.command('usage-refresh')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--client', type=click.Choice(['auto', 'codex', 'claude']), default='auto')
+@click.option('--session-key', default=None)
+@click.option('--json', 'as_json', is_flag=True, help='Print the refreshed report as JSON.')
+def usage_refresh(repo, client, session_key, as_json):
+    """Read current transcript totals and print a session report without ending the session."""
+    from ibwd.usage_live import refresh_reports
+    from ibwd.usage_dashboard import _sessions, _selected_session
+    from ibwd.usage_hooks import render_report
+    try:
+        status = refresh_reports(repo, client, session_key)
+        for warning in status['warnings']:
+            click.echo(warning, err=True)
+        selected = _selected_session(_sessions(repo.resolve() / '.ibwd/usage'), client, session_key)
+        if not selected:
+            raise ValueError('No matching transcript or saved report. Run project setup to enable capture.')
+        report = selected[1]
+        click.echo(json.dumps(report, indent=2) if as_json else render_report(report))
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        raise click.ClickException(str(exc)) from exc
+
+
 @main.command('context')
 @click.argument('task')
 @click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
@@ -201,14 +254,50 @@ def usage_hook(client: str, repo: Path) -> None:
 @click.option('--detail', default='outline', type=click.Choice(['outline', 'source']))
 @click.option('--cursor', default=None)
 @click.option('--semantic/--no-semantic', default=None, help='Override the repository semantic setting.')
-def context_command(task, repo, targets, scopes, budget_tokens, max_bytes, detail, cursor, semantic):
+@click.option('--helper/--no-helper', default=None, help='Override local candidate reranking.')
+def context_command(task, repo, targets, scopes, budget_tokens, max_bytes, detail, cursor, semantic, helper):
     """Return task evidence, using the repository semantic setting unless overridden."""
     from ibwd.retrieval.context import context
     try:
-        result = context(repo, task, list(targets), budget_tokens, detail, cursor, list(scopes) or None, max_bytes, semantic)
+        result = context(repo, task, list(targets), budget_tokens, detail, cursor, list(scopes) or None, max_bytes, semantic, helper)
     except (OSError, ValueError) as exc:
         raise click.ClickException(str(exc)) from exc
     click.echo(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
+
+
+@main.command('helper-config')
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--enabled/--disabled', required=True)
+@click.option('--model', default='', help='An already installed local Ollama model; never downloaded.')
+@click.option('--endpoint', default='http://127.0.0.1:11434', show_default=True)
+@click.option('--timeout', type=float, default=5.0, show_default=True)
+def helper_config_command(repo, enabled, model, endpoint, timeout):
+    """Configure optional local candidate selection; no inference is run here."""
+    from ibwd.retrieval.local_helper import configure
+    try:
+        result = configure(repo, enabled, model, endpoint, timeout)
+    except (OSError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result))
+
+
+@main.command('local-assist')
+@click.argument('kind', type=click.Choice(['summary', 'handoff', 'log']))
+@click.argument('payload_file', type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
+@click.option('--max-bytes', type=int, default=16384)
+def local_assist_command(kind, payload_file, repo, max_bytes):
+    """Select cited extracts or condense a supplied log using local assistance."""
+    from ibwd.retrieval.local_helper import assist
+    try:
+        with payload_file.open('rb') as stream:
+            raw = stream.read(100001)
+        if len(raw) > 100000:
+            raise ValueError('Payload exceeds 100000 bytes')
+        result = assist(repo, kind, json.loads(raw), max_bytes)
+    except (OSError, ValueError, TypeError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, ensure_ascii=False))
 
 
 @main.command('semantic-index')
@@ -230,11 +319,12 @@ def semantic_index_command(repo, model_path, dimensions, timeout, query_timeout)
 @main.command('semantic-config')
 @click.option('--repo', type=click.Path(exists=True, file_okay=False, path_type=Path), default=Path.cwd)
 @click.option('--enabled/--disabled', 'enable', required=True)
-def semantic_config_command(repo, enable):
+@click.option('--resident/--one-shot', default=False, help='Reuse one process-local embedding worker for queries.')
+def semantic_config_command(repo, enable, resident):
     """Persist the repository's local semantic opt-in. No inference or downloads."""
     from ibwd.retrieval.semantic import configure
     try:
-        result = configure(repo, enable)
+        result = configure(repo, enable, resident)
     except (OSError, ValueError) as exc:
         raise click.ClickException(str(exc)) from exc
     click.echo(json.dumps(result))

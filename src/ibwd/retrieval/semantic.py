@@ -12,6 +12,8 @@ import sys
 import tempfile
 import time
 import uuid
+from collections import OrderedDict
+from threading import RLock
 
 from ibwd.local_io import atomic_write, report_lock
 from ibwd.retrieval.lexical import source_text, declaration
@@ -22,6 +24,9 @@ MAX_CHUNKS = 4096
 MAX_DIMENSIONS = 2048
 MAX_INPUT_BYTES = 6144
 MAX_STORE_BYTES = 256 * 1024 * 1024
+_model_cache = OrderedDict()
+_query_cache = OrderedDict()
+_cache_lock = RLock()
 
 
 def enabled(root):
@@ -36,12 +41,24 @@ def enabled(root):
         return False
 
 
-def configure(root, enable):
+def configure(root, enable, resident=None):
     if type(enable) is not bool:
         raise ValueError('enabled must be a boolean')
     result = dict(enabled=enable)
+    if resident is not None:
+        if type(resident) is not bool:
+            raise ValueError('resident must be a boolean')
+        result['resident'] = resident
     atomic_write(Path(root).resolve() / '.ibwd/semantic-settings.json', json.dumps(result) + '\n')
     return result
+
+
+def resident_enabled(root):
+    try:
+        path = Path(root) / '.ibwd/semantic-settings.json'
+        return path.stat().st_size <= 1024 and json.loads(path.read_text()).get('resident') is True
+    except (OSError, ValueError, AttributeError):
+        return False
 
 
 def model_digest(path, timeout=60):
@@ -54,6 +71,15 @@ def model_digest(path, timeout=60):
     files = sorted(p for p in path.rglob('*') if p.is_file())
     if not files or len(files) > 10000:
         raise ValueError('Local model is empty or exceeds the file limit')
+    from ibwd.scanner.filesystem import stat_identity
+    identity = tuple((str(f.relative_to(path)), stat_identity(f.stat())) for f in files)
+    if any(not f.resolve().is_relative_to(path) for f in files):
+        raise ValueError('Model files must resolve inside the model directory')
+    with _cache_lock:
+        cached = _model_cache.get(str(path))
+        if cached and cached[0] == identity:
+            _model_cache.move_to_end(str(path))
+            return cached[1]
     for file in files:
         if not file.resolve().is_relative_to(path):
             raise ValueError('Model files must resolve inside the model directory')
@@ -64,7 +90,14 @@ def model_digest(path, timeout=60):
                 if time.monotonic() > deadline:
                     raise ValueError('Local model fingerprint deadline exceeded')
                 digest.update(block)
-    return digest.hexdigest()
+    if identity != tuple((str(f.relative_to(path)), stat_identity(f.stat())) for f in files):
+        raise ValueError('Local model changed while fingerprinting')
+    result = digest.hexdigest()
+    with _cache_lock:
+        _model_cache[str(path)] = (identity, result)
+        while len(_model_cache) > 8:
+            _model_cache.popitem(last=False)
+    return result
 
 
 def vectors_checked(vectors, count, dimensions):
@@ -215,7 +248,16 @@ def build(root, model_path, dimensions, timeout=120, query_timeout=2):
         raise ValueError('Sources changed during semantic indexing twice; retry when edits settle')
 
 
-def ranked(root, conn, generation, task, scopes):
+def prepare(root):
+    """Capture validated graph inputs; release its lock before optional inference."""
+    return fresh_query(root, lambda conn, generation: (generation, {
+        (r[0], int(r[1]), int(r[2]), r[3], r[4]) for r in conn.execute(
+            "SELECT e.path,e.start_line,e.end_line,e.scope,f.content_hash FROM evidence_fts e "
+            "JOIN evidence_files f ON f.path=e.path WHERE f.omission IS NULL "
+            "AND e.scope IN ('source','doc') LIMIT ?", (MAX_CHUNKS + 1,))}))
+
+
+def ranked(root, valid, generation, task, scopes):
     """Return bounded vector candidates or an explicit deterministic fallback."""
     started = time.monotonic()
     from ibwd.telemetry import retrieval_observation
@@ -237,10 +279,6 @@ def ranked(root, conn, generation, task, scopes):
                     tracking['preprocessing_version'] = VERSION
                 if meta['index_generation'] != generation or meta['preprocessing_version'] != VERSION:
                     raise ValueError('Semantic index is stale; run semantic-index explicitly')
-                valid = {(r[0], int(r[1]), int(r[2]), r[3], r[4]) for r in conn.execute(
-                    "SELECT e.path,e.start_line,e.end_line,e.scope,f.content_hash FROM evidence_fts e "
-                    "JOIN evidence_files f ON f.path=e.path WHERE f.omission IS NULL "
-                    "AND e.scope IN ('source','doc') LIMIT ?", (MAX_CHUNKS + 1,))}
                 if len(valid) > MAX_CHUNKS:
                     raise ValueError('Semantic evidence exceeds work limit')
                 dimensions = meta['dimensions']
@@ -251,10 +289,25 @@ def ranked(root, conn, generation, task, scopes):
                     raise ValueError('Invalid semantic query deadline')
                 if model_digest(meta['model_path'], timeout=1) != meta['model_digest']:
                     raise ValueError('Local model changed; rebuild semantic index')
-                tracking['inference_attempted'] = True
-                vector = vectors_checked(embed(meta['model_path'], [task], dimensions, timeout=query_timeout), 1, dimensions)[0]
+                cache_key = (str(root), digest, dimensions, VERSION, task)
+                with _cache_lock:
+                    vector = _query_cache.get(cache_key)
+                tracking['query_cache_hit'] = vector is not None
+                if vector is None:
+                    tracking['inference_attempted'] = True
+                    if resident_enabled(root):
+                        from ibwd.retrieval.embedding_worker import encode
+                        produced = encode(meta['model_path'], digest, task, dimensions, query_timeout)
+                    else:
+                        produced = embed(meta['model_path'], [task], dimensions, timeout=query_timeout)
+                    vector = vectors_checked(produced, 1, dimensions)[0]
                 if model_digest(meta['model_path'], timeout=1) != meta['model_digest']:
                     raise ValueError('Local model changed during query')
+                with _cache_lock:
+                    _query_cache[cache_key] = vector
+                    _query_cache.move_to_end(cache_key)
+                    while len(_query_cache) > 128:
+                        _query_cache.popitem(last=False)
                 rows = db.execute('SELECT c.*,v.vector FROM chunks c JOIN vectors v USING(key) '
                                   'ORDER BY file,line LIMIT ?', (MAX_CHUNKS + 1,))
                 scored = []

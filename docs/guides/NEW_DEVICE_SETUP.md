@@ -2,7 +2,7 @@
 
 Install IBWD once on the device, then run one setup command for each repository. The default setup supports **both Codex and Claude Code**.
 
-The [active roadmap](TOKEN_EFFICIENCY_ROADMAP.md) keeps this device-agnostic: no particular laptop or local model is required.
+The [active roadmap](../development/ROADMAP.md) keeps this device-agnostic: no particular laptop or local model is required.
 Future local-AI features are optional capability profiles; the current deterministic setup below needs none of them.
 
 These commands use a macOS/Linux terminal with Bash or Zsh. On Windows, use a Linux environment such as WSL and install IBWD and both coding clients inside that same environment. Native PowerShell hook generation is not implemented. This guide has been checked against the current IBWD code; the new device itself has not been tested.
@@ -38,7 +38,7 @@ mkdir -p "$HOME/Downloads"
 tar --exclude='__pycache__' --exclude='*.pyc' \
   -czf "$HOME/Downloads/ibwd-source.tar.gz" \
   -C /Users/ishraklatif/Documents/claude_codex_skill/ibwd \
-  pyproject.toml src docs README.md DEVELOPMENT.md KNOWN_LIMITATIONS.md
+  pyproject.toml src docs README.md
 ```
 
 Transfer `ibwd-source.tar.gz` to the new device's Downloads folder using your usual file-transfer method.

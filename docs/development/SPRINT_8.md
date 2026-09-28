@@ -7,7 +7,7 @@ preservation of user instructions/settings/hooks, idempotence, and transport fro
 working directory. Setup readiness checks the complete current tool set and reports the
 installed Python, IBWD and MCP runtime versions. Client trust remains a client decision.
 Moved interpreters or repositories still require reconciling conflicting server entries
-and obsolete hooks as described in [new-device setup](NEW_DEVICE_SETUP.md).
+and obsolete hooks as described in [new-device setup](../guides/NEW_DEVICE_SETUP.md).
 
 ## Automatic evidence
 
@@ -86,7 +86,7 @@ preprocessing version, inference attempts and optional-path latency, including f
 retries. Cohorts separate mixed modes, model versions, missing instrumentation and partial
 attribution. `usage-label --retrieval-usefulness useful|partly-useful|not-useful|unknown`
 adds explicit session-wide feedback with the same snapshot invalidation as outcomes.
-See [the workflow and interpretation limits](USAGE_MEASUREMENT.md#7-compare-optional-embeddings-during-ordinary-work).
+See [the workflow and interpretation limits](../guides/USAGE_MEASUREMENT.md#7-compare-optional-embeddings-during-ordinary-work).
 `tests/test_embedding_reporting.py` uses deterministic embedding fixtures; no model jobs
 or benchmarks are required to verify this instrumentation. Quality and memory acceptance
 still require evidence; the implementation does not automatically pass either gate.

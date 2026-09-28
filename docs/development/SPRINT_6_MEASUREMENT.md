@@ -70,10 +70,10 @@ combination. This checkout's semantic index is configured with the measured 30-s
 
 ## Artifacts and reproduction
 
-- [Frozen queries and relevance labels](../benchmarks/semantic_tasks.json)
-- [Raw per-query measurements](../benchmarks/results/sprint6_local_semantic.json)
-- [Frozen corpus file hashes](../benchmarks/results/sprint6_corpus_manifest.json)
-- [Local evaluation runner](../benchmarks/tools/evaluate_semantic.py)
+- [Frozen queries and relevance labels](../../benchmarks/semantic_tasks.json)
+- [Raw per-query measurements](../../benchmarks/results/sprint6_local_semantic.json)
+- [Frozen corpus file hashes](../../benchmarks/results/sprint6_corpus_manifest.json)
+- [Local evaluation runner](../../benchmarks/tools/evaluate_semantic.py)
 
 Query-file SHA-256: `0ff1b7ac1b26df5a26217f9bffc1e16baec4afeff44c76a3f3d3c3fcd7f18237`.
 Model digest: `e44f7740e1c734de818b06648e361f79991c622f3b4c64a8a69ae22ef3d5e5b4`.

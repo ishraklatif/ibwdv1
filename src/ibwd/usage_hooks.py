@@ -15,6 +15,7 @@ from ibwd.usage_stream import incremental_report
 from ibwd.local_io import atomic_write as _atomic_write, report_lock
 from ibwd.telemetry import read_events, key
 from ibwd.usage_evidence import retrieval_evidence, evidence_lines, attention, embedding_profile
+from ibwd.usage_observations import assessments, assessment_value
 
 LABEL_OPTIONS = {'outcome': {'passed', 'failed', 'incomplete', 'unknown'},
                  'task_kind': {'structural', 'implementation', 'debugging', 'mixed', 'unknown'},
@@ -76,12 +77,16 @@ def render_report(report: dict) -> str:
     lines = ["# IBWD session report", "",
              f"Client: {report['client']}",
              f"Session key: {report['session_key']}",
-             f"Outcome: {report['outcome']}; rework: {report.get('rework', 'unknown')} (not inferred)",
-             f"Label evidence: {report.get('label_evidence', 'none')}",
-             f"Retrieval usefulness: {report.get('retrieval_usefulness', 'unknown')} (user-reported, session-wide)",
-             f"Snapshot: {report['capture_event']} (recorded data may be incomplete)",
+             f"Work status: {assessment_value(report, 'outcome')}",
+             f"Activity: {assessment_value(report, 'task_kind')}",
+             f"IBWD: {assessment_value(report, 'condition')}",
+             f"Checks: {assessment_value(report, 'validation')}",
+             f"Correction signals: {assessment_value(report, 'rework')}",
+             f"Retrieval results: {assessment_value(report, 'retrieval_usefulness')}",
+             f"Snapshot: {report['capture_event']} (current recorded totals; session end is not required)",
              f"Last recorded activity: {report['last_timestamp'] or 'unknown'}", "",
              f"Direct IBWD calls: {report['direct_ibwd_calls']}",
+             f"Observed IBWD calls including decoded responses: {report.get('observed_ibwd_calls', report['direct_ibwd_calls'])}",
              f"Recorded tokens: {tokens}",
              f"IBWD mention in recognized instruction records: {guidance}", "",
              "## Recorded tool calls", ""]
@@ -92,7 +97,7 @@ def render_report(report: dict) -> str:
               "Zero direct IBWD calls does not establish why it was unused or whether it was available.",
               "Shell/orchestration calls and child sessions may be missing from these counts.",
               "Instruction evidence is limited to recognized instruction records, not ordinary mentions.",
-              "Task success, server availability, task category and savings are not inferred.",
+              "Activity categories are inferred; tool/check results do not independently grade task success or usefulness.",
               "Token totals describe this session, not tokens saved by IBWD."]
     if report["warnings"]:
         lines += ["", "## Recording warnings", ""]
@@ -156,6 +161,7 @@ def label_session(repo: Path, client: str, session_key: str, *, outcome: str,
         labels['snapshot'] = report.get('snapshot_key', [report['records'], report['last_timestamp']])
         _atomic_write(base / 'labels' / f'{name}.json', json.dumps(labels) + '\n')
         apply_labels(report, labels)
+        report['automatic_assessment'] = assessments(report)
         _atomic_write(path, json.dumps(report, indent=2) + '\n')
         _atomic_write(path.with_suffix('.md'), render_report(report))
         latest = base / f'latest-{client}.md'
@@ -169,6 +175,7 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
     """Display observational cohorts; no automatic savings or outcome inference."""
     from collections import Counter, defaultdict
     import statistics
+    from ibwd.usage_evidence import helper_profile, token_components
     groups = defaultdict(list)
     ids = set()
     unreadable = 0
@@ -184,7 +191,9 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
                 if not isinstance(report.get(field, 'unknown'), str):
                     raise ValueError('Invalid cohort label')
             group = (report["client"], tuple(report["models"]), tuple(report["efforts"]), tuple(report["client_versions"]),
-                     report.get('project_key', 'unknown'), report["task_kind"], report["condition"])
+                     report.get('project_key', 'unknown'),
+                     *(report[field] if report[field] != 'unknown' else 'auto: ' + assessment_value(report, field)
+                       for field in ('task_kind', 'condition')))
             if not isinstance(report.get('outcome'), str) or not isinstance(report.get('observations', {}), dict):
                 raise ValueError('Invalid report metadata')
             observations = report.get('observations', {})
@@ -203,7 +212,7 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
                 raise ValueError('Invalid server evidence')
             if report.get('retrieval_usefulness', 'unknown') not in LABEL_OPTIONS['retrieval_usefulness']:
                 raise ValueError('Invalid usefulness label')
-            group = (*group, embedding_profile(report))
+            group = (*group, embedding_profile(report), helper_profile(report))
             groups[group].append(report)
             ids.update(observation_ids)
         except (OSError, ValueError, KeyError, TypeError, AttributeError):
@@ -222,7 +231,16 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
         outcomes = dict(sorted(Counter(r['outcome'] for r in reports).items()))
         cohort_ids = {oid for r in reports for oid in r.get('server_observation_ids', [])}
         usefulness = dict(sorted(Counter(r.get('retrieval_usefulness', 'unknown') for r in reports).items()))
-        rows.append(dict(zip(('client', 'models', 'efforts', 'client_versions', 'project_key', 'task_kind', 'condition', 'embedding_profile'), group)) | {
+        components = [token_components(r) for r in reports]
+        component_medians = {}
+        component_missing = {}
+        for name in ('uncached_input', 'cached_input', 'cache_creation', 'output'):
+            values = [c[name] for c in components if c[name] is not None]
+            component_medians[name] = statistics.median(values) if values else None
+            component_missing[name] = len(reports) - len(values)
+        rows.append(dict(zip(('client', 'models', 'efforts', 'client_versions', 'project_key', 'task_kind', 'condition', 'embedding_profile', 'helper_profile'), group)) | {
+            'display_assessments': {field: dict(Counter(assessment_value(r, field) for r in reports))
+                                    for field in ('task_kind', 'condition', 'outcome', 'rework', 'retrieval_usefulness')},
             'sessions': len(reports), 'outcomes': outcomes,
             'retrieval_usefulness': usefulness,
             'usefulness_known_sessions': len(reports) - usefulness.get('unknown', 0),
@@ -230,12 +248,13 @@ def refresh_comparison(folder: Path, events: list[dict]) -> None:
             'provisional_sessions': sum(r.get('provisional', True) is not False for r in reports),
             'missing_token_totals': len(reports) - len(tokens),
             'median_recorded_tokens': statistics.median(tokens) if tokens else None,
+            'median_token_components': component_medians, 'missing_token_components': component_missing,
             'retrieval_evidence': retrieval_evidence([e for e in events if e['observation_id'] in cohort_ids]),
         })
         lines += [f"## {' / '.join(str(v) for v in group)}", "",
-                  f"Outcomes (reported, not inferred): {json.dumps(outcomes, sort_keys=True)}.",
-                  f"Rework (reported, not inferred): {json.dumps(rows[-1]['rework'], sort_keys=True)}.",
-                  f"Retrieval usefulness (user-reported, session-wide): {json.dumps(usefulness, sort_keys=True)}.",
+                  f"Work status: {json.dumps(rows[-1]['display_assessments']['outcome'], sort_keys=True)}.",
+                  f"Correction signals: {json.dumps(rows[-1]['display_assessments']['rework'], sort_keys=True)}.",
+                  f"Retrieval results: {json.dumps(rows[-1]['display_assessments']['retrieval_usefulness'], sort_keys=True)}.",
                   f"Provisional sessions: {rows[-1]['provisional_sessions']}.",
                   f"Sessions: {len(reports)}; missing token totals: {len(reports) - len(tokens)}; "
                   f"unknown outcomes: {sum(r['outcome'] == 'unknown' for r in reports)}.",
@@ -258,8 +277,8 @@ def capture_session(event: dict, client: str, repo: Path) -> Path | None:
     """Consume a client's actual transcript path, never guess the newest log."""
     if not isinstance(event, dict):
         raise ValueError("Expected a hook event object.")
-    if event.get("hook_event_name") not in {"Stop", "SessionEnd"}:
-        raise ValueError("Expected a Stop or SessionEnd hook event.")
+    if event.get("hook_event_name") not in {"Stop", "SessionEnd", "Refresh"}:
+        raise ValueError("Expected a Stop, SessionEnd or Refresh event.")
     if event.get("agent_id") or event.get("agent_type"):
         return None  # Parent and child usage must not be silently combined.
     repo = repo.resolve()
@@ -287,6 +306,7 @@ def capture_session(event: dict, client: str, repo: Path) -> Path | None:
             raise ValueError("Hook session identity does not match the transcript.")
         report["capture_event"] = event["hook_event_name"]
         report["provisional"] = True  # SessionEnd does not promise final accounting.
+        report['activity']['session_ended'] = event['hook_event_name'] == 'SessionEnd' or event.get('session_ended') is True
         report['project_key'] = key(repo)
         report['snapshot_key'] = key({k: v for k, v in state.items() if k != 'parser'})
         labels_path = base / 'labels' / f'{name}.json'
@@ -305,12 +325,34 @@ def capture_session(event: dict, client: str, repo: Path) -> Path | None:
         report["server_evidence"] = retrieval_evidence(linked)
         if linked:
             report["observations"]["connection_observed"] = {"value": True, "source": "Exact response-ID join to local server ledger."}
+        modes = report.get('response_evidence', {}).get('semantic_modes', {})
+        if any(e.get('semantic_status') in {'fallback', 'ready', 'disabled'} for e in linked) or any(
+                mode in modes for mode in ('fallback', 'ready', 'disabled')):
+            report['observations']['fallback_observed'] = dict(
+                value=bool(report['server_evidence']['semantic_fallbacks'] or modes.get('fallback')),
+                source='Semantic fallback in captured responses/linked requests; shell fallback is not assessed.')
+        report['automatic_assessment'] = assessments(report)
+        from datetime import datetime, timezone
+        report['captured_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
         folder = base / "sessions"
         destination = folder / f"{name}.json"
         _atomic_write(destination, json.dumps(report, indent=2) + "\n")
         _atomic_write(folder / f"{name}.md", render_report(report))
-        _atomic_write(base / f"latest-{client}.md", render_report(report))
+        latest = base / f'latest-{client}.md'
+        other_times = []
+        for p in folder.glob(f'{client}-*.json'):
+            if p != destination:
+                try:
+                    other_times.append(json.loads(p.read_text()).get('last_timestamp') or '')
+                except (OSError, ValueError, AttributeError):
+                    pass
+        if not other_times or (report.get('last_timestamp') or '') >= max(other_times):
+            _atomic_write(latest, render_report(report))
         refresh_comparison(base, events)
         # Commit parser progress last: interrupted publication replays safely.
         _atomic_write(checkpoint, json.dumps(state, separators=(",", ":")) + "\n")
+        registration = dict(client=client, session_key=expected, transcript_path=transcript, cwd=cwd)
+        if report['activity']['session_ended']:
+            registration['ended_size'] = state['size']
+        _atomic_write(base / 'sources' / f'{name}.json', json.dumps(registration) + '\n')
     return destination

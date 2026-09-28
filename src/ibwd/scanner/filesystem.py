@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import re
+from collections import OrderedDict
+import stat
+from threading import RLock
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -107,11 +110,55 @@ def looks_generated(data: bytes) -> bool:
 def hash_file(path: Path) -> str:
     """Return a 64-bit hash of the file contents, hex-encoded."""
     hasher = xxhash.xxh3_64() # Create a new xxhash object for hashing the file contents
-    hasher.update(path.read_bytes()) # Read the contents of the file and update the hash object with it
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            hasher.update(block)
     return hasher.hexdigest()
 
 
-def scan_files(repo_root: Path) -> list[ScannedFile]:
+_fingerprints = OrderedDict()
+_fingerprint_lock = RLock()
+
+
+def stat_identity(value):
+    return (value.st_dev, value.st_ino, value.st_mode, value.st_size,
+            value.st_mtime_ns, value.st_ctime_ns)
+
+
+def file_fingerprint(path, use_cache=True):
+    """Track metadata changes in process; stream bytes when content needs hashing."""
+    before = path.stat(follow_symlinks=False)
+    if not stat.S_ISREG(before.st_mode):
+        raise ValueError('Inventory requires regular files')
+    identity = stat_identity(before)
+    key = str(path.absolute())
+    with _fingerprint_lock:
+        cached = _fingerprints.get(key)
+        if use_cache and cached and cached[0] == identity and cached[2] is looks_generated:
+            _fingerprints.move_to_end(key)
+            return cached[1]
+    hasher, size, newlines, head = xxhash.xxh3_64(), 0, 0, b''
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            hasher.update(block)
+            size += len(block)
+            newlines += block.count(b'\n')
+            if len(head) < 1024:
+                head += block[:1024 - len(head)]
+    if stat_identity(path.stat(follow_symlinks=False)) != identity:
+        raise ValueError('File changed while hashing; retry when edits settle')
+    generated = looks_generated(head) or (
+        size >= MINIFIED_MIN_BYTES and size / (newlines + 1) > MINIFIED_AVG_LINE_LENGTH)
+    result = (hasher.hexdigest(), generated)
+    with _fingerprint_lock:
+        _fingerprints[key] = (identity, result, looks_generated)
+        _fingerprints.move_to_end(key)
+        while len(_fingerprints) > 16384:
+            _fingerprints.popitem(last=False)
+    return result
+
+
+def scan_files(repo_root: Path, use_cache: bool = True) -> list[ScannedFile]:
     """Prune ignored trees, apply nested gitignores and hash the readable inventory."""
     import os
     results: list[ScannedFile] = []
@@ -138,12 +185,12 @@ def scan_files(repo_root: Path) -> list[ScannedFile]:
             inherited[folder / name] = specs
         for name in sorted(names):
             path = folder / name
-            if path.is_symlink() or ignored(path):
+            if path.is_symlink() or ignored(path) or not path.is_file():
                 continue
-            data = path.read_bytes()
+            digest, generated = file_fingerprint(path, use_cache)
             rel_posix = path.relative_to(repo_root).as_posix()
             kind = classify_file(rel_posix)
-            if kind == 'source' and looks_generated(data):
+            if kind == 'source' and generated:
                 kind = 'generated'
-            results.append(ScannedFile(rel_posix, kind, xxhash.xxh3_64(data).hexdigest()))
+            results.append(ScannedFile(rel_posix, kind, digest))
     return sorted(results, key=lambda file: file.path)

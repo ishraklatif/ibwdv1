@@ -49,7 +49,7 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                     assert "ibwd_scan" in initialized.instructions
                     names = {t.name for t in (await session.list_tools()).tools}
                     assert names == {"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
-                                     "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence", "ibwd_artifact_save", "ibwd_artifact_read"}
+                                     "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence", "ibwd_artifact_save", "ibwd_artifact_read", "ibwd_local_assist"}
                     missing = await session.call_tool("ibwd_find_symbol", {"name": "finish"})
                     assert payload(missing)[0]['symbol_id'] == 'app.py::finish'
                     assert (repo / ".ibwd/graph.db").exists()
@@ -89,15 +89,70 @@ def test_generated_config_drives_real_mcp_from_unrelated_directory(tmp_path, cli
                     assert payload(source_result)['items'][0]['text'] == 'def finish():\n    return 1\n'
                     assert len(json.dumps(source_result.model_dump(mode='json', by_alias=True, exclude_none=True),
                                           ensure_ascii=False, separators=(',', ':')).encode()) <= 4000
+                    assisted = payload(await session.call_tool('ibwd_local_assist', {
+                        'kind': 'log', 'payload': {'text': 'FAILED app.py:4', 'command': 'pytest', 'exit_code': 1}}))
+                    assert assisted['local_helper']['status'] == 'disabled'
+                    assert assisted['exit_code'] == 1
+                    assert (repo / assisted['raw_log']).read_text() == 'FAILED app.py:4'
 
     asyncio.run(exercise())
     assert not (elsewhere / ".ibwd").exists()
     assert inspect_index(repo)["status"] == "ready"
     events = read_events(repo)
-    assert len(events) == 26  # artifact reads count as retrieval; saves do not.
+    assert len(events) == 28  # artifact reads/local assistance count; artifact saves do not.
     assert all(e["session_key"] is None for e in events)
     assert all("arguments" not in e for e in events)
     assert all(e["response_bytes"] > 0 for e in events if e["status"] == "success")
+
+
+@pytest.mark.parametrize('client', ['codex', 'claude'])
+def test_read_errors_explain_recovery_over_stdio(tmp_path, client):
+    def error(result):
+        return getattr(result, 'is_error', getattr(result, 'isError', False))
+
+    source = ('A documented source line with enough text to exercise response limits.\n' * 160)
+    (tmp_path / 'guide.md').write_text(source)
+    result = CliRunner().invoke(main, ['client-config', '--client', client, '--repo', str(tmp_path)])
+    assert result.exit_code == 0, result.output
+    config = (tomllib.loads(result.output)['mcp_servers'] if client == 'codex'
+              else json.loads(result.output)['mcpServers'])['ibwd']
+
+    async def exercise():
+        with anyio.fail_after(30):
+            async with stdio_client(StdioServerParameters(**config)) as (reader, writer):
+                async with ClientSession(reader, writer) as session:
+                    await session.initialize()
+                    found = await session.call_tool('ibwd_find_files', {'response_version': 2})
+                    content = json.loads(found.content[0].text)
+                    args = {'symbol_id_or_path': 'guide.md', 'expected_hash': content['files']['guide.md'],
+                            'range': [1, 160], 'budget_tokens': 5000}
+                    oversized = await session.call_tool('ibwd_read', args)
+                    assert error(oversized)
+                    message = oversized.content[0].text
+                    assert 'requires ' in message and 'effective budget is 16384 bytes' in message
+                    assert 'max_bytes' in message and 'budget_tokens' in message
+                    assert source not in message
+
+                    # Raising only max_bytes still leaves the token-derived cap in effect.
+                    capped = await session.call_tool('ibwd_read', {**args, 'max_bytes': 65536})
+                    assert error(capped) and 'effective budget is 20000 bytes' in capped.content[0].text
+                    recovered = await session.call_tool('ibwd_read', {
+                        **args, 'max_bytes': 65536, 'budget_tokens': 16000})
+                    assert not error(recovered)
+                    assert json.loads(recovered.content[0].text)['items'][0]['text'] == source
+                    smaller = await session.call_tool('ibwd_read', {**args, 'range': [1, 2]})
+                    assert not error(smaller)
+                    assert json.loads(smaller.content[0].text)['items'][0]['text'] == ''.join(source.splitlines(True)[:2])
+
+                    for overrides, expected in [({'expected_hash': 'obsolete'}, 'Stale source hash'),
+                                                ({'range': [0, 2]}, 'range must be'),
+                                                ({'range': [1, 161]}, 'exceeds the source file')]:
+                        failed = await session.call_tool('ibwd_read', {**args, **overrides})
+                        assert error(failed)
+                        assert expected in failed.content[0].text
+                        assert source not in failed.content[0].text
+
+    asyncio.run(exercise())
 
 
 def test_doctor_is_read_only_and_detects_edits_deletions_and_additions(tmp_path):

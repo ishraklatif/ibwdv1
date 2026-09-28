@@ -49,6 +49,10 @@ changes fail. Hashes must still be rechecked before editing because the filesyst
 The actual serialized MCP result, including both SDK representations and receipt overhead, is bounded by
 `min(max_bytes, 4 * budget_tokens)`. This is a byte-based token estimate, **not** a provider token count.
 Token budgets are 512–16000; byte budgets are 256–65536. Too-small budgets fail explicitly.
+Read validation errors are exposed through MCP with recovery guidance. An oversized read reports the required serialized
+size (including reserved overhead) and effective budget. Raising `budget_tokens` alone cannot exceed the default
+`max_bytes=16384`: increase both limits as needed, or request a smaller explicit range. Exact source is never truncated.
+Reconnect an already-running MCP server after updating to load the improved error handling.
 
 Context considers at most 200 candidates; each lexical query uses a SQL progress deadline inherited from the retrieval
 service. Target lists are limited to 20 and query text to 4096 characters/32 unique lexical terms. Relationship and definition

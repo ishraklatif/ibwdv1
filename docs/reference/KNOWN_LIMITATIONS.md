@@ -6,18 +6,18 @@ Each entry says what the limit is, **why it exists**, an example, what it does t
 its status. Treat each as a hypothesis to keep testing, not a settled trade-off.
 
 Sprint 4 adds separate lexical test/doc/config retrieval and hash-checked source expansion. It does not resolve the graph
-limitations below or establish test coverage. See [Sprint 4 limits](docs/SPRINT_4.md) for exclusions, candidate caps,
+limitations below or establish test coverage. See [Sprint 4 limits](../development/SPRINT_4.md) for exclusions, candidate caps,
 bounded source expansion and the unmeasured comparative performance target.
 
 Sprint 6's optional local embedding layer stays disabled until a repository opts in. The authorized
-[M1 screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query recall improvement and roughly 6.9-second query latency;
+[M1 screen](../development/SPRINT_6_MEASUREMENT.md) found no net vague-query recall improvement and roughly 6.9-second query latency;
 independent held-out validation remains unmeasured.
-Stale/unavailable/slow models fall back to deterministic retrieval. See [Sprint 6 limits](docs/SPRINT_6.md) for corpus and device bounds.
+Stale/unavailable/slow models fall back to deterministic retrieval. See [Sprint 6 limits](../development/SPRINT_6.md) for corpus and device bounds.
 
 Status key: **Fixed** (code + tests), **Open** (documented, not fixed), **Inherent** (cannot be
 fully fixed without running code), **Decision pending** (needs an owner's call).
 
-Sprint 7's [extractive artifacts and task handoffs](docs/SPRINT_7.md) validate declared source/dependency
+Sprint 7's [extractive artifacts and task handoffs](../development/SPRINT_7.md) validate declared source/dependency
 hashes and ranges. They cannot establish semantic completeness, omitted dependencies, or the truth of
 caller-reported decisions and command results. Generated summaries/rerankers remain unimplemented.
 
@@ -39,7 +39,7 @@ Sprint 5 indexes test symbols and references separately. Production defaults rem
 `ibwd_find_symbol`/`ibwd_list_symbols` with `scope="test"` and `response_version=2`, or `ibwd_impact`
 with source/test scopes. Reference paths and filename heuristics establish relevance, not executed test coverage.
 The optional installed TypeScript adapter reports compiler references as possible targets separately from graph edges.
-See [Sprint 5](docs/SPRINT_5.md) for bounds, previous-index diff semantics and incomplete environments.
+See [Sprint 5](../development/SPRINT_5.md) for bounds, previous-index diff semantics and incomplete environments.
 
 ## 2. Nested functions are not indexed
 - **What:** a function/closure/callback declared inside another function is not a symbol. Calls made

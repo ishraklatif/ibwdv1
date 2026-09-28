@@ -25,7 +25,7 @@ Run this once per work project using your installed IBWD interpreter:
 ```
 
 This installs MCP configuration, routing guidance, reporting hooks and a fresh index for both clients. See
-[daily setup](DAILY_USE.md) for preservation, backups and readiness checks. Use `--client codex` or `--client claude` for one client.
+[daily setup](./DAILY_USE.md) for preservation, backups and readiness checks. Use `--client codex` or `--client claude` for one client.
 The narrower `usage-setup` command remains available to install reporting only; its existing-file backups use `.ibwd-backup`.
 
 Restart/reconnect the client. **In Codex, open `/hooks` once to review and trust the installed hooks.** Project configuration
@@ -37,16 +37,60 @@ path to IBWD. No log search or separate analysis command is needed. Open these f
 - `.ibwd/usage/latest-codex.md` or `.ibwd/usage/latest-claude.md`: most recently captured report for that client.
 - `.ibwd/usage/sessions/`: one JSON and readable Markdown report per client/session, updated on resume.
 - `.ibwd/usage/comparison.md`: automatically refreshed observational cohorts and missing-data counts.
+- `.ibwd/usage/dashboard.html`: visual local dashboard generated on demand with `ibwd usage-dashboard --repo "$TARGET_REPO"`.
 
 Sprint 3A adds evidence-backed configuration, connection, scan/retrieval/error, fallback and incompleteness fields.
 Supported structured MCP lifecycle events count even when the outer call is orchestration; source strings do not count.
-The bounded local server ledger joins only on exact response observation IDs. See [format and limits](SPRINT_3A.md).
+The bounded local server ledger joins only on exact response observation IDs. See [format and limits](../development/SPRINT_3A.md).
 Setup also installs the shared navigation skill for both clients; rerun setup after upgrading and reconnect.
 
 Reports include recorded token totals, direct tool counts, and whether IBWD was mentioned in recognized Codex instruction
 records. Ordinary conversation mentions do not count as instruction evidence. Claude instruction loading is not reconstructed.
 Absence of recorded instructions does not prove instructions were absent. Availability, task category, success and condition
 remain unknown rather than being guessed; the automatic reports are not eligible for comparative savings claims.
+
+Open the dashboard when you want a window instead of reading Markdown:
+
+```bash
+ibwd usage-dashboard --repo "$TARGET_REPO"
+```
+
+This refreshes the exact registered transcripts before rendering; the session can stay open.
+Existing Codex/Claude transcripts can also be found by their recorded repository and session identity.
+It never assigns an arbitrary newest log to the repository. Paths for subsequent refresh are stored privately
+under `.ibwd/usage/sources/`, separately from exported reports.
+
+For automatic browser updates or an up-to-date terminal report:
+
+```bash
+ibwd usage-dashboard --repo "$TARGET_REPO" --client codex --watch
+ibwd usage-refresh --repo "$TARGET_REPO" --client codex
+```
+
+`--watch` refreshes every five seconds while its terminal command is running; Ctrl+C stops it.
+`usage-refresh --json` prints the structured report. Partial transcript lines wait for the next refresh.
+Current captured counters are available during a turn; even a session-end event does not certify final provider billing.
+
+The dashboard uses automatic activity summaries instead of requiring outcome/rework/usefulness labels.
+It records active/completed turns, infers an activity category, identifies configured or observed IBWD use,
+and shows recognized check exits, tool failures, and evidence counts. Every assessment identifies its source.
+These observations do not grade task success or the relevance of returned evidence. Manual assessments remain optional overrides.
+
+Captured JSON text blocks recover IBWD context evidence from orchestration output. Updated MCP servers include
+a small observation receipt in their text response as well as MCP metadata, so clients that omit metadata can still
+join requests to the local ledger. Reconnect the MCP server once after updating to load that receipt change.
+Old responses without a receipt retain packet counts and fallback observations, but missing server timing/freshness
+is displayed as unavailable. It is never matched by timestamps.
+
+It refreshes comparisons from saved reports and the retained local event ledger, highlights the latest saved session, shows cohort tables,
+embedding modes and automatic activity summaries, and opens the generated local HTML in your browser. Use `--no-open` for terminals or tests,
+`--client codex|claude` to choose the latest session for one client, or `--session-key KEY` to focus a specific session.
+
+The dashboard includes model, effort, client version, sample size, provisional/missing usage, separate input/cache/output
+medians, and local-helper profiles. Codex cache reads are subcounts of input; Claude reports separate input/cache counters.
+Missing components are unknown, not zero. Latest saved session is not a live-session identity claim.
+Local-helper inference attempts, cache hits and latency and freshness retry counts are retained without source/prompt text.
+See [local assistance](./LOCAL_ASSISTANCE.md) for configuration and evidence limits.
 
 Hooks run local Python only: no model requests, transcript copies, daemon, or remote telemetry. Successful hooks emit no model context,
 and failures are advisory rather than requests to continue a turn. The client must retain readable transcripts. Reports are
@@ -79,9 +123,9 @@ comparison. Raw transcripts can contain private code and credentials. Keep them 
 The report exports no prompts, tool arguments, tool outputs, repository paths, or raw session IDs. Tool/model names and timestamps
 are retained, so review even a summary before sharing it.
 
-## 2. Label the work before reviewing token totals
+## 2. Optional assessments for comparisons
 
-Keep a short local ledger per session:
+Automatic activity summaries need no labels. For explicit outcome/usefulness comparisons, optionally record:
 
 | Field | Example |
 |---|---|
@@ -103,7 +147,7 @@ usage and adoption but cannot infer savings relative to a missing baseline.
 
 ## 3. Generate reports after finishing work
 
-From a terminal, using the paths from [daily setup](DAILY_USE.md):
+From a terminal, using the paths from [daily setup](./DAILY_USE.md):
 
 ```bash
 mkdir -p "$TARGET_REPO/.ibwd/usage"
@@ -180,7 +224,7 @@ ibwd usage-label SESSION_KEY --repo /path/to/repo --client claude \
 ```
 
 Labels are user-reported and expire when the transcript snapshot changes. They never
-establish final token accounting. See [Sprint 8 contracts and tested compatibility](SPRINT_8.md).
+establish final token accounting. See [Sprint 8 contracts and tested compatibility](../development/SPRINT_8.md).
 
 ## 7. Compare optional embeddings during ordinary work
 
@@ -211,7 +255,7 @@ model. Enabling requires an existing usable local semantic index to avoid fallba
 An explicit `semantic` argument on a context request overrides that default. Existing
 client processes can observe a changed default on subsequent requests.
 
-After reviewing the task, record all applicable labels with the session key from its
+For an optional human assessment after reviewing the task, record all applicable labels with the session key from its
 report (omitted options become unknown):
 
 ```bash

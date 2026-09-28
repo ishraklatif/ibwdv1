@@ -40,6 +40,14 @@ def scan_locked(root: Path) -> dict:
     for attempt in range(2):
         before = scan_files(root)
         inputs = config_digest(root, before)
+        from ibwd.health import inspect_index
+        health = inspect_index(root, scanned=before)
+        if health['status'] == 'ready':
+            if before != scan_files(root) or inputs != config_digest(root, before):
+                continue
+            return dict(added=0, changed=0, removed=0, unchanged=len(before),
+                        total_files=len(before), edges={r: health['edges'].get(r, 0) for r in REFERENCE_RELATIONS},
+                        index_generation=health['index_generation'])
         with tempfile.TemporaryDirectory(prefix='scan-', dir=folder) as temporary:
             staged = Path(temporary) / 'graph.db'
             live = folder / 'graph.db'

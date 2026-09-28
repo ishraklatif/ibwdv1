@@ -6,15 +6,17 @@ The objective is less model context per correctly completed task. General token 
 
 ## Current status
 
-Sprints 1–7 deliver thirteen MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
+Sprints 1–8 and the audit follow-up deliver fourteen MCP tools, incremental indexing, automatic freshness, bounded task-context packets, exact source reads,
 explicit repository selection, index diagnostics, project setup and automatic local session reports for both clients.
 Default symbol/graph support covers production Python and JS/JSX/TS/TSX. Explicit scoped discovery and impact also cover tests; lexical evidence includes documentation and configuration.
 Sprint 5 adds scoped impact and optional compiler evidence. Sprint 6 adds opt-in local embeddings, disabled by default;
-Sprint 7 adds [extractive summaries and shared handoffs](docs/SPRINT_7.md) with dependency-aware freshness checks.
-Generated summaries and rerankers remain deferred. The [local M1 semantic screen](docs/SPRINT_6_MEASUREMENT.md) found no net vague-query gain
+Sprint 7 adds [extractive summaries and shared handoffs](./docs/development/SPRINT_7.md) with dependency-aware freshness checks.
+An optional local helper now reranks existing candidates, selects cited extracts, organizes supplied handoffs and condenses logs.
+It is disabled by default and requires an already installed loopback Ollama model. Free-form generated summaries remain deferred.
+The [local M1 semantic screen](./docs/development/SPRINT_6_MEASUREMENT.md) found no net vague-query gain
 and substantial latency; independent held-out acceptance remains pending.
 
-The active plan is [the token-efficiency roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md), revised 2026-09-24.
+The active plan is [the token-efficiency roadmap](./docs/development/ROADMAP.md), revised 2026-09-24.
 It prioritizes trustworthy reporting, bounded retrieval and context assembly before optional local AI.
 It is device-agnostic: deterministic operation is the base profile; each laptop can enable local models according to its capabilities.
 
@@ -42,10 +44,10 @@ Reports update at normal client hook events:
 
 Reports count direct and supported structured nested MCP calls, separate scans from retrievals, and retain unknowns.
 Open `.ibwd/usage/comparison.md` for automatic client-separated summaries. Opaque orchestration and child usage can be missing.
-See [Sprint 3A delivery notes](docs/SPRINT_3A.md); live adoption and token savings remain unverified.
-A scan is maintenance; token totals are not tokens saved. See [measurement and limitations](docs/USAGE_MEASUREMENT.md).
+See [Sprint 3A delivery notes](./docs/development/SPRINT_3A.md); live adoption and token savings remain unverified.
+A scan is maintenance; token totals are not tokens saved. See [measurement and limitations](./docs/guides/USAGE_MEASUREMENT.md).
 
-For first installation or another laptop, follow [the full setup guide](docs/NEW_DEVICE_SETUP.md).
+For first installation or another laptop, follow [the full setup guide](./docs/guides/NEW_DEVICE_SETUP.md).
 Use a new environment on each device and run setup for each work repository; do not copy virtual environments or machine-specific settings.
 Current setup/hooks support macOS, Linux and WSL; native Windows hook generation is not implemented.
 
@@ -66,10 +68,12 @@ Current setup/hooks support macOS, Linux and WSL; native Windows hook generation
 | `ibwd_compiler_evidence` | Opt-in installed TypeScript references with diagnostics and provenance |
 | `ibwd_artifact_save` | Save cited extracts or an explicitly supplied task handoff locally |
 | `ibwd_artifact_read` | Retrieve a saved artifact after source/dependency revalidation |
+| `ibwd_local_assist` | Select cited extracts, organize supplied handoffs or condense logs; optional local model, deterministic fallback |
 
 Use returned exact identities to disambiguate symbols. Read source before editing.
 Retrieval refreshes automatically after edits or branch changes; concurrent scans and queries share a repository lock.
-Use [context/read](docs/SPRINT_4.md) for unfamiliar tasks and source expansion, or the original exact discovery tools for known targets.
+No-change scans preserve the generation. Optional inference runs outside the graph lock and evidence is revalidated afterward.
+Use [context/read](./docs/development/SPRINT_4.md) for unfamiliar tasks and source expansion, or the original exact discovery tools for known targets.
 For troubleshooting, run:
 
 ```bash
@@ -83,11 +87,11 @@ Default graph queries use resolved edges; candidate hints are opt-in and fuzzy r
 Confidence numbers are heuristic scores, not calibrated probabilities.
 
 An empty result means no matching resolved edges in the indexed scope. It never proves a function is unused or safe to delete.
-Tests, dynamic dispatch and type-inferred receivers are not fully represented. Read [known limitations](KNOWN_LIMITATIONS.md).
+Tests, dynamic dispatch and type-inferred receivers are not fully represented. Read [known limitations](./docs/reference/KNOWN_LIMITATIONS.md).
 
 Historical Sprint 3 validation found strong supported-scope precision on development repositories but substantial runtime gaps.
 The qualified paid token-efficiency gate remains untested and is not authorized to run. The new roadmap changes future engineering priorities;
-it does not turn that historical gate into a pass. See [Sprint 3](SPRINT_3.md) and [the frozen report](benchmarks/SPRINT3_free_stage_report.md).
+it does not turn that historical gate into a pass. See [Sprint 3](./docs/archive/sprints/SPRINT_3.md) and [the frozen report](./benchmarks/SPRINT3_free_stage_report.md).
 
 ## Revised development sequence
 
@@ -95,11 +99,11 @@ it does not turn that historical gate into a pass. See [Sprint 3](SPRINT_3.md) a
 | --- | --- |
 | Sprint 3A | Adoption evidence and accurate automatic usage reporting |
 | Sprint 3B (implemented) | Automatic freshness, locked publication and version-2 bounded results |
-| Sprint 4 (implemented; performance acceptance pending) | [Lexical retrieval, task-context packets and exact source expansion](docs/SPRINT_4.md) |
-| Sprint 5 | [Delivered](docs/SPRINT_5.md): scoped impact, test relevance, previous-index diff and optional installed TypeScript evidence |
+| Sprint 4 (implemented; performance acceptance pending) | [Lexical retrieval, task-context packets and exact source expansion](./docs/development/SPRINT_4.md) |
+| Sprint 5 | [Delivered](./docs/development/SPRINT_5.md): scoped impact, test relevance, previous-index diff and optional installed TypeScript evidence |
 | Sprint 6 | Optional local embeddings, justified by retrieval quality |
 | Sprint 7 | Optional local specialists and source-backed reusable memory |
-| Sprint 8 (implemented) | [Portable setup, retrieval evidence and ordinary-work comparisons](docs/SPRINT_8.md); savings unverified |
+| Sprint 8 (implemented) | [Portable setup, retrieval evidence and ordinary-work comparisons](./docs/development/SPRINT_8.md); savings unverified |
 
 Local deterministic tests establish engineering quality; existing ordinary-work logs provide observational usage evidence.
 Neither establishes a causal savings claim on its own. Local models remain optional and are selected by available resources,
@@ -107,9 +111,8 @@ supported runtime and measured benefit rather than a fixed laptop or model name.
 
 ## Project documentation
 
-- [Active roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md): architecture, sprint acceptance criteria, device profiles and model strategy.
-- [Documentation review](docs/DOCUMENTATION_REVIEW.md): all 22 original Markdown paths and reasons for the pivot.
-- [Development guide](DEVELOPMENT.md): delivered work and local validation commands.
-- [Daily use](docs/DAILY_USE.md), [new-device setup](docs/NEW_DEVICE_SETUP.md), [usage measurement](docs/USAGE_MEASUREMENT.md).
-- [Schema reference](SCHEMA.md) and [graph limitations](KNOWN_LIMITATIONS.md).
-- [Original execution plan](IBWD_v1_EXECUTION_PLAN.md): preserved design history; future sequencing is superseded.
+- [Daily use](./docs/guides/DAILY_USE.md) and [new-device setup](./docs/guides/NEW_DEVICE_SETUP.md)
+- [Local assistance](./docs/guides/LOCAL_ASSISTANCE.md) and [usage measurement](./docs/guides/USAGE_MEASUREMENT.md)
+- [Graph schema](./docs/reference/SCHEMA.md) and [known limitations](./docs/reference/KNOWN_LIMITATIONS.md)
+- [Development status](./docs/development/DEVELOPMENT.md), [active roadmap](./docs/development/ROADMAP.md), and sprint delivery notes in `docs/development/`
+- Historical plans, research, and reviews in `docs/archive/`; frozen experiment artifacts remain in `benchmarks/`

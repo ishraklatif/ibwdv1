@@ -14,7 +14,7 @@ from contextvars import ContextVar
 retrieval_observation: ContextVar[dict | None] = ContextVar('ibwd_retrieval_observation', default=None)
 
 TOOLS = frozenset({"ibwd_scan", "ibwd_find_files", "ibwd_find_symbol", "ibwd_list_symbols",
-                   "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence", "ibwd_artifact_read"})
+                   "ibwd_callers", "ibwd_dependents", "ibwd_trace_path", "ibwd_context", "ibwd_read", "ibwd_impact", "ibwd_compiler_evidence", "ibwd_artifact_read", "ibwd_local_assist"})
 MAX_EVENTS = 10000
 
 
@@ -110,24 +110,38 @@ class ObservedServerMixin:
         token = retrieval_observation.set(freshness)
         try:
             result = await super().call_tool(name, arguments, *args, **kwargs)
-        except BaseException:
-            record(event | freshness | {"phase": "completed", "status": "error",
-                            "duration_ms": round((time.monotonic() - started) * 1000, 3)})
-            raise
+        except BaseException as exc:
+            try:
+                from mcp.server.mcpserver.exceptions import ToolError
+            except ModuleNotFoundError:
+                from mcp.server.fastmcp.exceptions import ToolError
+            if isinstance(exc, ToolError):
+                from mcp.types import CallToolResult, TextContent
+                result = CallToolResult(content=[TextContent(type='text', text=str(exc))], isError=True)
+            else:
+                record(event | freshness | {"phase": "completed", "status": "error",
+                                "duration_ms": round((time.monotonic() - started) * 1000, 3)})
+                raise
         finally:
             retrieval_observation.reset(token)
         event.update(freshness)
         status = "error" if getattr(result, "is_error", getattr(result, "isError", False)) else "success"
         try:
+            receipt = {"schema_version": 1, "observation_id": event["observation_id"], "tool": name, "status": status}
             if hasattr(result, "meta"):
-                result.meta = dict(result.meta or {}) | {"ibwd": {"schema_version": 1, "observation_id": event["observation_id"]}}
+                result.meta = dict(result.meta or {}) | {"ibwd": receipt}
+            # Some clients omit MCP metadata from transcripts but retain text blocks.
+            if hasattr(result, 'content'):
+                from mcp.types import TextContent
+                result.content = list(result.content) + [TextContent(
+                    type='text', text=json.dumps({'ibwd_observation': receipt}, separators=(',', ':')))]
             serialized = result.model_dump(mode="json", by_alias=True, exclude_none=True) if hasattr(result, "model_dump") else None
         except (TypeError, ValueError, AttributeError):
             serialized = None  # SDK variants must not break a successful retrieval.
         data = serialized.get("structuredContent", serialized.get("structured_content")) if serialized else None
         if data is None and serialized:
             content = serialized.get('content', [])
-            if len(content) == 1 and content[0].get('type') == 'text':
+            if content and content[0].get('type') == 'text':
                 try:
                     data = json.loads(content[0]['text'])
                 except (ValueError, KeyError, TypeError):

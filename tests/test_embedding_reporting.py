@@ -45,6 +45,9 @@ def test_modes_default_override_cache_and_fallback(setup, monkeypatch):
         raise ValueError('private runtime detail')
 
     monkeypatch.setattr(semantic, 'embed', fail)
+    cached = observed_context(repo)
+    assert cached['mode'] == 'used' and cached['query_cache_hit'] and not cached['inference_attempted']
+    semantic._query_cache.clear()
     failed = observed_context(repo)
     assert failed['mode'] == 'fallback' and failed['inference_attempted']
     assert failed['model_digest'] == built['model_digest'] and failed['elapsed_ms'] >= 0

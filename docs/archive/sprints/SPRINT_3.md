@@ -2,7 +2,7 @@
 
 > **Current direction, 2026-09-24:** the structural implementation and historical free-stage evidence are retained.
 > The paid efficiency gate remains untested and unauthorized. Continue with Sprint 3A/3B product hardening under
-> [the active roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md); later engineering no longer waits for paid execution.
+> [the active roadmap](../../development/ROADMAP.md); later engineering no longer waits for paid execution.
 > The historical observations below are not a certification of current model-level savings.
 
 **Status: structural implementation built; historical free validation complete (see `benchmarks/SPRINT3_free_stage_report.md`);
@@ -145,5 +145,5 @@ disclosed qualification defects, and every caveat are in `benchmarks/SPRINT3_fre
 ## Next
 
 Sprint 3A: reliable adoption/usage attribution. Sprint 3B: freshness, concurrent clients and bounded retrieval.
-Then Sprint 4: lexical retrieval and task-context packets. See [the revised roadmap](docs/TOKEN_EFFICIENCY_ROADMAP.md)
+Then Sprint 4: lexical retrieval and task-context packets. See [the revised roadmap](../../development/ROADMAP.md)
 for acceptance criteria. Frozen artifacts stay historical; do not run the paid pilot or rewrite hashes to imply a pass.

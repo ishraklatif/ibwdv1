@@ -11,6 +11,7 @@ import statistics
 from collections import Counter, defaultdict
 from pathlib import Path
 from ibwd.telemetry import key, tool_name
+from ibwd.usage_observations import objects, receipt, response_facts, command_kind, exit_status
 
 CODEX_FIELDS = ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens", "total_tokens")
 CLAUDE_FIELDS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
@@ -45,6 +46,28 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
     ibwd_guidance = state.get("ibwd_guidance", False)
     child_seen = state.get("child_seen", False)
     fallback_seen = state.get("fallback_seen", False)
+    activity = state.setdefault('activity', {'task_kinds': [], 'turn_active': None})
+    operations = state.setdefault('operations', {})
+
+    def activity_call(name, ident, arguments=None):
+        if ident and key(ident) not in operations:
+            kind = command_kind(name, arguments)
+            operations[key(ident)] = dict(kind=kind, completed=False, exit_code=None)
+            if kind == 'edit':
+                activity['edits_after_check'] = True
+                activity['task_kinds'] = sorted(set(activity['task_kinds']) | {'implementation'})
+
+    def request_activity(text):
+        import re
+        if not isinstance(text, str) or text.startswith(('# AGENTS.md', '<environment_context>')):
+            return
+        kinds = set(activity['task_kinds'])
+        for kind, pattern in [('implementation', r'\b(implement|build|add|create)\b'),
+                              ('debugging', r'\b(fix|debug|broken|bug|error)\b'),
+                              ('structural', r'\b(explain|find|read|documentation|documentations)\b')]:
+            if re.search(pattern, text, re.I):
+                kinds.add(kind)
+        activity['task_kinds'] = sorted(kinds)
 
     def instruction(text):
         nonlocal instruction_records, ibwd_guidance
@@ -71,24 +94,44 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
             calls[ident]["sources"].append(source)
 
     def complete(ident, result, status=None):
+        operation = operations.get(key(ident))
+        code = exit_status(result)
+        if operation is not None:
+            operation['completed'] = True
+            operation['exit_code'] = code
+            if operation['kind'] == 'check' and code is not None:
+                activity['edits_after_check'] = False
         item = calls.get(key(ident))
-        if not item or not tool_name(item["name"]):
-            return
-        if status:
+        if item and status:
             item["status"] = status
-        if isinstance(result, str):
-            try:
-                result = json.loads(result)
-            except ValueError:
-                return
-        if not isinstance(result, (dict, list)):
-            return
-        item["status"] = status or ("error" if isinstance(result, dict) and result.get("isError", result.get("is_error", False)) else "success")
-        meta = result.get("_meta", {}) if isinstance(result, dict) else {}
-        observation = meta.get("ibwd", {}) if isinstance(meta, dict) else {}
-        oid = observation.get("observation_id") if isinstance(observation, dict) and observation.get("schema_version") == 1 else None
-        if isinstance(oid, str) and len(oid) == 32 and all(c in "0123456789abcdef" for c in oid):
-            item["observation_id"] = oid
+        direct = item if item and tool_name(item['name']) else None
+        if direct and isinstance(result, (dict, list)):
+            direct['status'] = status or 'success'
+        for number, value in enumerate(objects(result)):
+            observation = receipt(value)
+            children = list(objects(value.get('content', [])))
+            observation = observation or next((receipt(v) for v in children if receipt(v)), None)
+            packet = next((v for v in [value, *children] if v.get('schema_version') == 2
+                           and 'retrieval_version' in v and isinstance(v.get('items'), list)), None)
+            target = direct
+            if target is None:
+                name = tool_name(observation.get('tool')) if observation else None
+                # Legacy MCP envelopes carry identifiable IBWD context packets, but no server identity.
+                if not name and 'content' in value and packet:
+                    name = 'ibwd_context'
+                if not name:
+                    continue
+                nested_id = f"{ident}:response:{number}"
+                call(name, nested_id, 'response_receipt' if observation else 'response_packet')
+                target = calls[key(nested_id)]
+            target['status'] = status or ('error' if value.get('isError', value.get('is_error')) else 'success')
+            if observation:
+                target['observation_id'] = observation['observation_id']
+                if observation.get('status') in {'success', 'error'}:
+                    target['status'] = observation['status']
+            facts = response_facts(value)
+            if facts is not None:
+                target['response'] = facts
 
     def session(ident):
         session_ids.add(hashlib.sha256((client + ':' + str(ident)).encode()).hexdigest()[:20])
@@ -138,8 +181,12 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                         instruction(payload.get(field))
                     if payload.get("model"):
                         models.add(str(payload["model"]))
+                        activity['current_model'] = str(payload['model'])
                     if payload.get("effort"):
                         efforts.add(str(payload["effort"]))
+                        activity['current_effort'] = str(payload['effort'])
+                if event.get('type') == 'event_msg' and payload.get('type') in {'task_started', 'task_complete', 'turn_aborted'}:
+                    activity['turn_active'] = payload['type'] == 'task_started'
                 if event.get("type") == "event_msg" and payload.get("type") == "token_count":
                     info = payload.get("info")
                     if not isinstance(info, dict):
@@ -158,6 +205,7 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     latest = usage
                 if event.get("type") == "response_item" and payload.get("type") in ("function_call", "custom_tool_call"):
                     call(payload.get("name"), payload.get("call_id"))
+                    activity_call(payload.get('name'), payload.get('call_id'), payload.get('arguments', payload.get('input')))
                     if payload.get("name") in ("spawn_agent", "functions.spawn_agent", "collaboration.spawn_agent"):
                         child_seen = True
                 if event.get("type") == "response_item" and payload.get("type") in ("function_call_output", "custom_tool_call_output"):
@@ -180,6 +228,8 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                         if isinstance(text, str) and (payload.get("role") in ("system", "developer") or
                                 (payload.get("role") == "user" and text.startswith("# AGENTS.md instructions for "))):
                             instruction(text)
+                        elif payload.get('role') == 'user':
+                            request_activity(text)
             else:
                 if event.get("sessionId"):
                     session(event["sessionId"])
@@ -189,6 +239,9 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     efforts.add(str(event["effort"]))
                 message = event.get("message")
                 if event.get("type") == "user" and isinstance(message, dict):
+                    if isinstance(message.get('content'), str):
+                        request_activity(message['content'])
+                        activity['turn_active'] = True
                     for block in message.get("content", []) if isinstance(message.get("content"), list) else []:
                         if isinstance(block, dict) and block.get("type") == "tool_result":
                             complete(block.get("tool_use_id"), block.get("content", []), "error" if block.get("is_error") else "success")
@@ -199,6 +252,9 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     continue
                 if model:
                     models.add(str(model))
+                    activity['current_model'] = str(model)
+                if message.get('stop_reason') == 'end_turn':
+                    activity['turn_active'] = False
                 mid = message.get("id")
                 if not mid:
                     warnings.add("Assistant message without an ID; usage cannot be deduplicated.")
@@ -218,6 +274,7 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
                     for block in content:
                         if isinstance(block, dict) and block.get("type") == "tool_use":
                             call(block.get("name"), block.get("id"))
+                            activity_call(block.get('name'), block.get('id'), block.get('input'))
                             if block.get("name") in ("Agent", "Task"):
                                 child_seen = True
 
@@ -269,6 +326,15 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
     # Stable pseudonym supports replacing snapshots of a resumed session without exporting its ID.
     identity = next(iter(session_ids)) if len(session_ids) == 1 else key(path.resolve())[:20]
     retrieval = [item for item in unique.values() if tool_name(item["name"]) != "ibwd_scan"]
+    responses = [item['response'] for item in retrieval if 'response' in item]
+    work = list(operations.values())
+    activity_report = dict(activity, operations={
+        'completed': sum(o['completed'] for o in work),
+        'failed': sum(o['exit_code'] is not None and o['exit_code'] != 0 for o in work),
+        'checks_passed': sum(o['kind'] == 'check' and o['exit_code'] == 0 for o in work),
+        'checks_failed': sum(o['kind'] == 'check' and o['exit_code'] is not None and o['exit_code'] != 0 for o in work),
+        'checks_pending': sum(o['kind'] == 'check' and o['exit_code'] is None for o in work),
+    })
     observations = {
         "configured": {"value": "unknown", "source": "No project configuration inspected."},
         "connection_observed": {"value": True if any(i["status"] in ("success", "error") for i in unique.values()) else "unknown",
@@ -280,8 +346,10 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
         "fallback_observed": {"value": True if fallback_seen else "unknown", "source": "Version-1 explicit ibwd_observation fallback events only."},
         "attribution_unknown": {"value": True if any(n in tools for n in ("exec", "functions.exec", "Bash", "exec_command")) or child_seen else "unknown",
                                 "source": "Opaque orchestration/child records cannot establish complete attribution."},
-        "usage_incomplete": {"value": True if latest is None or malformed or child_seen or warnings else "unknown",
-                             "source": "Transcript accounting checks; final provider accounting is not guaranteed."},
+        "usage_incomplete": {"value": bool(latest is None or malformed or child_seen or any(
+            word in warning.lower() for warning in warnings for word in
+            ('usage', 'counters', 'reconcile', 'session identity', 'message without'))),
+                             "source": "Completeness of captured token counters; independent of mixed models and final billing."},
     }
     return {
         "schema_version": 2, "client": client,
@@ -290,6 +358,12 @@ def analyze_log(path: Path, client: str, condition="unknown", task_kind="unknown
         "models": sorted(models), "efforts": sorted(efforts), "client_versions": sorted(versions),
         "first_timestamp": started, "last_timestamp": ended, "records": records,
         "usage_snapshots": snapshots, "usage": latest, "accounting": method,
+        'activity': activity_report,
+        'response_evidence': dict(responses=len(responses), items=sum(r['items'] for r in responses),
+                                 file_references=sum(r['files'] for r in responses),
+                                 truncated=sum(r['truncated'] for r in responses),
+                                 semantic_modes=dict(Counter(r['semantic'] for r in responses)),
+                                 source='Captured response packets; separate from exact server-ledger joins.'),
         "tool_calls": dict(sorted(tools.items())),
         "direct_ibwd_calls": sum("direct" in i["sources"] for i in unique.values()),
         "observations": observations,

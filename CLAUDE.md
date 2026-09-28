@@ -4,7 +4,7 @@
 Keep the design device-agnostic; local models are optional and must fit measured capabilities. Prioritize correct-work token efficiency.
 Do not run the paid pilot, 120-session experiment, or other billable jobs. Continue with deterministic local tests and MCP transport
 checks. The frozen Sprint 3 artefacts/tag are historical evidence, not the current development configuration; the paid gate remains
-untested. See `DEVELOPMENT.md` for current priorities/validation and `docs/TOKEN_EFFICIENCY_ROADMAP.md` for the active sprint plan.
+untested. See `docs/development/DEVELOPMENT.md` for current priorities/validation and `docs/development/ROADMAP.md` for the active sprint plan.
 `AGENTS.md` shares these instructions. Do not load the entire roadmap for unrelated coding tasks.
 
 Use `ibwd doctor --repo PATH` to inspect index freshness without modifying it. Retrieval automatically indexes or refreshes
@@ -28,7 +28,7 @@ Semantic retrieval and local-model summaries are planned, not shipped. Keep pers
 Default graph queries follow resolved edges only. Unique-name/suffix candidates are opt-in; fuzzy resolution is disabled by default.
 Confidence values and their multi-hop products are heuristic scores, not calibrated probabilities.
 
-**Read `KNOWN_LIMITATIONS.md` before trusting a graph answer.** Key rule: an empty result means only
+**Read `docs/reference/KNOWN_LIMITATIONS.md` before trusting a graph answer.** Key rule: an empty result means only
 "no matching resolved edges in the indexed production graph" — other uses may exist (dynamic dispatch, framework entry points,
 type-inferred receivers), so it is never proof that a function is unused or safe to delete —
 check the code before deleting.
@@ -53,9 +53,11 @@ for implementation, debugging and UI work:
 - File discovery: ibwd_find_files; definitions: ibwd_find_symbol.
 - File structure: ibwd_list_symbols; callers/importers: ibwd_callers.
 - Dependencies: ibwd_dependents; connections: ibwd_trace_path.
-- Unfamiliar task: ibwd_context; exact source: ibwd_read with the returned hash/range.
-- Before applicable coding, debugging, or UI work, use at least one relevant IBWD lookup before searching/editing.
-  Use the smallest useful lookup; do not call every tool. If unavailable or outside indexed scope, say so and search normally.
+- Task evidence: ibwd_context; exact source: ibwd_read with expected_hash.
+  Context includes lexical test/doc/config scope; test matches are not verified coverage.
+- Before applicable coding, debugging, or UI work, use at least one relevant IBWD lookup before searching or editing.
+  For unfamiliar tasks start with ibwd_context; for known targets use the direct lookup. Use graph tools only when
+  relationships matter. Do not call every tool by default. If unavailable or outside indexed scope, say so and search normally.
 Retrieval checks freshness and refreshes automatically, including after edits or branch switches.
 Use response_version=2 for bounded results, source hashes and generation-bound pagination.
 Follow next_cursor with the same query when more evidence is needed; truncated results are incomplete.

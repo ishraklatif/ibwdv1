@@ -11,7 +11,7 @@ from ibwd.index_inputs import config_digest
 from ibwd.retrieval.lexical import VERSION as LEXICAL_VERSION
 
 
-def inspect_index(root: Path) -> dict:
+def inspect_index(root: Path, scanned=None) -> dict:
     root = root.resolve()
     db = root / ".ibwd" / "graph.db"
     manifest = root / ".ibwd" / "manifest.json"
@@ -49,7 +49,8 @@ def inspect_index(root: Path) -> dict:
             report["edges"] = dict(conn.execute("SELECT relation, COUNT(*) FROM edges GROUP BY relation"))
         finally:
             conn.close()
-        scanned = scan_files(root)
+        if scanned is None:
+            scanned = scan_files(root)
         current = {f.path: (f.content_hash, f.kind) for f in scanned}
         if report.get('config_digest') != config_digest(root, scanned):
             report['problems'].append('Resolution configuration changed.')
