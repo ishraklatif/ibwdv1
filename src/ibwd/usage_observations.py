@@ -66,13 +66,32 @@ def command_kind(name, arguments):
             parts = list(lexer)
         except (ValueError, TypeError):
             parts = []
-        if not parts or any(set(p) <= set(';&|<>') for p in parts):
+        if not parts:
             return 'command'
-        program = PurePath(parts[0]).name
+        # `&&`/`;` chains (e.g. `cd services/x && pytest`) still guarantee the exit
+        # code reflects the final segment; pipes/redirects/`&`/`||` do not, so those
+        # still fall back to 'command'.
+        segments, current = [], []
+        for token in parts:
+            if token in (';', '&&'):
+                segments.append(current)
+                current = []
+            elif set(token) <= set(';&|<>'):
+                return 'command'
+            else:
+                current.append(token)
+        segments.append(current)
+        last = segments[-1]
+        if not last:
+            return 'command'
+        program, rest = PurePath(last[0]).name, last[1:]
+        if program == 'npx' and rest:
+            program, rest = PurePath(rest[0]).name, rest[1:]
         check = (program == 'pytest' or
-                 program.startswith('python') and parts[1:3] in (['-m', 'pytest'], ['-m', 'unittest']) or
-                 program in {'go', 'cargo', 'npm'} and parts[1:2] == ['test'] or
-                 program == 'npm' and parts[1:3] == ['run', 'test'])
+                 program in {'jest', 'vitest'} or
+                 program.startswith('python') and rest[:2] in (['-m', 'pytest'], ['-m', 'unittest']) or
+                 program in {'go', 'cargo', 'npm', 'yarn', 'pnpm'} and rest[:1] == ['test'] or
+                 program in {'npm', 'yarn', 'pnpm'} and rest[:2] == ['run', 'test'])
         if check:
             return 'check'
         return 'command'
